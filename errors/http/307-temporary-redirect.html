@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between 302 and 307?","acceptedAnswer":{"@type":"Answer","text":"Both are temporary redirects, but 307 guarantees that the request method is not changed. With 302, some clients may change POST to GET. Use 307 when method preservation is important."}},{"@type":"Question","name":"Why do I see 307 redirects in DevTools when visiting HTTP URLs?","acceptedAnswer":{"@type":"Answer","text":"If the site uses HSTS (HTTP Strict Transport Security), your browser internally generates a 307 redirect from HTTP to HTTPS. This happens before any network request is sent."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"307 Temporary Redirect — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 307 Temporary Redirect","step":[{"@type":"HowToStep","position":1,"name":"Follow the redirect with the same method","text":"HTTP clients should automatically follow 307 redirects using the same method. If your client is not following the redirect, check that it supports 307 and is configured to follow redirects."},{"@type":"HowToStep","position":2,"name":"Use 308 for permanent method-preserving redirects","text":"If the redirect is permanent, use 308 instead of 307. The 308 status code has the same method-preserving semantics but indicates the move is permanent."},{"@type":"HowToStep","position":3,"name":"Update API client endpoints","text":"If you are consuming an API that returns 307, update your client configuration to point to the new URL directly to avoid the redirect overhead."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>307 Temporary Redirect — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 307 Temporary Redirect. Learn how it differs from 302, when to use it, and how it preserves POST and other request methods during redirects.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 307, 307 Temporary Redirect, 307 status code, HSTS redirect 307, 307 vs 302">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="307 Temporary Redirect — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 307 Temporary Redirect. Learn how it differs from 302, when to use it, and how it preserves POST and other request methods during redirects.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/307-temporary-redirect">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/307-temporary-redirect">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>307 Temporary Redirect</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>307 Temporary Redirect</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The resource temporarily resides at a different URL, preserving the request method</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 307</code></li><li><code>307 Temporary Redirect</code></li><li><code>307 status code</code></li><li><code>HSTS redirect 307</code></li><li><code>307 vs 302</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 307 Temporary Redirect tells the client that the resource temporarily resides at a different URI and the client must not change the request method when following the redirect. Unlike 302, which historically allowed clients to change POST to GET, 307 guarantees that the method and body are preserved. This is important for form submissions and API requests.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>HSTS redirect from HTTP to HTTPS</strong> — Browsers that have an HSTS policy cached for a domain will internally redirect HTTP requests to HTTPS using a 307 before the request even reaches the network.</li>
+                <li><strong>Temporary API endpoint migration</strong> — An API endpoint has been temporarily moved, and the server uses 307 to ensure POST, PUT, and DELETE requests are forwarded with their original method and body.</li>
+                <li><strong>Load balancer routing</strong> — A load balancer or reverse proxy is temporarily routing requests to a different backend server while preserving the original request method.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Follow the redirect with the same method</h3>
+            <p>HTTP clients should automatically follow 307 redirects using the same method. If your client is not following the redirect, check that it supports 307 and is configured to follow redirects.</p>
+            <h3>2. Use 308 for permanent method-preserving redirects</h3>
+            <p>If the redirect is permanent, use 308 instead of 307. The 308 status code has the same method-preserving semantics but indicates the move is permanent.</p>
+            <h3>3. Update API client endpoints</h3>
+            <p>If you are consuming an API that returns 307, update your client configuration to point to the new URL directly to avoid the redirect overhead.</p>
+            <pre><code># Check where a URL redirects to
+curl -I -L https://api.example.com/old-endpoint</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between 302 and 307?</h3>
+            <p>Both are temporary redirects, but 307 guarantees that the request method is not changed. With 302, some clients may change POST to GET. Use 307 when method preservation is important.</p>
+            <h3>Why do I see 307 redirects in DevTools when visiting HTTP URLs?</h3>
+            <p>If the site uses HSTS (HTTP Strict Transport Security), your browser internally generates a 307 redirect from HTTP to HTTPS. This happens before any network request is sent.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/302-found">302 Found</a> — Temporary redirect (may change method)</li>
+                <li><a href="/errors/http/301-moved-permanently">301 Moved Permanently</a> — Permanent redirect to a new URL</li>
+                <li><a href="/errors/http/308-permanent-redirect">308 Permanent Redirect</a> — Permanent redirect preserving request method</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace redirect chains</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/redirect-checker/" class="cta-btn-primary">Try Redirect Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

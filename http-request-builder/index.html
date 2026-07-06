@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTTP Request Builder","url":"https://ducktyped.xyz/http-request-builder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Build HTTP requests visually and generate curl commands, fetch code, and other formats.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Request Builder — Build and Generate HTTP Requests — duckTyped</title>
+    <meta name="description" content="Build HTTP requests visually and generate curl commands, JavaScript fetch code, and Python requests code. Free HTTP request builder.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="HTTP Request Builder — duckTyped">
+    <meta property="og:description" content="Build HTTP requests visually and generate curl, fetch, and Python code.">
+    <meta property="og:url" content="https://ducktyped.xyz/http-request-builder/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/http-request-builder.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="HTTP Request Builder — duckTyped">
+    <meta name="twitter:description" content="Build HTTP requests and generate curl, fetch, Python code.">
+    <link rel="canonical" href="https://ducktyped.xyz/http-request-builder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>HTTP Request Builder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Build HTTP requests visually by specifying method, URL, headers, and body. Generate equivalent curl commands, JavaScript fetch code, and Python requests code.</p><div class="example-box"><strong>Example uses:</strong><p>Building API requests before testing, generating curl commands for documentation, creating fetch code snippets for JavaScript projects.</p></div>
+            <a href="/learn/http-request-builder/" class="learn-more-link">Learn the anatomy of an HTTP request</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>HTTP Request Builder</h2>
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;margin-bottom:12px;">
+                <div class="input-group"><label>Method:</label><select id="httpMethod" onchange="toggleBody()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+                    <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option>
+                </select></div>
+                <div class="input-group"><label>URL:</label><input type="text" id="httpUrl" value="https://api.example.com/users" placeholder="https://api.example.com/endpoint"></div>
+            </div>
+            <div class="input-group"><label>Headers:</label><div id="headerRows"></div>
+                <button onclick="addHeader()" style="padding:6px 12px;font-size:0.8em;margin-top:6px;">+ Add Header</button>
+            </div>
+            <div id="bodySection" style="display:none;" class="input-group"><label>Body:</label><textarea id="httpBody" rows="5" placeholder='{"key": "value"}' style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.9em;resize:vertical;"></textarea></div>
+            <button onclick="generate()">Generate Code</button>
+            <div id="httpResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/http-latency/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">HTTP Latency Checker</a>
+            <a href="/security-headers/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Security Headers</a>
+            <a href="/url-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Encoder</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/http-request-builder/">HTTP Request Builder — Learn Guide</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/nginx/unknown-directive">Nginx Unknown Directive</a>, <a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function addHeader(k,v) {
+        var div = document.getElementById('headerRows'), row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;margin-bottom:6px;align-items:center;';
+        var keyInput = document.createElement('input'); keyInput.type = 'text'; keyInput.placeholder = 'Header name'; keyInput.value = k || ''; keyInput.className = 'hdr-key'; keyInput.style.cssText = 'flex:1;padding:8px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;';
+        var valInput = document.createElement('input'); valInput.type = 'text'; valInput.placeholder = 'Value'; valInput.value = v || ''; valInput.className = 'hdr-val'; valInput.style.cssText = 'flex:1;padding:8px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;';
+        var rmBtn = document.createElement('button'); rmBtn.textContent = 'X'; rmBtn.style.cssText = 'padding:6px 10px;font-size:0.8em;min-width:auto;'; rmBtn.addEventListener('click', function() { row.remove(); });
+        row.appendChild(keyInput); row.appendChild(valInput); row.appendChild(rmBtn);
+        div.appendChild(row);
+    }
+    function toggleBody() { document.getElementById('bodySection').style.display = ['POST','PUT','PATCH'].indexOf(document.getElementById('httpMethod').value) > -1 ? 'block' : 'none'; }
+    function getHeaders() {
+        var keys = document.querySelectorAll('.hdr-key'), vals = document.querySelectorAll('.hdr-val'), h = {};
+        for (var i = 0; i < keys.length; i++) if (keys[i].value) h[keys[i].value] = vals[i].value;
+        return h;
+    }
+    function generate() {
+        var method = document.getElementById('httpMethod').value, url = document.getElementById('httpUrl').value;
+        var body = document.getElementById('httpBody').value, headers = getHeaders();
+        var hasBody = ['POST','PUT','PATCH'].indexOf(method) > -1 && body;
+        // curl
+        var curl = "curl -X " + method + " '" + url + "'";
+        Object.keys(headers).forEach(function(k) { curl += " \\\n  -H '" + k + ": " + headers[k] + "'"; });
+        if (hasBody) curl += " \\\n  -d '" + body.replace(/'/g, "\\'") + "'";
+        // fetch
+        var fetch = "fetch('" + url + "'";
+        var opts = [];
+        if (method !== 'GET') opts.push("  method: '" + method + "'");
+        if (Object.keys(headers).length) opts.push("  headers: " + JSON.stringify(headers, null, 4).replace(/\n/g, '\n  '));
+        if (hasBody) { try { JSON.parse(body); opts.push("  body: JSON.stringify(" + body + ")"); } catch(e) { opts.push("  body: '" + body.replace(/'/g, "\\'") + "'"); } }
+        if (opts.length) fetch += ", {\n" + opts.join(",\n") + "\n}";
+        fetch += ")\n.then(res => res.json())\n.then(data => console.log(data));";
+        // python
+        var py = "import requests\n\nresponse = requests." + method.toLowerCase() + "('" + url + "'";
+        if (Object.keys(headers).length) py += ",\n    headers=" + JSON.stringify(headers).replace(/"/g, "'");
+        if (hasBody) { try { JSON.parse(body); py += ",\n    json=" + body; } catch(e) { py += ",\n    data='" + body + "'"; } }
+        py += ")\nprint(response.status_code)\nprint(response.json())";
+        var tabs = [['curl', curl], ['JavaScript fetch', fetch], ['Python requests', py]];
+        var html = '<div style="margin-top:15px;">';
+        tabs.forEach(function(t) {
+            html += '<div style="margin-bottom:15px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><strong style="color:var(--primary-color);">'+t[0]+'</strong><button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)" style="padding:4px 12px;font-size:0.8em;">Copy</button></div><pre style="padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);overflow-x:auto;font-size:0.85em;white-space:pre-wrap;">'+t[1].replace(/</g,'&lt;')+'</pre></div>';
+        });
+        html += '</div>';
+        document.getElementById('httpResult').innerHTML = html;
+    }
+    addHeader('Content-Type', 'application/json');
+    addHeader('Authorization', 'Bearer your-token-here');
+    </script>
+</body>
+</html>

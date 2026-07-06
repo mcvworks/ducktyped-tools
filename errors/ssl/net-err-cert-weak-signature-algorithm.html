@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM mean?","acceptedAnswer":{"@type":"Answer","text":"NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM means the SSL certificate uses a deprecated or cryptographically weak signature algorithm, such as SHA-1 or MD5. Modern browsers reject these certificates because the algorithms are considered insufficiently secure."}},{"@type":"Question","name":"Why was SHA-1 deprecated for SSL certificates?","acceptedAnswer":{"@type":"Answer","text":"SHA-1 was deprecated because researchers demonstrated collision attacks — the ability to create two different files with the same SHA-1 hash. In 2017, Google demonstrated a practical collision attack (SHAttered). This means SHA-1 signatures cannot be trusted to uniquely identify a certificate."}},{"@type":"Question","name":"How do I fix NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM?","acceptedAnswer":{"@type":"Answer","text":"Reissue your SSL certificate using SHA-256 or SHA-384. All modern certificate authorities issue SHA-256 certificates by default. Simply renewing or reissuing your certificate through your CA or Let's Encrypt will generate a certificate with the correct algorithm."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM","step":[{"@type":"HowToStep","position":1,"name":"Reissue the Certificate with SHA-256","text":"All modern certificate authorities issue SHA-256 (or stronger) certificates by default. Simply reissue or renew your certificate and the new one will use the correct algorithm."},{"@type":"HowToStep","position":2,"name":"Check Your CSR Generation","text":"If you generate a Certificate Signing Request (CSR), ensure you specify SHA-256:"},{"@type":"HowToStep","position":3,"name":"Check the Full Certificate Chain","text":"Use the SSL Checker to inspect every certificate in the chain. If an intermediate certificate uses SHA-1, you need to obtain an updated intermediate from your CA."},{"@type":"HowToStep","position":4,"name":"Update Internal CAs","text":"If using an internal CA, regenerate the CA root and intermediate certificates using SHA-256 and redistribute the new root to all clients."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM means and how to fix it. Covers SHA-1 deprecation, weak algorithms, and reissuing with SHA-256.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM, Weak signature algorithm, SHA-1 certificate, Weak certificate signature">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM by reissuing your SSL certificate with SHA-256 or stronger algorithm.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/net-err-cert-weak-signature-algorithm">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/net-err-cert-weak-signature-algorithm">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the SSL certificate uses a deprecated or weak cryptographic algorithm (such as SHA-1). Modern browsers reject these certificates as insufficiently secure.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</code></li><li><code>Weak signature algorithm</code></li><li><code>SHA-1 certificate</code></li><li><code>Weak certificate signature</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SSL certificates are signed by a Certificate Authority using a cryptographic hash algorithm. The signature proves the certificate has not been tampered with. <strong>NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</strong> appears when the signature algorithm is considered too weak for modern security standards.</p>
+            <p>This most commonly affects certificates signed with SHA-1 (also written as sha1WithRSAEncryption). SHA-1 was deprecated in 2017 after Google demonstrated a practical collision attack.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>SHA-1 signed certificate</strong> — certificate was issued or signed with the SHA-1 algorithm.</li>
+                <li><strong>MD5 signature</strong> — very old certificates using MD5 (deprecated much earlier than SHA-1).</li>
+                <li><strong>Intermediate CA with weak algorithm</strong> — an intermediate certificate in the chain uses a weak algorithm, even if the leaf certificate uses SHA-256.</li>
+                <li><strong>Old internal CA</strong> — an internal certificate authority created years ago that still uses older algorithms.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reissue the Certificate with SHA-256</h3>
+            <p>All modern certificate authorities issue SHA-256 (or stronger) certificates by default. Simply reissue or renew your certificate and the new one will use the correct algorithm.</p>
+            <p>For Let's Encrypt, <code>certbot renew --force-renewal</code> will issue a new SHA-256 certificate.</p>
+
+            <h3>2. Check Your CSR Generation</h3>
+            <p>If you generate a Certificate Signing Request (CSR), ensure you specify SHA-256:</p>
+            <pre><code>openssl req -new -sha256 -key private.key -out certificate.csr</code></pre>
+
+            <h3>3. Check the Full Certificate Chain</h3>
+            <p>Use the <a href="/ssl-checker/">SSL Checker</a> to inspect every certificate in the chain. If an intermediate certificate uses SHA-1, you need to obtain an updated intermediate from your CA.</p>
+
+            <h3>4. Update Internal CAs</h3>
+            <p>If using an internal CA, regenerate the CA root and intermediate certificates using SHA-256 and redistribute the new root to all clients.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — inspect signature algorithm and full certificate chain.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Which signature algorithms are considered secure today?</h3>
+            <p>SHA-256 (sha256WithRSAEncryption) and SHA-384 are currently considered secure. ECDSA with P-256 or P-384 curves are also widely used and considered strong. SHA-1 and MD5 are deprecated and rejected by all modern browsers.</p>
+
+            <h3>Can this error appear on a recently issued certificate?</h3>
+            <p>Extremely unlikely. All major CAs stopped issuing SHA-1 certificates in 2016. If you see this on a recently issued certificate, it may be an intermediate or root CA in the chain that still uses an older algorithm. Contact your CA.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — all certificate validation failures.</li>
+                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</a> — TLS version or cipher weakness.</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS negotiation failure.</li>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — untrusted CA.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

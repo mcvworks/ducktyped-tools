@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does DNS_PROBE_FINISHED_BAD_CONFIG mean?","acceptedAnswer":{"@type":"Answer","text":"DNS_PROBE_FINISHED_BAD_CONFIG means Chrome's DNS probe detected a misconfiguration in your local DNS settings. The DNS server is reachable but is returning incorrect or unexpected results, or your network's DNS configuration has an error."}},{"@type":"Question","name":"How is DNS_PROBE_FINISHED_BAD_CONFIG different from NXDOMAIN?","acceptedAnswer":{"@type":"Answer","text":"NXDOMAIN means the domain genuinely does not exist. BAD_CONFIG means Chrome believes the DNS setup itself is misconfigured — the domain may exist but DNS is not working correctly due to a local configuration problem."}},{"@type":"Question","name":"How do I fix DNS_PROBE_FINISHED_BAD_CONFIG?","acceptedAnswer":{"@type":"Answer","text":"Switch to a public DNS server (1.1.1.1 or 8.8.8.8), flush your DNS cache, reset your network adapter settings, and check for any third-party software (VPN, antivirus) that may be interfering with DNS resolution."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_FINISHED_BAD_CONFIG — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_FINISHED_BAD_CONFIG","step":[{"@type":"HowToStep","position":1,"name":"Switch to a Public DNS Server","text":"Change your DNS server to Cloudflare (1.1.1.1 / 1.0.0.1) or Google (8.8.8.8 / 8.8.4.4) in your network adapter settings."},{"@type":"HowToStep","position":2,"name":"Reset TCP/IP Stack (Windows)","text":"Open Command Prompt as administrator:"},{"@type":"HowToStep","position":3,"name":"Check for DNS Hijacking","text":"Open your network adapter properties and verify the DNS server IPs are what you set them to be. If they have changed without your knowledge, malware may have modified them. Run a malware scan."},{"@type":"HowToStep","position":4,"name":"Disable VPN or Security Software Temporarily","text":"Test whether the error persists with VPN and antivirus DNS filtering disabled to determine if they are interfering."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_FINISHED_BAD_CONFIG — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what DNS_PROBE_FINISHED_BAD_CONFIG means and how to fix DNS misconfiguration errors in Chrome. Covers DNS settings, network resets, and VPN conflicts.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_FINISHED_BAD_CONFIG, DNS bad config, DNS probe finished bad config, DNS configuration error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_FINISHED_BAD_CONFIG — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_FINISHED_BAD_CONFIG by correcting your DNS server settings and resetting network configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-finished-bad-config">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-finished-bad-config">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_FINISHED_BAD_CONFIG</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_FINISHED_BAD_CONFIG</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means Chrome detected a DNS misconfiguration on your device or network. The DNS server may be reachable but is returning unexpected or invalid results.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_FINISHED_BAD_CONFIG</code></li><li><code>DNS bad config</code></li><li><code>DNS probe finished bad config</code></li><li><code>DNS configuration error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>After a DNS lookup fails, Chrome runs a diagnostic probe. <strong>DNS_PROBE_FINISHED_BAD_CONFIG</strong> is the result when Chrome determines the problem is a configuration error — specifically, the DNS resolver is returning results that do not make sense, such as invalid IP addresses, unexpected redirects, or responses that indicate the DNS client itself is misconfigured.</p>
+            <p>This differs from <a href="/errors/browser/dns_probe_finished_nxdomain">NXDOMAIN</a> (domain doesn't exist) and <a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> (server unreachable). BAD_CONFIG means the configuration is wrong rather than the domain or server being absent.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Incorrect DNS server IP</strong> — the configured DNS server address is wrong (e.g., a typo in the network adapter settings).</li>
+                <li><strong>DNS hijacking</strong> — malware or a compromised router redirecting DNS to a different server.</li>
+                <li><strong>VPN DNS misconfiguration</strong> — a VPN client that overrides DNS settings improperly.</li>
+                <li><strong>Antivirus DNS filtering returning bad responses</strong> — security software intercepting DNS and returning invalid results.</li>
+                <li><strong>Corrupted network adapter settings</strong> — the TCP/IP stack or DNS configuration is in an invalid state.</li>
+                <li><strong>ISP DNS returning NXDOMAIN for all queries</strong> — some ISP DNS implementations return invalid responses for unresolved domains.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Switch to a Public DNS Server</h3>
+            <p>Change your DNS server to Cloudflare (1.1.1.1 / 1.0.0.1) or Google (8.8.8.8 / 8.8.4.4) in your network adapter settings.</p>
+
+            <h3>2. Flush DNS Cache</h3>
+            <ul>
+                <li><strong>Windows:</strong> <code>ipconfig /flushdns</code></li>
+                <li><strong>macOS:</strong> <code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+            </ul>
+
+            <h3>3. Reset TCP/IP Stack (Windows)</h3>
+            <p>Open Command Prompt as administrator:</p>
+            <pre><code>netsh int ip reset
+netsh winsock reset
+ipconfig /release
+ipconfig /renew</code></pre>
+            <p>Restart your computer after running these commands.</p>
+
+            <h3>4. Check for DNS Hijacking</h3>
+            <p>Open your network adapter properties and verify the DNS server IPs are what you set them to be. If they have changed without your knowledge, malware may have modified them. Run a malware scan.</p>
+
+            <h3>5. Disable VPN or Security Software Temporarily</h3>
+            <p>Test whether the error persists with VPN and antivirus DNS filtering disabled to determine if they are interfering.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — test DNS resolution from multiple servers.</li>
+                <li><a href="/isp-lookup/">ISP Lookup</a> — identify your current DNS resolver.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can BAD_CONFIG affect all websites or just specific ones?</h3>
+            <p>It typically affects all or most websites because the DNS configuration is broken at the system level. If only specific sites are affected, the issue may be ISP-level DNS filtering or domain-specific DNS problems.</p>
+
+            <h3>Could a router firmware update cause DNS_PROBE_FINISHED_BAD_CONFIG?</h3>
+            <p>Yes. A firmware update could reset or change the router's DNS forwarder configuration. After updating router firmware, verify DNS settings in the router's admin panel.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain confirmed nonexistent.</li>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — DNS server offline.</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolution failed.</li>
+                <li><a href="/errors/dns/dns-probe-started">DNS_PROBE_STARTED</a> — DNS diagnostic in progress.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Check domain registration and expiry</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup Tool</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

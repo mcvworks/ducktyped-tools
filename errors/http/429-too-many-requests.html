@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 429 Too Many Requests mean?","acceptedAnswer":{"@type":"Answer","text":"A 429 Too Many Requests error means you have exceeded the rate limit set by the server. The server is throttling your requests and asking you to slow down. It often includes a Retry-After header indicating when you can try again."}},{"@type":"Question","name":"How long should I wait after a 429 error?","acceptedAnswer":{"@type":"Answer","text":"Check the Retry-After response header — it specifies either a number of seconds to wait or a date after which you can retry. If no Retry-After header is present, implement exponential backoff: wait 1 second, then 2, then 4, doubling each retry."}},{"@type":"Question","name":"How do I avoid 429 errors in my application?","acceptedAnswer":{"@type":"Answer","text":"Implement request throttling in your client. Use the Retry-After header to respect rate limits. Cache responses where possible to reduce redundant API calls. Consider upgrading your API tier if your usage legitimately exceeds the free tier limits."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"429 Too Many Requests — Rate Limits, Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 429 Too Many Requests — Rate Limits, Causes & Fixes","step":[{"@type":"HowToStep","position":1,"name":"Respect the Retry-After Header","text":"Always check for and honor the Retry-After header in 429 responses before retrying."},{"@type":"HowToStep","position":2,"name":"Implement Exponential Backoff","text":"If no Retry-After is provided, use exponential backoff with jitter:"},{"@type":"HowToStep","position":3,"name":"Cache Responses","text":"Cache API responses where the data does not need to be real-time. This reduces redundant requests and helps stay within rate limits."},{"@type":"HowToStep","position":4,"name":"Batch Requests","text":"If the API supports batch operations, combine multiple requests into one instead of making individual calls for each item."},{"@type":"HowToStep","position":5,"name":"Upgrade Your API Tier","text":"If your usage legitimately exceeds the free or basic tier limits, consider upgrading to a higher tier with a larger rate limit quota."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>429 Too Many Requests — Rate Limits, Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 429 Too Many Requests error means and how to handle rate limiting. Covers Retry-After headers, exponential backoff, and API rate limit strategies.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 429, 429 Too Many Requests, 429 error, Rate limited, Rate limit exceeded, Too many requests, Retry-After header, API rate limit, 429 throttled">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="429 Too Many Requests — Rate Limits, Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 429 Too Many Requests errors by implementing proper rate limit handling, backoff strategies, and request throttling.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/429-too-many-requests">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/429-too-many-requests">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>429 Too Many Requests</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>429 Too Many Requests</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 429 error means you have hit the server's rate limit. The server is telling you to slow down — you have sent too many requests in a given time window.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 429</code></li><li><code>429 Too Many Requests</code></li><li><code>429 error</code></li><li><code>Rate limited</code></li><li><code>Rate limit exceeded</code></li><li><code>Too many requests</code></li><li><code>Retry-After header</code></li><li><code>API rate limit</code></li><li><code>429 throttled</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 429 is returned when a server-side rate limiter determines that a client is making requests too frequently. Rate limiting protects servers from abuse, prevents individual clients from monopolizing resources, and enforces API usage tiers.</p>
+            <p>The response often includes:</p>
+            <ul>
+                <li><code>Retry-After</code> — seconds to wait, or a date/time to retry after.</li>
+                <li><code>X-RateLimit-Limit</code> — total requests allowed in the window.</li>
+                <li><code>X-RateLimit-Remaining</code> — requests remaining in the current window.</li>
+                <li><code>X-RateLimit-Reset</code> — Unix timestamp when the window resets.</li>
+            </ul>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Too many API calls in a short period</strong> — exceeding the requests-per-minute or requests-per-hour limit.</li>
+                <li><strong>Polling without backoff</strong> — repeatedly checking a resource without waiting between attempts.</li>
+                <li><strong>Multiple concurrent requests</strong> — firing many parallel requests at once.</li>
+                <li><strong>Shared IP rate limiting</strong> — if you share an IP with others (NAT, VPN), their requests count toward your limit.</li>
+                <li><strong>Automated tools or scrapers</strong> — scripts making requests faster than humans would.</li>
+                <li><strong>Bug causing retry loops</strong> — client code retrying failed requests without a backoff delay.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Respect the Retry-After Header</h3>
+            <p>Always check for and honor the <code>Retry-After</code> header in 429 responses before retrying.</p>
+
+            <h3>2. Implement Exponential Backoff</h3>
+            <p>If no <code>Retry-After</code> is provided, use exponential backoff with jitter:</p>
+            <pre><code>const delay = Math.pow(2, attemptNumber) * 1000 + Math.random() * 1000;
+await new Promise(resolve => setTimeout(resolve, delay));</code></pre>
+
+            <h3>3. Cache Responses</h3>
+            <p>Cache API responses where the data does not need to be real-time. This reduces redundant requests and helps stay within rate limits.</p>
+
+            <h3>4. Batch Requests</h3>
+            <p>If the API supports batch operations, combine multiple requests into one instead of making individual calls for each item.</p>
+
+            <h3>5. Upgrade Your API Tier</h3>
+            <p>If your usage legitimately exceeds the free or basic tier limits, consider upgrading to a higher tier with a larger rate limit quota.</p>
+
+            <h2>For Server Owners — Implementing Rate Limiting</h2>
+            <p>In nginx, use the <code>limit_req_zone</code> and <code>limit_req</code> directives. In Express, use packages like <code>express-rate-limit</code>. Always include <code>Retry-After</code> in your 429 responses.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 429 the same as 503 Service Unavailable?</h3>
+            <p>No. <a href="/errors/http/503-service-unavailable">503</a> means the server cannot handle any requests right now — it is overloaded or in maintenance. 429 is targeted at a specific client — the server is fine, but you personally are sending too many requests.</p>
+
+            <h3>Can 429 be caused by a single browser tab?</h3>
+            <p>Yes. JavaScript applications that make frequent API calls — especially real-time polling or rapid user interactions — can trigger 429 from a single browser session.</p>
+
+            <p class="related-guides">📖 <strong>Learn more:</strong> <a href="/learn/http-429-too-many-requests/">What causes HTTP 429</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — authentication required.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — access denied permanently.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server overloaded or in maintenance.</li>
+                <li><a href="/errors/http/408-request-timeout">408 Request Timeout</a> — client request too slow.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why is MySQL's 'utf8' not real UTF-8?","acceptedAnswer":{"@type":"Answer","text":"For historical reasons, MySQL's utf8 (now aliased utf8mb3) caps characters at 3 bytes, covering only the Basic Multilingual Plane. Real UTF-8 needs up to 4 bytes. utf8mb4, added in MySQL 5.5, is the actual full UTF-8 — always use it."}},{"@type":"Question","name":"Will converting to utf8mb4 break my indexes?","acceptedAnswer":{"@type":"Answer","text":"On modern MySQL (5.7+ with innodb_large_prefix default, and all of 8.0) index key limits are 3072 bytes and VARCHAR(255) indexes fit fine. Only very old setups (191-character limit era) need column-length adjustments."}},{"@type":"Question","name":"Why do I get '???' instead of an error sometimes?","acceptedAnswer":{"@type":"Answer","text":"That is the connection charset silently converting characters it cannot represent instead of rejecting them — typically a latin1 connection. Strict SQL mode plus utf8mb4 end-to-end turns silent corruption into either correct storage or a visible error."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"MySQL Incorrect String Value — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Incorrect String Value — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix MySQL error 1366 'Incorrect string value: \xF0\x9F...'. Convert utf8mb3 columns to utf8mb4 and align connection charsets to store emoji safely.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Incorrect string value, MySQL error 1366, ERROR 1366 (HY000), Incorrect string value: &#39;\xF0\x9F...&#39;, MySQL emoji error, utf8mb4 incorrect string value">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL Incorrect String Value — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix MySQL error 1366 'Incorrect string value: \xF0\x9F...'. Convert utf8mb3 columns to utf8mb4 and align connection charsets to store emoji safely.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mysql-incorrect-string-value">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mysql-incorrect-string-value">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>MySQL Incorrect String Value</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MySQL Incorrect String Value</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">MySQL error 1366 — an INSERT or UPDATE contained bytes the column's character set cannot store, most famously emoji into a 'utf8' column.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Incorrect string value</code></li><li><code>MySQL error 1366</code></li><li><code>ERROR 1366 (HY000)</code></li><li><code>Incorrect string value: &#39;\xF0\x9F...&#39;</code></li><li><code>MySQL emoji error</code></li><li><code>utf8mb4 incorrect string value</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>MySQL's historical 'utf8' charset (utf8mb3) stores at most 3 bytes per character — but emoji and many modern characters need 4 bytes in UTF-8. When such a character reaches a utf8mb3 or latin1 column, MySQL raises error 1366 and shows the offending bytes (\xF0\x9F... is the emoji signature). The complete fix has two halves: the column must be utf8mb4, and the connection charset must also be utf8mb4 — fixing only one leaves the error (or worse, silent '???' mojibake) in place.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Column uses utf8mb3 ('utf8') instead of utf8mb4</strong> — Tables created before utf8mb4 became the default (MySQL 8.0) commonly use 3-byte utf8. Any 4-byte character — emoji, many CJK extension characters — fails.</li>
+                <li><strong>Column uses latin1 or another single-byte charset</strong> — Legacy latin1 columns reject most non-Western text outright, not just emoji.</li>
+                <li><strong>Connection charset differs from column charset</strong> — If the client connection declares latin1 or utf8mb3, MySQL converts incoming data through that charset first — corrupting or rejecting 4-byte characters even when the column itself is utf8mb4.</li>
+                <li><strong>Mixed charsets after partial migrations</strong> — Databases converted table-by-table end up with some columns converted and some not; the error then appears 'randomly' depending on which table a write hits.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Convert the affected table to utf8mb4</h3>
+            <p>CONVERT TO changes the table default and re-encodes every string column. Do it in a maintenance window for large tables — it rebuilds the table.</p>
+            <pre><code>ALTER TABLE messages CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+-- MariaDB / MySQL 5.7: use utf8mb4_unicode_ci</code></pre>
+            <h3>2. Set the connection charset to utf8mb4</h3>
+            <p>Declare utf8mb4 in the client/connector so data reaches the server unmangled.</p>
+            <pre><code># connection URLs:
+# JDBC:    ...?characterEncoding=UTF-8&amp;connectionCollation=utf8mb4_0900_ai_ci
+# Node:    mysql.createPool({ charset: 'utf8mb4' })
+# Django:  'OPTIONS': {'charset': 'utf8mb4'}
+
+-- verify on a live connection:
+SHOW VARIABLES LIKE 'character_set%';</code></pre>
+            <h3>3. Find every non-utf8mb4 column first</h3>
+            <p>Inventory the schema so the migration is complete rather than table-by-table whack-a-mole.</p>
+            <pre><code>SELECT table_name, column_name, character_set_name
+FROM information_schema.columns
+WHERE table_schema = 'yourdb'
+  AND character_set_name IS NOT NULL
+  AND character_set_name &lt;&gt; 'utf8mb4';</code></pre>
+            <h3>4. Make utf8mb4 the server default</h3>
+            <p>Prevent new tables from regressing.</p>
+            <pre><code># /etc/mysql/my.cnf
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_0900_ai_ci</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why is MySQL's 'utf8' not real UTF-8?</h3>
+            <p>For historical reasons, MySQL's utf8 (now aliased utf8mb3) caps characters at 3 bytes, covering only the Basic Multilingual Plane. Real UTF-8 needs up to 4 bytes. utf8mb4, added in MySQL 5.5, is the actual full UTF-8 — always use it.</p>
+            <h3>Will converting to utf8mb4 break my indexes?</h3>
+            <p>On modern MySQL (5.7+ with innodb_large_prefix default, and all of 8.0) index key limits are 3072 bytes and VARCHAR(255) indexes fit fine. Only very old setups (191-character limit era) need column-length adjustments.</p>
+            <h3>Why do I get '???' instead of an error sometimes?</h3>
+            <p>That is the connection charset silently converting characters it cannot represent instead of rejecting them — typically a latin1 connection. Strict SQL mode plus utf8mb4 end-to-end turns silent corruption into either correct storage or a visible error.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> — authentication failures.</li>
+                <li><a href="/errors/database/mysql-server-has-gone-away">MySQL Server Has Gone Away</a> — dropped connections on large writes.</li>
+                <li><a href="/errors/database/sqlite-no-such-table">SQLite No Such Table</a> — schema mismatches elsewhere.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/character-counter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Character Counter</span>
+                    <span class="recommended-tool-desc">Inspect text length and characters</span>
+                </a>
+        <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder</span>
+                    <span class="recommended-tool-desc">Inspect the raw bytes of a string</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/character-counter/" class="cta-btn-primary">Try Character Counter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

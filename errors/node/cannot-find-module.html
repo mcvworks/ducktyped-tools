@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does this only happen in production/CI and not on my machine?","acceptedAnswer":{"@type":"Answer","text":"Three usual suspects: case-sensitive Linux filesystems exposing a wrong-case path, devDependencies missing because the install ran with NODE_ENV=production (or npm ci --omit=dev) while the code needs the package at runtime, and phantom dependencies that were hoisted locally but not in the fresh install."}},{"@type":"Question","name":"What is the difference between this and ERR_MODULE_NOT_FOUND?","acceptedAnswer":{"@type":"Answer","text":"MODULE_NOT_FOUND comes from the CommonJS require() resolver; ERR_MODULE_NOT_FOUND from the ESM import resolver. The ESM one is stricter — relative imports need explicit file extensions ('./util.js', not './util'), which trips people migrating to ESM."}},{"@type":"Question","name":"Does deleting package-lock.json help?","acceptedAnswer":{"@type":"Answer","text":"Rarely, and it costs you reproducible installs. Prefer 'rm -rf node_modules && npm ci' — it rebuilds from the lockfile exactly. Only regenerate the lockfile when it is genuinely inconsistent with package.json (npm will say so)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Node.js Cannot Find Module — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Cannot Find Module — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Node.js 'Cannot find module' (MODULE_NOT_FOUND). Missing installs, case-sensitive paths on Linux, unbuilt dist folders, and monorepo pitfalls.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Error: Cannot find module, MODULE_NOT_FOUND, cannot find module &#39;express&#39;, node cannot find module, require stack module not found">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Node.js Cannot Find Module — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Node.js 'Cannot find module' (MODULE_NOT_FOUND). Missing installs, case-sensitive paths on Linux, unbuilt dist folders, and monorepo pitfalls.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/cannot-find-module">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/cannot-find-module">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Node.js Cannot Find Module</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Node.js Cannot Find Module</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash "Error: Cannot find module 'x'" (code MODULE_NOT_FOUND) — Node's resolver could not locate a package or file your code requires or imports.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Error: Cannot find module</code></li><li><code>MODULE_NOT_FOUND</code></li><li><code>cannot find module &#39;express&#39;</code></li><li><code>node cannot find module</code></li><li><code>require stack module not found</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Node resolves each require/import against node_modules directories and relative paths. MODULE_NOT_FOUND means that search came up empty. The message tells you which of the two families you are in: a bare name ('express') means the package is not installed where Node is looking; a path ('./utils/helpers') means the file is not there under that exact name — including letter case, which is the classic 'works on my Mac, crashes on the Linux server' failure, since macOS filesystems are case-insensitive and Linux is not.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Dependencies not installed</strong> — Fresh clone, CI job, or Docker image where npm install never ran (or ran in a different directory) — node_modules simply is not there.</li>
+                <li><strong>Case mismatch in a path</strong> — require('./Utils/Helpers') finds utils/helpers.js on macOS/Windows but not on Linux. Deploy-only MODULE_NOT_FOUND on a relative path is this until proven otherwise.</li>
+                <li><strong>Package's entry point does not exist</strong> — The message names a path inside node_modules: the package's main/exports field points at a dist/ file that needs a build step, or the install was corrupted.</li>
+                <li><strong>Wrong working directory or misplaced node_modules</strong> — Running from a subdirectory, monorepo packages resolving against the wrong workspace, or a dependency used without being declared (relying on hoisting) that disappears when the tree changes.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install, or reinstall cleanly</h3>
+            <p>First response for bare module names — and when the tree looks corrupted, remove and reinstall from the lockfile.</p>
+            <pre><code>npm install
+# clean reinstall, reproducible from the lockfile:
+rm -rf node_modules
+npm ci</code></pre>
+            <h3>2. Check the exact file name and case</h3>
+            <p>Compare the required path with what is really on disk, character by character.</p>
+            <pre><code>ls -la src/utils/
+# git can carry a wrong-case file forever; fix the name git tracks:
+git mv src/utils/helpers.js src/utils/Helpers.js.tmp
+git mv src/utils/Helpers.js.tmp src/utils/helpers.js</code></pre>
+            <h3>3. Confirm the dependency is actually declared</h3>
+            <p>If it works locally but dies elsewhere, it may be a phantom dependency — used but never added to package.json.</p>
+            <pre><code>npm ls express
+grep '&quot;express&quot;' package.json || npm install express</code></pre>
+            <h3>4. For paths inside node_modules, check the package's build</h3>
+            <p>When the missing file is another package's dist output, reinstall that package; if you are the package author, ensure prepare/prepublishOnly builds it.</p>
+            <pre><code>npm ls broken-package
+npm install broken-package@latest --force
+cat node_modules/broken-package/package.json | grep -E '&quot;main&quot;|&quot;exports&quot;' </code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does this only happen in production/CI and not on my machine?</h3>
+            <p>Three usual suspects: case-sensitive Linux filesystems exposing a wrong-case path, devDependencies missing because the install ran with NODE_ENV=production (or npm ci --omit=dev) while the code needs the package at runtime, and phantom dependencies that were hoisted locally but not in the fresh install.</p>
+            <h3>What is the difference between this and ERR_MODULE_NOT_FOUND?</h3>
+            <p>MODULE_NOT_FOUND comes from the CommonJS require() resolver; ERR_MODULE_NOT_FOUND from the ESM import resolver. The ESM one is stricter — relative imports need explicit file extensions ('./util.js', not './util'), which trips people migrating to ESM.</p>
+            <h3>Does deleting package-lock.json help?</h3>
+            <p>Rarely, and it costs you reproducible installs. Prefer 'rm -rf node_modules && npm ci' — it rebuilds from the lockfile exactly. Only regenerate the lockfile when it is genuinely inconsistent with package.json (npm will say so).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/cannot-use-import-statement-outside-a-module">Cannot Use Import Statement</a> — ESM/CommonJS mode mismatches.</li>
+                <li><a href="/errors/node/err-require-esm">ERR_REQUIRE_ESM</a> — requiring ESM-only packages.</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERESOLVE</a> — dependency-tree conflicts at install time.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect package.json cleanly</span>
+                </a>
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Check environment configuration</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

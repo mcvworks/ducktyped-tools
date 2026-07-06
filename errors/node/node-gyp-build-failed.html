@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where is the actual error in the wall of gyp output?","acceptedAnswer":{"@type":"Answer","text":"Scroll above the 'gyp ERR!' block: the real failure is the compiler line (missing header 'xyz.h', 'g++: not found') or the configure line ('Could not find any Python installation'). The gyp ERR! stack is just the messenger."}},{"@type":"Question","name":"Why does it work on my machine but fail in Docker?","acceptedAnswer":{"@type":"Answer","text":"Your machine has prebuilt binaries cached or a full toolchain; the slim/alpine image has neither. Add the toolchain packages to the build stage, or use a multi-stage Dockerfile that installs deps in a builder image and copies node_modules to the runtime image (matching libc!)."}},{"@type":"Question","name":"What is NODE_MODULE_VERSION and why did it mismatch?","acceptedAnswer":{"@type":"Answer","text":"It is Node's native ABI number, bumped each major release. A compiled addon carries the number it was built against; running it on a different Node major fails the check. 'npm rebuild' (or a clean install) recompiles against the runtime you actually use."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"node-gyp Build Failed — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>node-gyp Build Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'gyp ERR! build error' during npm install. Install build toolchains per OS, Python/setuptools issues, Node ABI mismatches, and prebuild tips.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="gyp ERR! build error, gyp ERR! stack Error, node-gyp rebuild failed, gyp ERR! find Python, node-pre-gyp install failed, NODE_MODULE_VERSION mismatch">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="node-gyp Build Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'gyp ERR! build error' during npm install. Install build toolchains per OS, Python/setuptools issues, Node ABI mismatches, and prebuild tips.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/node-gyp-build-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/node-gyp-build-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>node-gyp Build Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>node-gyp Build Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Install failures full of 'gyp ERR! build error' and 'gyp ERR! stack' — a package with native C/C++ code could not compile on your machine.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>gyp ERR! build error</code></li><li><code>gyp ERR! stack Error</code></li><li><code>node-gyp rebuild failed</code></li><li><code>gyp ERR! find Python</code></li><li><code>node-pre-gyp install failed</code></li><li><code>NODE_MODULE_VERSION mismatch</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Some npm packages (bcrypt, sqlite3, canvas, sharp's fallbacks, serialport...) contain native addons that must be compiled during install when no prebuilt binary matches your OS/architecture/Node version. node-gyp orchestrates that compile and needs a working toolchain: a C/C++ compiler, Python, and the Node headers. gyp ERR! means some part of that chain failed — the useful line is never the gyp ERR! stack itself but the compiler or configure error a screen above it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No compiler toolchain installed</strong> — Fresh machines and slim Docker images lack make/gcc/clang. Linux needs build-essential (or equivalents), macOS the Xcode Command Line Tools, Windows the Visual Studio Build Tools.</li>
+                <li><strong>Python problems</strong> — node-gyp drives the build with Python 3. Missing Python — or Python 3.12+ with an old node-gyp that still imports the removed distutils module — kills the configure step.</li>
+                <li><strong>No prebuilt binary for your platform/Node combo</strong> — Packages usually ship prebuilds for common combos; a brand-new Node major, Alpine (musl), or ARM can miss the matrix and force a source build that then needs the toolchain.</li>
+                <li><strong>Version skew after Node upgrades</strong> — node_modules compiled against an older Node ABI, then the runtime changed — errors like NODE_MODULE_VERSION mismatch call for a rebuild rather than a toolchain fix.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install the toolchain for your OS</h3>
+            <p>The one-time fix for most machines.</p>
+            <pre><code># Debian/Ubuntu:
+sudo apt install -y build-essential python3
+# Alpine (Dockerfiles):
+apk add --no-cache python3 make g++
+# macOS:
+xcode-select --install
+# Windows (admin PowerShell):
+# install 'Visual Studio Build Tools' with the C++ workload</code></pre>
+            <h3>2. Fix Python/node-gyp pairing</h3>
+            <p>Update node-gyp (bundled with npm) and, on Python 3.12+, ensure setuptools is present for older chains.</p>
+            <pre><code>python3 --version
+npm install -g node-gyp@latest
+# if an old chain complains about distutils on Python 3.12+:
+python3 -m pip install setuptools</code></pre>
+            <h3>3. Rebuild after Node version changes</h3>
+            <p>For NODE_MODULE_VERSION mismatches, recompile the tree against the current runtime.</p>
+            <pre><code>npm rebuild
+# or the reliable big hammer:
+rm -rf node_modules &amp;&amp; npm ci</code></pre>
+            <h3>4. Prefer packages with prebuilds where possible</h3>
+            <p>Swapping bcrypt for bcryptjs (pure JS), or better-sqlite3/sharp (excellent prebuild coverage) for older equivalents, removes the compile requirement entirely — valuable in CI and slim containers.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Where is the actual error in the wall of gyp output?</h3>
+            <p>Scroll above the 'gyp ERR!' block: the real failure is the compiler line (missing header 'xyz.h', 'g++: not found') or the configure line ('Could not find any Python installation'). The gyp ERR! stack is just the messenger.</p>
+            <h3>Why does it work on my machine but fail in Docker?</h3>
+            <p>Your machine has prebuilt binaries cached or a full toolchain; the slim/alpine image has neither. Add the toolchain packages to the build stage, or use a multi-stage Dockerfile that installs deps in a builder image and copies node_modules to the runtime image (matching libc!).</p>
+            <h3>What is NODE_MODULE_VERSION and why did it mismatch?</h3>
+            <p>It is Node's native ABI number, bumped each major release. A compiled addon carries the number it was built against; running it on a different Node major fails the check. 'npm rebuild' (or a clean install) recompiles against the runtime you actually use.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/digital-envelope-routines-unsupported">Digital Envelope Routines</a> — the other Node-upgrade build breaker.</li>
+                <li><a href="/errors/devops/npm-err-eacces">npm EACCES</a> — permission failures during install.</li>
+                <li><a href="/errors/devops/pip-install-failed">pip Install Failed</a> — the Python-side equivalent.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Check build environment variables</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/env-file-parser/" class="cta-btn-primary">Try Env File Parser</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

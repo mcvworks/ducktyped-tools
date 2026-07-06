@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is HTTP 502 Bad Gateway?","description":"Learn what HTTP 502 Bad Gateway means, what causes it, how reverse proxies and load balancers trigger it, and how to diagnose and fix 502 errors.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/http-502-bad-gateway/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Is HTTP 502 Bad Gateway?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does HTTP 502 Bad Gateway mean?","acceptedAnswer":{"@type":"Answer","text":"HTTP 502 Bad Gateway means that a server acting as a gateway or proxy received an invalid or no response from an upstream server it was trying to reach. The error originates from an intermediary (like Nginx, Cloudflare, or a load balancer), not from the backend application itself."}},{"@type":"Question","name":"Is a 502 error a client-side or server-side problem?","acceptedAnswer":{"@type":"Answer","text":"A 502 error is a server-side problem. It indicates that the infrastructure between the user and the application (the gateway or proxy) could not get a valid response from the backend. There is nothing the end user can do to fix it except wait and retry."}},{"@type":"Question","name":"What is the difference between 502 and 504?","acceptedAnswer":{"@type":"Answer","text":"Both are gateway errors. A 502 Bad Gateway means the gateway received an invalid response from the upstream server (e.g., the server crashed or returned garbage). A 504 Gateway Timeout means the gateway did not receive any response within its timeout period (the upstream server took too long to respond)."}},{"@type":"Question","name":"Can a CDN cause 502 errors?","acceptedAnswer":{"@type":"Answer","text":"Yes. CDNs like Cloudflare, AWS CloudFront, and Fastly act as reverse proxies. If they cannot reach your origin server, or if your origin server returns an error, the CDN will return a 502 to the user. Cloudflare shows a branded 502 page that distinguishes between Cloudflare-side and origin-side errors."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is HTTP 502 Bad Gateway? — Causes and Fixes — duckTyped</title>
+    <meta name="description" content="Learn what HTTP 502 Bad Gateway means, what causes it, how reverse proxies and load balancers trigger it, and how to diagnose and fix 502 errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Is HTTP 502 Bad Gateway? — Causes and Fixes — duckTyped">
+    <meta property="og:description" content="Learn what HTTP 502 Bad Gateway means, what causes it, and how to fix it.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/http-502-bad-gateway/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Is HTTP 502 Bad Gateway? — duckTyped">
+    <meta name="twitter:description" content="Learn what HTTP 502 Bad Gateway means and how to fix it.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/http-502-bad-gateway/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Is HTTP 502 Bad Gateway?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Is HTTP 502 Bad Gateway?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">HTTP 502 Bad Gateway is a server error indicating that a gateway or proxy server received an invalid response from an upstream server. It is one of the most common infrastructure errors on the web, and understanding its mechanics helps diagnose where the problem lies.</p>
+
+            <h2>Understanding the Gateway Model</h2>
+            <p>Modern web architecture rarely involves a single server. Instead, requests pass through multiple layers:</p>
+            <ol>
+                <li><strong>Client</strong> (your browser) sends a request.</li>
+                <li><strong>Edge/CDN</strong> (e.g., Cloudflare, CloudFront) receives the request first.</li>
+                <li><strong>Reverse proxy/load balancer</strong> (e.g., Nginx, HAProxy) routes the request to the appropriate backend.</li>
+                <li><strong>Application server</strong> (e.g., Node.js, Python/Django, PHP-FPM) processes the request and generates a response.</li>
+            </ol>
+            <p>A 502 error occurs at any intermediary layer (the "gateway") when it cannot get a valid response from the next server in the chain (the "upstream"). The error tells you that the gateway is working, but something behind it is not.</p>
+
+            <h2>Common Causes</h2>
+
+            <h3>Backend Server Crashed or Stopped</h3>
+            <p>The most straightforward cause: the application server has crashed, been stopped, or failed to start. The reverse proxy tries to forward the request but gets a connection refused error. This commonly happens after a failed deployment, an out-of-memory kill, or a process manager (like PM2 or systemd) failing to restart the application.</p>
+
+            <h3>Backend Server Overloaded</h3>
+            <p>When the application server is overwhelmed with requests, it may close connections prematurely or return malformed responses. The reverse proxy interprets this as an invalid response and returns 502. This often accompanies traffic spikes, resource exhaustion, or database connection pool saturation.</p>
+
+            <h3>Network Issues Between Gateway and Backend</h3>
+            <p>If the gateway and backend are on different machines (or different availability zones), network issues between them can cause 502s. Firewall rule changes, security group modifications, DNS resolution failures for the upstream hostname, or physical network problems can all prevent the gateway from reaching the backend.</p>
+
+            <h3>Upstream Timeout (Partial Response)</h3>
+            <p>Sometimes the backend starts sending a response but takes too long to complete it. The gateway may interpret a partial or prematurely closed response as invalid and return 502. This is a subtle distinction from 504 (Gateway Timeout), which occurs when the gateway gets <strong>no response at all</strong> within the timeout window.</p>
+
+            <h3>CGI/FastCGI/PHP-FPM Configuration Issues</h3>
+            <p>For PHP applications using Nginx + PHP-FPM, 502 errors are common when PHP-FPM is not running, the socket path is incorrect, the PHP-FPM pool has exhausted its worker processes, or PHP scripts hit the <code>max_execution_time</code> limit.</p>
+
+            <h3>SSL/TLS Misconfiguration Between Gateway and Backend</h3>
+            <p>If the reverse proxy is configured to connect to the backend over HTTPS but the backend's certificate is invalid, expired, or uses an untrusted CA, the TLS handshake fails and the gateway returns 502. This is common in microservice architectures with mutual TLS (mTLS).</p>
+
+            <h2>502 vs. Other 5xx Errors</h2>
+            <ul>
+                <li><strong>500 Internal Server Error</strong> -- the application itself encountered an error (unhandled exception, bug in code). The response comes from the application, not the gateway.</li>
+                <li><strong>502 Bad Gateway</strong> -- the gateway could not get a valid response from the upstream. The problem is in the communication between gateway and backend.</li>
+                <li><strong>503 Service Unavailable</strong> -- the server is temporarily unable to handle requests, often due to maintenance or capacity limits. Usually returned intentionally.</li>
+                <li><strong>504 Gateway Timeout</strong> -- the gateway did not receive any response within its timeout period. The upstream is too slow rather than returning an invalid response.</li>
+            </ul>
+
+            <h2>Diagnosing 502 Errors</h2>
+            <ol>
+                <li><strong>Check if the backend is running</strong> -- verify the application process is alive using <code>systemctl status</code>, <code>pm2 status</code>, or <code>docker ps</code>.</li>
+                <li><strong>Check gateway error logs</strong> -- Nginx logs (<code>/var/log/nginx/error.log</code>) will show the specific upstream error (connection refused, connection reset, invalid header).</li>
+                <li><strong>Test the backend directly</strong> -- bypass the reverse proxy and send a request directly to the backend server's port to see if it responds.</li>
+                <li><strong>Check resource usage</strong> -- monitor CPU, memory, and disk I/O on the backend server. Out-of-memory conditions are a frequent cause of backend crashes.</li>
+                <li><strong>Review recent changes</strong> -- deployments, configuration changes, and infrastructure updates are the most common triggers.</li>
+            </ol>
+
+            <h2>CDN-Specific 502 Errors</h2>
+            <p>When using a CDN like Cloudflare, a 502 error can originate from Cloudflare itself or from your origin server. Cloudflare distinguishes between these with its error page:</p>
+            <ul>
+                <li><strong>Cloudflare 502</strong> (gray header) -- Cloudflare could not reach your origin server at all.</li>
+                <li><strong>Origin 502</strong> (orange header) -- Cloudflare reached your origin, but your origin's reverse proxy returned 502.</li>
+            </ul>
+            <p>Check the HTTP response headers for <code>server: cloudflare</code> and the <code>cf-ray</code> header to identify Cloudflare-related 502s.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> -- measure response times to identify slow or unresponsive servers.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- verify domain DNS configuration points to the correct server.</li>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> -- check certificate validity between gateway and backend.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> -- inspect HTTP response headers.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-latency/">HTTP Latency guide</a>, <a href="/learn/ssl-checker/">SSL Certificates guide</a>, <a href="/learn/http-429-too-many-requests/">What causes HTTP 429</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">Fix 502 Bad Gateway</a> -- step-by-step troubleshooting guide.</li>
+                <li><a href="/errors/http/429-too-many-requests">429 Too Many Requests</a> -- another common HTTP error.</li>
+                <li><a href="/errors/http/">All HTTP Errors</a> -- browse all HTTP error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Check HTTP Latency</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

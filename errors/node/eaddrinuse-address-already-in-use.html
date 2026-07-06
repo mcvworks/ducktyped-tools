@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the ::: in 'address already in use :::3000' mean?","acceptedAnswer":{"@type":"Answer","text":"':::3000' is the IPv6 any-address ([::]) plus port. Node binds dual-stack by default, so the conflict may be with a process holding either the IPv6 or IPv4 side. lsof shows both."}},{"@type":"Question","name":"Nothing shows on the port but bind still fails — how?","acceptedAnswer":{"@type":"Answer","text":"Check as root/admin (another user's process is invisible to plain lsof), and check both protocol families ('lsof -i :3000' covers them; 'ss -tlnp | grep 3000' as a second opinion). On Windows, excluded port ranges reserved by Hyper-V can also block binds — 'netsh int ipv4 show excludedportrange protocol=tcp'."}},{"@type":"Question","name":"Is EADDRINUSE the same as EACCES on listen?","acceptedAnswer":{"@type":"Answer","text":"No: EADDRINUSE means someone has the port; EACCES means you lack permission — on Linux typically binding a port below 1024 as non-root. For the latter, use a high port behind a proxy, or grant the binary cap_net_bind_service."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Node.js EADDRINUSE — Address Already in Use — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js EADDRINUSE — Address Already in Use — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Node 'listen EADDRINUSE: address already in use :::3000'. Find and kill the holder, nodemon orphan processes, and graceful shutdown patterns.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Error: listen EADDRINUSE: address already in use :::3000, EADDRINUSE, listen eaddrinuse, port 3000 already in use node, address already in use node">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Node.js EADDRINUSE — Address Already in Use — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Node 'listen EADDRINUSE: address already in use :::3000'. Find and kill the holder, nodemon orphan processes, and graceful shutdown patterns.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/eaddrinuse-address-already-in-use">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/eaddrinuse-address-already-in-use">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Node.js EADDRINUSE — Address Already in Use</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Node.js EADDRINUSE — Address Already in Use</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'Error: listen EADDRINUSE: address already in use :::3000' — another process (often a previous instance of the same app) already listens on the port.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Error: listen EADDRINUSE: address already in use :::3000</code></li><li><code>EADDRINUSE</code></li><li><code>listen eaddrinuse</code></li><li><code>port 3000 already in use node</code></li><li><code>address already in use node</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Your server called listen() on a port that already has a listener. Nine times out of ten, the squatter is a previous run of the same application: a dev server that never died when its terminal closed, a nodemon/pm2 child orphaned by a crashed parent, or a debugger-paused process still holding the socket. The rest are genuine conflicts — two apps configured for the same port, or a system service on it. The fix is always: identify the holder, then either kill it or move one of them.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>A previous instance is still running</strong> — Closed the terminal without stopping the server, a crashed watcher left its child alive, or a background/debug session was forgotten. The old process keeps the port until it exits.</li>
+                <li><strong>Watcher restart races</strong> — nodemon and similar restart the app before the old listener fully closed — intermittent EADDRINUSE on save, that heals on the next restart.</li>
+                <li><strong>Two services configured for the same port</strong> — Your API and someone's create-react-app both defaulting to 3000, or a docker-compose stack publishing a port the host app also uses.</li>
+                <li><strong>Missing graceful shutdown</strong> — Apps that never close their server on SIGTERM/SIGINT leave listeners around in process managers and container restarts.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Find and kill the process on the port</h3>
+            <p>One command names it; kill by PID rather than pkill node (which nukes every Node process, including your editor's tooling).</p>
+            <pre><code>lsof -i :3000 -sTCP:LISTEN
+kill &lt;PID&gt;          # graceful
+kill -9 &lt;PID&gt;       # if it ignores SIGTERM
+# Windows:
+# netstat -ano | findstr :3000
+# taskkill /PID &lt;pid&gt; /F</code></pre>
+            <h3>2. Make the port configurable and fail informatively</h3>
+            <p>Read PORT from the environment and print a useful message on conflict.</p>
+            <pre><code>const port = process.env.PORT || 3000;
+const server = app.listen(port)
+  .on('error', (err) =&gt; {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${port} in use. lsof -i :${port} to find the holder.`);
+      process.exit(1);
+    }
+    throw err;
+  });</code></pre>
+            <h3>3. Add graceful shutdown</h3>
+            <p>Close the server on termination signals so restarts and container stops release the port promptly.</p>
+            <pre><code>function shutdown() {
+  server.close(() =&gt; process.exit(0));
+  setTimeout(() =&gt; process.exit(1), 10_000).unref(); // failsafe
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);</code></pre>
+            <h3>4. Tame watcher races</h3>
+            <p>Give nodemon a signal and a small delay so the old process exits before the new one binds.</p>
+            <pre><code>// nodemon.json
+{
+  &quot;signal&quot;: &quot;SIGTERM&quot;,
+  &quot;delay&quot;: &quot;300&quot;
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does the ::: in 'address already in use :::3000' mean?</h3>
+            <p>':::3000' is the IPv6 any-address ([::]) plus port. Node binds dual-stack by default, so the conflict may be with a process holding either the IPv6 or IPv4 side. lsof shows both.</p>
+            <h3>Nothing shows on the port but bind still fails — how?</h3>
+            <p>Check as root/admin (another user's process is invisible to plain lsof), and check both protocol families ('lsof -i :3000' covers them; 'ss -tlnp | grep 3000' as a second opinion). On Windows, excluded port ranges reserved by Hyper-V can also block binds — 'netsh int ipv4 show excludedportrange protocol=tcp'.</p>
+            <h3>Is EADDRINUSE the same as EACCES on listen?</h3>
+            <p>No: EADDRINUSE means someone has the port; EACCES means you lack permission — on Linux typically binding a port below 1024 as non-root. For the latter, use a high port behind a proxy, or grant the binary cap_net_bind_service.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/address-already-in-use">Nginx Address Already in Use</a> — the same conflict at the web-server layer.</li>
+                <li><a href="/errors/apache/ah00072-could-not-bind-to-address">Apache AH00072</a> — Apache's version of the bind failure.</li>
+                <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — container port conflicts.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check which ports are listening</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Verify which service answers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

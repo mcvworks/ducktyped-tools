@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Certificate Signing Requests (CSR) Explained","description":"Learn what a Certificate Signing Request contains, how to generate one with OpenSSL, what CN, SANs, O, and key size mean, and how to verify a CSR before submitting it to a CA.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/csr-decoder/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"CSR Decoder"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a Certificate Signing Request (CSR)?","acceptedAnswer":{"@type":"Answer","text":"A CSR is a PEM-encoded, self-signed block of data you send to a Certificate Authority to request an SSL/TLS certificate. It contains your public key, your domain and organization details, and a signature made with your private key proving you control that key. The private key itself is never included."}},{"@type":"Question","name":"How do I generate a CSR with OpenSSL?","acceptedAnswer":{"@type":"Answer","text":"Run: openssl req -new -newkey rsa:2048 -nodes -keyout example.com.key -out example.com.csr. This creates a new 2048-bit RSA private key and a CSR in one step. Add -addext \"subjectAltName=DNS:example.com,DNS:www.example.com\" to include Subject Alternative Names."}},{"@type":"Question","name":"What is the difference between CN and SAN in a CSR?","acceptedAnswer":{"@type":"Answer","text":"The Common Name (CN) is a single legacy subject field, while Subject Alternative Names (SANs) are an extension listing every domain the certificate should cover. Modern browsers ignore the CN entirely and validate only against SANs, so every domain you need must appear as a SAN."}},{"@type":"Question","name":"How do I verify a CSR before submitting it to a CA?","acceptedAnswer":{"@type":"Answer","text":"Run openssl req -in example.com.csr -noout -text -verify to check the signature and review the subject, SANs, and key size. Also confirm the CSR matches your private key by comparing public key hashes from openssl req -pubkey and openssl pkey -pubout."}},{"@type":"Question","name":"Does a CSR contain my private key?","acceptedAnswer":{"@type":"Answer","text":"No. A CSR contains only the public key plus identity fields, signed by the private key. It is safe to share with a CA or paste into a decoder. The private key must stay on your server -- if it is lost you cannot use the issued certificate, and if it leaks the certificate must be revoked."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSR Explained — Generate, Decode &amp; Verify with OpenSSL — duckTyped</title>
+    <meta name="description" content="Learn what a Certificate Signing Request contains, how to generate one with OpenSSL, what CN, SANs, and key size mean, and how to verify it before submission.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CSR Explained — Generate, Decode & Verify with OpenSSL — duckTyped">
+    <meta property="og:description" content="Learn what a CSR contains, how to generate one with OpenSSL, and how to verify it before submitting to a CA.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/csr-decoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CSR Explained — Generate, Decode & Verify with OpenSSL — duckTyped">
+    <meta name="twitter:description" content="Learn what a CSR contains, how to generate one with OpenSSL, and how to verify it before submission.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/csr-decoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>CSR Decoder</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Certificate Signing Requests (CSR) Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Learn what a CSR actually contains, how to generate one with OpenSSL, what the subject fields and key parameters mean, and how to verify everything is correct before you submit it to a Certificate Authority.</p>
+
+            <h2>What Is a Certificate Signing Request?</h2>
+            <p>A <strong>Certificate Signing Request (CSR)</strong> is the formal application you send to a <strong>Certificate Authority (CA)</strong> when you want an SSL/TLS certificate. Defined by <strong>PKCS #10</strong> (RFC 2986), a CSR bundles three things into one Base64-encoded block:</p>
+            <ul>
+                <li><strong>Your public key</strong> -- the key the CA will embed in the issued certificate.</li>
+                <li><strong>Subject information</strong> -- the domain name(s) and, for organization-validated certificates, your company details.</li>
+                <li><strong>A self-signature</strong> -- the whole request is signed with your <em>private</em> key, proving to the CA that you actually control the key pair you are asking it to certify.</li>
+            </ul>
+            <p>Critically, <strong>the private key is never part of the CSR</strong>. The key pair is generated on your server, the private half stays there, and only the public half travels inside the request. That is why a CSR is safe to paste into a decoder or email to a CA. In PEM form it looks like this:</p>
+            <pre><code>-----BEGIN CERTIFICATE REQUEST-----
+MIICqzCCAZMCAQAwZjELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWEx
+FjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xEjAQBgNVBAoMCUFjbWUgSW5jMRYwFAYD
+...
+-----END CERTIFICATE REQUEST-----</code></pre>
+            <p>The CA validates your control of the domain (and identity, for OV/EV certificates), then issues a certificate containing your public key and subject details, signed by the CA's own key. From that point on, browsers trust your server because they trust the CA -- the chain of trust that the <a href="/learn/ssl-tls-handshake/">SSL/TLS handshake</a> verifies on every connection.</p>
+
+            <h2>Generating a CSR with OpenSSL</h2>
+            <p>The standard way to create a CSR is OpenSSL. This single command generates a new 2048-bit RSA private key and the CSR together:</p>
+            <pre><code>openssl req -new -newkey rsa:2048 -nodes \
+  -keyout example.com.key \
+  -out example.com.csr \
+  -subj "/C=US/ST=California/L=San Francisco/O=Acme Inc/CN=example.com" \
+  -addext "subjectAltName=DNS:example.com,DNS:www.example.com"</code></pre>
+            <p>What each part does:</p>
+            <ul>
+                <li><strong><code>-new -newkey rsa:2048</code></strong> -- create a new request and a fresh 2048-bit RSA key. Use <code>rsa:4096</code> for a larger key, or <code>-newkey ec -pkeyopt ec_paramgen_curve:P-256</code> for a smaller, faster ECDSA key.</li>
+                <li><strong><code>-nodes</code></strong> -- "no DES": leave the private key unencrypted so your web server can read it without a passphrase prompt at startup.</li>
+                <li><strong><code>-keyout</code> / <code>-out</code></strong> -- where to write the private key and the CSR.</li>
+                <li><strong><code>-subj</code></strong> -- the subject fields inline; omit it to be prompted interactively.</li>
+                <li><strong><code>-addext "subjectAltName=..."</code></strong> -- the SAN extension listing every domain the certificate must cover. Do not skip this.</li>
+            </ul>
+            <p>If you already have a private key and only need a new CSR (for example, when renewing), reuse it:</p>
+            <pre><code>openssl req -new -key example.com.key -out example.com.csr</code></pre>
+            <p>Afterwards, set restrictive permissions on the key (<code>chmod 600 example.com.key</code>) and never transmit it anywhere. If the key is lost you cannot install the issued certificate; if it leaks, the certificate must be revoked and reissued.</p>
+
+            <h2>What the CSR Fields Mean</h2>
+            <p>Decoding a CSR reveals a handful of fields, and CAs copy them almost verbatim into the certificate -- so a typo here becomes a typo in your cert:</p>
+            <ul>
+                <li><strong>CN (Common Name)</strong> -- historically the primary domain, e.g. <code>example.com</code>. Modern browsers <strong>ignore the CN</strong> for hostname matching and rely solely on SANs, but CAs still expect it to be set, and it should match your first SAN.</li>
+                <li><strong>SANs (Subject Alternative Names)</strong> -- the list that actually matters. Every hostname the certificate must secure -- <code>example.com</code>, <code>www.example.com</code>, a wildcard like <code>*.example.com</code> -- must appear here. A missing SAN is the classic cause of "certificate name mismatch" warnings after issuance.</li>
+                <li><strong>O (Organization)</strong> -- your legal company name, e.g. <code>Acme Inc</code>. Validated and shown in the certificate for OV/EV issuance; ignored for domain-validated (DV) certificates such as Let's Encrypt.</li>
+                <li><strong>OU, L, ST, C</strong> -- organizational unit, locality, state/province, and two-letter country code. OU is deprecated by the CA/Browser Forum and most CAs now strip it; C must be ISO 3166 (e.g. <code>US</code>, not <code>USA</code>).</li>
+                <li><strong>Public key algorithm and size</strong> -- <code>RSA 2048</code> is the minimum CAs accept today; <code>RSA 3072/4096</code> or <code>ECDSA P-256</code> offer stronger or faster alternatives. A CSR with a 1024-bit key will be rejected outright.</li>
+                <li><strong>Signature algorithm</strong> -- how the request itself is signed, typically <code>sha256WithRSAEncryption</code> or <code>ecdsa-with-SHA256</code>. SHA-1-signed CSRs should be regenerated.</li>
+            </ul>
+
+            <h2>Verifying a CSR Before Submitting to a CA</h2>
+            <p>Submitting a flawed CSR wastes a validation round-trip -- or worse, gets you a certificate with the wrong names that you discover only when browsers start warning. Three checks catch nearly every problem.</p>
+            <p><strong>1. Decode and read it.</strong> Verify the embedded signature and print every field:</p>
+            <pre><code>openssl req -in example.com.csr -noout -text -verify</code></pre>
+            <p>Confirm the output says <code>verify OK</code>, the CN and every SAN are spelled correctly, the O field matches your legal name (if you need OV), and the key is at least RSA 2048 or ECDSA P-256. For a quicker look without a terminal, paste the PEM into the duckTyped <a href="/csr-decoder/">CSR Decoder</a> -- it parses the ASN.1 structure in your browser and displays the subject, key info, and extensions without sending the request anywhere.</p>
+            <p><strong>2. Confirm the CSR matches your private key.</strong> The issued certificate is useless if it does not pair with the key on your server. Compare public key hashes:</p>
+            <pre><code>openssl req  -in example.com.csr -noout -pubkey | openssl sha256
+openssl pkey -in example.com.key -pubout       | openssl sha256</code></pre>
+            <p>The two digests must be identical. A mismatch usually means an old CSR was generated from a previous key.</p>
+            <p><strong>3. Sanity-check the SAN list against reality.</strong> List every hostname that will serve the certificate -- apex, <code>www</code>, API subdomains -- and make sure each is present. Remember that a wildcard <code>*.example.com</code> covers one level of subdomain but <em>not</em> the bare apex, so most wildcard CSRs need both <code>*.example.com</code> and <code>example.com</code> as SANs.</p>
+
+            <h2>From CSR to Installed Certificate</h2>
+            <p>Once the CA validates your request and issues the certificate, the lifecycle continues:</p>
+            <ol>
+                <li><strong>Install the certificate plus the intermediate chain</strong> on your server, alongside the original private key. Serving the leaf certificate without intermediates is a leading cause of chain validation errors on some clients.</li>
+                <li><strong>Test from the outside</strong> with the <a href="/ssl-checker/">SSL Checker</a> to confirm the chain, names, and expiry dates look right.</li>
+                <li><strong>Track expiration.</strong> Public certificates are now limited to short lifetimes, so renewal -- generating a fresh CSR or letting ACME automation do it -- comes around quickly. An expired certificate takes your site down for most visitors; see the <a href="/learn/ssl-certificate-expired/">SSL certificate expired guide</a> for diagnosis and fixes.</li>
+            </ol>
+            <p>Automated issuers like Let's Encrypt build and submit the CSR for you via the ACME protocol, but the object exchanged is exactly the same PKCS #10 request described here -- which is why decoding CSRs remains a useful debugging skill even in fully automated setups.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the CSR Decoder:</p>
+            <ul>
+                <li><a href="/csr-decoder/">CSR Decoder</a> -- decode a PEM CSR in your browser and inspect subject, key info, and extensions.</li>
+                <li><a href="/ssl-checker/">SSL Checker</a> -- verify the certificate, chain, and expiry on a live server after issuance.</li>
+                <li><a href="/public-key-decoder/">Public Key Decoder</a> -- inspect the standalone public key extracted from a CSR or certificate.</li>
+                <li><a href="/security-headers/">Security Headers</a> -- check HSTS and related headers once HTTPS is live.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-tls-handshake/">SSL/TLS Handshake Explained</a>, <a href="/learn/ssl-certificate-expired/">SSL Certificate Expired? Fix Guide</a>, <a href="/learn/ssl-checker/">SSL Certificates guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> -- what happens when renewal (and a fresh CSR) comes too late.</li>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate Chain Invalid</a> -- often caused by installing the issued certificate without its intermediates.</li>
+                <li><a href="/errors/ssl/">All SSL/TLS Errors</a> -- browse all SSL-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/csr-decoder/" class="cta-btn-primary">Try CSR Decoder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

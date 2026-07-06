@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is AH01630 different from a file-permission 403?","acceptedAnswer":{"@type":"Answer","text":"AH01630 is Apache's own rules saying no — filesystem permissions never enter into it. Permission problems log different lines (AH00035 'search permissions missing', or Permission denied). Read the error log rather than guessing from the browser's 403 page: same status, three different fixes."}},{"@type":"Question","name":"What is AH01797?","acceptedAnswer":{"@type":"Answer","text":"The same denial logged by a different authz path ('client denied by server configuration' from authz_core when no Require matched at all). Treat AH01630 and AH01797 identically: find the path, add or fix the Require rules."}},{"@type":"Question","name":"Is 'Require all granted' on the docroot safe?","acceptedAnswer":{"@type":"Answer","text":"For the public document root, yes — that is exactly what it is for. Keep the deny-by-default on the root Directory block and grant only the specific trees you serve, and keep the .ht*/.git/.env protections in place."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH01630 — Client Denied by Server Configuration — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH01630 — Client Denied by Server Configuration — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH01630 'client denied by server configuration'. Require all granted, Apache 2.2 to 2.4 authz migration, and per-directory access rules.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH01630: client denied by server configuration, ah01630, AH01797, client denied by server configuration apache 403, require all granted">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH01630 — Client Denied by Server Configuration — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH01630 'client denied by server configuration'. Require all granted, Apache 2.2 to 2.4 authz migration, and per-directory access rules.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah01630-client-denied-by-server-configuration">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah01630-client-denied-by-server-configuration">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH01630 — Client Denied by Server Configuration</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH01630 — Client Denied by Server Configuration</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'AH01630: client denied by server configuration' — an authorization rule (usually Require directives) rejected the request. Visitors see 403 Forbidden.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH01630: client denied by server configuration</code></li><li><code>ah01630</code></li><li><code>AH01797</code></li><li><code>client denied by server configuration apache 403</code></li><li><code>require all granted</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Apache's authorization layer (mod_authz_core) evaluated the Directory/Location rules for the requested path and denied access — the client gets a 403, the log gets AH01630 with the path that was blocked. The single biggest source is the Apache 2.2 → 2.4 migration: the old 'Order allow,deny / Allow from all' syntax was replaced by 'Require' directives, and configs carried forward without conversion deny everything. The second biggest: the docroot lives outside the directories granted in the default config.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Apache 2.2 syntax on a 2.4 server</strong> — 'Order allow,deny' and 'Allow from all' do nothing useful under 2.4's authz_core (with mod_access_compat absent they can error; with it, subtle mismatches deny). Configs from old tutorials are the classic source.</li>
+                <li><strong>No Require rule grants the directory</strong> — Apache 2.4 denies the whole filesystem by default ('Require all denied' on the root Directory block in the stock config). A vhost pointing at /srv/myapp without its own Directory grant inherits the deny.</li>
+                <li><strong>Intentional IP restrictions matching more than intended</strong> — 'Require ip 10.0.0.0/8' style rules deny everyone else — surprising when a proxy/load balancer changes the client IP Apache sees.</li>
+                <li><strong>Blocked hidden or sensitive paths</strong> — FilesMatch/Directory rules protecting .git, .env, or .ht* fire correctly — the log line names the actual file, revealing crawlers probing those paths.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read which path and rule denied</h3>
+            <p>The log line includes the filesystem path; match it against your Directory blocks.</p>
+            <pre><code>sudo tail -20 /var/log/apache2/error.log | grep AH01630
+sudo apache2ctl -t -D DUMP_INCLUDES   # what config files are in play</code></pre>
+            <h3>2. Grant the docroot with 2.4 syntax</h3>
+            <p>Add a Directory block using Require for the vhost's document root.</p>
+            <pre><code>&lt;Directory /srv/myapp/public&gt;
+    Options FollowSymLinks
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+            <h3>3. Convert 2.2 access rules to 2.4</h3>
+            <p>Replace Order/Allow/Deny with the Require equivalents everywhere.</p>
+            <pre><code># 2.2                         -&gt;  2.4
+# Order allow,deny            -&gt;  (remove)
+# Allow from all              -&gt;  Require all granted
+# Deny from all               -&gt;  Require all denied
+# Allow from 192.168.1        -&gt;  Require ip 192.168.1
+grep -rn 'Order allow\|Allow from\|Deny from' /etc/apache2/</code></pre>
+            <h3>4. Account for proxies in IP-based rules</h3>
+            <p>Behind a load balancer, Apache sees the proxy's IP. Use mod_remoteip so Require ip evaluates the real client address.</p>
+            <pre><code># a2enmod remoteip, then:
+RemoteIPHeader X-Forwarded-For
+RemoteIPTrustedProxy 10.0.0.0/8</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is AH01630 different from a file-permission 403?</h3>
+            <p>AH01630 is Apache's own rules saying no — filesystem permissions never enter into it. Permission problems log different lines (AH00035 'search permissions missing', or Permission denied). Read the error log rather than guessing from the browser's 403 page: same status, three different fixes.</p>
+            <h3>What is AH01797?</h3>
+            <p>The same denial logged by a different authz path ('client denied by server configuration' from authz_core when no Require matched at all). Treat AH01630 and AH01797 identically: find the path, add or fix the Require rules.</p>
+            <h3>Is 'Require all granted' on the docroot safe?</h3>
+            <p>For the public document root, yes — that is exactly what it is for. Keep the deny-by-default on the root Directory block and grant only the specific trees you serve, and keep the .ht*/.git/.env protections in place.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — the client-facing status.</li>
+                <li><a href="/errors/apache/ah00035-access-denied-search-permissions">AH00035 Search Permissions</a> — the filesystem-permission 403.</li>
+                <li><a href="/errors/nginx/directory-index-forbidden">Nginx Directory Index Forbidden</a> — nginx's config-level 403.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test paths and observe status codes</span>
+                </a>
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Checker</span>
+                    <span class="recommended-tool-desc">Confirm which IP you appear as</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does curl to the backend work while nginx gets denied?","acceptedAnswer":{"@type":"Answer","text":"SELinux rules are per-domain: your shell runs unconfined, nginx runs in httpd_t with restricted network permissions. Same destination, different subject, different verdict. That asymmetry — 'it works from the terminal' — is the tell that you are looking at SELinux rather than the network."}},{"@type":"Question","name":"How do I see exactly what SELinux denied?","acceptedAnswer":{"@type":"Answer","text":"'ausearch -m avc -ts recent' lists denials with the source process, target port, and context. Piping a denial into 'audit2why' explains it and often names the boolean to set. That workflow beats guessing."}},{"@type":"Question","name":"Does this explain permission denied on port 80 binding too?","acceptedAnswer":{"@type":"Answer","text":"Different mechanism: binding low ports needs CAP_NET_BIND_SERVICE (nginx's master runs as root, so it usually has it). Errno 13 'while connecting to upstream' is specifically about outbound connections — SELinux territory on RHEL-family systems."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Permission Denied While Connecting to Upstream — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Permission Denied While Connecting to Upstream — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx '(13: Permission denied) while connecting to upstream'. SELinux httpd_can_network_connect, Unix socket permissions, and how to diagnose each.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="connect() to failed (13: Permission denied) while connecting to upstream, 13 permission denied nginx upstream, selinux nginx proxy denied, httpd_can_network_connect, php-fpm socket permission denied nginx">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Permission Denied While Connecting to Upstream — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx '(13: Permission denied) while connecting to upstream'. SELinux httpd_can_network_connect, Unix socket permissions, and how to diagnose each.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/permission-denied-while-connecting-to-upstream">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/permission-denied-while-connecting-to-upstream">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Permission Denied While Connecting to Upstream</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Permission Denied While Connecting to Upstream</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'connect() to ... failed (13: Permission denied) while connecting to upstream' — the OS blocked nginx's connection to the backend, classically SELinux.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>connect() to failed (13: Permission denied) while connecting to upstream</code></li><li><code>13 permission denied nginx upstream</code></li><li><code>selinux nginx proxy denied</code></li><li><code>httpd_can_network_connect</code></li><li><code>php-fpm socket permission denied nginx</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Unlike 'connection refused' (nothing listening) or 'timed out' (no answer), errno 13 means the operating system forbade nginx from even attempting the connection. On RHEL, CentOS, Fedora, Rocky, and Alma, that is SELinux: the default policy stops the web-server domain from initiating arbitrary network connections, so a proxy_pass to a backend port dies with permission denied even though curl from the same shell works fine. The Unix-socket variant is ordinary file permissions: nginx's worker user cannot read/write the backend's socket file.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>SELinux blocks httpd network connections</strong> — The boolean httpd_can_network_connect defaults to off. Any proxy_pass/fastcgi_pass over TCP from nginx (which runs in the httpd_t domain) is denied — the single most common cause on RHEL-family systems.</li>
+                <li><strong>Backend port not in SELinux's http_port_t</strong> — Even with narrower booleans, connecting to unusual ports (3000, 8081, 5000) can be denied unless the port is labeled appropriately.</li>
+                <li><strong>Unix socket file permissions</strong> — fastcgi_pass/proxy_pass to a unix: socket requires the nginx user to have write access to the socket file — PHP-FPM pools default their socket owner to www-data or apache, which may not match.</li>
+                <li><strong>AppArmor or other MAC on Debian-family</strong> — Rare by default, but a strict AppArmor profile for nginx can produce the same errno 13 on Ubuntu — check the audit log if SELinux is absent.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm SELinux is the blocker</h3>
+            <p>Check enforcement and look for the denial in the audit log — the denial names nginx and the target port.</p>
+            <pre><code>getenforce
+sudo ausearch -m avc -ts recent | grep -i nginx
+# or:
+sudo grep denied /var/log/audit/audit.log | tail -5</code></pre>
+            <h3>2. Allow web-server network connections</h3>
+            <p>Set the boolean persistently. Use the narrower relay/db variants when they fit your topology.</p>
+            <pre><code>sudo setsebool -P httpd_can_network_connect 1
+# narrower options:
+#   httpd_can_network_relay 1     (reverse-proxy only)
+#   httpd_can_network_connect_db 1 (database ports only)</code></pre>
+            <h3>3. Fix Unix socket permissions</h3>
+            <p>Align the socket's owner/group with the nginx user in the backend's pool config, then restart the backend.</p>
+            <pre><code># /etc/php-fpm.d/www.conf
+listen = /run/php-fpm/www.sock
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0660
+
+sudo systemctl restart php-fpm
+ls -la /run/php-fpm/www.sock</code></pre>
+            <h3>4. Never fix this by disabling SELinux</h3>
+            <p>setenforce 0 'works' by removing a security layer from the whole system. The boolean above grants exactly the permission nginx needs and nothing else — there is no good reason to trade the entire policy for it.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does curl to the backend work while nginx gets denied?</h3>
+            <p>SELinux rules are per-domain: your shell runs unconfined, nginx runs in httpd_t with restricted network permissions. Same destination, different subject, different verdict. That asymmetry — 'it works from the terminal' — is the tell that you are looking at SELinux rather than the network.</p>
+            <h3>How do I see exactly what SELinux denied?</h3>
+            <p>'ausearch -m avc -ts recent' lists denials with the source process, target port, and context. Piping a denial into 'audit2why' explains it and often names the boolean to set. That workflow beats guessing.</p>
+            <h3>Does this explain permission denied on port 80 binding too?</h3>
+            <p>Different mechanism: binding low ports needs CAP_NET_BIND_SERVICE (nginx's master runs as root, so it usually has it). Errno 13 'while connecting to upstream' is specifically about outbound connections — SELinux territory on RHEL-family systems.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/connection-refused-while-connecting-to-upstream">Connection Refused (Upstream)</a> — the not-listening counterpart.</li>
+                <li><a href="/errors/nginx/primary-script-unknown">Primary Script Unknown</a> — PHP-FPM socket setups.</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — what clients see.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Verify backend ports are open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Confirm recovery from outside</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

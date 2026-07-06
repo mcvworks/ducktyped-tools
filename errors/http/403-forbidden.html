@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 403 Forbidden mean?","acceptedAnswer":{"@type":"Answer","text":"A 403 Forbidden error means the server understood the request and knows who you are (or does not require authentication), but refuses to allow access to the requested resource. You are authenticated but not authorized."}},{"@type":"Question","name":"What causes a 403 Forbidden error on a website?","acceptedAnswer":{"@type":"Answer","text":"Common causes include incorrect file or directory permissions on the server, a missing index file in a directory, IP blocking rules, .htaccess restrictions, a web application firewall blocking the request, or your account lacking the required role or permission."}},{"@type":"Question","name":"How do I fix 403 Forbidden on my own website?","acceptedAnswer":{"@type":"Answer","text":"Check file permissions (typically 644 for files, 755 for directories on Linux), ensure an index file exists in the web root, review .htaccess rules, and check whether any IP blocking or WAF rules are being triggered."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"403 Forbidden — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 403 Forbidden error means and how to fix it. Covers file permissions, .htaccess rules, IP blocking, WAF, and access control issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 403, 403 Forbidden, Error 403, 403 error, Access denied, 403 Forbidden nginx, 403 Forbidden Apache, You don&#39;t have permission, 403 vs 401">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="403 Forbidden — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 403 Forbidden errors by troubleshooting file permissions, access rules, and server configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/403-forbidden">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/403-forbidden">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>403 Forbidden</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>403 Forbidden</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 403 error means the server refuses to serve the requested resource. Unlike a 401, this is not about missing authentication — the server knows who you are but will not allow access.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 403</code></li><li><code>403 Forbidden</code></li><li><code>Error 403</code></li><li><code>403 error</code></li><li><code>Access denied</code></li><li><code>403 Forbidden nginx</code></li><li><code>403 Forbidden Apache</code></li><li><code>You don&#39;t have permission</code></li><li><code>403 vs 401</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 403 is an authorization error. The server understood your request and may have verified your identity, but access to the resource is not permitted. The server will not reveal whether the resource exists — it just says "no."</p>
+            <p>This is useful for security: a site can use 403 to deny access to sensitive paths without confirming those paths exist. Some servers return 404 in place of 403 to avoid leaking information about protected resources.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Incorrect file permissions</strong> — file or directory not readable by the web server process (e.g., wrong chmod on Linux).</li>
+                <li><strong>Missing index file</strong> — directory listing is disabled and no index.html or index.php exists.</li>
+                <li><strong>.htaccess restrictions</strong> — Apache deny rules or password protection in .htaccess.</li>
+                <li><strong>IP blocking</strong> — your IP address is on a block list or the server only allows specific IP ranges.</li>
+                <li><strong>Web Application Firewall (WAF)</strong> — a WAF rule flagged your request as suspicious.</li>
+                <li><strong>Geo-restriction</strong> — the site blocks visitors from certain countries or regions.</li>
+                <li><strong>User role restriction</strong> — your account lacks the permission level required for the action.</li>
+                <li><strong>CORS policy</strong> — cross-origin requests blocked by the server's CORS configuration.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+
+            <h4>1. Log In or Upgrade Your Account</h4>
+            <p>If the page requires an account or a specific subscription level, ensure you are logged in with the correct account.</p>
+
+            <h4>2. Try from a Different Network</h4>
+            <p>If your IP is blocked, connecting from a different network (or VPN) may resolve the issue. Some sites use geo-blocking.</p>
+
+            <h4>3. Contact the Site Owner</h4>
+            <p>If you should have access and do not, contact support. Your account may have been restricted, or there may be a misconfiguration.</p>
+
+            <h3>For Server Owners</h3>
+
+            <h4>4. Check File Permissions</h4>
+            <p>On Linux, files should typically be <code>644</code> and directories <code>755</code>. Ensure the web server user can read them:</p>
+            <pre><code>chmod 644 /var/www/html/index.html
+chmod 755 /var/www/html/</code></pre>
+
+            <h4>5. Add an Index File</h4>
+            <p>If directory listing is disabled (as it should be), ensure an index file (<code>index.html</code>, <code>index.php</code>) exists in each accessible directory.</p>
+
+            <h4>6. Review .htaccess and nginx Config</h4>
+            <p>Check for <code>Deny from all</code> or <code>deny</code> rules that may be too broad. Ensure configuration changes were not accidentally deployed.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does 403 mean the resource exists?</h3>
+            <p>Not necessarily. Servers can return 403 for both existing and non-existing resources to avoid revealing whether protected paths exist. Some servers explicitly use 404 for all denied requests.</p>
+
+            <h3>Can a CDN or proxy cause 403 errors?</h3>
+            <p>Yes. Cloudflare and other CDN/WAF services have rules that can block requests based on patterns in headers, query strings, or request bodies. Check your CDN's security dashboard for blocked requests.</p>
+
+            <h3>Is 403 ever intentionally used as a response to bots?</h3>
+            <p>Yes. Many sites return 403 to scrapers, crawlers not in robots.txt, or requests with suspicious User-Agent strings. If you are building a web scraper, ensure you respect robots.txt and rate limits.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — authentication required, not authorization.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — resource does not exist.</li>
+                <li><a href="/errors/http/429-too-many-requests">429 Too Many Requests</a> — rate limit exceeded.</li>
+                <li><a href="/errors/browser/err_blocked_by_client">ERR_BLOCKED_BY_CLIENT</a> — client-side block by browser extension.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

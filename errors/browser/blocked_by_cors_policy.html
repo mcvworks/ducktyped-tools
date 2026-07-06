@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a CORS error a client-side or server-side problem?","acceptedAnswer":{"@type":"Answer","text":"It is fixed on the server. The browser enforces CORS, but the actual fix is to make the server that receives the request return the correct Access-Control-Allow-Origin response header. You cannot resolve a genuine CORS error purely from front-end JavaScript."}},{"@type":"Question","name":"Why does the request work in Postman or curl but fail in the browser?","acceptedAnswer":{"@type":"Answer","text":"CORS is enforced only by web browsers, as a protection for logged-in users. Tools like curl and Postman are not browsers and do not apply the same-origin policy, so they receive the response normally. The server often returns a perfectly valid response in the browser too — the browser just refuses to expose it to your JavaScript because the required header is missing."}},{"@type":"Question","name":"Can I fix a CORS error from my front-end code?","acceptedAnswer":{"@type":"Answer","text":"No. Changing your fetch or XMLHttpRequest options cannot add the missing response header, because only the server can send it. If you do not control the API, route the request through your own backend or a development-server proxy so the browser sees a same-origin request."}},{"@type":"Question","name":"Is Access-Control-Allow-Origin: * safe to use?","acceptedAnswer":{"@type":"Answer","text":"A wildcard is fine for public APIs that return non-sensitive data and do not use cookies. It cannot be used with credentialed requests: if the request sends cookies, the server must echo back the specific requesting origin and also send Access-Control-Allow-Credentials: true. Never use a wildcard for private, authenticated endpoints."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"Blocked by CORS Policy — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix a Blocked by CORS Policy Error","step":[{"@type":"HowToStep","position":1,"name":"Add the Access-Control-Allow-Origin header on the server","text":"On the API that receives the request, return an Access-Control-Allow-Origin header whose value is either the requesting origin or a wildcard. This is the real fix and must be done on the server, not the client."},{"@type":"HowToStep","position":2,"name":"Handle the OPTIONS preflight request","text":"For requests with custom headers or methods like PUT and DELETE, the browser sends an OPTIONS preflight first. Respond to OPTIONS with 204 and the Access-Control-Allow-Methods and Access-Control-Allow-Headers headers."},{"@type":"HowToStep","position":3,"name":"Configure credentials correctly","text":"If the request sends cookies, echo the specific origin instead of a wildcard, send Access-Control-Allow-Credentials: true, and set credentials to include on the client request."},{"@type":"HowToStep","position":4,"name":"Use a dev-server proxy in local development","text":"Configure your framework's dev server (Vite, Create React App, Next.js) to proxy API calls so the browser makes a same-origin request and CORS never applies."},{"@type":"HowToStep","position":5,"name":"Verify the response headers","text":"Use an HTTP header checker to confirm the server actually returns the Access-Control-Allow-Origin header with the expected value."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocked by CORS Policy — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'blocked by CORS policy: No Access-Control-Allow-Origin header is present' errors. What CORS means, why the browser blocks the request, and how to fix it on the server with Node, nginx, and dev-proxy examples.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="blocked by CORS policy, No 'Access-Control-Allow-Origin' header is present on the requested resource, CORS error, Access-Control-Allow-Origin, CORS preflight, cross-origin request blocked, response to preflight request doesn't pass access control check">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Blocked by CORS Policy — Causes &amp; Fixes">
+    <meta property="og:description" content="What a CORS error means, why the browser blocks the request even when the server responds, and how to fix Access-Control-Allow-Origin on the server.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/blocked_by_cors_policy">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/blocked_by_cors_policy">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>Blocked by CORS Policy</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Blocked by CORS Policy</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">This error appears in the browser console when your JavaScript tries to read a response from a different origin and the server did not grant permission with the right CORS headers. The full message is usually <em>"Access to fetch at '&hellip;' from origin '&hellip;' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource."</em> The key thing to understand: the request usually reaches the server and succeeds — the browser simply refuses to hand the response back to your code.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>has been blocked by CORS policy</code></li><li><code>No 'Access-Control-Allow-Origin' header is present on the requested resource</code></li><li><code>Response to preflight request doesn't pass access control check</code></li><li><code>The 'Access-Control-Allow-Origin' header has a value that is not equal to the supplied origin</code></li><li><code>Request header field authorization is not allowed by Access-Control-Allow-Headers</code></li><li><code>net::ERR_FAILED</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Browsers enforce the <strong>same-origin policy</strong>: by default, JavaScript on one origin cannot read responses from another. An <strong>origin</strong> is the combination of scheme, host, and port — so <code>https://app.example.com</code> and <code>https://api.example.com</code> are different origins, and so are <code>http://localhost:3000</code> and <code>http://localhost:8080</code>.</p>
+            <p><strong>CORS</strong> (Cross-Origin Resource Sharing) is the mechanism a server uses to opt in to being read across origins. When your page makes a cross-origin request, the browser checks the response for an <code>Access-Control-Allow-Origin</code> header. If that header is missing, or its value does not cover your origin, the browser blocks your JavaScript from seeing the response and logs the CORS error — <strong>even though the server may have returned a normal 200 response</strong>. CORS is a browser protection, not a server-side rejection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The server sends no <code>Access-Control-Allow-Origin</code> header at all</strong> — the default for most APIs, and the most common cause.</li>
+                <li><strong>The header value does not match your origin</strong> — it allows a different domain, or omits the port, and is not a wildcard.</li>
+                <li><strong>The OPTIONS preflight is not handled</strong> — requests with custom headers or methods like <code>PUT</code>/<code>DELETE</code> trigger a preflight that the server answers with an error or a redirect.</li>
+                <li><strong>Credentials with a wildcard</strong> — the request sends cookies, but the server replies <code>Access-Control-Allow-Origin: *</code>, which browsers reject for credentialed requests.</li>
+                <li><strong>A required header is not allowed</strong> — the request sends <code>Authorization</code> or a custom header that is missing from <code>Access-Control-Allow-Headers</code>.</li>
+                <li><strong>A redirect on the request</strong> — the API redirects (for example HTTP to HTTPS), and the redirected response lacks CORS headers.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Add Access-Control-Allow-Origin on the Server</h3>
+            <p>The real fix lives on the server that <em>receives</em> the request (your API), not on the front end. Return the requesting origin — or a wildcard for public data. In Node/Express, the <code>cors</code> package handles this:</p>
+            <pre><code>const cors = require('cors');
+
+// Allow a specific origin (recommended)
+app.use(cors({ origin: 'https://app.example.com' }));
+
+// Or, for a public API with no cookies, allow any origin
+app.use(cors());   // sends Access-Control-Allow-Origin: *</code></pre>
+            <p>The equivalent raw header, if you set it by hand or in a reverse proxy like nginx:</p>
+            <pre><code>add_header Access-Control-Allow-Origin "https://app.example.com" always;
+add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+add_header Access-Control-Allow-Headers "Content-Type, Authorization" always;</code></pre>
+
+            <h3>2. Handle the OPTIONS Preflight</h3>
+            <p>For anything beyond a simple request, the browser first sends an <code>OPTIONS</code> preflight and expects a <code>2xx</code> response carrying the allowed methods and headers. The <code>cors</code> middleware answers preflights automatically; by hand, make sure OPTIONS returns <code>204</code> and does not fall through to a <code>404</code> or <code>405</code>:</p>
+            <pre><code>app.options('/api/*', cors());   // respond to all preflight requests</code></pre>
+
+            <h3>3. Configure Credentials Correctly</h3>
+            <p>If the request includes cookies or an <code>Authorization</code> header via credentials, a wildcard is not allowed. Echo the exact origin and add the credentials header on the server:</p>
+            <pre><code>app.use(cors({
+  origin: 'https://app.example.com',   // must be specific, NOT *
+  credentials: true,                   // sends Access-Control-Allow-Credentials: true
+}));</code></pre>
+            <p>And set the matching option on the client:</p>
+            <pre><code>fetch('https://api.example.com/data', { credentials: 'include' });</code></pre>
+
+            <h3>4. Use a Dev-Server Proxy Locally</h3>
+            <p>During development you often cannot change the API. Instead, have your dev server proxy the request so the browser sees a same-origin call and CORS never applies. For Vite:</p>
+            <pre><code>// vite.config.js
+export default {
+  server: {
+    proxy: { '/api': 'https://api.example.com' }
+  }
+};</code></pre>
+            <p>Now your code calls <code>/api/data</code> on your own origin, and the dev server forwards it server-to-server. Create React App (<code>proxy</code> in package.json) and Next.js rewrites do the same thing.</p>
+
+            <h3>5. Verify the Response Headers</h3>
+            <p>Confirm the server is really sending the header with the <a href="/security-headers/">Security Headers Checker</a>, or replay the exact request with the <a href="/http-request-builder/">HTTP Request Builder</a> and inspect what comes back. Avoid the temptation to route production traffic through a public CORS proxy or to launch the browser with web security disabled — both defeat a protection that exists to keep your users safe.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/security-headers/">Security Headers Checker</a> — inspect the response headers a server returns, including <code>Access-Control-Allow-Origin</code>.</li>
+                <li><a href="/http-request-builder/">HTTP Request Builder</a> — replay a request and see exactly which CORS headers come back.</li>
+                <li><a href="/url-parser/">URL Parser</a> — break a URL into scheme, host, and port to confirm two origins really differ.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is a CORS error a client-side or server-side problem?</h3>
+            <p>It is fixed on the server. The browser enforces CORS, but the fix is to make the server that receives the request return the correct <code>Access-Control-Allow-Origin</code> header. You cannot resolve a genuine CORS error purely from front-end JavaScript.</p>
+
+            <h3>Why does the request work in Postman or curl but fail in the browser?</h3>
+            <p>CORS is enforced only by web browsers, to protect logged-in users. Tools like curl and Postman do not apply the same-origin policy, so they receive the response normally. The server usually returns a valid response in the browser too — the browser just refuses to expose it to your JavaScript.</p>
+
+            <h3>Can I fix it from my front-end code?</h3>
+            <p>No. Changing your fetch options cannot add a header that only the server can send. If you do not control the API, route the request through your own backend or a dev-server proxy so the browser sees a same-origin request.</p>
+
+            <h3>Is Access-Control-Allow-Origin: * safe?</h3>
+            <p>A wildcard is fine for public APIs that return non-sensitive data and use no cookies. It cannot be combined with credentialed requests — for those, the server must echo the specific origin and send <code>Access-Control-Allow-Credentials: true</code>. Never use a wildcard on a private, authenticated endpoint.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/405-method-not-allowed">405 Method Not Allowed</a> — a server that does not handle the <code>OPTIONS</code> preflight often returns this.</li>
+                <li><a href="/errors/browser/err_failed">net::ERR_FAILED</a> — CORS-blocked requests frequently surface under this generic failure.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — some servers reject a disallowed origin outright with a 403.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-headers-cheat-sheet/">HTTP Headers cheat sheet</a>, <a href="/learn/security-headers/">Security Headers guide</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect the response headers a server returns</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Replay a request and see the CORS headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Check Response Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

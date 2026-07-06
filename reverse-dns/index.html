@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Reverse DNS Lookup","url":"https://ducktyped.xyz/reverse-dns/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Look up the hostname for any IP address with reverse DNS (PTR record) lookup. Verify mail server identity and audit network infrastructure. Free rDNS tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is reverse DNS?","acceptedAnswer":{"@type":"Answer","text":"Reverse DNS (rDNS) maps an IP address back to a hostname, the opposite of standard DNS which maps hostnames to IPs. It uses PTR records in the in-addr.arpa (IPv4) or ip6.arpa (IPv6) zone."}},{"@type":"Question","name":"Why is reverse DNS important?","acceptedAnswer":{"@type":"Answer","text":"Many mail servers reject email from IPs without valid reverse DNS. It is also used for logging, security verification, and confirming that an IP belongs to the claimed organization."}},{"@type":"Question","name":"How do I set up reverse DNS?","acceptedAnswer":{"@type":"Answer","text":"Reverse DNS is configured by your IP address provider (hosting company or ISP). Contact them to set a PTR record mapping your IP to your mail server hostname."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse DNS Lookup — IP to Hostname (PTR Record) — duckTyped</title>
+    <meta name="description" content="Look up the hostname for any IP address with reverse DNS (PTR record) lookup. Verify mail server identity and audit network infrastructure. Free rDNS tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Reverse DNS Lookup — IP to Hostname (PTR Record) — duckTyped">
+    <meta property="og:description" content="Look up the hostname for any IP address with reverse DNS (PTR record) lookup. Verify mail server identity and audit network infrastructure. Free rDNS tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/reverse-dns/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/reverse-dns.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Reverse DNS Lookup — IP to Hostname (PTR Record) — duckTyped">
+    <meta name="twitter:description" content="Look up the hostname for any IP address with reverse DNS (PTR record) lookup. Verify mail server identity and audit network infrastructure. Free rDNS tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/reverse-dns/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Reverse DNS Lookup</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Map any IP address back to its hostname using reverse DNS (PTR record) lookup. Commonly used to verify mail server identity, investigate suspicious IPs, and audit network infrastructure.</p><div class="example-box"><strong>Example uses:</strong><p>Verifying that a mail server's IP has a valid PTR record, investigating unknown IPs in server logs, or confirming CDN and hosting provider assignments.</p></div>
+            <a href="/learn/reverse-dns/" class="learn-more-link">Learn about PTR records and reverse DNS</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="reverseDns"><h2>Reverse DNS Lookup</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Look up the hostname associated with an IP address. Reverse DNS (PTR record) lookup helps identify servers and verify email sending infrastructure.</p>
+            <div class="input-group"><label>IP Address:</label><input type="text" id="reverseDnsInput" placeholder="8.8.8.8" aria-label="IP Address:" onkeypress="if(event.key==='Enter') lookupReverseDns()"></div>
+            <button onclick="lookupReverseDns()">🔄 Lookup Hostname</button>
+            <div id="reverseDnsResults"></div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Record Checker</span>
+                    <span class="recommended-tool-desc">Look up A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, and DKIM records for any domain</span>
+                </a>
+                <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Scan TCP ports on any host to check which ports are open, closed, or filtered</span>
+                </a>
+                <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure HTTP response times and check server reachability and performance</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/reverse-dns/">Reverse DNS (PTR Records)</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/dns/nodename-nor-servname-provided">nodename nor servname provided, or not known</a>, <a href="/errors/dns/yxdomain">DNS YXDOMAIN</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-network.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

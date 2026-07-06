@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does this error only affect HTTPS sites?","acceptedAnswer":{"@type":"Answer","text":"HTTP traffic can flow through a proxy directly. HTTPS traffic requires a tunnel (via HTTP CONNECT) so the proxy cannot see the encrypted content. This error occurs when the tunnel creation fails."}},{"@type":"Question","name":"Is ERR_TUNNEL_CONNECTION_FAILED the same as ERR_PROXY_CONNECTION_FAILED?","acceptedAnswer":{"@type":"Answer","text":"No. ERR_PROXY_CONNECTION_FAILED means the browser cannot connect to the proxy at all. ERR_TUNNEL_CONNECTION_FAILED means the browser connected to the proxy, but the proxy refused to create an HTTPS tunnel."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_TUNNEL_CONNECTION_FAILED — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_TUNNEL_CONNECTION_FAILED","step":[{"@type":"HowToStep","position":1,"name":"Verify proxy authentication credentials","text":"Ensure your proxy authentication credentials are correct. Update the username and password in your browser or system proxy settings if they have changed."},{"@type":"HowToStep","position":2,"name":"Use a direct connection for HTTPS","text":"Configure a proxy exception for HTTPS traffic if your network allows direct connections for encrypted traffic. Add exceptions in your proxy bypass list."},{"@type":"HowToStep","position":3,"name":"Contact network administrator","text":"If you are on a managed network, ask your IT department to allow CONNECT requests through the proxy for the blocked destination. They may need to update the proxy's access control list."},{"@type":"HowToStep","position":4,"name":"Try a different proxy or VPN","text":"If the current proxy blocks HTTPS tunneling, use a different proxy server or a VPN that properly supports encrypted traffic forwarding."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_TUNNEL_CONNECTION_FAILED — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_TUNNEL_CONNECTION_FAILED in Chrome. Learn why HTTPS tunnel connections through proxy servers fail and how to resolve proxy configuration issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_TUNNEL_CONNECTION_FAILED, ERR_TUNNEL_CONNECTION_FAILED Chrome, Tunnel connection failed, Proxy tunnel failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_TUNNEL_CONNECTION_FAILED — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_TUNNEL_CONNECTION_FAILED in Chrome. Learn why HTTPS tunnel connections through proxy servers fail and how to resolve proxy configuration issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_tunnel_connection_failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_tunnel_connection_failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_TUNNEL_CONNECTION_FAILED</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_TUNNEL_CONNECTION_FAILED</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Failed to establish an HTTPS tunnel through a proxy server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_TUNNEL_CONNECTION_FAILED</code></li><li><code>ERR_TUNNEL_CONNECTION_FAILED Chrome</code></li><li><code>Tunnel connection failed</code></li><li><code>Proxy tunnel failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_TUNNEL_CONNECTION_FAILED occurs when the browser attempts to create an HTTPS tunnel through a proxy server using the HTTP CONNECT method, but the proxy rejects or fails to establish the tunnel. This is specific to HTTPS traffic through proxies — the browser needs to create an encrypted tunnel through the proxy to the destination server, and this tunnel setup is failing. The proxy may be refusing the CONNECT request, timing out, or returning an error.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Proxy blocks CONNECT method</strong> — The proxy server is configured to deny HTTP CONNECT requests, which are required for tunneling HTTPS traffic. Some restrictive proxies only allow plain HTTP and block encrypted tunnels.</li>
+                <li><strong>Proxy authentication required</strong> — The proxy requires authentication credentials (username and password) for CONNECT requests, and the browser either is not sending credentials or is sending incorrect ones.</li>
+                <li><strong>Proxy denies the destination host or port</strong> — The proxy has an access control list that blocks tunneling to specific destination hosts or ports, preventing the encrypted connection from being established.</li>
+                <li><strong>Proxy server overloaded or misconfigured</strong> — The proxy server is overloaded and cannot handle additional tunnel connections, or its configuration for handling CONNECT requests is broken.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Verify proxy authentication credentials</h3>
+            <p>Ensure your proxy authentication credentials are correct. Update the username and password in your browser or system proxy settings if they have changed.</p>
+            <h3>2. Use a direct connection for HTTPS</h3>
+            <p>Configure a proxy exception for HTTPS traffic if your network allows direct connections for encrypted traffic. Add exceptions in your proxy bypass list.</p>
+            <pre><code># Windows: Set proxy bypass list
+netsh winhttp set proxy proxy-server=&quot;proxy.example.com:8080&quot; bypass-list=&quot;*.example.com;*.secure-site.com&quot;</code></pre>
+            <h3>3. Contact network administrator</h3>
+            <p>If you are on a managed network, ask your IT department to allow CONNECT requests through the proxy for the blocked destination. They may need to update the proxy's access control list.</p>
+            <h3>4. Try a different proxy or VPN</h3>
+            <p>If the current proxy blocks HTTPS tunneling, use a different proxy server or a VPN that properly supports encrypted traffic forwarding.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does this error only affect HTTPS sites?</h3>
+            <p>HTTP traffic can flow through a proxy directly. HTTPS traffic requires a tunnel (via HTTP CONNECT) so the proxy cannot see the encrypted content. This error occurs when the tunnel creation fails.</p>
+            <h3>Is ERR_TUNNEL_CONNECTION_FAILED the same as ERR_PROXY_CONNECTION_FAILED?</h3>
+            <p>No. ERR_PROXY_CONNECTION_FAILED means the browser cannot connect to the proxy at all. ERR_TUNNEL_CONNECTION_FAILED means the browser connected to the proxy, but the proxy refused to create an HTTPS tunnel.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Server refused the connection</li>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — Connection was reset during communication</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — SSL/TLS handshake could not complete</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificates</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

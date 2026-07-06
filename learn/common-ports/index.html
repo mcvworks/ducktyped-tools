@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Common Ports Reference","description":"Quick reference for 40+ well-known network ports: FTP, SSH, SMTP, DNS, HTTP, HTTPS, MySQL, PostgreSQL, Redis, MongoDB, and more. Learn port ranges, firewall rules, and security implications.","datePublished":"2026-07-02","dateModified":"2026-07-02","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/common-ports/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Common Ports Reference"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are well-known ports?","acceptedAnswer":{"@type":"Answer","text":"Well-known ports are TCP/UDP port numbers 0-1023 assigned by IANA (Internet Assigned Numbers Authority) for specific services. Examples include port 22 for SSH, port 80 for HTTP, and port 443 for HTTPS. These ports require administrative privileges to bind on most operating systems."}},{"@type":"Question","name":"Can two services share the same port?","acceptedAnswer":{"@type":"Answer","text":"No, two services cannot share the same port on a single machine. Each port number can only be bound by one process at a time. However, different machines can use the same port independently. If a port is in use, you must stop the occupying service or use a different port."}},{"@type":"Question","name":"Why do development servers use ports 3000 and 8080?","acceptedAnswer":{"@type":"Answer","text":"Ports 3000 and 8080 are in the registered port range (1024-49151), so they don't require administrative privileges to bind. Developers prefer them for development because non-admin users can run servers on these ports. Port 3000 is a convention for Node.js/Express, and 8080 is common for HTTP reverse proxies."}},{"@type":"Question","name":"Is it safe to expose database ports (3306, 6379, 5432) to the internet?","acceptedAnswer":{"@type":"Answer","text":"No, exposing database ports directly to the internet is a critical security risk. Most databases authenticate with weak credentials or no authentication by default. Attackers can access your data, delete it, or use your server for cryptomining. Always: (1) keep databases on private networks, (2) use firewalls to restrict access, (3) require strong authentication, (4) use encryption in transit. For remote access, use SSH tunnels or VPNs."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Ports Reference — Well-Known Network Ports — duckTyped</title>
+    <meta name="description" content="Reference table of 40+ well-known network ports: FTP, SSH, SMTP, DNS, HTTP, HTTPS, MySQL, PostgreSQL, Redis, RDP. Port ranges and firewall rules.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="common ports, network ports, well-known ports, port numbers, FTP 21, SSH 22, SMTP 25, DNS 53, HTTP 80, HTTPS 443, MySQL 3306, PostgreSQL 5432, Redis 6379, MongoDB 27017">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Common Ports Reference — Well-Known Network Ports — duckTyped">
+    <meta property="og:description" content="Quick reference for 40+ network ports with services, protocols, and use cases.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/common-ports/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Common Ports Reference — duckTyped">
+    <meta name="twitter:description" content="Well-known network ports reference with protocol, service, and common use cases.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/common-ports/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Common Ports Reference</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Common Ports Reference</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Quick reference for 40+ well-known network ports. Bookmark this page for fast lookups when configuring firewalls, troubleshooting connectivity, or securing your servers.</p>
+
+            <p>For an interactive tool to check open ports, see the <a href="/port-scanner/">Port Scanner</a>. For connection-refused errors on specific databases, see the <a href="/errors/database/">database troubleshooting guides</a>.</p>
+
+            <h2>Well-Known Network Ports</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Port</th><th>Protocol</th><th>Service</th><th>Common Use</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>20/21</strong></td><td>TCP</td><td>FTP</td><td>File Transfer — unencrypted, legacy; use SFTP (port 22) instead</td></tr>
+                        <tr><td><strong>22</strong></td><td>TCP</td><td>SSH</td><td>Secure shell login, file transfer (SFTP), tunneling</td></tr>
+                        <tr><td><strong>23</strong></td><td>TCP</td><td>Telnet</td><td>Remote terminal — deprecated, use SSH instead</td></tr>
+                        <tr><td><strong>25</strong></td><td>TCP</td><td>SMTP</td><td>Email submission between mail servers (server-to-server)</td></tr>
+                        <tr><td><strong>53</strong></td><td>TCP/UDP</td><td>DNS</td><td>Domain name resolution; UDP for queries, TCP for zone transfers</td></tr>
+                        <tr><td><strong>67/68</strong></td><td>UDP</td><td>DHCP</td><td>Dynamic host configuration, IP address assignment on networks</td></tr>
+                        <tr><td><strong>80</strong></td><td>TCP</td><td>HTTP</td><td>Web browsing, unencrypted; redirect to 443 (HTTPS) in production</td></tr>
+                        <tr><td><strong>110</strong></td><td>TCP</td><td>POP3</td><td>Email retrieval — older protocol, largely replaced by IMAP</td></tr>
+                        <tr><td><strong>123</strong></td><td>UDP</td><td>NTP</td><td>Network Time Protocol — clock synchronization across servers</td></tr>
+                        <tr><td><strong>143</strong></td><td>TCP</td><td>IMAP</td><td>Email retrieval with folder management (modern standard)</td></tr>
+                        <tr><td><strong>161/162</strong></td><td>UDP</td><td>SNMP</td><td>Simple Network Management Protocol — device monitoring</td></tr>
+                        <tr><td><strong>389</strong></td><td>TCP/UDP</td><td>LDAP</td><td>Lightweight Directory Access Protocol — user authentication</td></tr>
+                        <tr><td><strong>443</strong></td><td>TCP</td><td>HTTPS</td><td>Secure web browsing with TLS encryption (standard)</td></tr>
+                        <tr><td><strong>445</strong></td><td>TCP</td><td>SMB</td><td>Server Message Block — Windows file sharing (ransomware vector)</td></tr>
+                        <tr><td><strong>465</strong></td><td>TCP</td><td>SMTPS</td><td>SMTP over TLS (implicit encryption; also used: 587)</td></tr>
+                        <tr><td><strong>587</strong></td><td>TCP</td><td>SMTP</td><td>Email submission from clients (SMTP with STARTTLS)</td></tr>
+                        <tr><td><strong>514</strong></td><td>UDP</td><td>Syslog</td><td>System logging — send logs to centralized server</td></tr>
+                        <tr><td><strong>636</strong></td><td>TCP</td><td>LDAPS</td><td>LDAP over TLS encryption</td></tr>
+                        <tr><td><strong>993</strong></td><td>TCP</td><td>IMAPS</td><td>IMAP over TLS (encrypted email retrieval)</td></tr>
+                        <tr><td><strong>995</strong></td><td>TCP</td><td>POP3S</td><td>POP3 over TLS (encrypted email retrieval)</td></tr>
+                        <tr><td><strong>1433</strong></td><td>TCP</td><td>MSSQL</td><td>Microsoft SQL Server database — keep off public internet</td></tr>
+                        <tr><td><strong>1521</strong></td><td>TCP</td><td>Oracle</td><td>Oracle Database — keep off public internet</td></tr>
+                        <tr><td><strong>2049</strong></td><td>TCP/UDP</td><td>NFS</td><td>Network File System — shared storage on LANs (no auth by default)</td></tr>
+                        <tr><td><strong>3000</strong></td><td>TCP</td><td>Dev servers</td><td>Node.js/Express, Ruby, Python dev — convention for localhost development</td></tr>
+                        <tr><td><strong>3306</strong></td><td>TCP</td><td>MySQL</td><td>MySQL/MariaDB database — critical: never expose to internet</td></tr>
+                        <tr><td><strong>3389</strong></td><td>TCP</td><td>RDP</td><td>Remote Desktop Protocol — Windows remote access (no MFA = target)</td></tr>
+                        <tr><td><strong>5060/5061</strong></td><td>TCP/UDP</td><td>SIP</td><td>Session Initiation Protocol — VoIP signaling</td></tr>
+                        <tr><td><strong>5432</strong></td><td>TCP</td><td>PostgreSQL</td><td>PostgreSQL database — critical: firewall strictly or use private networks</td></tr>
+                        <tr><td><strong>5672</strong></td><td>TCP</td><td>AMQP</td><td>Advanced Message Queuing Protocol — message broker (RabbitMQ, etc.)</td></tr>
+                        <tr><td><strong>6379</strong></td><td>TCP</td><td>Redis</td><td>Redis cache/data store — no auth by default; lock down immediately</td></tr>
+                        <tr><td><strong>8000/8080/8443</strong></td><td>TCP</td><td>HTTP alt</td><td>Alternative HTTP/HTTPS — common in development and reverse proxies</td></tr>
+                        <tr><td><strong>9200</strong></td><td>TCP</td><td>Elasticsearch</td><td>Elasticsearch search engine — never expose to internet</td></tr>
+                        <tr><td><strong>11211</strong></td><td>TCP</td><td>Memcached</td><td>Memcached cache — no authentication; use only on private networks</td></tr>
+                        <tr><td><strong>27017</strong></td><td>TCP</td><td>MongoDB</td><td>MongoDB database — critical: restrict access, use auth, firewall</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Port Ranges Explained</h2>
+
+            <h3>Well-Known Ports (0–1023)</h3>
+            <p>Assigned by IANA for specific services. Binding to these ports requires administrative (root/admin) privileges on most operating systems. Examples: HTTP (80), HTTPS (443), SSH (22), DNS (53), SMTP (25).</p>
+
+            <h3>Registered Ports (1024–49151)</h3>
+            <p>Assigned to applications and services but not as tightly controlled as well-known ports. Non-administrative users can bind to these. Common development choices: Node.js (3000), Django (8000), Flask (5000), general HTTP alt (8080, 8443). These are the ports you'll choose for your own services.</p>
+
+            <h3>Ephemeral Ports (49152–65535)</h3>
+            <p>Dynamic or private ports — not pre-assigned. Operating systems use these for outgoing connections (the source port in client-server communication). When a client connects to a server, the OS picks an available port in this range automatically. You generally don't configure ephemeral ports manually.</p>
+
+            <h2>Ports and Firewalls</h2>
+
+            <p>A firewall's job is to control which ports can be accessed from outside your network. Every production server should follow these rules:</p>
+
+            <ul>
+                <li><strong>Whitelist explicitly, deny by default:</strong> Only open the ports your application needs. Close everything else.</li>
+                <li><strong>Restrict by source IP:</strong> If you can, limit access to specific IPs (your office, VPN, load balancer) rather than 0.0.0.0.</li>
+                <li><strong>Keep databases private:</strong> Database ports (3306, 5432, 6379, 27017) should NEVER be visible from the internet. Use a bastion host, private subnet, or SSH tunnel instead.</li>
+                <li><strong>Use non-standard ports if possible:</strong> Services on ports other than their defaults (e.g., SSH on 2222 instead of 22) reduce automated attack noise, but this is security through obscurity — don't rely on it alone.</li>
+                <li><strong>Monitor unexpected open ports:</strong> Periodically scan your servers for open ports you didn't authorize. A compromised service might open new ports for persistence.</li>
+            </ul>
+
+            <h2>Troubleshooting Connection Refused</h2>
+
+            <p>If you get a &lt;service&gt; connection refused error:</p>
+
+            <ol>
+                <li>Is the service running? (Check logs, process list.)</li>
+                <li>Is it listening on the expected port? (Use <code>lsof -i :PORT</code> on Unix, <code>netstat -ano | findstr :PORT</code> on Windows.)</li>
+                <li>Is there a firewall rule blocking the port? (Check OS firewall and upstream network firewalls.)</li>
+                <li>If connecting over the network, is the hostname/IP correct? (Check <a href="/dns-lookup/">DNS resolution</a>.)</li>
+            </ol>
+
+            <p>For specific database connection errors, see: <a href="/errors/database/postgresql-connection-refused.html">PostgreSQL connection refused</a>, <a href="/errors/database/redis-connection-refused.html">Redis connection refused</a>, <a href="/errors/database/mongodb-connection-failed.html">MongoDB connection failed</a>, <a href="/errors/database/mysql-access-denied.html">MySQL access denied</a>.</p>
+        </article>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

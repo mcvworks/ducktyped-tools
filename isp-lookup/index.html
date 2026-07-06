@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ISP Checker by IP","url":"https://ducktyped.xyz/isp-lookup/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Look up the ISP, organization, country, state, and city for any IP address. Identify internet service providers and geolocate IPs. Free ISP lookup tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an ISP lookup?","acceptedAnswer":{"@type":"Answer","text":"An ISP lookup identifies the Internet Service Provider and organization associated with an IP address. It shows the network owner, ASN (Autonomous System Number), and geographic location."}},{"@type":"Question","name":"How do I find my ISP?","acceptedAnswer":{"@type":"Answer","text":"Use this ISP Lookup tool — it automatically detects your public IP address and shows your Internet Service Provider, network details, and approximate location."}},{"@type":"Question","name":"Is ISP lookup accurate?","acceptedAnswer":{"@type":"Answer","text":"ISP/organization data is highly accurate as it comes from WHOIS and BGP databases. Geographic location is approximate — typically accurate to the city level but not exact street addresses."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISP Checker by IP — Find Internet Provider & Location — duckTyped</title>
+    <meta name="description" content="Look up the ISP, organization, country, state, and city for any IP address. Identify internet service providers and geolocate IPs. Free ISP lookup tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="ISP Checker by IP — Find Internet Provider & Location — duckTyped">
+    <meta property="og:description" content="Look up the ISP, organization, country, state, and city for any IP address. Identify internet service providers and geolocate IPs. Free ISP lookup tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/isp-lookup/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/isp-lookup.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ISP Checker by IP — Find Internet Provider & Location — duckTyped">
+    <meta name="twitter:description" content="Look up the ISP, organization, country, state, and city for any IP address. Identify internet service providers and geolocate IPs. Free ISP lookup tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/isp-lookup/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>ISP Checker by IP</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Enter any IP address (or leave blank to check your own) and instantly see the Internet Service Provider, organization, and geographic location. Great for identifying traffic sources or investigating network issues.</p><div class="example-box"><strong>Example uses:</strong><p>Identifying the ISP behind suspicious login attempts, checking where your VPN exits, verifying CDN routing is correct for your region, or investigating abuse reports.</p></div>
+            <a href="/learn/isp-lookup/" class="learn-more-link">Learn about ISP lookups and IP geolocation</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="ispChecker"><h2>ISP Checker by IP</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Identify ISP provider, organization, and geolocation from any IP address. Leave blank to automatically check your own IP.</p>
+            <div class="input-group"><label>IP Address:</label><input type="text" id="ispInput" placeholder="8.8.8.8 or leave blank for your IP" aria-label="IP Address:" onkeypress="if(event.key==='Enter') checkISP()"></div>
+            <button onclick="checkISP()">Check ISP Info</button>
+            <div id="ispResults"></div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Look up domain registration details, registrar, expiry date, and ownership…</span>
+                </a>
+                <a href="/mac-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">MAC Address Lookup</span>
+                    <span class="recommended-tool-desc">Look up the hardware manufacturer and vendor of any MAC address using the…</span>
+                </a>
+                <a href="/device-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Device Lookup</span>
+                    <span class="recommended-tool-desc">Identify device make and model from IMEI number, Apple serial number, or…</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/isp-lookup/">IP Address and ISP Lookup</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/apache/ah01630-client-denied-by-server-configuration">Apache AH01630 — Client Denied by Server Configuration</a>, <a href="/errors/cloudflare/error-1006">Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-network.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

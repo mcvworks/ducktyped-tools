@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Email Address Validator","url":"https://ducktyped.xyz/email-validator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Validate email addresses by checking syntax, MX records, domain existence, and disposable email detection. Free email verification tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does an email validator check?","acceptedAnswer":{"@type":"Answer","text":"An email validator checks the format (RFC 5322 compliance), verifies the domain has MX records for receiving mail, and optionally checks if the mailbox exists by connecting to the SMTP server."}},{"@type":"Question","name":"Can you verify if an email address exists without sending an email?","acceptedAnswer":{"@type":"Answer","text":"Partially. You can check DNS MX records and attempt SMTP RCPT TO verification, but many servers disable VRFY and accept all addresses to prevent enumeration. Full verification requires sending a message."}},{"@type":"Question","name":"Is this email validator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. The validation checks happen in real-time with no data stored."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Address Validator — Check Email Syntax & Domain — duckTyped</title>
+    <meta name="description" content="Validate email addresses by checking syntax, MX records, domain existence, and disposable email detection. Free email verification tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Email Address Validator — Check Email Syntax & Domain — duckTyped">
+    <meta property="og:description" content="Validate email addresses by checking syntax, MX records, domain existence, and disposable email detection. Free email verification tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/email-validator/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/email-validator.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Email Address Validator — Check Email Syntax & Domain — duckTyped">
+    <meta name="twitter:description" content="Validate email addresses by checking syntax, MX records, domain existence, and disposable email detection. Free email verification tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/email-validator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Email Address Validator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Check whether an email address is likely valid by verifying format, domain existence, MX records, and flagging known disposable email providers. A quick first-pass check before sending important emails.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Cleaning up a mailing list, verifying a customer's email before account creation, checking if a domain can receive mail, or flagging temporary/disposable addresses.</p></div>
+            <a href="/learn/email-validator/" class="learn-more-link">Learn about email validation and verification</a>
+        </div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="emailValidator"><h2>Email Address Validator</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Validate email address format, check domain existence, and verify MX records. Performs syntax validation, DNS lookup, and disposable email detection.</p>
+            <div class="input-group"><label>Email Address:</label>
+                <input type="email" id="emailToValidate" placeholder="user@example.com" aria-label="Email address to validate" onkeypress="if(event.key==='Enter') validateEmail()">
+            </div>
+            <button onclick="validateEmail()">Validate Email</button>
+            <div id="emailValidationResults"></div>
+        </div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/email-header-analyzer/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Header Analyzer</span>
+                    <span class="recommended-tool-desc">Analyze raw email headers to trace delivery path, diagnose spam, and check…</span>
+                </a>
+                <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity and check open email ports (25, 465, 587, 2525)</span>
+                </a>
+                <a href="/blacklist-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Blacklist / RBL Checker</span>
+                    <span class="recommended-tool-desc">Check if a domain or IP address appears on email blacklists and DNS blocklists</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/email-validator/">Email Address Validation</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/email/relay-access-denied">Relay Access Denied</a>, <a href="/errors/email/message-rejected">Message Rejected</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-email.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

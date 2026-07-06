@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"The browser just says 'File not found.' — is that this error?","acceptedAnswer":{"@type":"Answer","text":"Yes — that plain-text response is PHP-FPM's output when the primary script is unknown; nginx forwards it with a 404. Confirm in /var/log/nginx/error.log, which will show the 'Primary script unknown' stderr line with the upstream details."}},{"@type":"Question","name":"Why does it break only in Docker while the same config worked on a VM?","acceptedAnswer":{"@type":"Answer","text":"On a VM, nginx and PHP-FPM share one filesystem, so any correct path works for both. Two containers have two filesystems: SCRIPT_FILENAME is evaluated by nginx but opened by PHP-FPM. The volume must be mounted in the PHP container, and the path in SCRIPT_FILENAME must be the PHP container's path."}},{"@type":"Question","name":"What does snippets/fastcgi-php.conf do for this?","acceptedAnswer":{"@type":"Answer","text":"Debian/Ubuntu's snippet sets the pieces that prevent this class of bug: splits path info correctly, checks the script exists (try_files $fastcgi_script_name =404), and includes fastcgi_params with SCRIPT_FILENAME built from $document_root. Using it plus a server-level root removes most footguns."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Primary Script Unknown (PHP-FPM) — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Primary Script Unknown (PHP-FPM) — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx/PHP-FPM 'Primary script unknown' and 'File not found.'. SCRIPT_FILENAME, root placement, Docker volume mismatches, and permission causes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="FastCGI sent in stderr: &quot;Primary script unknown&quot;, Primary script unknown, php-fpm File not found., nginx php file not found, SCRIPT_FILENAME nginx">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Primary Script Unknown (PHP-FPM) — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx/PHP-FPM 'Primary script unknown' and 'File not found.'. SCRIPT_FILENAME, root placement, Docker volume mismatches, and permission causes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/primary-script-unknown">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/primary-script-unknown">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Primary Script Unknown (PHP-FPM)</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Primary Script Unknown (PHP-FPM)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'FastCGI sent in stderr: "Primary script unknown"' — PHP-FPM could not find the script nginx asked it to run. Browsers show a bare 'File not found.'</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>FastCGI sent in stderr: &quot;Primary script unknown&quot;</code></li><li><code>Primary script unknown</code></li><li><code>php-fpm File not found.</code></li><li><code>nginx php file not found</code></li><li><code>SCRIPT_FILENAME nginx</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Nginx passed a request to PHP-FPM with a SCRIPT_FILENAME telling it which .php file to execute — and PHP-FPM answered that no such file exists from where it stands. The message is PHP-FPM's, but the bug is almost always in the nginx config: root is set in the wrong place so the computed path is wrong, or nginx and PHP-FPM see different filesystems (chroot, separate containers) so a path valid for nginx does not exist for PHP. The browser output is an unhelpful 'File not found.' — the error log has the real story.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>SCRIPT_FILENAME resolves to the wrong path</strong> — root declared inside 'location /' but not visible to 'location ~ \.php$', or a hardcoded wrong path in fastcgi_param SCRIPT_FILENAME — the computed file simply is not there.</li>
+                <li><strong>Nginx and PHP-FPM see different filesystems</strong> — In two-container setups, nginx's /var/www/html is not automatically PHP-FPM's /var/www/html. Without the same volume mounted at the same path in both, every path nginx sends is unknown to PHP.</li>
+                <li><strong>The file genuinely is not there</strong> — Deploy did not copy the file, wrong document root after a migration, or a typo in the requested URL that ends in .php.</li>
+                <li><strong>PHP-FPM cannot read the file</strong> — Less common: the pool user (www-data) lacks read/execute permission on the path, which PHP-FPM reports the same way as absence.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Log what SCRIPT_FILENAME actually contains</h3>
+            <p>Print the computed value into a header or check the standard snippet — most fixes are visible immediately once you see the path.</p>
+            <pre><code>location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    # ensure this resolves correctly:
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+}</code></pre>
+            <h3>2. Declare root at server level</h3>
+            <p>Put root once on the server block (not inside location /) so $document_root is correct in the PHP location too.</p>
+            <pre><code>server {
+    root /var/www/myapp/public;   # HERE, not inside location /
+    index index.php;
+    location / { try_files $uri $uri/ /index.php?$query_string; }
+    location ~ \.php$ { ... }
+}</code></pre>
+            <h3>3. In Docker, share the code with both containers at the same path</h3>
+            <p>Mount the application into nginx and php-fpm identically, and make SCRIPT_FILENAME use the path as PHP-FPM sees it.</p>
+            <pre><code># docker-compose.yml
+services:
+  nginx:
+    volumes: ['./src:/var/www/html']
+  php:
+    volumes: ['./src:/var/www/html']
+# nginx: fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;</code></pre>
+            <h3>4. Verify the file exists as the PHP-FPM user</h3>
+            <p>Check from PHP-FPM's perspective — inside its container or as its user.</p>
+            <pre><code># same host:
+sudo -u www-data ls -la /var/www/myapp/public/index.php
+# php container:
+docker compose exec php ls -la /var/www/html/index.php</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>The browser just says 'File not found.' — is that this error?</h3>
+            <p>Yes — that plain-text response is PHP-FPM's output when the primary script is unknown; nginx forwards it with a 404. Confirm in /var/log/nginx/error.log, which will show the 'Primary script unknown' stderr line with the upstream details.</p>
+            <h3>Why does it break only in Docker while the same config worked on a VM?</h3>
+            <p>On a VM, nginx and PHP-FPM share one filesystem, so any correct path works for both. Two containers have two filesystems: SCRIPT_FILENAME is evaluated by nginx but opened by PHP-FPM. The volume must be mounted in the PHP container, and the path in SCRIPT_FILENAME must be the PHP container's path.</p>
+            <h3>What does snippets/fastcgi-php.conf do for this?</h3>
+            <p>Debian/Ubuntu's snippet sets the pieces that prevent this class of bug: splits path info correctly, checks the script exists (try_files $fastcgi_script_name =404), and includes fastcgi_params with SCRIPT_FILENAME built from $document_root. Using it plus a server-level root removes most footguns.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/connection-refused-while-connecting-to-upstream">Connection Refused (Upstream)</a> — when PHP-FPM itself is unreachable.</li>
+                <li><a href="/errors/nginx/directory-index-forbidden">Directory Index Forbidden</a> — index/routing misconfigurations.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — the status clients see.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test .php endpoints directly</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Check responses across endpoints</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

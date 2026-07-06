@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is SPF (Sender Policy Framework)?","description":"Learn what SPF is, how SPF records work, SPF syntax and mechanisms, common mistakes, and how SPF fits into email authentication alongside DKIM and DMARC.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/what-is-spf/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Is SPF?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an SPF record?","acceptedAnswer":{"@type":"Answer","text":"An SPF (Sender Policy Framework) record is a DNS TXT record that specifies which mail servers are authorized to send email on behalf of your domain. Receiving mail servers check SPF records to verify that incoming email comes from an authorized source."}},{"@type":"Question","name":"What happens if I don't have an SPF record?","acceptedAnswer":{"@type":"Answer","text":"Without an SPF record, receiving mail servers cannot verify whether email claiming to come from your domain was actually sent by an authorized server. This makes your domain more vulnerable to spoofing and may cause your legitimate emails to be treated with suspicion or flagged as spam."}},{"@type":"Question","name":"What is the SPF 10-lookup limit?","acceptedAnswer":{"@type":"Answer","text":"The SPF specification limits the number of DNS lookups during SPF evaluation to 10. Each 'include', 'a', 'mx', and 'redirect' mechanism counts as one lookup. If your SPF record exceeds this limit, SPF evaluation fails with a PermError, and your emails may be rejected."}},{"@type":"Question","name":"Can I have multiple SPF records?","acceptedAnswer":{"@type":"Answer","text":"No. The SPF specification requires exactly one SPF record per domain. Having multiple SPF TXT records starting with 'v=spf1' causes a PermError and SPF evaluation fails. If you need to authorize multiple senders, combine them into a single SPF record using include mechanisms."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is SPF? — Sender Policy Framework Explained — duckTyped</title>
+    <meta name="description" content="Learn what SPF is, how SPF records work, SPF syntax and mechanisms, common mistakes, and how SPF fits into email authentication alongside DKIM and DMARC.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Is SPF? — Sender Policy Framework Explained — duckTyped">
+    <meta property="og:description" content="Learn what SPF is, how SPF records work, and how to configure them correctly.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/what-is-spf/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Is SPF? — Sender Policy Framework Explained — duckTyped">
+    <meta name="twitter:description" content="Learn what SPF is and how SPF records authorize email senders.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/what-is-spf/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Is SPF?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Is SPF (Sender Policy Framework)?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SPF is an email authentication protocol that allows domain owners to specify which mail servers are authorized to send email on their behalf. It works by publishing a DNS TXT record that receiving servers check to verify the sender's identity.</p>
+
+            <h2>How SPF Works</h2>
+            <p>When a mail server receives an incoming email, it extracts the domain from the envelope sender address (the Return-Path or MAIL FROM value) and looks up the SPF record for that domain in DNS. The SPF record contains a list of authorized sending sources -- IP addresses, IP ranges, or references to other domains' SPF records.</p>
+            <p>The receiving server then compares the connecting server's IP address against the authorized sources listed in the SPF record. Based on the match result, the SPF check returns one of several results:</p>
+            <ul>
+                <li><strong>Pass</strong> -- the sending server's IP is explicitly authorized.</li>
+                <li><strong>Fail</strong> -- the sending server's IP is explicitly not authorized (the record uses <code>-all</code>).</li>
+                <li><strong>SoftFail</strong> -- the sending server's IP is not authorized but the domain owner is not making a strong assertion (the record uses <code>~all</code>).</li>
+                <li><strong>Neutral</strong> -- the domain owner makes no assertion about the IP (the record uses <code>?all</code>).</li>
+                <li><strong>PermError</strong> -- the SPF record has a syntax error or exceeds processing limits.</li>
+                <li><strong>TempError</strong> -- a temporary DNS error prevented evaluation.</li>
+            </ul>
+
+            <h2>SPF Record Syntax</h2>
+            <p>An SPF record is a DNS TXT record that begins with <code>v=spf1</code> followed by a series of mechanisms and modifiers. Here is a typical example:</p>
+            <pre><code>v=spf1 ip4:192.0.2.0/24 include:_spf.google.com include:sendgrid.net -all</code></pre>
+            <p>This record authorizes:</p>
+            <ul>
+                <li>Any server in the <code>192.0.2.0/24</code> IP range</li>
+                <li>Any server authorized by Google Workspace's SPF record</li>
+                <li>Any server authorized by SendGrid's SPF record</li>
+            </ul>
+            <p>The <code>-all</code> at the end means all other sources should fail.</p>
+
+            <h3>Common Mechanisms</h3>
+            <ul>
+                <li><code>ip4:address/prefix</code> -- matches an IPv4 address or CIDR range.</li>
+                <li><code>ip6:address/prefix</code> -- matches an IPv6 address or CIDR range.</li>
+                <li><code>include:domain</code> -- includes the SPF record of another domain. Counts as one DNS lookup.</li>
+                <li><code>a</code> -- matches the A record IP(s) of the domain. Counts as one DNS lookup.</li>
+                <li><code>mx</code> -- matches the IP addresses of the domain's MX servers. Counts as one DNS lookup.</li>
+                <li><code>all</code> -- matches everything. Used at the end with a qualifier to set the default policy.</li>
+            </ul>
+
+            <h3>Qualifiers</h3>
+            <ul>
+                <li><code>+</code> (Pass) -- the default qualifier. <code>+all</code> and <code>all</code> are equivalent.</li>
+                <li><code>-</code> (Fail) -- hard fail. Use <code>-all</code> to reject unauthorized senders.</li>
+                <li><code>~</code> (SoftFail) -- soft fail. Use <code>~all</code> during testing or transition periods.</li>
+                <li><code>?</code> (Neutral) -- no policy assertion.</li>
+            </ul>
+
+            <h2>The 10-Lookup Limit</h2>
+            <p>The SPF specification (RFC 7208) limits the number of DNS lookups during SPF evaluation to <strong>10</strong>. Each <code>include</code>, <code>a</code>, <code>mx</code>, <code>redirect</code>, and <code>exists</code> mechanism counts as one lookup. Nested includes also count -- if your record includes a domain whose SPF record itself includes three other domains, that is four lookups total.</p>
+            <p>If your SPF record exceeds 10 lookups, evaluation fails with a <strong>PermError</strong>, which most receiving servers treat similarly to a fail. This is a common problem for organizations that use many third-party email services (marketing platforms, CRM systems, helpdesk tools), each requiring its own <code>include</code>.</p>
+            <p>Strategies to stay within the limit:</p>
+            <ul>
+                <li>Replace <code>include</code> mechanisms with direct <code>ip4</code> or <code>ip6</code> entries where possible (these do not count as lookups).</li>
+                <li>Use SPF flattening services that resolve includes into IP addresses at publish time.</li>
+                <li>Consolidate sending services or use subdomains with separate SPF records for different services.</li>
+            </ul>
+
+            <h2>Common SPF Mistakes</h2>
+
+            <h3>Multiple SPF Records</h3>
+            <p>A domain must have exactly <strong>one</strong> SPF record. If two TXT records both start with <code>v=spf1</code>, SPF evaluation fails with a PermError. When adding a new service, add it to the existing SPF record rather than creating a second one.</p>
+
+            <h3>Using +all</h3>
+            <p>An SPF record ending with <code>+all</code> authorizes the entire internet to send email as your domain. This completely defeats the purpose of SPF. Always use <code>-all</code> (hard fail) or <code>~all</code> (soft fail).</p>
+
+            <h3>Forgetting Subdomains</h3>
+            <p>SPF records are not inherited by subdomains. If you send email from <code>mail.example.com</code>, it needs its own SPF record, separate from <code>example.com</code>. Subdomains without SPF records have no protection against spoofing.</p>
+
+            <h2>SPF and Email Authentication</h2>
+            <p>SPF is one of three complementary email authentication protocols. It works alongside <strong>DKIM</strong> (which verifies message integrity using cryptographic signatures) and <strong>DMARC</strong> (which defines policies for handling authentication failures). Together, these three protocols form a comprehensive email authentication system.</p>
+            <p>An important limitation of SPF: it authenticates the <strong>envelope sender</strong> (Return-Path), not the <strong>header From</strong> address that users see in their email client. This means SPF alone cannot prevent display-name spoofing. DMARC addresses this gap by requiring alignment between the authenticated domain and the visible From domain.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- look up TXT records to inspect your SPF configuration.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> -- check SPF authentication results in email headers.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> -- test mail server connectivity and configuration.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/what-is-dkim/">What is DKIM</a>, <a href="/learn/what-is-dmarc/">What is DMARC</a>, <a href="/learn/email-authentication/">How email authentication works</a>, <a href="/learn/email-auth-cheat-sheet/">Email auth cheat sheet</a>, <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550 Error</a> -- SPF failures can cause 550 rejections.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554 Error</a> -- policy-based rejections often related to authentication failures.</li>
+                <li><a href="/errors/email/">All Email Errors</a> -- browse all email-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Check Your SPF Record</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

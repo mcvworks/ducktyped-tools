@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is --legacy-peer-deps safe to use?","acceptedAnswer":{"@type":"Answer","text":"It is generally safe. It restores the npm 6 behavior of treating peer dependency conflicts as warnings. However, it may result in packages using incompatible versions of shared dependencies, which could cause runtime errors."}},{"@type":"Question","name":"What is the difference between --force and --legacy-peer-deps?","acceptedAnswer":{"@type":"Answer","text":"--legacy-peer-deps skips peer dependency resolution entirely (npm 6 behavior). --force overrides various protections including peer deps but is more aggressive. For peer dep issues, --legacy-peer-deps is the more targeted solution."}},{"@type":"Question","name":"Does Yarn have this problem?","acceptedAnswer":{"@type":"Answer","text":"Yarn handles peer dependencies differently. Yarn 1 (Classic) is lenient like npm 6. Yarn 2+ (Berry) with PnP is strict but provides different resolution mechanisms like the 'packageExtensions' field."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"npm ERR! code ERESOLVE — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix npm ERR! code ERESOLVE","step":[{"@type":"HowToStep","position":1,"name":"Use --legacy-peer-deps flag","text":"Install with the legacy peer dependency resolution algorithm that npm 6 used, which ignores peer dependency conflicts."},{"@type":"HowToStep","position":2,"name":"Use --force flag","text":"Force npm to proceed with the installation despite conflicts. This may result in an incorrect dependency tree but often works."},{"@type":"HowToStep","position":3,"name":"Update conflicting packages","text":"Update the packages that have conflicting requirements to versions that are compatible with each other."},{"@type":"HowToStep","position":4,"name":"Set legacy-peer-deps permanently","text":"Configure npm to always use legacy peer dependency resolution for this project."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! code ERESOLVE — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! ERESOLVE dependency conflict. Learn why npm cannot resolve peer dependencies and how to fix version conflicts in your project.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! ERESOLVE, ERESOLVE unable to resolve dependency tree, npm peer dependency conflict, Could not resolve dependency, npm ERR! ERESOLVE overriding peer dependency">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! code ERESOLVE — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! ERESOLVE dependency conflict. Learn why npm cannot resolve peer dependencies and how to fix version conflicts in your project.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/npm-err-eresolve">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/npm-err-eresolve">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>npm ERR! code ERESOLVE</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! code ERESOLVE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">npm dependency resolution conflict</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! ERESOLVE</code></li><li><code>ERESOLVE unable to resolve dependency tree</code></li><li><code>npm peer dependency conflict</code></li><li><code>Could not resolve dependency</code></li><li><code>npm ERR! ERESOLVE overriding peer dependency</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERESOLVE occurs when npm cannot find a valid dependency tree that satisfies all peer dependency requirements. This is common in npm 7+ which enforces strict peer dependency resolution by default, unlike npm 6 which only warned about conflicts. The error indicates that two or more packages require incompatible versions of a shared dependency.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Incompatible peer dependency versions</strong> — Two packages in your dependency tree require different, incompatible versions of the same peer dependency. For example, package A needs React 17 and package B needs React 18.</li>
+                <li><strong>Outdated packages with strict peer dependencies</strong> — An older package specifies a narrow peer dependency range that does not include the version you have installed. The package works fine with newer versions but its peerDependencies field was never updated.</li>
+                <li><strong>npm 7+ strict peer dependency enforcement</strong> — npm 7 changed to treat peer dependency conflicts as errors by default. Projects that installed fine with npm 6 may fail with npm 7+ due to this stricter behavior.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Use --legacy-peer-deps flag</h3>
+            <p>Install with the legacy peer dependency resolution algorithm that npm 6 used, which ignores peer dependency conflicts.</p>
+            <pre><code>npm install --legacy-peer-deps</code></pre>
+            <h3>2. Use --force flag</h3>
+            <p>Force npm to proceed with the installation despite conflicts. This may result in an incorrect dependency tree but often works.</p>
+            <pre><code>npm install --force</code></pre>
+            <h3>3. Update conflicting packages</h3>
+            <p>Update the packages that have conflicting requirements to versions that are compatible with each other.</p>
+            <pre><code>npm outdated
+npm update &lt;package-name&gt;
+# Or install specific compatible versions:
+npm install package-a@latest package-b@latest</code></pre>
+            <h3>4. Set legacy-peer-deps permanently</h3>
+            <p>Configure npm to always use legacy peer dependency resolution for this project.</p>
+            <pre><code>echo 'legacy-peer-deps=true' &gt;&gt; .npmrc</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is --legacy-peer-deps safe to use?</h3>
+            <p>It is generally safe. It restores the npm 6 behavior of treating peer dependency conflicts as warnings. However, it may result in packages using incompatible versions of shared dependencies, which could cause runtime errors.</p>
+            <h3>What is the difference between --force and --legacy-peer-deps?</h3>
+            <p>--legacy-peer-deps skips peer dependency resolution entirely (npm 6 behavior). --force overrides various protections including peer deps but is more aggressive. For peer dep issues, --legacy-peer-deps is the more targeted solution.</p>
+            <h3>Does Yarn have this problem?</h3>
+            <p>Yarn handles peer dependencies differently. Yarn 1 (Classic) is lenient like npm 6. Yarn 2+ (Berry) with PnP is strict but provides different resolution mechanisms like the 'packageExtensions' field.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/npm-err-enotfound">npm ERR! ENOTFOUND</a> — npm registry unreachable</li>
+                <li><a href="/errors/devops/npm-err-eperm">npm ERR! EPERM</a> — npm permission error</li>
+                <li><a href="/errors/devops/npm-err-eacces">npm ERR! EACCES</a> — npm permission denied</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Validate package.json files</span>
+                </a>
+                <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Parse .env configuration files</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

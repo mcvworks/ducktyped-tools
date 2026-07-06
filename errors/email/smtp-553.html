@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SMTP 553 mean?","acceptedAnswer":{"@type":"Answer","text":"SMTP 553 means the recipient's mailbox name is not allowed — the email address is syntactically invalid, uses disallowed characters, or violates the receiving server's naming policy."}},{"@type":"Question","name":"What causes SMTP 553 errors?","acceptedAnswer":{"@type":"Answer","text":"Common causes include an email address with invalid characters or format, a mailbox name that violates the server's policies (e.g., reserved words, offensive names), and in some cases the sender's FROM address being invalid or not matching relay permissions."}},{"@type":"Question","name":"How do I fix SMTP 553?","acceptedAnswer":{"@type":"Answer","text":"Verify the recipient's email address is correct. If the error references your sender address, check that your FROM address is valid and authorized. If you are the mail server administrator, review your mailbox naming policies."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 553 — Mailbox Name Not Allowed"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 553 — Mailbox Name Not Allowed","step":[{"@type":"HowToStep","position":1,"name":"Verify the Recipient's Address","text":"Double-check the spelling and format of the recipient's email address. Ensure it follows the format local-part@domain.tld with no invalid characters."},{"@type":"HowToStep","position":2,"name":"Check Your Sender Address","text":"If the error references the MAIL FROM address, ensure your sending address is valid and uses a domain you are authorized to send from."},{"@type":"HowToStep","position":3,"name":"Check Your Mail Server Configuration","text":"If you are a mail server administrator and users are reporting 553 errors when sending, check your relay restrictions. Ensure authenticated users can send with their own domain addresses."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 553 — Mailbox Name Not Allowed — duckTyped</title>
+    <meta name="description" content="Learn what SMTP error 553 means and how to fix it. Covers invalid email addresses, mailbox naming policies, and relay restrictions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 553, 553 Requested action not taken, 553 Mailbox name not allowed, 553 Invalid sender">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 553 — Mailbox Name Not Allowed">
+    <meta property="og:description" content="Fix SMTP 553 errors by verifying email address format and checking sender authorization policies.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-553">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-553">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 553</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 553 — Mailbox Name Not Allowed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP 553 means the email address is not valid or the mailbox name violates the receiving server's policies. This is a permanent 5xx error.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 553</code></li><li><code>553 Requested action not taken</code></li><li><code>553 Mailbox name not allowed</code></li><li><code>553 Invalid sender</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>The standard response is: <em>"553 Requested action not taken: mailbox name not allowed."</em> This error indicates the email address used in the RCPT TO (recipient) or MAIL FROM (sender) command is unacceptable to the server — either because of invalid format, disallowed characters, or a server policy restriction.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Invalid email address format</strong> — the address does not conform to RFC 5321 syntax (e.g., missing @, invalid characters, double dots).</li>
+                <li><strong>Relay restriction</strong> — some servers return 553 when they refuse to relay mail for a sender domain they do not control.</li>
+                <li><strong>Reserved mailbox names</strong> — names like <code>postmaster</code>, <code>abuse</code> may be restricted on some servers.</li>
+                <li><strong>Sender address not authorized</strong> — using a FROM address for a domain the server does not accept relaying for.</li>
+                <li><strong>Blocked TLD or domain</strong> — the server blocks all mail from certain domains or TLDs.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Verify the Recipient's Address</h3>
+            <p>Double-check the spelling and format of the recipient's email address. Ensure it follows the format <code>local-part@domain.tld</code> with no invalid characters.</p>
+
+            <h3>2. Check Your Sender Address</h3>
+            <p>If the error references the MAIL FROM address, ensure your sending address is valid and uses a domain you are authorized to send from.</p>
+
+            <h3>3. Use the <a href="/email-validator/">Email Validator</a></h3>
+            <p>Validate the email address format and check that the domain has valid MX records before sending.</p>
+
+            <h3>4. Check Your Mail Server Configuration</h3>
+            <p>If you are a mail server administrator and users are reporting 553 errors when sending, check your relay restrictions. Ensure authenticated users can send with their own domain addresses.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test SMTP server connectivity and responses.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> — analyze email headers for delivery issues.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does 553 mean the email account does not exist?</h3>
+            <p>Not necessarily. If the address does not exist, the server would typically return <a href="/errors/email/smtp-550">SMTP 550</a>. A 553 specifically means the mailbox name itself is unacceptable — a different type of rejection than a non-existent account.</p>
+
+            <h3>Can 553 be caused by using a no-reply address?</h3>
+            <p>Possibly. If you are sending with a <code>noreply@yourdomain.com</code> sender address via a relay server that requires authentication, ensure you are authenticated for that domain. Some servers reject FROM addresses that do not match an authenticated account.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — mailbox unavailable.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554</a> — transaction failed.</li>
+                <li><a href="/errors/email/smtp-521">SMTP 521</a> — server does not accept mail.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses and MX records</span>
+                </a>
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Check SMTP Server</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

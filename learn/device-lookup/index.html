@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Device Lookup Explained — IMEI, Apple Serial & Dell Service Tag","description":"Learn how IMEI numbers, Apple serial numbers, and Dell service tags work. Understand TAC codes, Luhn validation, serial number formats, and how to identify any device.","datePublished":"2026-03-13","dateModified":"2026-03-13","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/device-lookup/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Device Lookup"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an IMEI number?","acceptedAnswer":{"@type":"Answer","text":"An IMEI (International Mobile Equipment Identity) is a unique 15-digit number assigned to every mobile phone, tablet, and cellular-enabled device. It identifies the device on cellular networks and is used by carriers to block stolen phones. You can find your IMEI by dialing *#06# or checking Settings > About Phone."}},{"@type":"Question","name":"How do I find my IMEI number?","acceptedAnswer":{"@type":"Answer","text":"The easiest way is to dial *#06# on your phone — most devices will display the IMEI immediately. You can also find it in Settings > About Phone (Android) or Settings > General > About (iPhone). On older devices, the IMEI may be printed on a sticker under the battery or on the SIM tray."}},{"@type":"Question","name":"What is a TAC code?","acceptedAnswer":{"@type":"Answer","text":"The TAC (Type Allocation Code) is the first 8 digits of an IMEI number. It identifies the device manufacturer and model. The TAC is assigned by the GSMA and can be looked up in public databases to determine what device an IMEI belongs to."}},{"@type":"Question","name":"What changed with Apple serial numbers in 2021?","acceptedAnswer":{"@type":"Answer","text":"Before late 2021, Apple used structured 12-character serial numbers that encoded the factory location, manufacture date, and model. Starting in late 2021, Apple switched to randomized 10-character serial numbers that cannot be decoded. The new format was introduced for privacy and to prevent serial number prediction."}},{"@type":"Question","name":"Is the Device Lookup tool private?","acceptedAnswer":{"@type":"Answer","text":"IMEI and Apple serial lookups are processed entirely in your browser — the identifier never leaves your device. Dell service tag lookups are proxied through the duckTyped API to query Dell's warranty system, but no data is stored or logged."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Lookup Explained — IMEI, Apple Serial &amp; Dell Service Tag — duckTyped</title>
+    <meta name="description" content="Learn how IMEI numbers, Apple serial numbers, and Dell service tags work. Understand TAC codes, Luhn validation, serial number formats, and how to identify any device.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Device Lookup Explained — IMEI, Apple Serial & Dell Service Tag — duckTyped">
+    <meta property="og:description" content="Learn how IMEI numbers, Apple serial numbers, and Dell service tags work. Understand TAC codes, Luhn validation, and how to identify any device.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/device-lookup/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Device Lookup Explained — IMEI, Apple Serial & Dell Service Tag — duckTyped">
+    <meta name="twitter:description" content="Learn how IMEI numbers, Apple serial numbers, and Dell service tags work. Understand TAC codes, Luhn validation, and how to identify any device.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/device-lookup/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Device Lookup</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Device Lookup Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-13">March 13, 2026</time></p>
+            <p class="standalone-intro">Understand how IMEI numbers, Apple serial numbers, and Dell service tags work -- and how duckTyped's Device Lookup tool uses them to identify devices, manufacturers, and warranty status without sending your data to third parties.</p>
+
+            <h2>What Is an IMEI Number?</h2>
+            <p>An <strong>IMEI (International Mobile Equipment Identity)</strong> is a unique 15-digit number assigned to every mobile phone, tablet, and cellular-enabled device. It serves as the device's fingerprint on cellular networks -- carriers use it to identify devices, authorize network access, and block stolen phones from connecting.</p>
+            <p>The IMEI is assigned during manufacturing and is permanently tied to the device hardware. Unlike a phone number or SIM card, which can change, the IMEI stays the same regardless of which carrier or SIM is used. This makes it the most reliable way to identify a specific physical device.</p>
+            <p>Every IMEI is structured as follows:</p>
+            <ul>
+                <li><strong>Digits 1-8: TAC (Type Allocation Code)</strong> -- identifies the manufacturer and model. Assigned by the GSMA.</li>
+                <li><strong>Digits 9-14: Serial Number</strong> -- a unique serial assigned by the manufacturer to distinguish individual units of the same model.</li>
+                <li><strong>Digit 15: Check Digit</strong> -- calculated using the Luhn algorithm to detect transcription errors. Some older devices use only 14 digits and omit this check digit.</li>
+            </ul>
+
+            <h2>How TAC Identification Works</h2>
+            <p>The <strong>TAC (Type Allocation Code)</strong> is the first 8 digits of an IMEI. It uniquely identifies the device type -- not just the brand, but the specific model, variant, and sometimes even the regional configuration. The GSMA maintains the global TAC database and assigns codes to manufacturers when they register new devices.</p>
+            <p>For example, a TAC might map to "Apple iPhone 14 Pro" or "Samsung Galaxy S23 Ultra". By looking up just the first 8 digits of an IMEI, you can determine exactly what device it belongs to without needing the full serial number.</p>
+            <p>The duckTyped Device Lookup tool loads a TAC database directly into your browser, so the lookup happens entirely client-side. Your IMEI never leaves your device.</p>
+
+            <h2>Luhn Checksum Validation</h2>
+            <p>The 15th digit of a standard IMEI is a <strong>check digit</strong> calculated using the <strong>Luhn algorithm</strong> (also known as the "modulus 10" algorithm). This is the same algorithm used to validate credit card numbers.</p>
+            <p>The Luhn check detects common transcription errors -- single mistyped digits, transposed adjacent digits, and other copying mistakes. If the Luhn checksum fails, the IMEI was almost certainly entered incorrectly. A valid Luhn check does not guarantee the IMEI is real or active -- it only confirms the number is internally consistent.</p>
+
+            <h2>How to Find Your IMEI</h2>
+            <p>There are several ways to find a device's IMEI number:</p>
+            <ul>
+                <li><strong>Dial <code>*#06#</code></strong> -- on most phones, this instantly displays the IMEI. Works on both Android and iPhone.</li>
+                <li><strong>Android</strong>: Settings &gt; About Phone &gt; IMEI (or Status &gt; IMEI Information).</li>
+                <li><strong>iPhone</strong>: Settings &gt; General &gt; About &gt; scroll down to IMEI.</li>
+                <li><strong>SIM tray</strong>: On many iPhones and some Android devices, the IMEI is engraved on the SIM card tray.</li>
+                <li><strong>Original packaging</strong>: The IMEI is printed on the barcode label of the device box.</li>
+                <li><strong>Under the battery</strong>: On older phones with removable batteries, the IMEI is on a label underneath.</li>
+            </ul>
+            <p>Dual-SIM phones have two IMEI numbers -- one for each SIM slot. Both are valid and can be looked up independently.</p>
+
+            <h2>What Is an Apple Serial Number?</h2>
+            <p>Apple assigns a serial number to every product it manufactures -- iPhones, iPads, Macs, Apple Watches, AirPods, and accessories. Until late 2021, these serials followed a <strong>structured 12-character format</strong> that encoded manufacturing details.</p>
+
+            <h3>Pre-2021 Format (12 Characters)</h3>
+            <p>The traditional Apple serial number is 12 alphanumeric characters, structured as:</p>
+            <ul>
+                <li><strong>Characters 1-3: Factory Code</strong> -- identifies the manufacturing facility (e.g., "C02" for a Quanta facility in China, "F5K" for a Foxconn plant).</li>
+                <li><strong>Character 4: Year + Half</strong> -- a single character encoding the year and whether the device was made in the first or second half of the year.</li>
+                <li><strong>Character 5: Week</strong> -- a character encoding the manufacturing week within that half-year.</li>
+                <li><strong>Characters 6-8: Unique Identifier</strong> -- distinguishes individual units produced in the same week at the same factory.</li>
+                <li><strong>Characters 9-12: Model Code</strong> -- a 4-character code identifying the exact product configuration (model, color, storage capacity, etc.).</li>
+            </ul>
+            <p>This format allows the serial to be decoded into useful manufacturing information, which is exactly what the duckTyped tool does.</p>
+
+            <h3>Post-2021 Format (10 Characters)</h3>
+            <p>Starting with products released in late 2021, Apple switched to <strong>randomized 10-character serial numbers</strong>. These serials are purely random identifiers with no embedded manufacturing data. Apple made this change for privacy reasons and to prevent serial number prediction or enumeration.</p>
+            <p>Post-2021 serials cannot be decoded offline. You can still use them with Apple's official support tools, but third-party tools (including ours) cannot extract factory, date, or model information from the new format. For these devices, IMEI lookup is a better alternative.</p>
+
+            <h2>What Is a Dell Service Tag?</h2>
+            <p>A <strong>Dell service tag</strong> is a unique 5-7 character alphanumeric code assigned to every Dell computer, monitor, and peripheral. It serves as the primary identifier for Dell's warranty and support systems.</p>
+            <p>The service tag links the device to its specific configuration (model, CPU, RAM, storage, etc.) and warranty coverage. Dell's support API returns the product model and all associated warranty entitlements when queried with a valid service tag.</p>
+
+            <h3>How to Find Your Dell Service Tag</h3>
+            <ul>
+                <li><strong>Physical label</strong>: On laptops, look at the bottom of the device. On desktops, check the top or side panel. On monitors, check the back.</li>
+                <li><strong>BIOS/UEFI</strong>: The service tag is displayed on the BIOS splash screen during boot.</li>
+                <li><strong>Windows Command Prompt</strong>: Run <code>wmic bios get serialnumber</code> to display the service tag.</li>
+                <li><strong>PowerShell</strong>: Run <code>Get-CimInstance Win32_BIOS | Select SerialNumber</code>.</li>
+                <li><strong>Linux</strong>: Run <code>sudo dmidecode -s system-serial-number</code>.</li>
+            </ul>
+
+            <h2>Privacy: What Stays Local vs. What Gets Sent</h2>
+            <p>The duckTyped Device Lookup tool is designed with privacy as a priority:</p>
+            <ul>
+                <li><strong>IMEI lookups</strong> are <strong>100% client-side</strong>. The TAC database is loaded into your browser and all processing happens locally. Your IMEI never leaves your device.</li>
+                <li><strong>Apple serial lookups</strong> are <strong>100% client-side</strong>. The serial format database is loaded into your browser and decoded locally.</li>
+                <li><strong>Dell service tag lookups</strong> require an <strong>API call</strong>. The service tag is sent to the duckTyped backend, which proxies the request to Dell's warranty API. No data is stored or logged on our servers -- the request is forwarded and the result is returned directly to your browser.</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools complement the Device Lookup for hardware and network identification:</p>
+            <ul>
+                <li><a href="/mac-lookup/">MAC Address Lookup</a> -- identify the manufacturer of a network interface from its MAC address. Similar concept to IMEI/TAC lookup but for network hardware.</li>
+                <li><a href="/isp-lookup/">ISP Lookup</a> -- identify the ISP, ASN, and geolocation for any IP address.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/mac-lookup/">MAC Address Lookup</a>, <a href="/learn/isp-lookup/">ISP Lookup</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/device-lookup/" class="cta-btn-primary">Try Device Lookup</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

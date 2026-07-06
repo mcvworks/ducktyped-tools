@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is FORMERR a problem with my computer or the DNS server?","acceptedAnswer":{"@type":"Answer","text":"It can be either. If your DNS client software or a network device is generating malformed queries, the problem is on your side. If the server has a buggy implementation that rejects valid queries, the problem is on the server side. Testing with dig from a clean system can help isolate the cause."}},{"@type":"Question","name":"Why do I get FORMERR from one DNS server but not another?","acceptedAnswer":{"@type":"Answer","text":"Different DNS servers have different levels of tolerance for edge cases in the DNS protocol. A server with strict parsing may return FORMERR for queries that another server handles gracefully, particularly around EDNS0 options."}},{"@type":"Question","name":"Can FORMERR affect only specific domains?","acceptedAnswer":{"@type":"Answer","text":"FORMERR is typically about the query format rather than the domain being queried. However, if the issue is related to specific query types (such as querying for HTTPS records) that trigger EDNS0 features, it may appear to be domain-specific."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS FORMERR — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS FORMERR","step":[{"@type":"HowToStep","position":1,"name":"Bypass local DNS proxy","text":"If your router or local DNS proxy is generating malformed queries, configure your system to use a public DNS server directly, bypassing the local proxy."},{"@type":"HowToStep","position":2,"name":"Disable EDNS0 for testing","text":"If you suspect EDNS0 incompatibility, test with EDNS0 disabled using dig to confirm."},{"@type":"HowToStep","position":3,"name":"Update router firmware","text":"If the FORMERR is caused by your router's DNS proxy, update the router firmware to the latest version. Router DNS implementations often have bugs that are fixed in newer firmware releases."},{"@type":"HowToStep","position":4,"name":"Try a different DNS server","text":"If a specific DNS server returns FORMERR, try querying a different server. The issue may be with that server's implementation rather than your query."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS FORMERR — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS FORMERR (Format Error) responses. Learn what causes malformed DNS queries, why servers return FORMERR, and how to troubleshoot resolution failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS FORMERR, Format Error DNS, RCODE 1, DNS query format error, Malformed DNS query">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS FORMERR — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS FORMERR (Format Error) responses. Learn what causes malformed DNS queries, why servers return FORMERR, and how to troubleshoot resolution failures.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/formerr">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/formerr">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS FORMERR</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS FORMERR</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNS format error in the query</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS FORMERR</code></li><li><code>Format Error DNS</code></li><li><code>RCODE 1</code></li><li><code>DNS query format error</code></li><li><code>Malformed DNS query</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNS FORMERR (RCODE 1) is returned by a DNS server when it receives a query that is malformed or contains formatting errors that prevent the server from parsing it. The query may have an invalid header, unsupported flags, malformed domain name labels, or include EDNS options that the server cannot process. This is relatively rare in normal browsing because DNS clients generate well-formed queries, but it can occur with specific software, EDNS0 incompatibilities, or network equipment that corrupts DNS packets.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>EDNS0 incompatibility</strong> — The client sent a query with EDNS0 (Extension Mechanisms for DNS) options that the server does not understand or support. Some older DNS servers return FORMERR when they encounter OPT pseudo-records.</li>
+                <li><strong>Corrupted DNS packet</strong> — A network device, firewall, or NAT gateway modified the DNS packet in transit, corrupting the binary format so that the server cannot parse the query correctly.</li>
+                <li><strong>Invalid query type or class</strong> — The DNS query specifies a record type or class that the server does not recognize or considers invalid, causing it to reject the query as malformed.</li>
+                <li><strong>DNS proxy or forwarder bug</strong> — A local DNS proxy, home router firmware, or DNS forwarder has a bug that generates malformed queries when forwarding requests to upstream servers.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Bypass local DNS proxy</h3>
+            <p>If your router or local DNS proxy is generating malformed queries, configure your system to use a public DNS server directly, bypassing the local proxy.</p>
+            <pre><code># Set DNS directly to bypass router DNS proxy
+# Google DNS: 8.8.8.8, 8.8.4.4
+# Cloudflare DNS: 1.1.1.1, 1.0.0.1</code></pre>
+            <h3>2. Disable EDNS0 for testing</h3>
+            <p>If you suspect EDNS0 incompatibility, test with EDNS0 disabled using dig to confirm.</p>
+            <pre><code># Query with EDNS0 disabled
+dig +noedns example.com @your-dns-server
+
+# Compare with EDNS0 enabled (default)
+dig example.com @your-dns-server</code></pre>
+            <h3>3. Update router firmware</h3>
+            <p>If the FORMERR is caused by your router's DNS proxy, update the router firmware to the latest version. Router DNS implementations often have bugs that are fixed in newer firmware releases.</p>
+            <h3>4. Try a different DNS server</h3>
+            <p>If a specific DNS server returns FORMERR, try querying a different server. The issue may be with that server's implementation rather than your query.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is FORMERR a problem with my computer or the DNS server?</h3>
+            <p>It can be either. If your DNS client software or a network device is generating malformed queries, the problem is on your side. If the server has a buggy implementation that rejects valid queries, the problem is on the server side. Testing with dig from a clean system can help isolate the cause.</p>
+            <h3>Why do I get FORMERR from one DNS server but not another?</h3>
+            <p>Different DNS servers have different levels of tolerance for edge cases in the DNS protocol. A server with strict parsing may return FORMERR for queries that another server handles gracefully, particularly around EDNS0 options.</p>
+            <h3>Can FORMERR affect only specific domains?</h3>
+            <p>FORMERR is typically about the query format rather than the domain being queried. However, if the issue is related to specific query types (such as querying for HTTPS records) that trigger EDNS0 features, it may appear to be domain-specific.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — DNS server failed to process the query</li>
+                <li><a href="/errors/dns/refused">DNS REFUSED</a> — DNS server refused to answer the query</li>
+                <li><a href="/errors/dns/nxdomain">DNS NXDOMAIN</a> — Domain does not exist in DNS</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

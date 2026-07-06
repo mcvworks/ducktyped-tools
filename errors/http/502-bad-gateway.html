@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 502 Bad Gateway mean?","acceptedAnswer":{"@type":"Answer","text":"A 502 Bad Gateway error means a server acting as a gateway or proxy received an invalid, empty, or malformed response from an upstream server. The gateway (e.g., nginx, Cloudflare, a load balancer) is working, but the backend it is trying to reach is not responding correctly."}},{"@type":"Question","name":"What is the difference between 502 and 503?","acceptedAnswer":{"@type":"Answer","text":"A 502 Bad Gateway means the gateway received an invalid response from the upstream server — the upstream is responding but sending garbage. A 503 Service Unavailable means the server itself cannot handle requests, usually due to being overloaded or in maintenance mode."}},{"@type":"Question","name":"How do I fix a 502 Bad Gateway error?","acceptedAnswer":{"@type":"Answer","text":"As a visitor, try refreshing the page or waiting a few minutes. As a site owner, check that your application server (PHP-FPM, Node.js, Gunicorn, etc.) is running and healthy, verify your nginx or Apache upstream configuration, and check server logs for errors."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"502 Bad Gateway — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>502 Bad Gateway — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 502 Bad Gateway error means and how to fix it. Covers nginx, Apache, Cloudflare, PHP-FPM, Node.js, and load balancer configurations.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 502, 502 Bad Gateway, Error 502, 502 error, 502 Bad Gateway nginx, 502 Bad Gateway Cloudflare, Bad gateway error, Server Error 502, 502 proxy error, upstream prematurely closed connection">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="502 Bad Gateway — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 502 Bad Gateway errors with step-by-step solutions for nginx, Apache, Cloudflare, PHP-FPM, and load balancers.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/502-bad-gateway">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/502-bad-gateway">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>502 Bad Gateway</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>502 Bad Gateway</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 502 error means a gateway or proxy server received an invalid response from the backend server it was trying to reach. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 502</code></li><li><code>502 Bad Gateway</code></li><li><code>Error 502</code></li><li><code>502 error</code></li><li><code>502 Bad Gateway nginx</code></li><li><code>502 Bad Gateway Cloudflare</code></li><li><code>Bad gateway error</code></li><li><code>Server Error 502</code></li><li><code>502 proxy error</code></li><li><code>upstream prematurely closed connection</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Failure Happens</h2>
+                <div class="dt-diagram" data-diagram="http" data-error="502"></div>
+            </div>
+
+            <h2>What Does 502 Bad Gateway Mean?</h2>
+            <p>The HTTP <strong>502 Bad Gateway</strong> status code is returned by a gateway or reverse proxy (such as nginx, Apache's mod_proxy, Cloudflare, or a load balancer) when the upstream server it is forwarding requests to returns an invalid or empty response.</p>
+            <p>The gateway itself is operational — it received your request and tried to forward it. The problem is with the backend: the application server crashed, timed out, or sent a malformed response.</p>
+            <p>Common architectures where this occurs:</p>
+            <ul>
+                <li>nginx (reverse proxy) → PHP-FPM (PHP application)</li>
+                <li>nginx (reverse proxy) → Node.js / Python / Ruby application</li>
+                <li>Cloudflare CDN → your origin server</li>
+                <li>Load balancer → backend application instances</li>
+            </ul>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Application server crashed</strong> — PHP-FPM, Gunicorn, Node.js, or another backend process is down.</li>
+                <li><strong>Application server overloaded</strong> — the backend is alive but not responding within the configured timeout.</li>
+                <li><strong>Upstream timeout</strong> — the gateway timed out waiting for the backend to respond.</li>
+                <li><strong>Misconfigured upstream in nginx/Apache</strong> — the proxy is pointing to the wrong IP, port, or socket.</li>
+                <li><strong>Network issue between gateway and backend</strong> — firewall rules, routing issues, or a private network failure.</li>
+                <li><strong>Memory or resource exhaustion on the backend</strong> — the backend server ran out of memory or file descriptors.</li>
+                <li><strong>Deployment errors</strong> — a recent code deploy caused the application to fail to start.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+            <p>As a visitor, the issue is on the server's end. Try:</p>
+            <ol>
+                <li>Wait a few minutes and refresh the page — transient overload often resolves itself.</li>
+                <li>Try a different browser or device to rule out local issues.</li>
+                <li>Check if the site is down for everyone using the <a href="/http-latency/">HTTP Latency Checker</a>.</li>
+            </ol>
+
+            <h3>For Site Owners</h3>
+
+            <h4>1. Check the Application Server</h4>
+            <p>Verify your backend application process is running:</p>
+            <pre><code># Check PHP-FPM
+sudo systemctl status php8.1-fpm
+
+# Check Node.js (if using PM2)
+pm2 status
+
+# Check Gunicorn/uWSGI
+sudo systemctl status gunicorn</code></pre>
+
+            <h4>2. Check nginx Error Logs</h4>
+            <pre><code>sudo tail -f /var/log/nginx/error.log</code></pre>
+            <p>Look for "upstream" errors — they will show the exact cause (connection refused, timeout, etc.).</p>
+
+            <h4>3. Verify Upstream Configuration in nginx</h4>
+            <pre><code>location / {
+    proxy_pass http://127.0.0.1:3000;  # Make sure port is correct
+    proxy_read_timeout 60s;
+    proxy_connect_timeout 10s;
+}</code></pre>
+
+            <h4>4. Restart the Application Server</h4>
+            <pre><code>sudo systemctl restart php8.1-fpm
+# or
+sudo systemctl restart gunicorn</code></pre>
+
+            <h4>5. Check Server Resources</h4>
+            <p>Check memory, CPU, and disk usage. An OOM (Out of Memory) event can kill backend processes:</p>
+            <pre><code>free -h
+df -h
+top</code></pre>
+
+            <h4>6. Increase Upstream Timeout</h4>
+            <p>If the backend is slow to respond (e.g., a heavy computation), increase the timeout in nginx:</p>
+            <pre><code>proxy_read_timeout 120s;
+proxy_connect_timeout 30s;</code></pre>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — test whether your server is responding and measure response times.</li>
+                <li><a href="/port-scanner/">Port Scanner</a> — verify your application server port is open and listening.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> — inspect the response headers your server returns.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between 502 and 503?</h3>
+            <p>A <strong>502 Bad Gateway</strong> means the gateway received an invalid response from the upstream — the upstream is responding, but with garbage or nothing usable. A <strong>503 Service Unavailable</strong> means the server itself cannot handle requests, typically due to maintenance mode or being completely overloaded with no capacity left.</p>
+
+            <h3>Does Cloudflare return 502?</h3>
+            <p>Yes. When Cloudflare cannot reach your origin server or your origin returns an error, Cloudflare returns a 502. Check your origin server's health and ensure Cloudflare's IP ranges are not blocked by your firewall.</p>
+
+            <h3>Can a 502 error be caused by DNS?</h3>
+            <p>Indirectly. If your nginx upstream uses a hostname (rather than an IP) that resolves to an incorrect address, requests will be proxied to the wrong server. Use the <a href="/dns-lookup/">DNS Lookup tool</a> to verify resolution.</p>
+
+            <p class="related-guides">📖 <strong>Learn more:</strong> <a href="/learn/http-502-bad-gateway/">What is HTTP 502 Bad Gateway</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server is up but cannot handle requests.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — server is up but the resource is missing.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — backend port is closed entirely.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Check HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

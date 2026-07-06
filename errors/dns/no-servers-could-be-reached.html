@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this error mean the domain does not exist?","acceptedAnswer":{"@type":"Answer","text":"No. The query never reached a DNS server, so nothing was learned about the domain. A nonexistent domain produces an NXDOMAIN answer instead — which requires a server to respond."}},{"@type":"Question","name":"Why does dig fail while websites still load?","acceptedAnswer":{"@type":"Answer","text":"The browser may use DNS-over-HTTPS (port 443), bypassing the broken port-53 path that dig uses. That combination — browsing works, dig times out — is a strong hint that a firewall is blocking classic DNS."}},{"@type":"Question","name":"Why does 'dig +tcp' work when plain dig times out?","acceptedAnswer":{"@type":"Answer","text":"Some networks block or mangle UDP port 53 but allow TCP 53. That is a middlebox/firewall issue worth fixing, since normal resolution tries UDP first and will keep timing out."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"No servers could be reached — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No servers could be reached — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix dig/nslookup 'connection timed out; no servers could be reached'. Covers unreachable resolvers, port 53 firewalls, and resolv.conf mistakes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="connection timed out; no servers could be reached, dig no servers could be reached, nslookup connection timed out, ;; communications error to 127.0.0.53#53: timed out, nslookup no response from server">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="No servers could be reached — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix dig/nslookup 'connection timed out; no servers could be reached'. Covers unreachable resolvers, port 53 firewalls, and resolv.conf mistakes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/no-servers-could-be-reached">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/no-servers-could-be-reached">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>No servers could be reached</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>No servers could be reached</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The dig and nslookup error ';; connection timed out; no servers could be reached' — the tool could not contact any DNS server at all.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>connection timed out; no servers could be reached</code></li><li><code>dig no servers could be reached</code></li><li><code>nslookup connection timed out</code></li><li><code>;; communications error to 127.0.0.53#53: timed out</code></li><li><code>nslookup no response from server</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error means dig or nslookup sent queries to every configured DNS server and got zero responses — not even an error response. It says nothing about the domain being queried; the tool never managed to talk to a DNS server. The fault is always in the path between your machine and the resolver: wrong resolver IP, a firewall silently dropping port 53, the resolver process being down, or no network connectivity at all.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The configured resolver IP is wrong or dead</strong> — resolv.conf (or the dig @server argument) points at an address where no DNS service is listening — a decommissioned internal server, an old router IP, or a mistyped address.</li>
+                <li><strong>A firewall blocks port 53</strong> — Corporate and cloud firewalls often block outbound UDP/TCP 53 to everything except approved internal resolvers, so queries to public resolvers like 8.8.8.8 are silently dropped.</li>
+                <li><strong>The local stub resolver is down</strong> — When resolv.conf points at 127.0.0.53 (systemd-resolved) or 127.0.0.1 (dnsmasq/unbound) and that daemon is stopped, every query times out against localhost.</li>
+                <li><strong>No network connectivity</strong> — Interface down, DHCP failure, or a broken default route means no packets reach any server — DNS is just the first thing to notice.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Query a public resolver explicitly</h3>
+            <p>This one test splits the problem: if @1.1.1.1 works, your configured resolver is broken; if it also times out, the network path or firewall is at fault.</p>
+            <pre><code>dig example.com                 # times out
+dig @1.1.1.1 example.com        # explicit public resolver
+dig @8.8.8.8 example.com +tcp   # try TCP in case UDP is blocked</code></pre>
+            <h3>2. Check what resolver is actually configured</h3>
+            <p>Verify the nameserver lines and whether they point at a local stub that needs to be running.</p>
+            <pre><code>cat /etc/resolv.conf
+resolvectl status   # if it shows 127.0.0.53
+sudo systemctl restart systemd-resolved</code></pre>
+            <h3>3. Test raw reachability of port 53</h3>
+            <p>Confirm packets can reach the resolver at all. If ping works but DNS times out, a firewall is dropping port 53 specifically.</p>
+            <pre><code>ping -c2 1.1.1.1
+nc -zvu 1.1.1.1 53   # UDP
+nc -zv 1.1.1.1 53    # TCP</code></pre>
+            <h3>4. Check basic connectivity and routes</h3>
+            <p>If nothing is reachable, fix the network first — DNS will follow.</p>
+            <pre><code>ip addr show
+ip route show
+ping -c2 $(ip route | awk '/default/ {print $3; exit}')</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does this error mean the domain does not exist?</h3>
+            <p>No. The query never reached a DNS server, so nothing was learned about the domain. A nonexistent domain produces an NXDOMAIN answer instead — which requires a server to respond.</p>
+            <h3>Why does dig fail while websites still load?</h3>
+            <p>The browser may use DNS-over-HTTPS (port 443), bypassing the broken port-53 path that dig uses. That combination — browsing works, dig times out — is a strong hint that a firewall is blocking classic DNS.</p>
+            <h3>Why does 'dig +tcp' work when plain dig times out?</h3>
+            <p>Some networks block or mangle UDP port 53 but allow TCP 53. That is a middlebox/firewall issue worth fixing, since normal resolution tries UDP first and will keep timing out.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — the same condition reported by Windows diagnostics.</li>
+                <li><a href="/errors/dns/dns-query-timeout">DNS Query Timeout</a> — timeouts on individual queries.</li>
+                <li><a href="/errors/dns/refused">DNS REFUSED</a> — when the server responds but declines to answer.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Run the query from duckTyped's network instead</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check whether port 53 is reachable on a resolver</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

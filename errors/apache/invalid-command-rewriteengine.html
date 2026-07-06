@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does my site 500 on every page after deploying the app's .htaccess?","acceptedAnswer":{"@type":"Answer","text":"The .htaccess is parsed on each request; an Invalid command in it aborts request processing with a 500. Check the error log for the Invalid command line naming the file, then enable the missing module — for typical app .htaccess files that means mod_rewrite."}},{"@type":"Question","name":"RewriteEngine works but rules are ignored — related?","acceptedAnswer":{"@type":"Answer","text":"Different problem: the module is loaded but .htaccess processing is off. AllowOverride None (the default since 2.4) makes Apache skip .htaccess entirely. Set 'AllowOverride All' (or the specific override classes) in the Directory block for the docroot."}},{"@type":"Question","name":"Should rewrite rules live in .htaccess or the vhost?","acceptedAnswer":{"@type":"Answer","text":"If you control the server config, the vhost: it is parsed once at startup instead of on every request, and it cannot be broken by an app deploy. .htaccess exists for shared hosting where users cannot touch the vhost."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache Invalid Command 'RewriteEngine' — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Invalid Command 'RewriteEngine' — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache &quot;Invalid command 'RewriteEngine'&quot; and other Invalid command errors. Enable mod_rewrite with a2enmod, RHEL LoadModule, and .htaccess 500s.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Invalid command &#39;RewriteEngine&#39;, perhaps misspelled or defined by a module not included in the server configuration, a2enmod rewrite, apache invalid command htaccess">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache Invalid Command 'RewriteEngine' — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache &quot;Invalid command 'RewriteEngine'&quot; and other Invalid command errors. Enable mod_rewrite with a2enmod, RHEL LoadModule, and .htaccess 500s.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/invalid-command-rewriteengine">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/invalid-command-rewriteengine">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache Invalid Command 'RewriteEngine'</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache Invalid Command 'RewriteEngine'</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error "Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration" — mod_rewrite (or another module) is not enabled.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Invalid command &#39;RewriteEngine&#39;</code></li><li><code>perhaps misspelled or defined by a module not included in the server configuration</code></li><li><code>a2enmod rewrite</code></li><li><code>apache invalid command htaccess</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Apache parsed a directive that no loaded module defines. RewriteEngine is the most famous case — WordPress and framework .htaccess files use mod_rewrite, which Debian-family installs ship disabled — but the same error fires for Header (mod_headers), ExpiresActive (mod_expires), ProxyPass (mod_proxy), and any directive whose module is missing. Where it appears matters: in the main config it blocks startup; in an .htaccess file it turns every request to that directory into a 500 Internal Server Error.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The module is not enabled</strong> — mod_rewrite, mod_headers, mod_expires, and mod_proxy are all opt-in on Debian/Ubuntu. Config copied from a working server fails on a host where the module was never enabled.</li>
+                <li><strong>Directive arrived via .htaccess</strong> — An application's shipped .htaccess assumes modules the server lacks — every hit to the directory 500s, and the error log shows the Invalid command line with the .htaccess path.</li>
+                <li><strong>Genuine misspelling</strong> — RewriteEngin, ProxyPas — the message's 'perhaps misspelled' branch. The quoted token in the error is exactly what Apache read.</li>
+                <li><strong>Directive from a third-party module that is not installed</strong> — Directives from mod_security, mod_pagespeed, or mod_wsgi require installing the package, not just a2enmod.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Enable the module that defines the directive</h3>
+            <p>On Debian-family, a2enmod; the directive-to-module mapping is in the Apache docs header of each directive.</p>
+            <pre><code>sudo a2enmod rewrite headers expires
+sudo apachectl configtest
+sudo systemctl restart apache2</code></pre>
+            <h3>2. On RHEL-family, check the LoadModule line</h3>
+            <p>Modules load via LoadModule in conf.modules.d; most ship enabled, but verify.</p>
+            <pre><code>grep -rn 'mod_rewrite' /etc/httpd/conf.modules.d/
+# ensure uncommented:
+# LoadModule rewrite_module modules/mod_rewrite.so
+sudo apachectl configtest &amp;&amp; sudo systemctl restart httpd</code></pre>
+            <h3>3. Confirm which modules are loaded</h3>
+            <p>List live modules to verify the fix took.</p>
+            <pre><code>apachectl -M | grep -E 'rewrite|headers|expires'</code></pre>
+            <h3>4. Guard optional directives in shared configs</h3>
+            <p>Configs that must work with or without a module can wrap directives in IfModule so absence degrades instead of erroring.</p>
+            <pre><code>&lt;IfModule mod_headers.c&gt;
+    Header set X-Frame-Options &quot;SAMEORIGIN&quot;
+&lt;/IfModule&gt;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does my site 500 on every page after deploying the app's .htaccess?</h3>
+            <p>The .htaccess is parsed on each request; an Invalid command in it aborts request processing with a 500. Check the error log for the Invalid command line naming the file, then enable the missing module — for typical app .htaccess files that means mod_rewrite.</p>
+            <h3>RewriteEngine works but rules are ignored — related?</h3>
+            <p>Different problem: the module is loaded but .htaccess processing is off. AllowOverride None (the default since 2.4) makes Apache skip .htaccess entirely. Set 'AllowOverride All' (or the specific override classes) in the Directory block for the docroot.</p>
+            <h3>Should rewrite rules live in .htaccess or the vhost?</h3>
+            <p>If you control the server config, the vhost: it is parsed once at startup instead of on every request, and it cannot be broken by an app deploy. .htaccess exists for shared hosting where users cannot touch the vhost.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/apache/ah00526-syntax-error">AH00526 Syntax Error</a> — other config parse failures.</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — what visitors see for .htaccess failures.</li>
+                <li><a href="/errors/nginx/unknown-directive">Nginx Unknown Directive</a> — the nginx equivalent.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test rewrites and redirects</span>
+                </a>
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace rewrite/redirect chains</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

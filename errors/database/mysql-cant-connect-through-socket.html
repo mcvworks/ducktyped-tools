@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does 'localhost' behave differently from '127.0.0.1' in MySQL?","acceptedAnswer":{"@type":"Answer","text":"MySQL special-cases the hostname 'localhost' to mean the Unix socket, while '127.0.0.1' always means TCP. They are different transports with potentially different grants ('user'@'localhost' vs 'user'@'127.0.0.1'), which is why one can work while the other fails."}},{"@type":"Question","name":"How do I connect to MySQL running in Docker?","acceptedAnswer":{"@type":"Answer","text":"Publish the port (-p 3306:3306) and connect with -h 127.0.0.1 -P 3306. From another container on the same Docker network, use the container/service name as the host. The socket file inside the container is only usable by clients inside that container."}},{"@type":"Question","name":"The error shows socket path '(2)' — what does the number mean?","acceptedAnswer":{"@type":"Answer","text":"It is the OS errno: 2 means 'No such file or directory' (socket missing — server down or wrong path), while 13 means 'Permission denied' (socket exists but your user cannot access it)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Can't Connect to Local MySQL Server Through Socket — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can't Connect to Local MySQL Server Through Socket — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix MySQL error 2002 'Can't connect to local MySQL server through socket /var/run/mysqld/mysqld.sock'. Covers stopped servers, socket paths, and Docker.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Can&#39;t connect to local MySQL server through socket, MySQL error 2002, ERROR 2002 (HY000), /var/run/mysqld/mysqld.sock (2), mysqld.sock missing, MariaDB can&#39;t connect through socket">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Can't Connect to Local MySQL Server Through Socket — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix MySQL error 2002 'Can't connect to local MySQL server through socket /var/run/mysqld/mysqld.sock'. Covers stopped servers, socket paths, and Docker.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mysql-cant-connect-through-socket">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mysql-cant-connect-through-socket">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Can't Connect to Local MySQL Server Through Socket</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Can't Connect to Local MySQL Server Through Socket</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">MySQL error 2002 — the client looked for the Unix socket file (usually /var/run/mysqld/mysqld.sock) and found nothing listening.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Can&#39;t connect to local MySQL server through socket</code></li><li><code>MySQL error 2002</code></li><li><code>ERROR 2002 (HY000)</code></li><li><code>/var/run/mysqld/mysqld.sock (2)</code></li><li><code>mysqld.sock missing</code></li><li><code>MariaDB can&#39;t connect through socket</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When you connect to host 'localhost', the MySQL client does not use TCP at all — it opens a Unix socket file on disk. Error 2002 means that file was missing or nothing was listening on it. Either the server is not running (by far the most common), the client and server disagree about where the socket lives, or the server exists somewhere the socket cannot reach — like inside a Docker container, where the host's client cannot use it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>MySQL is not running</strong> — The service crashed, failed to start (disk full, corrupted tables, bad configuration), or was never started after boot. No server process means no socket file.</li>
+                <li><strong>Client and server use different socket paths</strong> — The server creates the socket where its config says (e.g. /var/lib/mysql/mysql.sock on RHEL-family), while the client looks at its own default (/var/run/mysqld/mysqld.sock on Debian-family). Mixed packages and custom builds disagree silently.</li>
+                <li><strong>MySQL runs in Docker</strong> — The socket exists inside the container's filesystem. A client on the host connecting to 'localhost' looks for a socket on the host — which does not exist. Docker connections must use TCP (127.0.0.1 with the published port).</li>
+                <li><strong>Disk full or permissions prevented socket creation</strong> — A full /var partition or wrong ownership on the socket directory stops the server from creating the socket even though the process starts.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check and start the server</h3>
+            <p>Confirm whether MySQL is running before anything else; if it fails to start, the log tells you why.</p>
+            <pre><code>sudo systemctl status mysql    # or mysqld / mariadb
+sudo systemctl start mysql
+sudo journalctl -u mysql -n 30
+sudo tail -50 /var/log/mysql/error.log</code></pre>
+            <h3>2. Connect over TCP to bypass the socket</h3>
+            <p>Using 127.0.0.1 instead of localhost forces TCP. If this works, the server is fine and the problem is purely the socket path.</p>
+            <pre><code>mysql -h 127.0.0.1 -P 3306 -u root -p</code></pre>
+            <h3>3. Find the real socket path and align configs</h3>
+            <p>Ask the running server where its socket is, then set the same path in the [client] section.</p>
+            <pre><code>mysql -h 127.0.0.1 -u root -p -e &quot;SHOW VARIABLES LIKE 'socket';&quot;
+
+# /etc/mysql/my.cnf
+[client]
+socket = /var/lib/mysql/mysql.sock</code></pre>
+            <h3>4. Check disk space if the server will not start</h3>
+            <p>A full data or log partition is a classic silent startup failure.</p>
+            <pre><code>df -h /var /var/lib/mysql
+sudo du -sh /var/lib/mysql/*.log 2&gt;/dev/null</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does 'localhost' behave differently from '127.0.0.1' in MySQL?</h3>
+            <p>MySQL special-cases the hostname 'localhost' to mean the Unix socket, while '127.0.0.1' always means TCP. They are different transports with potentially different grants ('user'@'localhost' vs 'user'@'127.0.0.1'), which is why one can work while the other fails.</p>
+            <h3>How do I connect to MySQL running in Docker?</h3>
+            <p>Publish the port (-p 3306:3306) and connect with -h 127.0.0.1 -P 3306. From another container on the same Docker network, use the container/service name as the host. The socket file inside the container is only usable by clients inside that container.</p>
+            <h3>The error shows socket path '(2)' — what does the number mean?</h3>
+            <p>It is the OS errno: 2 means 'No such file or directory' (socket missing — server down or wrong path), while 13 means 'Permission denied' (socket exists but your user cannot access it).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> — authentication failures once connected.</li>
+                <li><a href="/errors/database/mysql-server-has-gone-away">MySQL Server Has Gone Away</a> — connections dying mid-use.</li>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — the equivalent PostgreSQL failure.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if port 3306 is open</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

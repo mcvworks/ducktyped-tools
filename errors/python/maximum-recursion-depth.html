@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why is Python's limit only 1000?","acceptedAnswer":{"@type":"Answer","text":"Each Python frame is relatively heavy, and the interpreter guards the underlying C stack: recursing too deep there segfaults the process instead of raising a catchable error. 1000 is a safety margin — algorithms needing much more are usually better iterative, and Python (by design) has no tail-call optimization."}},{"@type":"Question","name":"The error mentions 'while calling a Python object' or pickle/repr — what is that?","acceptedAnswer":{"@type":"Answer","text":"The recursion is inside a protocol: comparing, representing, or serializing objects that reference each other cyclically. Implement the dunder to handle cycles (track visited ids), or break the cycle in the data model."}},{"@type":"Question","name":"Can I catch RecursionError?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is a normal exception, and catching it at a boundary to fail one request instead of the process is legitimate. But treat the catch as containment; the loop itself still needs the real fix."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python RecursionError: Maximum Recursion Depth Exceeded — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python RecursionError: Maximum Recursion Depth Exceeded — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Python RecursionError. Read the repeating traceback, missing base cases, __getattr__ loops, iterative rewrites, and when setrecursionlimit is safe.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="RecursionError: maximum recursion depth exceeded, maximum recursion depth exceeded while calling a Python object, maximum recursion depth exceeded in comparison, sys.setrecursionlimit">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python RecursionError: Maximum Recursion Depth Exceeded — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Python RecursionError. Read the repeating traceback, missing base cases, __getattr__ loops, iterative rewrites, and when setrecursionlimit is safe.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/maximum-recursion-depth">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/maximum-recursion-depth">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python RecursionError: Maximum Recursion Depth Exceeded</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python RecursionError: Maximum Recursion Depth Exceeded</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'RecursionError: maximum recursion depth exceeded' — function calls nested past Python's limit (default 1000), almost always runaway recursion.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>RecursionError: maximum recursion depth exceeded</code></li><li><code>maximum recursion depth exceeded while calling a Python object</code></li><li><code>maximum recursion depth exceeded in comparison</code></li><li><code>sys.setrecursionlimit</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Python caps the interpreter call stack at sys.getrecursionlimit() frames — 1000 by default — and raises RecursionError beyond it. Like its JavaScript cousin, this is a logic bug far more often than a limit problem: a base case that some input never reaches, __getattr__ or properties that read themselves, __repr__/__eq__ recursing through cyclic objects, or deep recursion over data that should be iterative. The traceback's repeating block names the loop.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Base case never reached</strong> — Termination depends on a condition an input never satisfies (empty string vs None, negative numbers, off-by-one) — the function descends forever.</li>
+                <li><strong>Dunder-method self-reference</strong> — __getattr__ that touches an attribute triggering __getattr__ again, a property whose getter reads the property, or __init__ calling the class — Python-specific loops that surprise even experienced developers.</li>
+                <li><strong>Recursive dunder traversal of cyclic objects</strong> — __repr__, __eq__, or serialization walking children on structures with cycles.</li>
+                <li><strong>Legitimately deep recursion</strong> — Tree algorithms on deep data, recursive descent parsers on big inputs — correct logic that simply exceeds 1000 frames.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read the repeating frames and log the arguments</h3>
+            <p>The pattern in the traceback is the diagnosis; seeing the arguments shows why termination fails.</p>
+            <pre><code>def walk(node, _depth=0):
+    assert _depth &lt; 500, f'runaway at {node!r}'   # temporary tripwire
+    ...</code></pre>
+            <h3>2. Fix __getattr__ loops with direct dict access</h3>
+            <p>Inside __getattr__ (and __setattr__), bypass normal attribute lookup for internal state.</p>
+            <pre><code>class Config:
+    def __init__(self):
+        object.__setattr__(self, '_data', {})
+    def __getattr__(self, name):
+        try:
+            return self._data[name]      # _data found normally -&gt; no loop
+        except KeyError:
+            raise AttributeError(name) from None</code></pre>
+            <h3>3. Rewrite deep recursion iteratively</h3>
+            <p>An explicit stack removes the depth limit entirely — the robust fix for tree/graph walkers.</p>
+            <pre><code>def walk_iter(root):
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        visit(node)
+        stack.extend(node.children)</code></pre>
+            <h3>4. Raise the limit only for known-finite depth</h3>
+            <p>For a correct algorithm slightly over the default on trusted input — never as a fix for infinite loops (you trade a clean exception for a hard crash when the real C stack dies).</p>
+            <pre><code>import sys
+sys.setrecursionlimit(5000)   # measured, bounded need only</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why is Python's limit only 1000?</h3>
+            <p>Each Python frame is relatively heavy, and the interpreter guards the underlying C stack: recursing too deep there segfaults the process instead of raising a catchable error. 1000 is a safety margin — algorithms needing much more are usually better iterative, and Python (by design) has no tail-call optimization.</p>
+            <h3>The error mentions 'while calling a Python object' or pickle/repr — what is that?</h3>
+            <p>The recursion is inside a protocol: comparing, representing, or serializing objects that reference each other cyclically. Implement the dunder to handle cycles (track visited ids), or break the cycle in the data model.</p>
+            <h3>Can I catch RecursionError?</h3>
+            <p>Yes — it is a normal exception, and catching it at a boundary to fail one request instead of the process is legitimate. But treat the catch as containment; the loop itself still needs the real fix.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/maximum-call-stack-size-exceeded">Maximum Call Stack (Node)</a> — the JavaScript counterpart.</li>
+                <li><a href="/errors/python/attributeerror-nonetype">AttributeError: NoneType</a> — everyday traceback triage.</li>
+                <li><a href="/errors/python/attempted-relative-import">Attempted Relative Import</a> — import-time structural errors.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect nested data depth</span>
+                </a>
+        <a href="/regex-tester/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Regex Tester</span>
+                    <span class="recommended-tool-desc">Catastrophic backtracking behaves similarly</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Webhooks Explained","description":"Learn how webhooks work, how to test them with capture endpoints and sample payloads, how to verify HMAC signatures from Stripe, GitHub, and Shopify, and how to handle retries and idempotency.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/webhook-tester/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Webhook Tester"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a webhook?","acceptedAnswer":{"@type":"Answer","text":"A webhook is an HTTP request that one system sends to another when an event occurs. Instead of your application polling an API for changes, the provider pushes a POST request with a JSON payload to a URL you register, the moment something happens — a payment succeeds, code is pushed, an order is created."}},{"@type":"Question","name":"How do I test a webhook without deploying my app?","acceptedAnswer":{"@type":"Answer","text":"Use a capture endpoint to inspect what the provider actually sends, generate realistic sample payloads to POST at your handler locally, and expose your local server to the internet with a tunneling tool like ngrok or cloudflared so real providers can reach it during development."}},{"@type":"Question","name":"How do webhook signatures work?","acceptedAnswer":{"@type":"Answer","text":"Most providers compute an HMAC of the raw request body using a shared secret and send it in a header — Stripe uses Stripe-Signature, GitHub uses X-Hub-Signature-256, and Shopify uses X-Shopify-Hmac-Sha256. Your handler recomputes the HMAC over the exact raw bytes it received and compares the two values using a constant-time comparison."}},{"@type":"Question","name":"Why do webhook handlers need to be idempotent?","acceptedAnswer":{"@type":"Answer","text":"Providers retry deliveries when your endpoint times out or returns an error, so the same event can arrive more than once. An idempotent handler records each event ID it has processed and skips duplicates, ensuring a retried delivery never charges a customer twice or sends a second email."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhooks Explained — Testing, Signatures &amp; Retries — duckTyped</title>
+    <meta name="description" content="Learn how webhooks work, how to test them, how to verify HMAC signatures from Stripe, GitHub, and Shopify, and how to handle retries and idempotency.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Webhooks Explained — Testing, Signatures & Retries — duckTyped">
+    <meta property="og:description" content="Learn how webhooks work, how to test them, how to verify HMAC signatures, and how to handle retries and idempotency.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/webhook-tester/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Webhooks Explained — Testing, Signatures & Retries — duckTyped">
+    <meta name="twitter:description" content="Learn how webhooks work, how to test them, verify signatures, and handle retries.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/webhook-tester/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Webhook Tester</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Webhooks Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand how webhooks deliver events between systems, how to test handlers with capture endpoints and sample payloads, how to verify HMAC signatures from Stripe, GitHub, and Shopify, and how to survive retries with idempotent handlers.</p>
+
+            <h2>What Is a Webhook?</h2>
+            <p>A <strong>webhook</strong> is an HTTP request — almost always a <code>POST</code> with a JSON body — that one system sends to another when an event occurs. Instead of your application repeatedly polling an API asking "did anything change?", the provider pushes the event to a URL you register, the moment it happens. A payment succeeds, Stripe calls your endpoint. Code is pushed, GitHub calls your endpoint. An order is created, Shopify calls your endpoint.</p>
+            <p>This inverts the usual client-server relationship: <strong>your application becomes the server</strong>, and the third-party provider becomes the client. A typical webhook delivery looks like this on the wire:</p>
+            <pre><code>POST /webhooks/stripe HTTP/1.1
+Host: api.yourapp.com
+Content-Type: application/json
+Stripe-Signature: t=1718064000,v1=5257a869e7ecebeda32affa62cdca3fa51cad7e77a0e56ff536d0ce8e108d8bd
+
+{
+  "id": "evt_1PQrstuv",
+  "object": "event",
+  "type": "payment_intent.succeeded",
+  "data": { "object": { "id": "pi_3PQ...", "amount": 2000, "currency": "usd" } }
+}</code></pre>
+            <p>Your handler is expected to respond quickly with a <strong>2xx status code</strong> to acknowledge receipt. Anything else — a timeout, a 4xx, a 5xx — is treated as a failed delivery, and most providers will retry.</p>
+
+            <h2>How to Test Webhooks</h2>
+            <p>Webhooks are awkward to test because the sender is an external service and the receiver is often code running on your laptop. Three techniques cover almost every situation.</p>
+            <h3>Capture Endpoints</h3>
+            <p>A capture endpoint is a temporary URL that accepts any request and displays exactly what arrived: method, headers, and raw body. Point a provider's webhook configuration at a capture URL, trigger the event, and inspect the delivery. This answers the questions documentation often leaves vague — what the exact header names are, whether the body is JSON or form-encoded, and what the payload structure really looks like in your account.</p>
+            <h3>Inspecting and Replaying Payloads</h3>
+            <p>Once you know the payload shape, you do not need the real provider for every test cycle. Save a captured payload (or generate a realistic sample with the <a href="/webhook-tester/">duckTyped Webhook Payload Builder</a>) and replay it against your local handler with curl:</p>
+            <pre><code>curl -X POST http://localhost:3000/webhooks/github \
+  -H 'Content-Type: application/json' \
+  -H 'X-GitHub-Event: push' \
+  -H 'X-Hub-Signature-256: sha256=&lt;computed-hmac&gt;' \
+  -d @sample-push-payload.json</code></pre>
+            <p>This gives you a fast, repeatable feedback loop: edit the handler, replay the payload, check the result — no waiting for a real event to fire.</p>
+            <h3>Triggering Real Events</h3>
+            <p>Before shipping, always run at least one end-to-end test with the real provider in test mode. Stripe's CLI can trigger events on demand (<code>stripe trigger payment_intent.succeeded</code>), GitHub lets you redeliver any past webhook from the repository settings page, and Shopify lets you send test notifications from the admin. Real deliveries catch the things replays miss: TLS issues, header casing, and signature mismatches.</p>
+
+            <h2>Verifying Webhook Signatures</h2>
+            <p>A webhook endpoint is a publicly reachable URL that mutates state in your system — anyone who discovers it can POST forged events. The standard defense is an <strong>HMAC signature</strong>: the provider computes a keyed hash of the request body using a secret only you and the provider know, and sends it in a header. Your handler recomputes the HMAC and compares. Each major provider does this slightly differently:</p>
+            <ul>
+                <li><strong>Stripe</strong> — header <code>Stripe-Signature</code>, containing a timestamp (<code>t=</code>) and an HMAC-SHA256 (<code>v1=</code>) of <code>"{timestamp}.{body}"</code>, hex-encoded. The timestamp lets you reject old deliveries and defeat replay attacks.</li>
+                <li><strong>GitHub</strong> — header <code>X-Hub-Signature-256</code>, an HMAC-SHA256 of the raw body, hex-encoded and prefixed with <code>sha256=</code>.</li>
+                <li><strong>Shopify</strong> — header <code>X-Shopify-Hmac-Sha256</code>, an HMAC-SHA256 of the raw body, <strong>Base64-encoded</strong> (not hex).</li>
+            </ul>
+            <p>A GitHub-style verification in Node.js looks like this:</p>
+            <pre><code>const crypto = require('crypto');
+
+function verifyGithubSignature(rawBody, signatureHeader, secret) {
+  const expected = 'sha256=' + crypto
+    .createHmac('sha256', secret)
+    .update(rawBody)           // raw bytes, NOT re-serialized JSON
+    .digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signatureHeader)
+  );
+}</code></pre>
+            <p>Two mistakes account for nearly every "signature mismatch" bug. First, <strong>always hash the raw request body</strong> — if your framework parses JSON and you re-serialize it, key ordering and whitespace changes will produce a different digest. Second, use a <strong>constant-time comparison</strong> (like <code>crypto.timingSafeEqual</code>) instead of <code>===</code> to avoid timing side channels. You can experiment with HMAC computation interactively using the <a href="/hmac-generator/">HMAC Generator</a>.</p>
+
+            <h2>Retries and Idempotency</h2>
+            <p>Webhook delivery runs over the public internet, so failures are normal: your server restarts mid-request, a load balancer times out, a deploy returns 503 for thirty seconds. Providers handle this by <strong>retrying failed deliveries</strong>, usually with exponential backoff — Stripe retries for up to three days, GitHub redelivers on request, and Shopify retries 19 times over roughly 48 hours before disabling the subscription.</p>
+            <p>The consequence: <strong>the same event can arrive more than once</strong>, and your handler must behave correctly when it does. This property is called <strong>idempotency</strong>. The standard pattern is to record each processed event ID and skip duplicates:</p>
+            <pre><code>app.post('/webhooks/stripe', async (req, res) => {
+  const event = req.body;
+  const seen = await db.events.findOne({ id: event.id });
+  if (seen) return res.sendStatus(200);   // duplicate — acknowledge, do nothing
+
+  await db.events.insert({ id: event.id });
+  await handleEvent(event);               // safe to run exactly once
+  res.sendStatus(200);
+});</code></pre>
+            <p>Two more rules keep retry behavior sane. <strong>Respond fast</strong>: acknowledge with a 200 immediately and do heavy work (emails, PDF generation, downstream API calls) in a background queue, because slow responses get treated as failures and trigger retries. And <strong>never rely on delivery order</strong> — retries and parallel delivery mean events can arrive out of sequence, so fetch the current state from the provider's API when ordering matters.</p>
+
+            <h2>Local Development Tunneling</h2>
+            <p>Providers can only deliver webhooks to a public URL, but your handler runs on <code>localhost</code>. Tunneling tools bridge the gap by giving your local port a temporary public address:</p>
+            <pre><code># ngrok: expose local port 3000 at a public https URL
+ngrok http 3000
+# → Forwarding https://a1b2c3.ngrok-free.app -> http://localhost:3000
+
+# cloudflared: same idea, no account required for quick tunnels
+cloudflared tunnel --url http://localhost:3000
+
+# Stripe CLI: provider-specific forwarding with signature support
+stripe listen --forward-to localhost:3000/webhooks/stripe</code></pre>
+            <p>Register the tunnel URL as your webhook endpoint in the provider's dashboard, trigger test events, and watch real deliveries hit your local debugger. Note that free tunnel URLs change on every restart, so you will need to update the provider configuration each session — or use a provider CLI like Stripe's, which forwards events without any dashboard changes and prints a signing secret for local verification.</p>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/webhook-tester/">Webhook Payload Builder</a> generates correctly structured sample payloads so you can exercise handlers without waiting for real events:</p>
+            <ol>
+                <li><strong>Pick a service and event</strong> — GitHub (push, pull_request, issues, release), Stripe (payment_intent.succeeded, charge.succeeded, invoice.paid, customer.created), Slack, Discord, or a generic payload.</li>
+                <li><strong>Generate and edit</strong> — the tool produces a realistic JSON payload you can tweak to match your test case, then copy.</li>
+                <li><strong>Sign it</strong> — enter your webhook secret and the tool computes an HMAC-SHA256 signature (<code>sha256=...</code>) over the payload, ready to paste into a signature header.</li>
+            </ol>
+            <p>Everything runs entirely in your browser using the Web Crypto API — payloads and secrets are <strong>never sent to a server</strong>.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Webhook Payload Builder:</p>
+            <ul>
+                <li><a href="/hmac-generator/">HMAC Generator</a> -- compute HMAC signatures with any key and hash algorithm to debug verification code.</li>
+                <li><a href="/http-request-builder/">HTTP Request Builder</a> -- turn a webhook payload into a curl command, fetch call, or Python snippet to replay it.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> -- format and validate captured webhook payloads.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/stripe-webhook-signature-verification/">Stripe Signature Verification guide</a>, <a href="/learn/github-webhook-signature-verification/">GitHub Signature Verification guide</a>, <a href="/learn/hmac-generator/">HMAC Signatures guide</a>, <a href="/learn/http-status-codes/">HTTP Status Codes guide</a>, <a href="/learn/json-formatter/">JSON guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> -- what providers see when your handler rejects a malformed payload.</li>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> -- the right response to a failed signature check.</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> -- slow handlers cause timeouts, which cause retries.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/webhook-tester/" class="cta-btn-primary">Try the Webhook Payload Builder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do I need to send EHLO again after STARTTLS?","acceptedAnswer":{"@type":"Answer","text":"STARTTLS upgrades the connection to TLS, which effectively resets the SMTP session. The server may advertise different capabilities over the encrypted connection (such as AUTH mechanisms), so a new EHLO exchange is required."}},{"@type":"Question","name":"Can pipelining cause 503 errors?","acceptedAnswer":{"@type":"Answer","text":"Pipelining allows a client to send multiple commands without waiting for individual responses, but the commands must still be in the correct logical order. If commands are pipelined in the wrong sequence, the server will respond with 503 for the out-of-order commands."}},{"@type":"Question","name":"Is SMTP 503 always a client-side problem?","acceptedAnswer":{"@type":"Answer","text":"Almost always, yes. The error means your client sent a valid command at the wrong time. Rarely, a buggy server may incorrectly track session state and return 503 for correctly sequenced commands."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 503 — Bad Sequence of Commands — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 503 — Bad Sequence of Commands","step":[{"@type":"HowToStep","position":1,"name":"Follow the correct SMTP command sequence","text":"Ensure your SMTP client sends commands in the proper order."},{"@type":"HowToStep","position":2,"name":"Reset the transaction when needed","text":"If you need to start a new mail transaction in the same session, use the RSET command to reset the server state."},{"@type":"HowToStep","position":3,"name":"Re-issue EHLO after STARTTLS","text":"After a successful STARTTLS upgrade, the SMTP session is reset. You must send EHLO again before proceeding with AUTH or MAIL commands."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 503 — Bad Sequence of Commands — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 503 bad sequence of commands errors. Learn the correct SMTP command order and how to resolve command sequencing issues in email delivery.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 503, 503 Bad sequence of commands, 503 Need MAIL before RCPT, 503 Sender already specified">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 503 — Bad Sequence of Commands — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 503 bad sequence of commands errors. Learn the correct SMTP command order and how to resolve command sequencing issues in email delivery.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-503">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-503">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 503 — Bad Sequence of Commands</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 503 — Bad Sequence of Commands</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP commands were sent in an incorrect order</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 503</code></li><li><code>503 Bad sequence of commands</code></li><li><code>503 Need MAIL before RCPT</code></li><li><code>503 Sender already specified</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 503 is a permanent error indicating that the client sent a valid SMTP command at the wrong point in the SMTP conversation. SMTP requires commands to follow a specific sequence: greeting, EHLO/HELO, optional STARTTLS and AUTH, then MAIL FROM, RCPT TO, DATA, and QUIT. Sending a command out of this expected order causes the server to reject it with a 503 response.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>MAIL FROM sent before EHLO</strong> — The client attempted to send a MAIL FROM command before completing the initial EHLO or HELO handshake. The server requires the greeting exchange before accepting any mail transaction commands.</li>
+                <li><strong>DATA sent before RCPT TO</strong> — The client attempted to send the message body (DATA command) without first specifying at least one recipient with RCPT TO. The server cannot accept message data without knowing the recipient.</li>
+                <li><strong>Duplicate MAIL FROM without RSET</strong> — The client sent a second MAIL FROM command without first resetting the transaction with RSET. A new mail transaction requires either RSET to cancel the previous one or completion of the previous transaction.</li>
+                <li><strong>AUTH attempted after MAIL FROM</strong> — The client tried to authenticate after already beginning a mail transaction. Authentication must occur before the MAIL FROM command, typically right after EHLO.</li>
+                <li><strong>STARTTLS sent after mail transaction started</strong> — The client attempted to upgrade to TLS after already starting a mail transaction. STARTTLS must be issued immediately after the EHLO response and before any authentication or mail commands.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Follow the correct SMTP command sequence</h3>
+            <p>Ensure your SMTP client sends commands in the proper order.</p>
+            <pre><code># Correct SMTP sequence
+EHLO client.example.com
+STARTTLS                        # optional, before AUTH
+EHLO client.example.com         # re-issue after STARTTLS
+AUTH LOGIN                      # optional, before MAIL FROM
+MAIL FROM:&lt;sender@example.com&gt;
+RCPT TO:&lt;recipient@example.com&gt;
+DATA
+...message content...
+.
+QUIT</code></pre>
+            <h3>2. Reset the transaction when needed</h3>
+            <p>If you need to start a new mail transaction in the same session, use the RSET command to reset the server state.</p>
+            <pre><code># Reset and start new transaction
+RSET
+MAIL FROM:&lt;newsender@example.com&gt;
+RCPT TO:&lt;newrecipient@example.com&gt;</code></pre>
+            <h3>3. Re-issue EHLO after STARTTLS</h3>
+            <p>After a successful STARTTLS upgrade, the SMTP session is reset. You must send EHLO again before proceeding with AUTH or MAIL commands.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why do I need to send EHLO again after STARTTLS?</h3>
+            <p>STARTTLS upgrades the connection to TLS, which effectively resets the SMTP session. The server may advertise different capabilities over the encrypted connection (such as AUTH mechanisms), so a new EHLO exchange is required.</p>
+            <h3>Can pipelining cause 503 errors?</h3>
+            <p>Pipelining allows a client to send multiple commands without waiting for individual responses, but the commands must still be in the correct logical order. If commands are pipelined in the wrong sequence, the server will respond with 503 for the out-of-order commands.</p>
+            <h3>Is SMTP 503 always a client-side problem?</h3>
+            <p>Almost always, yes. The error means your client sent a valid command at the wrong time. Rarely, a buggy server may incorrectly track session state and return 503 for correctly sequenced commands.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-500">SMTP 500</a> — Command syntax error</li>
+                <li><a href="/errors/email/smtp-501">SMTP 501</a> — Parameter syntax error</li>
+                <li><a href="/errors/email/smtp-502">SMTP 502</a> — Command not implemented</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP connections and command sequences</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

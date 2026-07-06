@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why not just set max_connections to 5000?","acceptedAnswer":{"@type":"Answer","text":"Each connection is a full backend process with memory overhead, and hundreds of active backends thrash CPU and lock contention. PostgreSQL performs best with a modest number of busy connections — a pooler in transaction mode gives you high client concurrency without that cost."}},{"@type":"Question","name":"What do pgbouncer's pool modes mean?","acceptedAnswer":{"@type":"Answer","text":"Session mode ties one server connection to one client for its lifetime (safest, least sharing). Transaction mode lends a server connection only for each transaction (the usual choice; prepared statements and session state need care). Statement mode shares per statement (most aggressive, most restrictions)."}},{"@type":"Question","name":"Why can superusers still connect during the outage?","acceptedAnswer":{"@type":"Answer","text":"That is superuser_reserved_connections doing its job: a few slots only superusers may use, kept so an administrator can always get in to diagnose and kill sessions exactly when the pool is exhausted."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"PostgreSQL Remaining Connection Slots Are Reserved — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Remaining Connection Slots Are Reserved — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix PostgreSQL 'remaining connection slots are reserved' (53300). Find idle sessions, add pgbouncer pooling, and tune max_connections safely.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="remaining connection slots are reserved, FATAL: sorry, too many clients already, 53300 postgres, connection slots are reserved for non-replication superuser, postgres max_connections exceeded">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PostgreSQL Remaining Connection Slots Are Reserved — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix PostgreSQL 'remaining connection slots are reserved' (53300). Find idle sessions, add pgbouncer pooling, and tune max_connections safely.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/postgres-connection-slots-reserved">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/postgres-connection-slots-reserved">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>PostgreSQL Remaining Connection Slots Are Reserved</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>PostgreSQL Remaining Connection Slots Are Reserved</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">PostgreSQL error 53300 — 'FATAL: remaining connection slots are reserved for non-replication superuser connections'. The cluster hit max_connections.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>remaining connection slots are reserved</code></li><li><code>FATAL: sorry, too many clients already</code></li><li><code>53300 postgres</code></li><li><code>connection slots are reserved for non-replication superuser</code></li><li><code>postgres max_connections exceeded</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>PostgreSQL keeps a fixed number of connection slots (max_connections, default 100) and reserves a few of them (superuser_reserved_connections, default 3) for superusers, so an admin can always get in. This error means ordinary connections have consumed everything except that reserve. The cause is rarely genuine demand — it is usually connection leakage: application pools sized too large across too many instances, sessions stuck 'idle in transaction', or serverless functions each opening their own connections.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Application connection pools oversubscribe the cluster</strong> — Ten app instances each with a pool of 20 is 200 connections against a default limit of 100. Autoscaling multiplies the problem exactly when load spikes.</li>
+                <li><strong>Connections stuck 'idle in transaction'</strong> — Code that opens a transaction and stalls (waiting on an external call, or leaking connections without commit/rollback) holds slots indefinitely while doing nothing.</li>
+                <li><strong>Serverless / per-request connections</strong> — Lambda-style functions and scripts that open a fresh connection per invocation, without an external pooler, exhaust slots almost immediately under concurrency.</li>
+                <li><strong>max_connections simply too low for legitimate load</strong> — Less common — but real for monoliths with many workers. Raising the limit costs memory per slot, so it is a deliberate trade-off, not a free fix.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. See who is using the slots right now</h3>
+            <p>Connect as a superuser (the reserve exists for exactly this) and inspect pg_stat_activity, grouped by state and application.</p>
+            <pre><code>SELECT state, application_name, count(*)
+FROM pg_stat_activity
+GROUP BY 1, 2 ORDER BY 3 DESC;
+
+-- terminate abandoned idle-in-transaction sessions:
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE state = 'idle in transaction'
+  AND state_change &lt; now() - interval '10 minutes';</code></pre>
+            <h3>2. Put pgbouncer in front of the cluster</h3>
+            <p>A transaction-mode pooler multiplexes thousands of client connections onto a few dozen server connections — the standard fix for many app instances or serverless clients.</p>
+            <pre><code># pgbouncer.ini (essentials)
+[databases]
+appdb = host=127.0.0.1 port=5432 dbname=appdb
+
+[pgbouncer]
+pool_mode = transaction
+max_client_conn = 2000
+default_pool_size = 20</code></pre>
+            <h3>3. Set idle_in_transaction_session_timeout</h3>
+            <p>Make PostgreSQL kill sessions that sit in an open transaction too long, so leaks self-heal.</p>
+            <pre><code>ALTER SYSTEM SET idle_in_transaction_session_timeout = '5min';
+SELECT pg_reload_conf();</code></pre>
+            <h3>4. Right-size pools and, if needed, max_connections</h3>
+            <p>Total pool sizes across all instances should stay under max_connections minus the reserve. If you raise max_connections, remember each slot costs server memory (work_mem multiplied under load).</p>
+            <pre><code>SHOW max_connections;
+ALTER SYSTEM SET max_connections = 200;   -- requires restart
+-- sum of all app pools should be &lt; 200 - superuser_reserved_connections</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why not just set max_connections to 5000?</h3>
+            <p>Each connection is a full backend process with memory overhead, and hundreds of active backends thrash CPU and lock contention. PostgreSQL performs best with a modest number of busy connections — a pooler in transaction mode gives you high client concurrency without that cost.</p>
+            <h3>What do pgbouncer's pool modes mean?</h3>
+            <p>Session mode ties one server connection to one client for its lifetime (safest, least sharing). Transaction mode lends a server connection only for each transaction (the usual choice; prepared statements and session state need care). Statement mode shares per statement (most aggressive, most restrictions).</p>
+            <h3>Why can superusers still connect during the outage?</h3>
+            <p>That is superuser_reserved_connections doing its job: a few slots only superusers may use, kept so an administrator can always get in to diagnose and kill sessions exactly when the pool is exhausted.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-too-many-connections">Too Many Connections</a> — the MySQL counterpart of slot exhaustion.</li>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — timeouts that pile up sessions.</li>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — when the server is not accepting TCP at all.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Confirm port 5432/6432 reachability</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Watch app behavior during exhaustion</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is NXDOMAIN?","acceptedAnswer":{"@type":"Answer","text":"NXDOMAIN (Non-Existent Domain) is a DNS response code meaning the queried domain name does not exist in the DNS. The authoritative nameserver confirmed there are no records for that name — it is a definitive 'does not exist' response."}},{"@type":"Question","name":"What is the difference between NXDOMAIN and SERVFAIL?","acceptedAnswer":{"@type":"Answer","text":"NXDOMAIN means the domain definitively does not exist — the authoritative server responded with a negative answer. SERVFAIL means the server encountered an internal error and could not complete the lookup — the domain may or may not exist, but the query failed for a different reason."}},{"@type":"Question","name":"Can NXDOMAIN be wrong?","acceptedAnswer":{"@type":"Answer","text":"Yes, in some cases. DNS propagation delays can cause NXDOMAIN responses for recently registered or updated domains. Also, some resolvers and ISPs return NXDOMAIN for domains they are filtering or blocking, even if the domain technically exists."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"NXDOMAIN — Non-Existent Domain Error Explained"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NXDOMAIN — Non-Existent Domain Error Explained — duckTyped</title>
+    <meta name="description" content="Learn what NXDOMAIN means in DNS, why it occurs, and how it relates to browser errors like DNS_PROBE_FINISHED_NXDOMAIN. Covers DNS propagation, ISP filtering, and expired domains.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NXDOMAIN, Non-Existent Domain, RCODE 3, Domain does not exist, No such domain, DNS name does not exist">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NXDOMAIN — Non-Existent Domain Error Explained">
+    <meta property="og:description" content="Understand NXDOMAIN DNS responses, their causes, and how to diagnose whether a domain truly does not exist.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/nxdomain">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/nxdomain">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>NXDOMAIN</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>NXDOMAIN — Non-Existent Domain</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">NXDOMAIN is a DNS response code meaning the queried domain does not exist. It is a definitive "no such domain" answer from the authoritative nameserver.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NXDOMAIN</code></li><li><code>Non-Existent Domain</code></li><li><code>RCODE 3</code></li><li><code>Domain does not exist</code></li><li><code>No such domain</code></li><li><code>DNS name does not exist</code></li></ul>
+            </div>
+
+            <h2>What Does NXDOMAIN Mean?</h2>
+            <p>DNS response codes (RCODEs) tell you the result of a DNS query. NXDOMAIN (RCODE 3) is the authoritative DNS server's way of saying: "I am responsible for this domain's zone, and I confirm no records exist for this name."</p>
+            <p>This is different from a timeout or error — it is a positive answer that the domain does not exist. Browsers display this as <a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> or "Server Not Found."</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Domain never registered</strong> — the domain name has never been registered with a registrar.</li>
+                <li><strong>Domain expired</strong> — the registration lapsed and DNS records were removed.</li>
+                <li><strong>Typo in the domain name</strong> — visiting <code>goggle.com</code> instead of <code>google.com</code>.</li>
+                <li><strong>Subdomain does not exist</strong> — accessing <code>app.example.com</code> when no such DNS record is configured.</li>
+                <li><strong>Recent domain deletion</strong> — the domain was deleted or not renewed and DNS has propagated the removal.</li>
+                <li><strong>DNS propagation</strong> — a new domain or record change has not yet reached all resolvers.</li>
+                <li><strong>ISP DNS filtering</strong> — your ISP is returning NXDOMAIN for domains they have blocked.</li>
+            </ul>
+
+            <h2>Diagnosing NXDOMAIN</h2>
+
+            <h3>Is it just you, or everyone?</h3>
+            <p>Use the <a href="/dns-lookup/">DNS Lookup tool</a> to query the domain from multiple resolvers. If all resolvers return NXDOMAIN, the domain genuinely does not exist (or has expired). If only your resolver returns NXDOMAIN while others resolve it, the issue is with your resolver or ISP filtering.</p>
+
+            <h3>Check Domain Expiry</h3>
+            <p>Use the <a href="/whois-lookup/">WHOIS Lookup</a> to verify the domain is registered and has not expired. An expired domain will show either no WHOIS data or a past expiry date.</p>
+
+            <h3>Test with Different DNS Servers</h3>
+            <pre><code>nslookup example.com 1.1.1.1
+nslookup example.com 8.8.8.8</code></pre>
+            <p>If either resolves successfully, try switching your system's DNS to that server.</p>
+
+            <h2>NXDOMAIN in Email</h2>
+            <p>NXDOMAIN also affects email. If you send email to a domain that returns NXDOMAIN for MX record lookups, the mail will bounce with an NXDOMAIN error. This is a common cause of email delivery failures for mistyped or expired recipient domains.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — query DNS from multiple resolvers to check if NXDOMAIN is universal.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> — check domain registration and expiry status.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why do some DNS servers return NXDOMAIN while others resolve the domain?</h3>
+            <p>Possible reasons: DNS propagation delay (the record exists but has not reached that resolver yet), ISP-level filtering on one resolver, or DNSSEC-related blocking on a validating resolver for a domain with invalid signatures.</p>
+
+            <h3>Can I register an NXDOMAIN to use it?</h3>
+            <p>If the domain is genuinely unregistered, yes — you can register it through a domain registrar. Check current availability and pricing at any registrar.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — browser error for NXDOMAIN.</li>
+                <li><a href="/errors/dns/servfail">SERVFAIL</a> — DNS server error (not a definitive "no such domain").</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — generic DNS failure.</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — Chrome DNS failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Check domain registration and expiry</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup Tool</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

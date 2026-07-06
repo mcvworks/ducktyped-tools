@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between ClassNotFoundException and NoClassDefFoundError?","acceptedAnswer":{"@type":"Answer","text":"ClassNotFoundException occurs when explicitly loading a class by name (e.g., Class.forName()). NoClassDefFoundError occurs when the JVM cannot find a class that was present at compile time but is missing at runtime. They indicate similar problems but at different levels."}},{"@type":"Question","name":"Why does my code compile but throw ClassNotFoundException at runtime?","acceptedAnswer":{"@type":"Answer","text":"Compilation and runtime have different classpaths. A class can be available to the compiler (in your IDE or build tool) but missing from the runtime classpath (the deployed JAR or server's lib directory)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Java ClassNotFoundException — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Java ClassNotFoundException","step":[{"@type":"HowToStep","position":1,"name":"Add the missing dependency","text":"Identify which JAR contains the class and add it to your project's dependencies."},{"@type":"HowToStep","position":2,"name":"Verify the classpath","text":"Check that all required JARs are present in the classpath."},{"@type":"HowToStep","position":3,"name":"Check for dependency conflicts","text":"Use build tool commands to analyze the dependency tree and find conflicts or missing transitive dependencies."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java ClassNotFoundException — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Java ClassNotFoundException. Learn why Java cannot find a class at runtime and how to resolve classpath, dependency, and packaging issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ClassNotFoundException, java.lang.ClassNotFoundException, Class not found Java, NoClassDefFoundError, Could not find or load main class">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Java ClassNotFoundException — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Java ClassNotFoundException. Learn why Java cannot find a class at runtime and how to resolve classpath, dependency, and packaging issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/java-classnotfoundexception">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/java-classnotfoundexception">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Java ClassNotFoundException</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Java ClassNotFoundException</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Java cannot find the specified class at runtime</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ClassNotFoundException</code></li><li><code>java.lang.ClassNotFoundException</code></li><li><code>Class not found Java</code></li><li><code>NoClassDefFoundError</code></li><li><code>Could not find or load main class</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ClassNotFoundException is thrown when the Java Virtual Machine (JVM) tries to load a class by its fully qualified name but cannot find it in the classpath. This happens at runtime, not at compile time, and is common when dependencies are missing from the deployment, the classpath is misconfigured, or class names are dynamically loaded via reflection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing dependency in classpath</strong> — The JAR file containing the class is not included in the application's classpath. This commonly happens when a dependency is declared with 'provided' scope in Maven or when a JAR is missing from the deployment.</li>
+                <li><strong>Incorrect class name in reflection</strong> — Code using Class.forName() or ClassLoader.loadClass() specifies an incorrect fully qualified class name, including typos or wrong package names.</li>
+                <li><strong>Wrong version of a dependency</strong> — The deployed dependency version does not contain the class that exists in newer or different versions. Package restructuring between versions can move or remove classes.</li>
+                <li><strong>ClassLoader isolation in application servers</strong> — Application servers like Tomcat and WildFly use hierarchical ClassLoaders that can prevent classes from being visible across different modules or web applications.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Add the missing dependency</h3>
+            <p>Identify which JAR contains the class and add it to your project's dependencies.</p>
+            <pre><code>&lt;!-- Maven --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;com.example&lt;/groupId&gt;
+  &lt;artifactId&gt;library&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+// Gradle
+implementation 'com.example:library:1.0.0'</code></pre>
+            <h3>2. Verify the classpath</h3>
+            <p>Check that all required JARs are present in the classpath.</p>
+            <pre><code># Check classpath:
+java -cp myapp.jar:lib/* com.example.Main
+
+# List contents of a JAR:
+jar tf library.jar | grep ClassName</code></pre>
+            <h3>3. Check for dependency conflicts</h3>
+            <p>Use build tool commands to analyze the dependency tree and find conflicts or missing transitive dependencies.</p>
+            <pre><code># Maven:
+mvn dependency:tree
+
+# Gradle:
+gradle dependencies</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between ClassNotFoundException and NoClassDefFoundError?</h3>
+            <p>ClassNotFoundException occurs when explicitly loading a class by name (e.g., Class.forName()). NoClassDefFoundError occurs when the JVM cannot find a class that was present at compile time but is missing at runtime. They indicate similar problems but at different levels.</p>
+            <h3>Why does my code compile but throw ClassNotFoundException at runtime?</h3>
+            <p>Compilation and runtime have different classpaths. A class can be available to the compiler (in your IDE or build tool) but missing from the runtime classpath (the deployed JAR or server's lib directory).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/python-modulenotfounderror">Python ModuleNotFoundError</a> — Python cannot find the specified module</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — Server encountered an unexpected condition</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

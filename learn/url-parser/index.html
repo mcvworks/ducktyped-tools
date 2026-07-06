@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"URL Anatomy Explained","description":"Learn every part of a URL — scheme, userinfo, host, port, path, query, fragment — plus percent-encoding rules, query-string parsing gotchas, relative URL resolution, and common parsing bugs.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/url-parser/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"URL Parser"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the parts of a URL?","acceptedAnswer":{"@type":"Answer","text":"A full URL consists of a scheme (https), optional userinfo (user:pass@), host (example.com), optional port (:8080), path (/docs/page), optional query string (?key=value), and optional fragment (#section). Only the scheme and host are required for an absolute http(s) URL."}},{"@type":"Question","name":"What is percent-encoding in URLs?","acceptedAnswer":{"@type":"Answer","text":"Percent-encoding (URL encoding) replaces a byte with % followed by its two-digit hexadecimal value, e.g. a space becomes %20 and an ampersand becomes %26. It is required for reserved characters used as data and for any non-ASCII characters, which are first encoded as UTF-8 bytes."}},{"@type":"Question","name":"Does a plus sign in a URL mean a space?","acceptedAnswer":{"@type":"Answer","text":"Only in the query string, and only under the application/x-www-form-urlencoded convention used by HTML forms. In the path portion a plus sign is a literal plus. This mismatch is a classic source of bugs: decodeURIComponent does not convert + to a space, while many server frameworks do."}},{"@type":"Question","name":"How are duplicate query keys handled?","acceptedAnswer":{"@type":"Answer","text":"There is no standard. ?tag=a&tag=b may yield the first value, the last value, or a list depending on the framework. PHP and some others require bracket syntax (tag[]=a&tag[]=b) to build arrays. Always check how your specific parser treats repeats."}},{"@type":"Question","name":"Why does my relative URL resolve to the wrong place?","acceptedAnswer":{"@type":"Answer","text":"Relative references resolve against the base URL's directory, which is everything up to the last slash. A trailing slash therefore changes the result: against /docs/guide/ the reference page.html yields /docs/guide/page.html, but against /docs/guide it yields /docs/page.html."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Anatomy Explained — Parts, Encoding &amp; Parsing — duckTyped</title>
+    <meta name="description" content="Every part of a URL explained: scheme, userinfo, host, port, path, query, fragment — plus percent-encoding rules, query-string gotchas, and common parsing bugs.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="URL Anatomy Explained — Parts, Encoding &amp; Parsing — duckTyped">
+    <meta property="og:description" content="Scheme, host, port, path, query, fragment: how URLs are built, percent-encoded, resolved, and where parsers go wrong.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/url-parser/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="URL Anatomy Explained — Parts, Encoding &amp; Parsing — duckTyped">
+    <meta name="twitter:description" content="How URLs are structured, percent-encoded, resolved, and where parsers go wrong.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/url-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>URL Parser</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>URL Anatomy Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Break a URL down to its seven components, understand percent-encoding and reserved characters, learn the query-string conventions that trip up parsers, and see how relative references actually resolve.</p>
+
+            <h2>The Anatomy of a URL</h2>
+            <p>A URL (Uniform Resource Locator) is defined by <strong>RFC 3986</strong> as a sequence of up to seven components. Here is a deliberately complete example, broken apart:</p>
+            <pre><code>https://alice:s3cret@api.example.com:8443/v2/search?q=ducks&amp;limit=10#results
+
+scheme    https
+userinfo  alice:s3cret
+host      api.example.com
+port      8443
+path      /v2/search
+query     q=ducks&amp;limit=10
+fragment  results</code></pre>
+            <ul>
+                <li><strong>Scheme</strong> &mdash; the protocol (<code>https</code>, <code>http</code>, <code>ftp</code>, <code>mailto</code>). Always followed by <code>:</code>, and by <code>//</code> when an authority (host) follows. Case-insensitive; canonical form is lowercase.</li>
+                <li><strong>Userinfo</strong> &mdash; optional <code>user:password</code> before an <code>@</code>. Effectively deprecated for HTTP (browsers strip or block it) but still meaningful in connection strings like <code>postgres://</code> URLs, and a favorite tool of phishers (<code>https://google.com@evil.example/</code> goes to <code>evil.example</code>).</li>
+                <li><strong>Host</strong> &mdash; a domain name or IP address. Case-insensitive. IPv6 addresses are bracketed: <code>https://[2001:db8::1]:8080/</code>.</li>
+                <li><strong>Port</strong> &mdash; optional; defaults come from the scheme (80 for http, 443 for https). <code>https://example.com/</code> and <code>https://example.com:443/</code> are the same origin.</li>
+                <li><strong>Path</strong> &mdash; slash-separated segments identifying the resource. Case-sensitive, unlike the host.</li>
+                <li><strong>Query</strong> &mdash; everything between <code>?</code> and the fragment; by convention <code>key=value</code> pairs joined with <code>&amp;</code>, though RFC 3986 imposes no structure at all.</li>
+                <li><strong>Fragment</strong> &mdash; everything after <code>#</code>. Resolved entirely client-side: the browser <strong>never sends it to the server</strong>, which is why server logs cannot show it and why single-page-app routers historically lived there.</li>
+            </ul>
+
+            <h2>Percent-Encoding and Reserved Characters</h2>
+            <p>URLs may only contain a limited ASCII repertoire, so everything else must be <strong>percent-encoded</strong>: the byte is replaced by <code>%</code> plus its two-digit hexadecimal value. RFC 3986 splits characters into three groups:</p>
+            <ul>
+                <li><strong>Unreserved</strong> &mdash; <code>A&ndash;Z a&ndash;z 0&ndash;9 - . _ ~</code>. Always safe; never need encoding.</li>
+                <li><strong>Reserved</strong> &mdash; <code>: / ? # [ ] @ ! $ &amp; ' ( ) * + , ; =</code>. These are the <em>syntax</em> of the URL. They must be encoded whenever they appear as <em>data</em> in a component where they have meaning &mdash; an <code>&amp;</code> inside a query value, a <code>/</code> inside a path segment, a <code>#</code> anywhere it is not the fragment delimiter.</li>
+                <li><strong>Everything else</strong> &mdash; spaces, quotes, angle brackets, control characters, and all non-ASCII. Always encoded; non-ASCII text is first serialized as UTF-8, then each byte is encoded.</li>
+            </ul>
+            <pre><code>Raw value:   caf&eacute; &amp; cr&egrave;me
+Encoded:     caf%C3%A9%20%26%20cr%C3%A8me
+
+In context:  /search?q=caf%C3%A9%20%26%20cr%C3%A8me
+             (the %26 keeps the &amp; from splitting the parameter)</code></pre>
+            <p>The critical rule: <strong>encode per component, then assemble</strong> &mdash; never encode an already-assembled URL, or you will turn your delimiters into data. In JavaScript that is the difference between <code>encodeURIComponent()</code> (encodes <code>&amp;</code>, <code>=</code>, <code>/</code> &mdash; use on values) and <code>encodeURI()</code> (preserves delimiters &mdash; rarely what you want). The duckTyped <a href="/url-encoder/">URL Encoder</a> exposes both modes; the <a href="/learn/url-encoder/">URL Encoding guide</a> covers them in depth.</p>
+
+            <h2>Query-String Parsing Gotchas</h2>
+            <p>The query string looks trivial &mdash; split on <code>&amp;</code>, then on <code>=</code> &mdash; but three conventions cause endless bugs.</p>
+            <h3>Plus signs</h3>
+            <p>Under the <code>application/x-www-form-urlencoded</code> rules HTML forms use, a space becomes <code>+</code> in the query string. But that convention applies <em>only</em> there: in a path, <code>+</code> is a literal plus. The mismatch bites in both directions:</p>
+            <pre><code>?q=duck+types
+decodeURIComponent("duck+types")        &rarr; "duck+types"   (wrong, + kept)
+new URLSearchParams("q=duck+types").get("q") &rarr; "duck types"  (correct)
+
+?email=a+b@example.com   &rarr; many servers read "a b@example.com"
+?email=a%2Bb@example.com &rarr; reads "a+b@example.com" as intended</code></pre>
+            <h3>Duplicate keys</h3>
+            <p>Nothing in any RFC says what <code>?tag=red&amp;tag=blue</code> means. Frameworks disagree: some return the first value, some the last, some a list. If two layers of your stack disagree (say, a CDN cache key uses the first value while the app reads the last), you have a cache-poisoning vector known as HTTP parameter pollution.</p>
+            <h3>Arrays and structure</h3>
+            <p>Because the query string has no native array type, ecosystems invented their own conventions, and they do not interoperate:</p>
+            <pre><code>?tag=red&amp;tag=blue        repeat the key      (most APIs, URLSearchParams.getAll)
+?tag[]=red&amp;tag[]=blue    bracket suffix      (PHP, Rails, qs)
+?tag=red,blue            delimited value     (many REST APIs)</code></pre>
+            <p>Also remember: <code>?flag</code> (no <code>=</code>), <code>?flag=</code> (empty value), and a missing parameter are three distinct states that many parsers collapse into one. Paste a real query string into the <a href="/query-string-parser/">Query String Parser</a> to see exactly what keys and values it contains.</p>
+
+            <h2>Relative URL Resolution</h2>
+            <p>Most links in the wild are not absolute. RFC 3986 defines exactly how a relative reference combines with a base URL, and the rules surprise people. Given the base <code>https://example.com/docs/guide/intro.html</code>:</p>
+            <pre><code>page.html              &rarr; https://example.com/docs/guide/page.html
+./page.html            &rarr; https://example.com/docs/guide/page.html
+../api/v2              &rarr; https://example.com/docs/api/v2
+/api/v2                &rarr; https://example.com/api/v2
+//cdn.example.net/x.js &rarr; https://cdn.example.net/x.js
+?page=2                &rarr; https://example.com/docs/guide/intro.html?page=2
+#top                   &rarr; https://example.com/docs/guide/intro.html#top</code></pre>
+            <p>Three rules explain almost every surprise:</p>
+            <ul>
+                <li><strong>The base directory is everything up to the last slash.</strong> <code>intro.html</code> is dropped before joining. A base of <code>/docs/guide</code> (no trailing slash) therefore resolves <code>page.html</code> to <code>/docs/page.html</code>, not <code>/docs/guide/page.html</code> &mdash; the classic broken-stylesheet bug after removing a trailing slash.</li>
+                <li><strong>A leading slash means site root</strong>, replacing the entire base path.</li>
+                <li><strong>A leading double slash is protocol-relative</strong>: it replaces the host too, keeping only the scheme. <code>//evil.example/</code> in a redirect parameter is a full cross-origin URL &mdash; a frequent open-redirect bypass.</li>
+            </ul>
+
+            <h2>Common URL Parsing Bugs</h2>
+            <p>When validating or parsing URLs in real code, watch for these recurring failures:</p>
+            <ul>
+                <li><strong>Validating with regex instead of a parser.</strong> Hand-rolled patterns miss userinfo tricks (<code>https://trusted.com@evil.com/</code>), backslash tolerance (browsers treat <code>https:\\evil.com</code> like <code>//evil.com</code>), and unusual-but-valid forms. Parse first with a real parser (<code>new URL()</code>, <code>urllib.parse</code>), then inspect the components.</li>
+                <li><strong>Double encoding and double decoding.</strong> Encoding an already-encoded value turns <code>%20</code> into <code>%2520</code>; decoding twice turns <code>%2541</code> into <code>A</code>. Filters that decode a different number of times than the backend are a standard path-traversal bypass.</li>
+                <li><strong>Comparing URLs as strings.</strong> <code>HTTPS://EXAMPLE.COM:443/a/../b</code> and <code>https://example.com/b</code> are the same resource. Normalize (lowercase scheme and host, drop default ports, resolve dot segments, decode unreserved characters) before comparing.</li>
+                <li><strong>Expecting the fragment server-side.</strong> Everything after <code>#</code> never leaves the browser. If a redirect target or token lives in the fragment, the server cannot log or validate it.</li>
+                <li><strong>Forgetting that parsers disagree.</strong> The WHATWG URL standard (browsers, Node.js) and RFC 3986 libraries differ on edge cases like whitespace, backslashes, and multiple <code>@</code> signs. Server-side request forgery (SSRF) bugs often live precisely in the gap between the parser that validates and the client that fetches.</li>
+            </ul>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/url-parser/">URL Parser</a> takes the guesswork out of all of the above:</p>
+            <ol>
+                <li><strong>Paste any URL</strong> into the input and press Enter or click <strong>Parse URL</strong>.</li>
+                <li><strong>Read the component table</strong> &mdash; protocol, hostname, port (or default), pathname, search, hash, origin, username, and password, each with a one-click copy button.</li>
+                <li><strong>Inspect the query parameters</strong> in the decoded key/value table to spot duplicate keys, stray encodings, and empty values instantly.</li>
+            </ol>
+            <p>Parsing happens entirely in your browser using the same WHATWG URL engine browsers use for navigation &mdash; nothing is sent to a server.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the URL Parser:</p>
+            <ul>
+                <li><a href="/url-encoder/">URL Encoder</a> &mdash; percent-encode or decode individual components correctly.</li>
+                <li><a href="/query-string-parser/">Query String Parser</a> &mdash; focus on just the query portion, with duplicate-key visibility.</li>
+                <li><a href="/redirect-checker/">Redirect Checker</a> &mdash; follow a URL through its full redirect chain.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/url-encoder/">URL Encoding guide</a>, <a href="/learn/redirect-checker/">Redirects guide</a>, <a href="/learn/http-status-codes/">HTTP status codes guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">HTTP 400 Bad Request</a> &mdash; malformed URLs and bad percent-encoding are common causes.</li>
+                <li><a href="/errors/http/404-not-found">HTTP 404 Not Found</a> &mdash; often the result of wrong relative-URL resolution.</li>
+                <li><a href="/errors/http/414-uri-too-long">HTTP 414 URI Too Long</a> &mdash; runaway query strings hit server URL length limits.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/url-parser/" class="cta-btn-primary">Try URL Parser</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a 'search permission' on a directory?","acceptedAnswer":{"@type":"Answer","text":"The execute (x) bit on directories means permission to traverse — to reach things inside by name. Read (r) on a directory only lists names. Apache needs x on every ancestor of the served file; it does not need r on them."}},{"@type":"Question","name":"Is moving the site out of /home the better fix?","acceptedAnswer":{"@type":"Answer","text":"Often yes. /srv or /var/www are conventional, avoid fighting home-directory privacy defaults, and keep web content separate from user data. If the site must stay under /home, the group + g+x approach is the tidiest."}},{"@type":"Question","name":"Why does everything work as root but not via Apache?","acceptedAnswer":{"@type":"Answer","text":"Root bypasses permission checks entirely, so testing as root proves nothing about the worker user. Test as Apache's user: 'sudo -u www-data cat /path/to/file' reproduces exactly what the server experiences."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00035 — Search Permissions Missing on a Component of the Path — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00035 — Search Permissions Missing on a Component of the Path — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00035 'search permissions are missing on a component of the path'. Execute bits on parent directories, home-dir docroots, and namei checks.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00035: access to / denied, search permissions are missing on a component of the path, ah00035, apache permission denied docroot">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00035 — Search Permissions Missing on a Component of the Path — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00035 'search permissions are missing on a component of the path'. Execute bits on parent directories, home-dir docroots, and namei checks.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00035-access-denied-search-permissions">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00035-access-denied-search-permissions">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00035 — Search Permissions Missing on a Component of the Path</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00035 — Search Permissions Missing on a Component of the Path</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'AH00035: access to / denied ... because search permissions are missing on a component of the path' — the Apache user cannot traverse a directory above the docroot.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00035: access to / denied</code></li><li><code>search permissions are missing on a component of the path</code></li><li><code>ah00035</code></li><li><code>apache permission denied docroot</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>To open /home/deploy/site/index.html, the Apache worker (www-data or apache) needs execute (traverse) permission on /home, /home/deploy, and /home/deploy/site — every directory on the way, not just the file. AH00035 means one of those parents lacks the execute bit for Apache's user. The textbook case is a docroot inside a home directory: modern distros create /home/user with 750, so www-data cannot pass through it no matter how permissive the docroot itself is.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Docroot under a 700/750 home directory</strong> — /home/deploy is rwx------ or rwxr-x---; www-data is neither owner nor group member, so traversal stops there.</li>
+                <li><strong>A parent directory lost its execute bit</strong> — A recursive chmod with 644 (files-style mode applied to directories) strips the x bit; everything below becomes unreachable for everyone but root.</li>
+                <li><strong>Deployment created paths with a restrictive umask</strong> — CI or rsync running with umask 077 creates directories as 700 owned by the deploy user — fine for the deployer, invisible to Apache.</li>
+                <li><strong>SELinux context, not classic permissions</strong> — On RHEL-family with enforcing SELinux, a docroot outside the standard locations needs the httpd_sys_content_t context; without it the denial can surface alongside permission errors.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Walk the path and find the blocking directory</h3>
+            <p>namei prints the permission of every component in one shot — the culprit is instantly visible.</p>
+            <pre><code>namei -l /home/deploy/site/public/index.html
+# look for a directory row without 'x' for other/group</code></pre>
+            <h3>2. Add traverse permission to the parents</h3>
+            <p>Execute-only (no read) on parents is enough for traversal and keeps listings private.</p>
+            <pre><code>sudo chmod o+x /home/deploy
+# or group-based, cleaner:
+sudo chgrp www-data /home/deploy &amp;&amp; sudo chmod g+x /home/deploy</code></pre>
+            <h3>3. Fix directories mangled by a recursive chmod</h3>
+            <p>Restore x on directories only, leaving files at 644.</p>
+            <pre><code>sudo find /srv/site -type d -exec chmod 755 {} +
+sudo find /srv/site -type f -exec chmod 644 {} +</code></pre>
+            <h3>4. Label the docroot for SELinux if applicable</h3>
+            <p>On enforcing systems with a non-standard docroot location.</p>
+            <pre><code>sudo semanage fcontext -a -t httpd_sys_content_t '/srv/site(/.*)?'
+sudo restorecon -Rv /srv/site</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is a 'search permission' on a directory?</h3>
+            <p>The execute (x) bit on directories means permission to traverse — to reach things inside by name. Read (r) on a directory only lists names. Apache needs x on every ancestor of the served file; it does not need r on them.</p>
+            <h3>Is moving the site out of /home the better fix?</h3>
+            <p>Often yes. /srv or /var/www are conventional, avoid fighting home-directory privacy defaults, and keep web content separate from user data. If the site must stay under /home, the group + g+x approach is the tidiest.</p>
+            <h3>Why does everything work as root but not via Apache?</h3>
+            <p>Root bypasses permission checks entirely, so testing as root proves nothing about the worker user. Test as Apache's user: 'sudo -u www-data cat /path/to/file' reproduces exactly what the server experiences.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/apache/ah01630-client-denied-by-server-configuration">AH01630 Client Denied</a> — the config-rule 403.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — the status visitors see.</li>
+                <li><a href="/errors/database/sqlite-readonly-database">SQLite Readonly Database</a> — the same permission pattern hitting apps.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Verify paths after fixing</span>
+                </a>
+        <a href="/link-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Broken Link Checker</span>
+                    <span class="recommended-tool-desc">Sweep for other broken paths</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

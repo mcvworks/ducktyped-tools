@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between 412 and 428?","acceptedAnswer":{"@type":"Answer","text":"428 means the server requires precondition headers but the client did not include them. 412 means the client included precondition headers but they did not match the current resource state."}},{"@type":"Question","name":"Why do servers require conditional requests?","acceptedAnswer":{"@type":"Answer","text":"To prevent the 'lost update' problem. Without preconditions, two clients could read a resource, both modify it, and the second write would silently overwrite the first client's changes."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"428 Precondition Required — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 428 Precondition Required","step":[{"@type":"HowToStep","position":1,"name":"Fetch the resource first and include the ETag","text":"GET the resource to obtain its current ETag, then include it as an If-Match header in your modification request."},{"@type":"HowToStep","position":2,"name":"Use If-Unmodified-Since with Last-Modified","text":"If the server uses timestamp-based preconditions, include the Last-Modified value from a GET response as the If-Unmodified-Since header in your update request."},{"@type":"HowToStep","position":3,"name":"Check API documentation for required headers","text":"Review the API documentation to determine which precondition headers are required for modification endpoints and how to obtain the necessary values."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>428 Precondition Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 428 Precondition Required errors. Learn why servers require conditional requests with If-Match headers and how to implement optimistic concurrency.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 428, 428 Precondition Required, 428 error, Precondition required, If-Match required">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="428 Precondition Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 428 Precondition Required errors. Learn why servers require conditional requests with If-Match headers and how to implement optimistic concurrency.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/428-precondition-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/428-precondition-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>428 Precondition Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>428 Precondition Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server requires the request to be conditional</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 428</code></li><li><code>428 Precondition Required</code></li><li><code>428 error</code></li><li><code>Precondition required</code></li><li><code>If-Match required</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 428 Precondition Required response indicates that the server requires the request to include conditional headers like If-Match or If-Unmodified-Since. This is used to prevent the 'lost update' problem, where a client overwrites changes made by another client. The server enforces conditional requests to ensure clients have the latest version before making modifications.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing If-Match header on update</strong> — The server requires an If-Match header containing the resource's current ETag when making PUT or PATCH requests, but the client did not include one.</li>
+                <li><strong>Missing If-Unmodified-Since header</strong> — The server requires a timestamp-based precondition to verify the resource has not been modified since the client last retrieved it.</li>
+                <li><strong>API requires optimistic concurrency control</strong> — The API is designed to enforce optimistic concurrency by requiring all modification requests to include precondition headers, preventing silent overwrites.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Fetch the resource first and include the ETag</h3>
+            <p>GET the resource to obtain its current ETag, then include it as an If-Match header in your modification request.</p>
+            <pre><code># 1. GET the resource and note the ETag
+curl -I https://api.example.com/resource/123
+# ETag: &quot;abc123&quot;
+
+# 2. Include If-Match in your update
+curl -X PUT \
+  -H 'If-Match: &quot;abc123&quot;' \
+  -H 'Content-Type: application/json' \
+  -d '{&quot;name&quot;: &quot;updated&quot;}' \
+  https://api.example.com/resource/123</code></pre>
+            <h3>2. Use If-Unmodified-Since with Last-Modified</h3>
+            <p>If the server uses timestamp-based preconditions, include the Last-Modified value from a GET response as the If-Unmodified-Since header in your update request.</p>
+            <h3>3. Check API documentation for required headers</h3>
+            <p>Review the API documentation to determine which precondition headers are required for modification endpoints and how to obtain the necessary values.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between 412 and 428?</h3>
+            <p>428 means the server requires precondition headers but the client did not include them. 412 means the client included precondition headers but they did not match the current resource state.</p>
+            <h3>Why do servers require conditional requests?</h3>
+            <p>To prevent the 'lost update' problem. Without preconditions, two clients could read a resource, both modify it, and the second write would silently overwrite the first client's changes.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/412-precondition-failed">412 Precondition Failed</a> — Precondition headers did not match</li>
+                <li><a href="/errors/http/409-conflict">409 Conflict</a> — Request conflicts with current resource state</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

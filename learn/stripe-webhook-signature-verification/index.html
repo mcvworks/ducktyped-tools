@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Stripe Webhook Signature Verification","description":"How to verify Stripe webhook signatures: the Stripe-Signature header, raw-body handling, constructEvent vs manual HMAC, timestamp tolerance, and fixing 'No signatures found matching the expected signature for payload'.","datePublished":"2026-07-02","dateModified":"2026-07-02","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/stripe-webhook-signature-verification/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Stripe Webhook Signature Verification"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I verify a Stripe webhook signature?","acceptedAnswer":{"@type":"Answer","text":"Read the Stripe-Signature header, which contains a timestamp (t=) and one or more HMAC-SHA256 signatures (v1=). Recompute HMAC-SHA256 over the string {timestamp}.{raw_request_body} using your endpoint's signing secret (whsec_...), hex-encode it, and compare it to the v1 value with a constant-time comparison. The official Stripe libraries do all of this for you via stripe.webhooks.constructEvent in Node or stripe.Webhook.construct_event in Python."}},{"@type":"Question","name":"What causes 'No signatures found matching the expected signature for payload'?","acceptedAnswer":{"@type":"Answer","text":"Almost always one of three things: your framework parsed and re-serialized the JSON body so you are no longer hashing the exact bytes Stripe signed (use the raw body), you are using the wrong signing secret (each endpoint and the Stripe CLI each have their own whsec_ secret, and test and live mode differ), or the delivery is old and falls outside the timestamp tolerance window."}},{"@type":"Question","name":"Do I need the raw request body to verify Stripe signatures?","acceptedAnswer":{"@type":"Answer","text":"Yes. Stripe signs the exact bytes it sent. If a body parser like express.json() turns the payload into an object and you re-serialize it, key ordering and whitespace change and the recomputed HMAC will never match. In Express, mount express.raw with type application/json on the webhook route so req.body is the untouched Buffer."}},{"@type":"Question","name":"What is the Stripe webhook signing secret?","acceptedAnswer":{"@type":"Answer","text":"It is a per-endpoint secret starting with whsec_ that Stripe generates when you create a webhook endpoint. You find it in the Stripe Dashboard under the endpoint's details, or it is printed by stripe listen when using the CLI. It is different from your API secret key, and each endpoint (and the CLI) has its own."}},{"@type":"Question","name":"How does Stripe prevent webhook replay attacks?","acceptedAnswer":{"@type":"Answer","text":"The signed payload includes the timestamp from the t= value in the Stripe-Signature header. Your verification should reject deliveries whose timestamp is outside a tolerance window (Stripe's libraries default to 300 seconds), so an attacker who captures one valid signed request cannot replay it later."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Webhook Signature Verification — Fix Signature Errors — duckTyped</title>
+    <meta name="description" content="Verify Stripe webhook signatures the right way: the Stripe-Signature header, raw-body handling, constructEvent vs manual HMAC, timestamp tolerance, and fixing signature verification failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Stripe Webhook Signature Verification — Fix Signature Errors — duckTyped">
+    <meta property="og:description" content="The Stripe-Signature header, raw-body handling, constructEvent vs manual HMAC, and fixing 'No signatures found matching the expected signature for payload'.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/stripe-webhook-signature-verification/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Stripe Webhook Signature Verification — duckTyped">
+    <meta name="twitter:description" content="Verify Stripe webhook signatures, use the raw body, and fix signature verification failures.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/stripe-webhook-signature-verification/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Stripe Webhook Signature Verification</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Stripe Webhook Signature Verification</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Stripe signs every webhook it sends so your endpoint can prove the event really came from Stripe and was not forged or tampered with. This guide breaks down the <code>Stripe-Signature</code> header, shows verification with the official library and by hand, and fixes the error almost everyone hits first: <em>"No signatures found matching the expected signature for payload."</em> For a broader tour of webhooks in general, see the <a href="/learn/webhook-tester/">Webhooks Explained</a> guide — this page focuses specifically on Stripe.</p>
+
+            <h2>What the Stripe-Signature Header Contains</h2>
+            <p>Every Stripe webhook delivery carries a <code>Stripe-Signature</code> header. It is a comma-separated list of key/value pairs — a timestamp and one or more signatures:</p>
+            <pre><code>Stripe-Signature: t=1718064000,
+  v1=5257a869e7ecebeda32affa62cdca3fa51cad7e77a0e56ff536d0ce8e108d8bd</code></pre>
+            <ul>
+                <li><code>t</code> — the Unix timestamp (in seconds) when Stripe generated the signature. This is what makes replay protection possible.</li>
+                <li><code>v1</code> — an HMAC-SHA256, hex-encoded, of the <strong>signed payload</strong>. There can be more than one <code>v1</code> value during a signing-secret rotation, and you should accept the delivery if <em>any</em> of them matches.</li>
+                <li><code>v0</code> — an older scheme you can ignore for normal verification (the Stripe CLI uses it internally).</li>
+            </ul>
+            <p>The crucial detail is what Stripe actually hashes. The signed payload is <strong>not</strong> just the JSON body — it is the timestamp, a literal period, and the raw body concatenated together:</p>
+            <pre><code>signed_payload = t + "." + raw_request_body
+signature      = HMAC_SHA256(signing_secret, signed_payload)   // hex-encoded</code></pre>
+            <p>The <code>signing_secret</code> is the endpoint's secret that starts with <code>whsec_</code>. Get this one wrong, or hash the wrong bytes, and verification fails — the two most common causes are covered below.</p>
+
+            <h2>Verifying With the Official Library (Recommended)</h2>
+            <p>Unless you have a specific reason not to, use Stripe's SDK. <code>constructEvent</code> parses the header, recomputes the HMAC, does a constant-time comparison, and checks the timestamp tolerance — then returns a typed, trusted event or throws. In Node with Express:</p>
+            <pre><code>const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;   // the whsec_... value
+
+// express.raw hands your handler the untouched request body (a Buffer)
+app.post('/webhooks/stripe',
+  express.raw({ type: 'application/json' }),
+  (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (err) {
+      // Verification failed — do NOT trust the payload. Reject it.
+      return res.status(400).send('Webhook signature verification failed');
+    }
+
+    // From here, `event` is authenticated and safe to act on.
+    handleEvent(event);
+    res.sendStatus(200);
+  });</code></pre>
+            <p>The Python equivalent is <code>stripe.Webhook.construct_event(payload, sig_header, secret)</code>, which raises <code>stripe.error.SignatureVerificationError</code> on failure. In both languages, <strong>pass the raw body</strong> — <code>request.data</code> in Flask, not <code>request.json</code>.</p>
+
+            <h2>Verifying by Hand</h2>
+            <p>Sometimes you cannot use the SDK — a lightweight edge function, a language without an official library, or you just want to understand exactly what happens. Here is the full check in plain Node <code>crypto</code>:</p>
+            <pre><code>const crypto = require('crypto');
+
+function verifyStripeSignature(rawBody, sigHeader, secret, toleranceSec) {
+  toleranceSec = toleranceSec || 300;
+
+  // 1. Pull "t" and "v1" out of the header
+  const parts = Object.fromEntries(
+    sigHeader.split(',').map(function (kv) { return kv.split('='); })
+  );
+  const timestamp = parts.t;
+  const signature = parts.v1;
+
+  // 2. Recompute HMAC-SHA256 over "{timestamp}.{rawBody}"
+  const signedPayload = timestamp + '.' + rawBody;   // rawBody = exact bytes received
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(signedPayload, 'utf8')
+    .digest('hex');
+
+  // 3. Constant-time compare (never use ===)
+  const ok = crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signature)
+  );
+
+  // 4. Reject stale deliveries to defeat replay attacks
+  const age = Math.floor(Date.now() / 1000) - Number(timestamp);
+  return ok &amp;&amp; age &lt;= toleranceSec;
+}</code></pre>
+            <p>And the same thing in Python with only the standard library:</p>
+            <pre><code>import hmac, hashlib, time
+
+def verify_stripe_signature(raw_body: bytes, sig_header: str, secret: str, tolerance=300):
+    parts = dict(p.split('=', 1) for p in sig_header.split(','))
+    signed_payload = parts['t'].encode() + b'.' + raw_body   # bytes, not str
+    expected = hmac.new(secret.encode(), signed_payload, hashlib.sha256).hexdigest()
+
+    fresh = abs(time.time() - int(parts['t'])) &lt;= tolerance
+    return fresh and hmac.compare_digest(expected, parts['v1'])</code></pre>
+            <p>You can reproduce exactly this HMAC-SHA256 computation interactively — paste a signed payload and secret — with the <a href="/hmac-generator/">HMAC Generator</a> to confirm your code and Stripe agree byte for byte.</p>
+
+            <h2>Fixing "No signatures found matching the expected signature for payload"</h2>
+            <p>This is the single most common Stripe webhook error, and it nearly always comes down to one of three causes.</p>
+
+            <h3>1. You are not hashing the raw body</h3>
+            <p>This accounts for the large majority of cases. If a body-parsing middleware reads the request and hands you a parsed object, the raw bytes are gone. Re-serializing that object produces different whitespace and key ordering, so your HMAC can never match Stripe's. In Express, the fix is to use <code>express.raw()</code> <strong>on the webhook route only</strong>:</p>
+            <pre><code>// WRONG — express.json() consumes the stream and reparses it:
+app.use(express.json());
+app.post('/webhooks/stripe', (req, res) =&gt; {
+  // req.body is a JS object now; the exact bytes Stripe signed are lost.
+});
+
+// RIGHT — capture the raw Buffer just for this route:
+app.post('/webhooks/stripe',
+  express.raw({ type: 'application/json' }),   // req.body is a Buffer
+  handler);</code></pre>
+            <p>Other frameworks have the same trap: use <code>request.data</code> (not <code>request.json</code>) in Flask, <code>await request.body()</code> in FastAPI, and disable automatic body parsing on the route in Next.js API routes.</p>
+
+            <h3>2. Wrong signing secret</h3>
+            <p>The secret must be the one for <em>this specific endpoint</em>. Common mix-ups:</p>
+            <ul>
+                <li>Using your <strong>API secret key</strong> (<code>sk_...</code>) instead of the <strong>webhook signing secret</strong> (<code>whsec_...</code>). They are different values.</li>
+                <li>Using the <strong>Dashboard endpoint secret</strong> while testing through the <strong>Stripe CLI</strong>, which prints its own separate <code>whsec_</code> when you run <code>stripe listen</code>.</li>
+                <li>Mixing <strong>test-mode</strong> and <strong>live-mode</strong> secrets — each mode has its own.</li>
+                <li>Having several endpoints and pasting the wrong one. Each endpoint you create in the Dashboard has a distinct secret.</li>
+            </ul>
+
+            <h3>3. Timestamp outside the tolerance zone</h3>
+            <p>If verification instead fails with <em>"Timestamp outside the tolerance zone,"</em> the delivery's <code>t=</code> value is too far from your server's clock. Either you are replaying an old captured request, or your server clock has drifted — make sure NTP is running. During legitimate testing you can widen the tolerance, but do not disable the timestamp check in production, since it is what stops replay attacks.</p>
+
+            <h2>Testing Verification Locally</h2>
+            <p>The Stripe CLI is the fastest way to exercise a real signature path without deploying. It forwards live events to localhost and prints a signing secret scoped to that session:</p>
+            <pre><code># Forward events to your local server; note the printed whsec_ secret:
+stripe listen --forward-to localhost:3000/webhooks/stripe
+# > Ready! Your webhook signing secret is whsec_1a2b3c...   (use THIS secret locally)
+
+# In another terminal, fire a real test event through the pipe:
+stripe trigger payment_intent.succeeded</code></pre>
+            <p>For fully offline experimentation — no Stripe account needed — build and sign a sample payload with the <a href="/webhook-tester/">Webhook Payload Builder</a>, then confirm your handler's HMAC math against the <a href="/hmac-generator/">HMAC Generator</a>. Both run entirely in your browser using the Web Crypto API, so payloads and secrets never leave your machine.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools pair naturally with Stripe webhook work:</p>
+            <ul>
+                <li><a href="/webhook-tester/">Webhook Payload Builder</a> -- generate realistic Stripe event payloads and sign them with an HMAC-SHA256 signature to replay at your handler.</li>
+                <li><a href="/hmac-generator/">HMAC Generator</a> -- compute HMAC-SHA256 over a signed payload to debug exactly where your verification diverges from Stripe.</li>
+                <li><a href="/http-request-builder/">HTTP Request Builder</a> -- turn a signed payload into a curl command to POST at your local endpoint.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> -- inspect and validate the event body once verification passes.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/github-webhook-signature-verification/">GitHub Signature Verification guide</a>, <a href="/learn/webhook-tester/">Webhooks Explained</a>, <a href="/learn/hmac-generator/">HMAC Signatures guide</a>, <a href="/learn/http-status-codes/">HTTP Status Codes guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> -- the status Stripe's docs recommend returning when a signature check fails.</li>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> -- an alternative response some handlers send on a rejected signature.</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> -- a slow handler times out, so Stripe retries and the same event arrives again.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/webhook-tester/" class="cta-btn-primary">Build &amp; Sign a Test Payload</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Device Lookup","url":"https://ducktyped.xyz/device-lookup/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Look up device information from IMEI numbers, Apple serial numbers, or Dell service tags. Identify manufacturer, model, warranty status, and more.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an IMEI number?","acceptedAnswer":{"@type":"Answer","text":"An IMEI (International Mobile Equipment Identity) is a unique 15-digit number assigned to every mobile phone and some tablets. It identifies the device on cellular networks and can be used to look up the manufacturer and model. You can find it by dialing *#06# on most phones, or in Settings > About Phone."}},{"@type":"Question","name":"Is my data sent anywhere?","acceptedAnswer":{"@type":"Answer","text":"IMEI and Apple serial lookups are processed entirely in your browser — no data is sent to any server. Dell service tag lookups are proxied through our API to query Dell's warranty system, but no data is stored or logged."}},{"@type":"Question","name":"What devices are supported?","acceptedAnswer":{"@type":"Answer","text":"This tool supports three lookup types: IMEI numbers for any mobile device, Apple serial numbers (pre-2021 12-character format and post-2021 10-character format), and Dell service tags for Dell computers and peripherals."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Lookup — IMEI, Apple Serial &amp; Dell Service Tag — duckTyped</title>
+    <meta name="description" content="Look up device information from IMEI numbers, Apple serial numbers, or Dell service tags. Identify manufacturer, model, warranty status, and more. Free tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Device Lookup — IMEI, Apple Serial & Dell Service Tag — duckTyped">
+    <meta property="og:description" content="Look up device information from IMEI numbers, Apple serial numbers, or Dell service tags. Identify manufacturer, model, warranty status, and more. Free tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/device-lookup/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/device-lookup.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Device Lookup — IMEI, Apple Serial & Dell Service Tag — duckTyped">
+    <meta name="twitter:description" content="Look up device information from IMEI numbers, Apple serial numbers, or Dell service tags. Identify manufacturer, model, warranty status, and more. Free tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/device-lookup/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Device Lookup</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-13">March 13, 2026</time></p>
+            <p class="standalone-intro">Identify a device from its IMEI number, Apple serial number, or Dell service tag. Enter any of these identifiers and the tool will auto-detect the type and decode the relevant information — manufacturer, model, manufacturing date, warranty status, and more.</p>
+            <div class="example-box"><strong>Supported lookup types:</strong>
+                <ul style="margin: 8px 0 0 0; padding-left: 18px; line-height: 1.8;">
+                    <li><strong>IMEI</strong> — 14 or 15-digit number found by dialing <code>*#06#</code> or in Settings &gt; About Phone. Identifies manufacturer and model via TAC database.</li>
+                    <li><strong>Apple Serial</strong> — 12-character (pre-2021) serials decode factory, manufacture date, and model. Post-2021 10-character serials are randomized and cannot be decoded.</li>
+                    <li><strong>Dell Service Tag</strong> — 5-7 character alphanumeric code found on the bottom of Dell devices or via <code>wmic bios get serialnumber</code>. Returns model and warranty info.</li>
+                </ul>
+            </div>
+            <a href="/learn/device-lookup/" class="learn-more-link">Learn about IMEI, Apple serial, and Dell service tag identification</a>
+        </div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="deviceLookup"><h2>Device Lookup</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Auto-detect and decode IMEI numbers, Apple serial numbers, and Dell service tags. Identify device manufacturer, model, and more.</p>
+            <div class="input-group"><label>Device Identifier:</label><input type="text" id="deviceInput" placeholder="Enter IMEI, Apple Serial, or Dell Service Tag" aria-label="Device identifier" onkeypress="if(event.key==='Enter') runDeviceLookup()"></div>
+            <div id="deviceDetectedType" style="display:none; margin-bottom: 10px; padding: 6px 12px; background: var(--input-background); border-radius: 6px; font-size: 0.9em; color: var(--text-secondary);"></div>
+            <button onclick="runDeviceLookup()">Lookup</button>
+            <div id="deviceResults"></div>
+            <div style="margin-top: 15px; padding: 12px; background: var(--input-background); border-radius: 6px; border-left: 3px solid var(--primary-color);">
+                <p style="color: var(--text-secondary); margin: 0; font-size: 0.9em; line-height: 1.5;"><strong>Privacy Note:</strong> IMEI and Apple serial lookups are processed entirely in your browser. Dell lookups are proxied through our API — no data is stored.</p>
+            </div>
+        </div></div>
+
+        <div class="standalone-tool-wrap" style="margin-top: 30px;">
+            <div class="tool-card standalone-card">
+                <h2>Example Inputs</h2>
+                <div style="display: grid; gap: 12px; margin-top: 10px;">
+                    <div style="padding: 10px; background: var(--input-background); border-radius: 6px;">
+                        <strong style="color: var(--primary-color);">IMEI</strong>
+                        <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9em;">15-digit number — e.g. <code style="cursor:pointer" onclick="document.getElementById('deviceInput').value=this.textContent;runDeviceLookup()">353456789012345</code></p>
+                    </div>
+                    <div style="padding: 10px; background: var(--input-background); border-radius: 6px;">
+                        <strong style="color: var(--primary-color);">Apple Serial (pre-2021)</strong>
+                        <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9em;">12-character code — e.g. <code style="cursor:pointer" onclick="document.getElementById('deviceInput').value=this.textContent;runDeviceLookup()">C02X1234ABCD</code></p>
+                    </div>
+                    <div style="padding: 10px; background: var(--input-background); border-radius: 6px;">
+                        <strong style="color: var(--primary-color);">Dell Service Tag</strong>
+                        <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9em;">5-7 alphanumeric characters — e.g. <code style="cursor:pointer" onclick="document.getElementById('deviceInput').value=this.textContent;runDeviceLookup()">ABC1234</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="standalone-tool-wrap" style="margin-top: 30px;">
+            <div class="tool-card standalone-card">
+                <h2>Related Tools</h2>
+                <ul style="margin: 10px 0 0 0; padding-left: 18px; line-height: 2;">
+                    <li><a href="/mac-lookup/">MAC Address Lookup</a> — identify the manufacturer of a network device from its MAC address.</li>
+                    <li><a href="/isp-lookup/">ISP Lookup</a> — identify the ISP, ASN, and geolocation for any IP address.</li>
+                </ul>
+                <p style="margin-top: 12px; font-size: 0.9em; color: var(--text-secondary);">📖 <a href="/learn/device-lookup/">Learn how IMEI, Apple serial, and Dell service tag identification works</a></p>
+            </div>
+        </div>
+
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Look up domain registration details, registrar, expiry date, and ownership…</span>
+                </a>
+                <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP / IP Lookup</span>
+                    <span class="recommended-tool-desc">Identify the ISP, ASN, and approximate location of any IP address</span>
+                </a>
+                <a href="/mac-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">MAC Address Lookup</span>
+                    <span class="recommended-tool-desc">Look up the hardware manufacturer and vendor of any MAC address using the…</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/device-lookup/">Device Lookup Explained — IMEI, Apple Serial &amp; Dell Service Tag</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-device.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function runDeviceLookup() {
+        var input = document.getElementById('deviceInput').value.trim();
+        var resultsEl = document.getElementById('deviceResults');
+        var detectedEl = document.getElementById('deviceDetectedType');
+
+        if (!input) {
+            resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Please enter an IMEI, Apple serial number, or Dell service tag.</p>';
+            detectedEl.style.display = 'none';
+            return;
+        }
+
+        var detected = DT.device.detectInputType(input);
+
+        var typeLabels = {
+            'imei': 'IMEI Number',
+            'apple-serial-pre2021': 'Apple Serial (Pre-2021)',
+            'apple-serial-post2021': 'Apple Serial (Post-2021)',
+            'dell-service-tag': 'Dell Service Tag'
+        };
+
+        if (detected.type === 'unknown') {
+            detectedEl.style.display = 'none';
+            resultsEl.innerHTML = '<div class="result-group" style="color: var(--text-secondary);"><h3 style="margin-top:0; color: var(--primary-color);">Unrecognized Input</h3>' +
+                '<p style="color: #e74c3c;">Could not identify the input type.</p>' +
+                '<p style="color: var(--text-secondary); font-size: 0.9em; line-height: 1.6;">Supported formats:</p>' +
+                '<ul style="color: var(--text-secondary); font-size: 0.9em; line-height: 1.8; margin: 4px 0 0 18px;">' +
+                '<li><strong>IMEI</strong> — 14 or 15 digits (spaces and dashes are stripped automatically)</li>' +
+                '<li><strong>Apple Serial</strong> — 12 alphanumeric characters (pre-2021) or 10 characters (post-2021)</li>' +
+                '<li><strong>Dell Service Tag</strong> — 5-7 alphanumeric characters containing at least one letter</li>' +
+                '</ul></div>';
+            return;
+        }
+
+        detectedEl.style.display = 'block';
+        detectedEl.innerHTML = '<strong>Detected:</strong> ' + typeLabels[detected.type];
+
+        if (detected.type === 'imei') {
+            lookupIMEI(detected.cleaned, resultsEl);
+        } else if (detected.type === 'apple-serial-pre2021' || detected.type === 'apple-serial-post2021') {
+            lookupAppleSerial(detected.cleaned, resultsEl);
+        } else if (detected.type === 'dell-service-tag') {
+            lookupDellTag(detected.cleaned, resultsEl);
+        }
+    }
+
+    function lookupIMEI(imei, resultsEl) {
+        resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Loading TAC database...</p>';
+
+        DT.device.loadTacDb().then(function () {
+            var result = DT.device.decodeIMEI(imei);
+            var html = '<div class="result-group" style="color: var(--text-secondary);">';
+            html += '<h3 style="margin-top:0; color: var(--primary-color);">IMEI Decode Results</h3>';
+
+            if (!result.valid) {
+                html += '<p style="color: #e74c3c;">Invalid IMEI — Luhn checksum failed.</p>';
+            } else {
+                html += '<table class="result-table"><tbody>';
+                if (result.is14Digit) {
+                    html += '<tr><td><strong>Valid</strong></td><td style="color: #27ae60;">Yes (14-digit IMEI, no check digit)</td></tr>';
+                } else {
+                    html += '<tr><td><strong>Valid</strong></td><td style="color: #27ae60;">Yes (Luhn check passed)</td></tr>';
+                }
+                html += '<tr><td><strong>TAC</strong></td><td><code>' + result.tac + '</code></td></tr>';
+                if (result.brand) html += '<tr><td><strong>Brand</strong></td><td>' + escapeHtml(result.brand) + '</td></tr>';
+                if (result.model) html += '<tr><td><strong>Model</strong></td><td>' + escapeHtml(result.model) + '</td></tr>';
+                if (!result.brand) html += '<tr><td><strong>Brand</strong></td><td style="color: var(--text-secondary);">Not in database</td></tr>';
+                if (!result.model) html += '<tr><td><strong>Model</strong></td><td style="color: var(--text-secondary);">Not in database</td></tr>';
+                html += '<tr><td><strong>Serial</strong></td><td><code>' + result.serial + '</code></td></tr>';
+                if (result.checkDigit) html += '<tr><td><strong>Check Digit</strong></td><td>' + result.checkDigit + '</td></tr>';
+                html += '</tbody></table>';
+            }
+
+            if (!result.brand && result.valid) {
+                html += '<p style="color: var(--text-secondary); font-size: 0.9em; margin-top: 8px;">TAC <code>' + result.tac + '</code> was not found in our database. The device may be very new or from a lesser-known manufacturer.</p>';
+            }
+
+            html += '</div>';
+            resultsEl.innerHTML = html;
+        }).catch(function (err) {
+            resultsEl.innerHTML = '<p style="color: #e74c3c;">Failed to load TAC database: ' + escapeHtml(err.message) + '</p>';
+        });
+    }
+
+    function lookupAppleSerial(serial, resultsEl) {
+        resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Loading Apple serial database...</p>';
+
+        DT.device.loadAppleDb().then(function () {
+            var result = DT.device.decodeAppleSerial(serial);
+            var html = '<div class="result-group" style="color: var(--text-secondary);">';
+            html += '<h3 style="margin-top:0; color: var(--primary-color);">Apple Serial Decode Results</h3>';
+
+            if (result.message && !result.valid) {
+                html += '<p style="color: var(--text-secondary);">' + escapeHtml(result.message) + '</p>';
+            } else {
+                html += '<table class="result-table"><tbody>';
+                html += '<tr><td><strong>Format</strong></td><td>' + escapeHtml(result.format) + '</td></tr>';
+                if (result.factory) html += '<tr><td><strong>Factory</strong></td><td>' + escapeHtml(result.factory) + ' <code>(' + escapeHtml(result.factoryCode) + ')</code></td></tr>';
+                if (result.year) html += '<tr><td><strong>Manufacture Year</strong></td><td>' + result.year + ' (half ' + result.half + ')</td></tr>';
+                if (result.weekApprox) html += '<tr><td><strong>Manufacture Week</strong></td><td>' + escapeHtml(result.weekApprox) + '</td></tr>';
+                if (result.modelCode) html += '<tr><td><strong>Model Code</strong></td><td><code>' + escapeHtml(result.modelCode) + '</code></td></tr>';
+                if (result.model) html += '<tr><td><strong>Model</strong></td><td>' + escapeHtml(result.model) + '</td></tr>';
+                html += '</tbody></table>';
+            }
+
+            html += '</div>';
+            resultsEl.innerHTML = html;
+        }).catch(function (err) {
+            resultsEl.innerHTML = '<p style="color: #e74c3c;">Failed to load Apple serial database: ' + escapeHtml(err.message) + '</p>';
+        });
+    }
+
+    function lookupDellTag(tag, resultsEl) {
+        resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Looking up Dell service tag...</p>';
+
+        DT.device.lookupDell(tag).then(function (result) {
+            var html = '<div class="result-group" style="color: var(--text-secondary);">';
+            html += '<h3 style="margin-top:0; color: var(--primary-color);">Dell Service Tag Results</h3>';
+            html += '<table class="result-table"><tbody>';
+
+            if (result.model) html += '<tr><td><strong>Model</strong></td><td>' + escapeHtml(result.model) + '</td></tr>';
+
+            if (result.warranty && result.warranty.length > 0) {
+                html += '<tr><td><strong>Warranty</strong></td><td>';
+                for (var i = 0; i < result.warranty.length; i++) {
+                    var w = result.warranty[i];
+                    html += escapeHtml(w.type) + ': ' + escapeHtml(w.start) + ' — ' + escapeHtml(w.end);
+                    if (i < result.warranty.length - 1) html += '<br>';
+                }
+                html += '</td></tr>';
+            } else {
+                html += '<tr><td><strong>Warranty</strong></td><td style="color: var(--text-secondary);">No warranty data found</td></tr>';
+            }
+
+            html += '</tbody></table></div>';
+            resultsEl.innerHTML = html;
+        }).catch(function (err) {
+            var msg = err.message || 'Dell lookup failed';
+            var html = '<div class="result-group" style="color: var(--text-secondary);"><h3 style="margin-top:0; color: var(--primary-color);">Dell Lookup Error</h3>';
+            html += '<p style="color: #e74c3c;">' + escapeHtml(msg) + '</p>';
+            if (/timeout|network|fetch/i.test(msg)) {
+                html += '<p style="color: var(--text-secondary); font-size: 0.9em;">This may be a temporary network issue. Please try again in a moment.</p>';
+            } else if (/rate|limit|429/i.test(msg)) {
+                html += '<p style="color: var(--text-secondary); font-size: 0.9em;">Rate limit reached. Please wait a minute before trying again.</p>';
+            } else if (/503|not configured/i.test(msg)) {
+                html += '<p style="color: var(--text-secondary); font-size: 0.9em;">The Dell lookup service is temporarily unavailable. IMEI and Apple serial lookups still work offline.</p>';
+            }
+            html += '</div>';
+            resultsEl.innerHTML = html;
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    </script>
+</body>
+</html>

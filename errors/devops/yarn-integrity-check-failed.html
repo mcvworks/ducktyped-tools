@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I disable the integrity check?","acceptedAnswer":{"@type":"Answer","text":"You can skip it by running 'yarn install --check-files' or setting 'yarn install --force'. However, this masks the underlying problem and may lead to inconsistent dependencies."}},{"@type":"Question","name":"Should I commit yarn.lock to version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. yarn.lock should always be committed. It ensures all team members and CI/CD systems install the exact same dependency versions. Never add it to .gitignore."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Yarn Integrity Check Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Yarn Integrity Check Failed","step":[{"@type":"HowToStep","position":1,"name":"Reinstall dependencies from scratch","text":"Delete node_modules and reinstall everything cleanly."},{"@type":"HowToStep","position":2,"name":"Clear Yarn cache and reinstall","text":"If the cache is corrupted, clear it and reinstall."},{"@type":"HowToStep","position":3,"name":"Check for mixed package manager usage","text":"Ensure no package-lock.json exists alongside yarn.lock, which would indicate npm was also used."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yarn Integrity Check Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Yarn integrity check failed error. Learn why Yarn detects inconsistencies and how to resolve node_modules and lockfile mismatches.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Yarn integrity check failed, error Integrity check failed, yarn install --check-files, Integrity hash mismatch, yarn cache corruption">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Yarn Integrity Check Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Yarn integrity check failed error. Learn why Yarn detects inconsistencies and how to resolve node_modules and lockfile mismatches.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/yarn-integrity-check-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/yarn-integrity-check-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Yarn Integrity Check Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Yarn Integrity Check Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Yarn detected a mismatch between node_modules and yarn.lock</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Yarn integrity check failed</code></li><li><code>error Integrity check failed</code></li><li><code>yarn install --check-files</code></li><li><code>Integrity hash mismatch</code></li><li><code>yarn cache corruption</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Yarn's integrity check verifies that the installed node_modules directory matches the yarn.lock file. When this check fails, it means something has modified node_modules outside of Yarn, the lockfile is out of sync, or there was a corruption during a previous install. Yarn refuses to proceed to prevent inconsistent dependency states.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mixed package manager usage</strong> — Running npm install or another package manager in a Yarn project modifies node_modules in a way that Yarn does not expect, breaking the integrity check.</li>
+                <li><strong>Manual modifications to node_modules</strong> — Files in node_modules were manually edited, deleted, or added outside of the package manager workflow.</li>
+                <li><strong>Corrupted node_modules from interrupted install</strong> — A previous yarn install was interrupted (killed, crashed, or lost power), leaving node_modules in a partial state.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reinstall dependencies from scratch</h3>
+            <p>Delete node_modules and reinstall everything cleanly.</p>
+            <pre><code>rm -rf node_modules
+yarn install</code></pre>
+            <h3>2. Clear Yarn cache and reinstall</h3>
+            <p>If the cache is corrupted, clear it and reinstall.</p>
+            <pre><code>yarn cache clean
+rm -rf node_modules
+yarn install</code></pre>
+            <h3>3. Check for mixed package manager usage</h3>
+            <p>Ensure no package-lock.json exists alongside yarn.lock, which would indicate npm was also used.</p>
+            <pre><code>ls package-lock.json
+# If it exists, remove it:
+rm package-lock.json
+rm -rf node_modules
+yarn install</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can I disable the integrity check?</h3>
+            <p>You can skip it by running 'yarn install --check-files' or setting 'yarn install --force'. However, this masks the underlying problem and may lead to inconsistent dependencies.</p>
+            <h3>Should I commit yarn.lock to version control?</h3>
+            <p>Yes. yarn.lock should always be committed. It ensures all team members and CI/CD systems install the exact same dependency versions. Never add it to .gitignore.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/devops/npm-err-eperm">npm ERR! EPERM</a> — npm permission error</li>
+                <li><a href="/errors/devops/npm-err-eacces">npm ERR! EACCES</a> — npm permission denied</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

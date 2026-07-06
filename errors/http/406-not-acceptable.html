@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 406 common in normal web browsing?","acceptedAnswer":{"@type":"Answer","text":"No. Browsers send broad Accept headers that match most server configurations. This error is more common in API requests where clients specify narrow content type requirements."}},{"@type":"Question","name":"Should APIs return 406 or just default to JSON?","acceptedAnswer":{"@type":"Answer","text":"It depends on the API design. Strict APIs return 406 to enforce proper content negotiation. Pragmatic APIs default to JSON and ignore the Accept header when no match is found."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"406 Not Acceptable — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 406 Not Acceptable","step":[{"@type":"HowToStep","position":1,"name":"Broaden the Accept header","text":"Include more acceptable content types in your Accept header, or use a wildcard to accept any format the server can provide."},{"@type":"HowToStep","position":2,"name":"Check the API documentation","text":"Review the API documentation to determine which content types are supported and ensure your Accept header matches one of the available formats."},{"@type":"HowToStep","position":3,"name":"Remove restrictive Accept headers","text":"If your HTTP client or framework is adding restrictive Accept headers automatically, configure it to send broader accept values or remove custom Accept headers."},{"@type":"HowToStep","position":4,"name":"Configure server to provide a default format","text":"On the server side, consider returning a default representation (like JSON) instead of 406 when content negotiation fails, as many clients expect a response regardless of Accept headers."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>406 Not Acceptable — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 406 Not Acceptable errors. Learn what causes content negotiation failures and how to configure Accept headers correctly for APIs and web requests.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 406, 406 Not Acceptable, 406 error, Not acceptable, Accept header mismatch">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="406 Not Acceptable — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 406 Not Acceptable errors. Learn what causes content negotiation failures and how to configure Accept headers correctly for APIs and web requests.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/406-not-acceptable">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/406-not-acceptable">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>406 Not Acceptable</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>406 Not Acceptable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server cannot produce a response matching the client's Accept headers</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 406</code></li><li><code>406 Not Acceptable</code></li><li><code>406 error</code></li><li><code>Not acceptable</code></li><li><code>Accept header mismatch</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 406 Not Acceptable response indicates that the server cannot produce a response matching the list of acceptable values defined in the request's Accept, Accept-Language, Accept-Encoding, or Accept-Charset headers. The server's available representations of the resource do not match what the client is willing to accept. This is part of HTTP content negotiation.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mismatched Accept header</strong> — The client is requesting a content type (e.g., application/xml) that the server does not support for the requested resource. The server can only respond with formats not listed in the Accept header.</li>
+                <li><strong>API version negotiation failure</strong> — The client is requesting a specific API version through Accept headers (e.g., application/vnd.api+json;version=3) that the server does not support.</li>
+                <li><strong>Strict content negotiation configuration</strong> — The server is configured with strict content negotiation and refuses to send a response in a format the client did not explicitly request, rather than falling back to a default.</li>
+                <li><strong>Language or encoding mismatch</strong> — The Accept-Language or Accept-Encoding headers specify languages or encodings that the server cannot provide for the requested resource.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Broaden the Accept header</h3>
+            <p>Include more acceptable content types in your Accept header, or use a wildcard to accept any format the server can provide.</p>
+            <pre><code># Accept any content type
+curl -H 'Accept: */*' https://api.example.com/resource
+
+# Accept JSON or XML
+curl -H 'Accept: application/json, application/xml' https://api.example.com/resource</code></pre>
+            <h3>2. Check the API documentation</h3>
+            <p>Review the API documentation to determine which content types are supported and ensure your Accept header matches one of the available formats.</p>
+            <h3>3. Remove restrictive Accept headers</h3>
+            <p>If your HTTP client or framework is adding restrictive Accept headers automatically, configure it to send broader accept values or remove custom Accept headers.</p>
+            <h3>4. Configure server to provide a default format</h3>
+            <p>On the server side, consider returning a default representation (like JSON) instead of 406 when content negotiation fails, as many clients expect a response regardless of Accept headers.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 406 common in normal web browsing?</h3>
+            <p>No. Browsers send broad Accept headers that match most server configurations. This error is more common in API requests where clients specify narrow content type requirements.</p>
+            <h3>Should APIs return 406 or just default to JSON?</h3>
+            <p>It depends on the API design. Strict APIs return 406 to enforce proper content negotiation. Pragmatic APIs default to JSON and ignore the Accept header when no match is found.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/415-unsupported-media-type">415 Unsupported Media Type</a> — Request body format not supported</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — Resource could not be found</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

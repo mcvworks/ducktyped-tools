@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does this happen right after I stop nginx and start it again?","acceptedAnswer":{"@type":"Answer","text":"Usually a not-quite-dead master or worker still holds the socket for a moment. 'systemctl restart nginx' handles ordering correctly; if you killed processes manually, check with 'ps aux | grep nginx' that everything is gone before starting. Sockets in TIME_WAIT do not cause this error — only a live listener does."}},{"@type":"Question","name":"The error mentions [::]:80 instead of 0.0.0.0:80 — what is different?","acceptedAnswer":{"@type":"Answer","text":"That is the IPv6 listener. If another service bound IPv6 port 80 (or nginx has both 'listen 80' and 'listen [::]:80' duplicated across blocks), the IPv4 bind can succeed while the IPv6 one fails. The diagnosis is identical: ss -tlnp, but look at the IPv6 rows."}},{"@type":"Question","name":"Can two services share port 80 on the same machine?","acceptedAnswer":{"@type":"Answer","text":"Not directly — one listener per address:port. The standard patterns are: give nginx port 80 and proxy_pass to the other service on another port, or bind each service to different IP addresses. SO_REUSEPORT exists but is for multiple workers of the same server, not for two different daemons."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx bind() Failed — Address Already in Use — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx bind() Failed — Address Already in Use — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx '[emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)'. Find the process holding the port, stale masters, and duplicate listens.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use), nginx bind failed, nginx address already in use, nginx port 80 already in use, bind() to [::]:80 failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx bind() Failed — Address Already in Use — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx '[emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)'. Find the process holding the port, stale masters, and duplicate listens.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/address-already-in-use">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/address-already-in-use">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx bind() Failed — Address Already in Use</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx bind() Failed — Address Already in Use</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The startup error 'nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)' — another process already owns the port nginx wants.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)</code></li><li><code>nginx bind failed</code></li><li><code>nginx address already in use</code></li><li><code>nginx port 80 already in use</code></li><li><code>bind() to [::]:80 failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Nginx refused to start (or reload into a new configuration) because it could not bind its listen port — something else is already listening there. The 'something else' is usually Apache installed alongside nginx, a stale nginx master process left over from a crashed restart, or a second copy of the same listen directive loaded from two config files. Until the port is free, systemd will show the service as failed.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Another web server owns port 80/443</strong> — Apache (httpd) is the classic conflict — many distro LAMP packages start it on port 80 by default, and both servers cannot bind the same port.</li>
+                <li><strong>A stale nginx process is still running</strong> — After a crashed upgrade or a kill of the master process, old worker or master processes can survive and hold the sockets, so a fresh start finds its own ghost in the way.</li>
+                <li><strong>Duplicate listen directives across config files</strong> — The same server block loaded twice — a file present in both sites-enabled and conf.d, or a leftover backup like site.conf.save being included — makes nginx try to bind the same address twice.</li>
+                <li><strong>Another service squatting the port</strong> — Node apps, Docker containers publishing 80/443, or a debugging tool can hold the port. On IPv6-enabled hosts, a conflict can also exist only on [::]:80.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Identify the process holding the port</h3>
+            <p>This one command names the culprit and its PID; everything else follows from what it shows.</p>
+            <pre><code>sudo ss -tlnp | grep -E ':80 |:443 '
+# or:
+sudo lsof -i :80 -sTCP:LISTEN</code></pre>
+            <h3>2. Stop or disable the conflicting service</h3>
+            <p>If Apache (or another server) owns the port and nginx should have it, stop and disable it so it does not return on reboot.</p>
+            <pre><code>sudo systemctl stop apache2 &amp;&amp; sudo systemctl disable apache2
+# RHEL-family: httpd instead of apache2
+sudo systemctl start nginx</code></pre>
+            <h3>3. Clear stale nginx processes</h3>
+            <p>If ss shows nginx itself holding the port while systemd says the service is dead, kill the orphaned processes and start cleanly.</p>
+            <pre><code>ps aux | grep [n]ginx
+sudo pkill -f 'nginx: master'
+sudo systemctl start nginx</code></pre>
+            <h3>4. Find duplicate listen directives</h3>
+            <p>Dump the fully assembled configuration and look for the same listen address appearing in more than one server block that also shares a default_server flag or the whole block.</p>
+            <pre><code>sudo nginx -T | grep -n 'listen'
+ls -la /etc/nginx/sites-enabled/ /etc/nginx/conf.d/</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does this happen right after I stop nginx and start it again?</h3>
+            <p>Usually a not-quite-dead master or worker still holds the socket for a moment. 'systemctl restart nginx' handles ordering correctly; if you killed processes manually, check with 'ps aux | grep nginx' that everything is gone before starting. Sockets in TIME_WAIT do not cause this error — only a live listener does.</p>
+            <h3>The error mentions [::]:80 instead of 0.0.0.0:80 — what is different?</h3>
+            <p>That is the IPv6 listener. If another service bound IPv6 port 80 (or nginx has both 'listen 80' and 'listen [::]:80' duplicated across blocks), the IPv4 bind can succeed while the IPv6 one fails. The diagnosis is identical: ss -tlnp, but look at the IPv6 rows.</p>
+            <h3>Can two services share port 80 on the same machine?</h3>
+            <p>Not directly — one listener per address:port. The standard patterns are: give nginx port 80 and proxy_pass to the other service on another port, or bind each service to different IP addresses. SO_REUSEPORT exists but is for multiple workers of the same server, not for two different daemons.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/conflicting-server-name">Conflicting Server Name</a> — duplicate server blocks that load twice.</li>
+                <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — the same conflict from the container side.</li>
+                <li><a href="/errors/nginx/too-many-open-files">Nginx Too Many Open Files</a> — another resource-limit startup failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check what ports answer on a host</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Confirm which server answers on port 80</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

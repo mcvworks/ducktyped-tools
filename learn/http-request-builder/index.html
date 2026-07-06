@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HTTP Requests Explained","description":"Learn the anatomy of an HTTP request — method, path, headers, and body — how to choose methods correctly, the headers that matter, JSON vs form-urlencoded vs multipart bodies, and how to debug with curl.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/http-request-builder/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"HTTP Request Builder"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the parts of an HTTP request?","acceptedAnswer":{"@type":"Answer","text":"An HTTP request has three parts: a request line containing the method, path, and protocol version (e.g., GET /users HTTP/1.1); a set of headers carrying metadata like Host, Content-Type, and Authorization; and an optional body carrying data for methods like POST, PUT, and PATCH."}},{"@type":"Question","name":"When should I use PUT vs PATCH vs POST?","acceptedAnswer":{"@type":"Answer","text":"Use POST to create a new resource or trigger an action, PUT to replace a resource entirely with the representation you send, and PATCH to apply a partial update that changes only the fields you include. PUT is idempotent — sending it twice yields the same result — while POST generally is not."}},{"@type":"Question","name":"What is the difference between Content-Type and Accept headers?","acceptedAnswer":{"@type":"Answer","text":"Content-Type describes the format of the body you are sending (e.g., application/json), while Accept tells the server what format you want back in the response. A request can send form data with Content-Type: application/x-www-form-urlencoded yet still ask for JSON with Accept: application/json."}},{"@type":"Question","name":"When should I use multipart/form-data instead of JSON?","acceptedAnswer":{"@type":"Answer","text":"Use multipart/form-data when uploading files or mixing binary data with text fields — each part has its own headers and the boundary string separates them. Use application/json for structured API data, and application/x-www-form-urlencoded for simple key-value form submissions."}},{"@type":"Question","name":"How do I see exactly what an HTTP request sends?","acceptedAnswer":{"@type":"Answer","text":"Run the equivalent curl command with the -v flag, which prints the outgoing request line and headers plus the full response. curl -v isolates the request from your application code, so you can tell whether a bug is in the request itself or in how your code builds it."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Requests Explained — Methods, Headers &amp; Bodies — duckTyped</title>
+    <meta name="description" content="Learn the anatomy of an HTTP request: methods, paths, headers, and bodies. JSON vs form-urlencoded vs multipart, key headers, and debugging with curl.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HTTP Requests Explained — Methods, Headers & Bodies — duckTyped">
+    <meta property="og:description" content="Learn the anatomy of an HTTP request: methods, headers, body encodings, and debugging with curl.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/http-request-builder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTTP Requests Explained — Methods, Headers & Bodies — duckTyped">
+    <meta name="twitter:description" content="Learn HTTP request anatomy: methods, headers, body encodings, and curl debugging.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/http-request-builder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>HTTP Request Builder</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>HTTP Requests Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand the anatomy of an HTTP request — method, path, headers, and body — how to pick the right method, which request headers actually matter, the three common body encodings, and how to debug any request with curl.</p>
+
+            <h2>Anatomy of an HTTP Request</h2>
+            <p>Every HTTP request, whether it comes from a browser, a mobile app, or a script, is plain structured text with three parts: a <strong>request line</strong>, a block of <strong>headers</strong>, and an optional <strong>body</strong> separated from the headers by a blank line. Here is a complete request as it travels over the wire:</p>
+            <pre><code>POST /api/users?notify=true HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+Accept: application/json
+Content-Length: 47
+
+{"name": "Jane Doe", "email": "jane@example.com"}</code></pre>
+            <ul>
+                <li><strong>Method</strong> (<code>POST</code>) — the verb declaring what kind of operation this is.</li>
+                <li><strong>Path and query string</strong> (<code>/api/users?notify=true</code>) — which resource the request targets, plus optional key-value parameters after <code>?</code>.</li>
+                <li><strong>Protocol version</strong> (<code>HTTP/1.1</code>) — HTTP/2 and HTTP/3 encode the same semantics in binary frames, but the method/path/headers/body model is unchanged.</li>
+                <li><strong>Headers</strong> — one <code>Name: value</code> pair per line. Header names are case-insensitive; <code>Host</code> is the only mandatory one in HTTP/1.1.</li>
+                <li><strong>Body</strong> — the payload. <code>GET</code>, <code>HEAD</code>, and <code>DELETE</code> requests normally have none; <code>POST</code>, <code>PUT</code>, and <code>PATCH</code> usually do.</li>
+            </ul>
+            <p>The server answers with a status line, response headers, and a response body. If a request "doesn't work," the problem is always somewhere in those few lines above — which is why being able to read and reconstruct them is the core HTTP debugging skill.</p>
+
+            <h2>Choosing the Right Method</h2>
+            <p>Methods carry meaning beyond convention: caches, proxies, and browsers change behavior based on them. Two properties matter most — <strong>safety</strong> (does the request change anything?) and <strong>idempotency</strong> (does repeating it produce the same result?).</p>
+            <ul>
+                <li><strong>GET</strong> — read a resource. Safe and idempotent, freely cacheable and retryable. Never use GET for anything that mutates state; crawlers and prefetchers will trigger it.</li>
+                <li><strong>HEAD</strong> — like GET but returns headers only. Useful for checking existence, size (<code>Content-Length</code>), or freshness without downloading the body.</li>
+                <li><strong>POST</strong> — create a resource or trigger an action. Not idempotent: submitting twice may create two records, which is why clients should not blindly retry failed POSTs.</li>
+                <li><strong>PUT</strong> — replace a resource entirely with the representation you send. Idempotent: PUT-ing the same document five times leaves one identical resource.</li>
+                <li><strong>PATCH</strong> — partially update a resource, changing only the fields included in the body.</li>
+                <li><strong>DELETE</strong> — remove a resource. Idempotent in effect: the second DELETE may return <code>404</code>, but the end state is the same.</li>
+                <li><strong>OPTIONS</strong> — ask what the server supports. Browsers send OPTIONS automatically as CORS preflight requests, which is why you see them in network logs you never wrote.</li>
+            </ul>
+            <p>Using the wrong method gets you a <code>405 Method Not Allowed</code>; the response's <code>Allow</code> header lists what the endpoint actually accepts.</p>
+
+            <h2>Request Headers That Matter</h2>
+            <p>A handful of request headers cause the vast majority of API integration bugs:</p>
+            <ul>
+                <li><strong><code>Content-Type</code></strong> — declares the format of the body <em>you are sending</em>, e.g. <code>application/json</code> or <code>application/x-www-form-urlencoded</code>. If this does not match the actual body encoding, servers respond with <code>400 Bad Request</code> or <code>415 Unsupported Media Type</code> — or worse, silently parse an empty object.</li>
+                <li><strong><code>Accept</code></strong> — declares the format you want <em>back</em>. <code>Accept: application/json</code> asks an endpoint that supports content negotiation to return JSON instead of HTML or XML. A server that cannot satisfy it may return <code>406 Not Acceptable</code>.</li>
+                <li><strong><code>Authorization</code></strong> — carries credentials. The two common schemes are <code>Bearer &lt;token&gt;</code> for API tokens and JWTs, and <code>Basic &lt;base64(user:pass)&gt;</code>. A missing or malformed value yields <code>401 Unauthorized</code>; valid credentials without permission yield <code>403 Forbidden</code>.</li>
+                <li><strong><code>User-Agent</code></strong> — identifies the client. Many APIs (GitHub's, for one) reject requests without one, and CDNs apply bot rules based on it. Set a descriptive value like <code>myapp/1.2 (ops@example.com)</code> for server-to-server calls.</li>
+                <li><strong><code>Host</code></strong> — the domain being requested; mandatory in HTTP/1.1 and how one IP serves many sites. Tools set it automatically, but overriding it is a classic trick for testing a server before DNS points at it.</li>
+            </ul>
+
+            <h2>Body Encodings: JSON vs Form-Urlencoded vs Multipart</h2>
+            <p>The body is just bytes; the <code>Content-Type</code> header tells the server how to decode them. Three encodings cover nearly all API traffic.</p>
+            <h3>application/json</h3>
+            <p>The default for modern APIs. Structured, nestable, and typed:</p>
+            <pre><code>Content-Type: application/json
+
+{"name": "Jane", "roles": ["admin", "editor"], "active": true}</code></pre>
+            <h3>application/x-www-form-urlencoded</h3>
+            <p>The classic HTML <code>&lt;form&gt;</code> encoding: flat key-value pairs, percent-encoded, joined with <code>&amp;</code>. Still required by many OAuth token endpoints and older APIs:</p>
+            <pre><code>Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&amp;client_id=abc123&amp;scope=read%20write</code></pre>
+            <p>Note the encoding rules — spaces become <code>%20</code> (or <code>+</code>), and reserved characters like <code>&amp;</code> and <code>=</code> inside values must be escaped. The <a href="/url-encoder/">URL Encoder</a> handles this for you.</p>
+            <h3>multipart/form-data</h3>
+            <p>Used for file uploads and for mixing binary data with text fields. The body is split into parts separated by a <strong>boundary string</strong> declared in the header, and each part carries its own mini-headers:</p>
+            <pre><code>Content-Type: multipart/form-data; boundary=----X1Y2Z3
+
+------X1Y2Z3
+Content-Disposition: form-data; name="caption"
+
+Quarterly report
+------X1Y2Z3
+Content-Disposition: form-data; name="file"; filename="report.pdf"
+Content-Type: application/pdf
+
+%PDF-1.7 ...binary bytes...
+------X1Y2Z3--</code></pre>
+            <p>Rule of thumb: JSON for structured API data, form-urlencoded when the endpoint demands it (OAuth, legacy forms), multipart only when files are involved. And the most common mistake of all: sending a JSON string with a form-urlencoded <code>Content-Type</code>, or vice versa — the server parses garbage and returns a confusing <code>400</code>.</p>
+
+            <h2>Debugging with curl Equivalents</h2>
+            <p>When a request fails inside an application, the fastest way to isolate the problem is to reproduce it with <strong>curl</strong>, removing your code from the equation. The flags map directly onto request anatomy:</p>
+            <pre><code># GET with auth and verbose output (-v prints request + response headers)
+curl -v 'https://api.example.com/users?page=2' \
+  -H 'Authorization: Bearer YOUR_TOKEN' \
+  -H 'Accept: application/json'
+
+# POST JSON
+curl -X POST 'https://api.example.com/users' \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "Jane Doe", "email": "jane@example.com"}'
+
+# POST form-urlencoded (--data-urlencode escapes values for you)
+curl -X POST 'https://auth.example.com/oauth/token' \
+  --data-urlencode 'grant_type=client_credentials' \
+  --data-urlencode 'client_id=abc123'
+
+# Upload a file as multipart
+curl -X POST 'https://api.example.com/files' \
+  -F 'caption=Quarterly report' \
+  -F 'file=@report.pdf'
+
+# Headers only — quick status and redirect check
+curl -I 'https://example.com/old-page'</code></pre>
+            <p>The debugging workflow: get the request working in curl first, then make your code produce the identical request. <code>-v</code> shows exactly what curl sent; compare it line by line against what your application sends. Differences in <code>Content-Type</code>, a missing <code>Authorization</code> header, or an unencoded query parameter jump out immediately.</p>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/http-request-builder/">HTTP Request Builder</a> assembles requests visually and writes the code for you:</p>
+            <ol>
+                <li><strong>Choose a method and URL</strong> — GET, POST, PUT, PATCH, DELETE, HEAD, or OPTIONS.</li>
+                <li><strong>Add headers</strong> — <code>Content-Type</code> and <code>Authorization</code> rows are pre-filled; add as many more as you need.</li>
+                <li><strong>Add a body</strong> for POST, PUT, or PATCH requests.</li>
+                <li><strong>Generate code</strong> — the tool outputs an equivalent <strong>curl command</strong>, <strong>JavaScript fetch</strong> snippet, and <strong>Python requests</strong> snippet, each with a copy button.</li>
+            </ol>
+            <p>It runs entirely in your browser — your URLs, tokens, and payloads are <strong>never sent to a server</strong>.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the HTTP Request Builder:</p>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> -- measure response times for the endpoints you are calling.</li>
+                <li><a href="/url-encoder/">URL Encoder</a> -- percent-encode query parameters and form-urlencoded values correctly.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> -- inspect the response headers a site returns.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> -- validate a JSON body before sending it.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP Status Codes guide</a>, <a href="/learn/http-latency/">HTTP Latency guide</a>, <a href="/learn/redirect-checker/">Redirects guide</a>, <a href="/learn/security-headers/">Security Headers guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> -- malformed bodies and mismatched Content-Type headers.</li>
+                <li><a href="/errors/http/405-method-not-allowed">405 Method Not Allowed</a> -- the endpoint does not accept the method you used.</li>
+                <li><a href="/errors/http/415-unsupported-media-type">415 Unsupported Media Type</a> -- the server cannot parse the body encoding you sent.</li>
+                <li><a href="/errors/http/">All HTTP Errors</a> -- browse all HTTP error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try the HTTP Request Builder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

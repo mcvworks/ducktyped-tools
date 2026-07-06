@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between error 2006 and 2013 ('Lost connection during query')?","acceptedAnswer":{"@type":"Answer","text":"2006 (gone away) usually strikes when reusing a connection that was already dead — before or between queries. 2013 hits in the middle of a running query, pointing at query timeouts, network drops, or the server dying under that specific query's load."}},{"@type":"Question","name":"Why does importing a SQL dump trigger this?","acceptedAnswer":{"@type":"Answer","text":"Dumps contain multi-row INSERT statements that can exceed max_allowed_packet. Note the client and server each enforce their own limit — raise it on both sides for the import."}},{"@type":"Question","name":"Should I just set wait_timeout very high?","acceptedAnswer":{"@type":"Answer","text":"It reduces the symptom but keeps dead-connection risk (server restarts, network blips). The robust fix is pool-side: pre-ping or recycle connections, so the app always validates before use."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"MySQL Server Has Gone Away — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Server Has Gone Away — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'MySQL server has gone away' (error 2006). Covers wait_timeout, max_allowed_packet, dropped pooled connections, and big dump imports.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="MySQL server has gone away, MySQL error 2006, ERROR 2006 (HY000), Lost connection to MySQL server, OperationalError: (2006, ...), PDOStatement MySQL server has gone away">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL Server Has Gone Away — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'MySQL server has gone away' (error 2006). Covers wait_timeout, max_allowed_packet, dropped pooled connections, and big dump imports.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mysql-server-has-gone-away">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mysql-server-has-gone-away">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>MySQL Server Has Gone Away</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MySQL Server Has Gone Away</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">MySQL error 2006 — the connection to the server was lost mid-use, typically because an idle connection timed out or a packet exceeded max_allowed_packet.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>MySQL server has gone away</code></li><li><code>MySQL error 2006</code></li><li><code>ERROR 2006 (HY000)</code></li><li><code>Lost connection to MySQL server</code></li><li><code>OperationalError: (2006, ...)</code></li><li><code>PDOStatement MySQL server has gone away</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Error 2006 means the client tried to use a connection that the server no longer considers open. Two causes dominate: the server closed an idle connection after wait_timeout seconds (and the application later tried to reuse it), or the client sent a packet — a huge INSERT, a BLOB, a long dump statement — larger than max_allowed_packet, which makes the server cut the connection. Less often, the server actually restarted (crash, OOM kill, deploy) between queries.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Idle connection exceeded wait_timeout</strong> — MySQL closes connections idle longer than wait_timeout (default 28800s, but often lowered to minutes in production). Applications with long-lived pooled connections hit this after quiet periods.</li>
+                <li><strong>Packet larger than max_allowed_packet</strong> — A single statement or row bigger than max_allowed_packet (often left at 16MB or 64MB) causes the server to drop the connection immediately — classic when inserting BLOBs or importing dumps.</li>
+                <li><strong>The server restarted or was OOM-killed</strong> — If MySQL crashed or the kernel killed it under memory pressure, every existing connection dies. Check uptime — a suspiciously young server confirms it.</li>
+                <li><strong>A proxy or load balancer cut the idle connection</strong> — ProxySQL, HAProxy, cloud NAT gateways, and managed-database proxies enforce their own idle timeouts, often shorter than MySQL's, silently killing connections in between.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Raise max_allowed_packet for large statements</h3>
+            <p>Set it on the server (and for mysqldump imports, on the client too). This is the fix when the error correlates with specific large writes.</p>
+            <pre><code>-- check current value:
+SHOW VARIABLES LIKE 'max_allowed_packet';
+
+# /etc/mysql/my.cnf
+[mysqld]
+max_allowed_packet = 256M
+
+# for imports:
+mysql --max_allowed_packet=256M dbname &lt; dump.sql</code></pre>
+            <h3>2. Validate pooled connections before use</h3>
+            <p>Configure the connection pool to test or recycle connections older than the server's wait_timeout, so the app never picks up a dead one.</p>
+            <pre><code>-- see server timeouts:
+SHOW VARIABLES LIKE 'wait_timeout';
+
+# examples:
+# SQLAlchemy: create_engine(url, pool_pre_ping=True, pool_recycle=3600)
+# HikariCP:  maxLifetime=1800000
+# Node mysql2: pool { enableKeepAlive: true }</code></pre>
+            <h3>3. Check whether the server actually restarted</h3>
+            <p>Rule out crashes: compare uptime with when errors started, and look for OOM kills or crash-recovery messages.</p>
+            <pre><code>mysqladmin status          # shows uptime
+sudo journalctl -u mysql -n 50
+dmesg | grep -i 'killed process'</code></pre>
+            <h3>4. Align proxy idle timeouts with the pool</h3>
+            <p>Make every hop's idle timeout longer than the application pool's recycle time, or enable TCP keepalives, so intermediaries stop cutting live connections.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between error 2006 and 2013 ('Lost connection during query')?</h3>
+            <p>2006 (gone away) usually strikes when reusing a connection that was already dead — before or between queries. 2013 hits in the middle of a running query, pointing at query timeouts, network drops, or the server dying under that specific query's load.</p>
+            <h3>Why does importing a SQL dump trigger this?</h3>
+            <p>Dumps contain multi-row INSERT statements that can exceed max_allowed_packet. Note the client and server each enforce their own limit — raise it on both sides for the import.</p>
+            <h3>Should I just set wait_timeout very high?</h3>
+            <p>It reduces the symptom but keeps dead-connection risk (server restarts, network blips). The robust fix is pool-side: pre-ping or recycle connections, so the app always validates before use.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — failures establishing a connection.</li>
+                <li><a href="/errors/database/mysql-cant-connect-through-socket">MySQL Can't Connect Through Socket</a> — local connection failures.</li>
+                <li><a href="/errors/database/database-too-many-connections">Too Many Connections</a> — connection limit exhaustion.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if port 3306 is reachable</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Test network path stability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does a server stay marked down?","acceptedAnswer":{"@type":"Answer","text":"fail_timeout seconds (default 10). After that, nginx sends it a real request as a probe; success returns it to rotation, another failure re-evicts it. There is no background health check in open-source nginx — recovery only happens via live traffic."}},{"@type":"Question","name":"Why do I get this with only one backend server?","acceptedAnswer":{"@type":"Answer","text":"A single-server upstream block still uses the failure accounting: one refused connection can put your only server in the penalty box for 10 seconds, during which every request instantly 502s with 'no live upstreams' instead of retrying. Either fix the backend blip or set max_fails=0 (never mark down) for single-server groups."}},{"@type":"Question","name":"Rolling deploys briefly trigger this — how do teams avoid it?","acceptedAnswer":{"@type":"Answer","text":"Restart backends one at a time, keeping the rest serving; use max_fails/fail_timeout values that tolerate the restart window; and drain by removing a server from the upstream (reload) before restarting it. A 'backup' server also bridges short gaps."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx No Live Upstreams — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx No Live Upstreams — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx 'no live upstreams while connecting to upstream'. How max_fails/fail_timeout mark backends down, and how to recover and prevent it.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="no live upstreams while connecting to upstream, nginx no live upstreams, nginx all upstreams failed, nginx 502 no live upstreams">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx No Live Upstreams — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx 'no live upstreams while connecting to upstream'. How max_fails/fail_timeout mark backends down, and how to recover and prevent it.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/no-live-upstreams">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/no-live-upstreams">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx No Live Upstreams</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx No Live Upstreams</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'no live upstreams while connecting to upstream' — every server in the upstream block is currently marked failed, so nginx has nowhere to send the request.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>no live upstreams while connecting to upstream</code></li><li><code>nginx no live upstreams</code></li><li><code>nginx all upstreams failed</code></li><li><code>nginx 502 no live upstreams</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When proxying to an upstream {} group, nginx tracks failures per server. A server that fails max_fails times (default 1) within fail_timeout (default 10s) is taken out of rotation for fail_timeout seconds. 'No live upstreams' means every server in the group is in that penalty box at once — nginx did not even attempt a connection for this request, and the client gets an instant 502. It is the aggregate symptom; the individual failures (refused, timeout) that got the servers marked down are logged just before it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>All backends are actually down</strong> — A deploy restarted every instance at once, a shared dependency (database) is down making all health checks fail, or there is only one server in the group and it died.</li>
+                <li><strong>Aggressive max_fails with transient blips</strong> — With the default max_fails=1, a single hiccup per server within 10 seconds can knock the whole pool out — a brief network wobble becomes a full outage window.</li>
+                <li><strong>Slow backends being marked failed by timeouts</strong> — If proxy timeouts are shorter than real response times under load, every server keeps 'failing' by timeout and rotation empties itself in a load spiral.</li>
+                <li><strong>Stale IPs after backend redeployment</strong> — nginx resolves upstream hostnames at config load. If the backends moved (containers rescheduled, autoscaling), nginx still tries the old IPs until reload — all of which fail.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read the log lines just before this one</h3>
+            <p>The refused/timeout entries preceding 'no live upstreams' name the real failure per server — fix that first (see the related guides).</p>
+            <pre><code>sudo tail -100 /var/log/nginx/error.log | grep -B3 'no live upstreams'</code></pre>
+            <h3>2. Verify each upstream server directly</h3>
+            <p>Hit every backend one by one from the nginx host to see which are genuinely dead.</p>
+            <pre><code># for each server in the upstream block:
+curl -sS -o /dev/null -w '%{http_code}\n' http://10.0.0.11:3000/health
+curl -sS -o /dev/null -w '%{http_code}\n' http://10.0.0.12:3000/health</code></pre>
+            <h3>3. Soften failure marking and add a backup</h3>
+            <p>Allow a few failures before eviction, keep eviction short, and give nginx a last-resort server so the pool never goes completely empty.</p>
+            <pre><code>upstream app {
+    server 10.0.0.11:3000 max_fails=3 fail_timeout=15s;
+    server 10.0.0.12:3000 max_fails=3 fail_timeout=15s;
+    server 10.0.0.13:3000 backup;
+}</code></pre>
+            <h3>4. Reload nginx after backends move</h3>
+            <p>If IPs changed, a reload re-resolves the hostnames. For dynamic environments, use a resolver with variables in proxy_pass (or nginx Plus / a service-discovery template) so re-resolution happens automatically.</p>
+            <pre><code>sudo nginx -s reload
+# dynamic re-resolution pattern (open source nginx):
+# resolver 127.0.0.11 valid=10s;   # Docker's DNS
+# set $backend http://app:3000;
+# proxy_pass $backend;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How long does a server stay marked down?</h3>
+            <p>fail_timeout seconds (default 10). After that, nginx sends it a real request as a probe; success returns it to rotation, another failure re-evicts it. There is no background health check in open-source nginx — recovery only happens via live traffic.</p>
+            <h3>Why do I get this with only one backend server?</h3>
+            <p>A single-server upstream block still uses the failure accounting: one refused connection can put your only server in the penalty box for 10 seconds, during which every request instantly 502s with 'no live upstreams' instead of retrying. Either fix the backend blip or set max_fails=0 (never mark down) for single-server groups.</p>
+            <h3>Rolling deploys briefly trigger this — how do teams avoid it?</h3>
+            <p>Restart backends one at a time, keeping the rest serving; use max_fails/fail_timeout values that tolerate the restart window; and drain by removing a server from the upstream (reload) before restarting it. A 'backup' server also bridges short gaps.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/connection-refused-while-connecting-to-upstream">Connection Refused (Upstream)</a> — the per-server failure behind this.</li>
+                <li><a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a> — timeouts that mark servers failed.</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — what clients see meanwhile.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Watch recovery from outside</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check backend ports across hosts</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does this happen when my VPN connects?","acceptedAnswer":{"@type":"Answer","text":"VPN clients typically change the system DNS configuration to route DNS queries through the VPN tunnel. If Chrome is performing a DNS lookup at the exact moment the VPN modifies the DNS settings, the in-progress probe is invalidated."}},{"@type":"Question","name":"Is this error harmful or does it indicate a security issue?","acceptedAnswer":{"@type":"Answer","text":"No, this is a benign error caused by a network configuration change. It is not a security issue. Simply reload the page once your network connection stabilizes."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_NETWORK_CHANGE — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_NETWORK_CHANGE","step":[{"@type":"HowToStep","position":1,"name":"Reload the page","text":"Once the network change completes and the new connection stabilizes, simply reload the page. Chrome will use the updated DNS configuration for the new query."},{"@type":"HowToStep","position":2,"name":"Stabilize your network connection","text":"If you are in an area with competing Wi-Fi networks, manually select and lock to a specific network. Disable auto-connect for networks you do not intend to use."},{"@type":"HowToStep","position":3,"name":"Flush DNS after network changes","text":"After switching networks, flush the DNS cache to clear stale records from the previous network's DNS server."},{"@type":"HowToStep","position":4,"name":"Use static DNS servers","text":"Configure static DNS servers instead of relying on DHCP-assigned ones. This prevents DNS configuration changes during lease renewals or network switches."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_NETWORK_CHANGE — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS_PROBE_NETWORK_CHANGE in Chrome. Learn why network changes interrupt DNS resolution and how to restore connectivity quickly.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_NETWORK_CHANGE, DNS network change detected, A network change was detected">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_NETWORK_CHANGE — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_NETWORK_CHANGE in Chrome. Learn why network changes interrupt DNS resolution and how to restore connectivity quickly.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-network-change">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-network-change">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_NETWORK_CHANGE</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_NETWORK_CHANGE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNS probe detected a network change during resolution</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_NETWORK_CHANGE</code></li><li><code>DNS network change detected</code></li><li><code>A network change was detected</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNS_PROBE_NETWORK_CHANGE occurs when Chrome detects that the underlying network configuration changed while a DNS probe was in progress. This happens when the system switches between Wi-Fi networks, toggles between Wi-Fi and cellular data, connects or disconnects from a VPN, or when DHCP renews the IP address and assigns new DNS servers. Chrome aborts the in-progress DNS probe because the network context has changed.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Wi-Fi network switch</strong> — The device automatically switched from one Wi-Fi network to another (for example, from a weak access point to a stronger one), causing the DNS resolver configuration to change mid-query.</li>
+                <li><strong>VPN connection or disconnection</strong> — A VPN client connected or disconnected while the page was loading, changing the DNS server configuration and network routing in the middle of an active DNS probe.</li>
+                <li><strong>DHCP lease renewal with new settings</strong> — The DHCP server renewed the network lease and assigned different DNS servers or a different IP address, invalidating the previous DNS probe context.</li>
+                <li><strong>Mobile data and Wi-Fi handoff</strong> — On mobile devices or laptops with both cellular and Wi-Fi, the operating system switched between connection types while Chrome was performing DNS resolution.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reload the page</h3>
+            <p>Once the network change completes and the new connection stabilizes, simply reload the page. Chrome will use the updated DNS configuration for the new query.</p>
+            <h3>2. Stabilize your network connection</h3>
+            <p>If you are in an area with competing Wi-Fi networks, manually select and lock to a specific network. Disable auto-connect for networks you do not intend to use.</p>
+            <h3>3. Flush DNS after network changes</h3>
+            <p>After switching networks, flush the DNS cache to clear stale records from the previous network's DNS server.</p>
+            <pre><code># Windows
+ipconfig /flushdns
+
+# macOS
+sudo dscacheutil -flushcache
+
+# Chrome internal cache
+# Navigate to chrome://net-internals/#dns
+# Click 'Clear host cache'</code></pre>
+            <h3>4. Use static DNS servers</h3>
+            <p>Configure static DNS servers instead of relying on DHCP-assigned ones. This prevents DNS configuration changes during lease renewals or network switches.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does this happen when my VPN connects?</h3>
+            <p>VPN clients typically change the system DNS configuration to route DNS queries through the VPN tunnel. If Chrome is performing a DNS lookup at the exact moment the VPN modifies the DNS settings, the in-progress probe is invalidated.</p>
+            <h3>Is this error harmful or does it indicate a security issue?</h3>
+            <p>No, this is a benign error caused by a network configuration change. It is not a security issue. Simply reload the page once your network connection stabilizes.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-probe-started">DNS_PROBE_STARTED</a> — Chrome has started a DNS probe</li>
+                <li><a href="/errors/dns/dns-probe-finished-no-internet">DNS_PROBE_FINISHED_NO_INTERNET</a> — DNS probe completed with no internet access</li>
+                <li><a href="/errors/dns/dns-probe-finished-bad-config">DNS_PROBE_FINISHED_BAD_CONFIG</a> — DNS configuration is invalid</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

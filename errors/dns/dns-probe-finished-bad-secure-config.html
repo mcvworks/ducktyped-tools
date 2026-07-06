@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is DNSSEC and why does it cause errors?","acceptedAnswer":{"@type":"Answer","text":"DNSSEC is a security extension for DNS that uses cryptographic signatures to verify that DNS responses are authentic and unmodified. When signatures are misconfigured or expired, validating resolvers refuse to return the DNS records, which prevents the browser from resolving the domain."}},{"@type":"Question","name":"Can I disable DNSSEC validation to bypass this error?","acceptedAnswer":{"@type":"Answer","text":"Switching to a non-validating DNS resolver would bypass the error, but this removes the security benefit of DNSSEC. It is better to fix the underlying DNSSEC configuration or contact the domain administrator."}},{"@type":"Question","name":"Is this error on my end or the website's end?","acceptedAnswer":{"@type":"Answer","text":"In most cases this is a server-side DNSSEC misconfiguration. However, if your system clock is wrong or your local DNS resolver has bugs, the issue can be on your end. Try a different DNS resolver to narrow it down."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_FINISHED_BAD_SECURE_CONFIG — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_FINISHED_BAD_SECURE_CONFIG","step":[{"@type":"HowToStep","position":1,"name":"Switch to a DNSSEC-aware public resolver","text":"Configure your system to use Google Public DNS or Cloudflare DNS, which have robust DNSSEC validation. This rules out resolver-specific bugs."},{"@type":"HowToStep","position":2,"name":"Verify your system clock","text":"Ensure your computer's date and time are correct. DNSSEC signatures include validity windows, and an incorrect clock will cause legitimate signatures to fail validation."},{"@type":"HowToStep","position":3,"name":"Contact the domain administrator","text":"If you manage the domain, check that the DS record at your registrar matches your current DNSKEY. Use a DNSSEC debugger like dnsviz.net to trace the chain of trust and identify the break."},{"@type":"HowToStep","position":4,"name":"Flush DNS cache and retry","text":"Stale cached DNSSEC records can cause validation failures after a zone is re-signed. Flush the system DNS cache and retry."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_FINISHED_BAD_SECURE_CONFIG — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS_PROBE_FINISHED_BAD_SECURE_CONFIG in Chrome. Learn what causes DNSSEC validation failures and how to resolve them with step-by-step troubleshooting.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_FINISHED_BAD_SECURE_CONFIG, DNS bad secure config, Secure DNS configuration error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_FINISHED_BAD_SECURE_CONFIG — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_FINISHED_BAD_SECURE_CONFIG in Chrome. Learn what causes DNSSEC validation failures and how to resolve them with step-by-step troubleshooting.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-finished-bad-secure-config">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-finished-bad-secure-config">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_FINISHED_BAD_SECURE_CONFIG</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_FINISHED_BAD_SECURE_CONFIG</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNSSEC validation failure prevented DNS resolution</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_FINISHED_BAD_SECURE_CONFIG</code></li><li><code>DNS bad secure config</code></li><li><code>Secure DNS configuration error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNS_PROBE_FINISHED_BAD_SECURE_CONFIG occurs when the browser's DNS resolver cannot validate DNSSEC signatures for the requested domain. DNSSEC adds cryptographic signatures to DNS records so resolvers can verify that responses have not been tampered with. When the signature chain is broken, expired, or misconfigured, the resolver rejects the response and the browser displays this error.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Expired DNSSEC signatures</strong> — The RRSIG records for the domain have passed their expiration date. DNSSEC signatures have a validity period, and if the zone is not re-signed before expiration, all validating resolvers will reject the records.</li>
+                <li><strong>Incorrect DS record at the registrar</strong> — The Delegation Signer (DS) record published in the parent zone does not match the DNSKEY in the child zone. This breaks the chain of trust from the root zone down to the domain.</li>
+                <li><strong>Zone re-signed with a new key without updating DS</strong> — The domain operator generated new DNSSEC keys and re-signed the zone but did not update the DS record at the registrar, causing a mismatch in the trust chain.</li>
+                <li><strong>Clock skew on the client system</strong> — DNSSEC validation checks signature timestamps. If the client system clock is significantly wrong, valid signatures may appear expired or not yet valid, causing validation failures.</li>
+                <li><strong>DNS resolver does not support DNSSEC properly</strong> — Some network-provided DNS resolvers partially support DNSSEC but handle edge cases incorrectly, returning SERVFAIL for zones with valid but complex DNSSEC configurations.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Switch to a DNSSEC-aware public resolver</h3>
+            <p>Configure your system to use Google Public DNS or Cloudflare DNS, which have robust DNSSEC validation. This rules out resolver-specific bugs.</p>
+            <pre><code># Set DNS servers
+# Google: 8.8.8.8, 8.8.4.4
+# Cloudflare: 1.1.1.1, 1.0.0.1</code></pre>
+            <h3>2. Verify your system clock</h3>
+            <p>Ensure your computer's date and time are correct. DNSSEC signatures include validity windows, and an incorrect clock will cause legitimate signatures to fail validation.</p>
+            <h3>3. Contact the domain administrator</h3>
+            <p>If you manage the domain, check that the DS record at your registrar matches your current DNSKEY. Use a DNSSEC debugger like dnsviz.net to trace the chain of trust and identify the break.</p>
+            <h3>4. Flush DNS cache and retry</h3>
+            <p>Stale cached DNSSEC records can cause validation failures after a zone is re-signed. Flush the system DNS cache and retry.</p>
+            <pre><code># Windows
+ipconfig /flushdns
+
+# macOS
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+
+# Linux
+sudo systemd-resolve --flush-caches</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is DNSSEC and why does it cause errors?</h3>
+            <p>DNSSEC is a security extension for DNS that uses cryptographic signatures to verify that DNS responses are authentic and unmodified. When signatures are misconfigured or expired, validating resolvers refuse to return the DNS records, which prevents the browser from resolving the domain.</p>
+            <h3>Can I disable DNSSEC validation to bypass this error?</h3>
+            <p>Switching to a non-validating DNS resolver would bypass the error, but this removes the security benefit of DNSSEC. It is better to fix the underlying DNSSEC configuration or contact the domain administrator.</p>
+            <h3>Is this error on my end or the website's end?</h3>
+            <p>In most cases this is a server-side DNSSEC misconfiguration. However, if your system clock is wrong or your local DNS resolver has bugs, the issue can be on your end. Try a different DNS resolver to narrow it down.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-probe-finished-bad-config">DNS_PROBE_FINISHED_BAD_CONFIG</a> — DNS configuration error on the client</li>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — DNS server failed to process the query</li>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — DNS server is unreachable or not answering</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records for any domain</span>
+                </a>
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificates and chain validity</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

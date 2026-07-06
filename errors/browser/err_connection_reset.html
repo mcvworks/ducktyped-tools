@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_CONNECTION_RESET mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_CONNECTION_RESET means a TCP connection was established with the server but was then abruptly closed (reset) before the browser could receive a response. This is different from a refused connection — the server accepted the connection but then dropped it unexpectedly."}},{"@type":"Question","name":"What causes ERR_CONNECTION_RESET?","acceptedAnswer":{"@type":"Answer","text":"Common causes include firewall or antivirus software interrupting the connection, a proxy or VPN dropping the connection mid-transfer, an unstable network, a misconfigured server that closes connections prematurely, or ISP-level filtering."}},{"@type":"Question","name":"How do I fix ERR_CONNECTION_RESET?","acceptedAnswer":{"@type":"Answer","text":"Try these steps: disable VPN or proxy temporarily, flush your DNS cache and reset TCP/IP settings, temporarily disable firewall or antivirus, check if the issue is on multiple networks, and verify the server is working correctly using an HTTP header checker."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_CONNECTION_RESET — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_CONNECTION_RESET","step":[{"@type":"HowToStep","position":1,"name":"Reload the Page","text":"Sometimes the error is transient. Press Ctrl+F5 (or Cmd+Shift+R on Mac) for a hard reload that bypasses the browser cache."},{"@type":"HowToStep","position":2,"name":"Disable VPN or Proxy","text":"If you are using a VPN or proxy, temporarily disable it and try again. Many VPN clients cause connection resets due to routing issues or DNS leaks."},{"@type":"HowToStep","position":3,"name":"Flush DNS Cache and Reset Network Settings","text":"On Windows, open Command Prompt as administrator and run:"},{"@type":"HowToStep","position":4,"name":"Disable Firewall or Antivirus Temporarily","text":"Test whether your security software is the cause by temporarily disabling it and trying the site again. If the error disappears, check your security software's HTTPS inspection or traffic filtering settings."},{"@type":"HowToStep","position":5,"name":"Try Incognito Mode or a Different Browser","text":"Open an incognito/private window to disable extensions. If the error does not appear there, a browser extension is likely the cause. Try disabling extensions one by one to identify the culprit."},{"@type":"HowToStep","position":6,"name":"Try a Different Network","text":"Switch to mobile data or a different Wi-Fi network. If the error disappears, your ISP or router may be causing the issue."},{"@type":"HowToStep","position":7,"name":"Check the Server's HTTP Headers","text":"Use the HTTP Latency Checker to verify the server is responding correctly. If it times out or returns an error, the problem may be server-side."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_CONNECTION_RESET — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_CONNECTION_RESET means and how to fix it. Step-by-step solutions for Chrome, Edge, and Firefox on Windows and Mac.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_CONNECTION_RESET, ERR_CONNECTION_RESET Chrome, This site can&#39;t be reached, The connection was reset, Connection reset by peer, ECONNRESET">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_CONNECTION_RESET — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_CONNECTION_RESET errors with step-by-step solutions covering firewalls, VPNs, network settings, and server configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_connection_reset">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_connection_reset">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_CONNECTION_RESET</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_CONNECTION_RESET</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means your browser established a connection to the server but the connection was suddenly closed before any data was transferred. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_CONNECTION_RESET</code></li><li><code>ERR_CONNECTION_RESET Chrome</code></li><li><code>This site can&#39;t be reached</code></li><li><code>The connection was reset</code></li><li><code>Connection reset by peer</code></li><li><code>ECONNRESET</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>How the Request Flow Works</h2>
+                <div class="dt-diagram" data-diagram="http" data-error="conn_reset"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When your browser connects to a web server, it first performs a TCP handshake to establish the connection. <strong>ERR_CONNECTION_RESET</strong> occurs when this connection is abruptly terminated after being established — the server (or something between you and the server) sent a TCP RST (reset) packet, forcing the connection closed.</p>
+            <p>This is different from <strong>ERR_CONNECTION_REFUSED</strong> (where the server never accepted the connection) or a timeout (where the connection simply went unanswered). A reset is an active termination of an established connection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Firewall or antivirus interference</strong> — security software may be inspecting and blocking the connection mid-transfer.</li>
+                <li><strong>VPN or proxy dropping connections</strong> — some VPN configurations close connections due to routing or protocol issues.</li>
+                <li><strong>ISP-level filtering</strong> — your ISP may be using deep packet inspection (DPI) to block certain traffic.</li>
+                <li><strong>Unstable network connection</strong> — packet loss or a flaky Wi-Fi connection can cause connections to reset.</li>
+                <li><strong>Server misconfiguration</strong> — the server may be configured to close idle connections too aggressively, or have a load balancer that drops connections.</li>
+                <li><strong>Browser extension conflicts</strong> — some extensions intercept and modify traffic in ways that cause resets.</li>
+                <li><strong>TLS/SSL mismatch</strong> — a cipher suite or protocol version mismatch can cause a reset during the SSL handshake.</li>
+                <li><strong>Proxy server errors</strong> — a misconfigured proxy may establish and then immediately close connections.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reload the Page</h3>
+            <p>Sometimes the error is transient. Press <kbd>Ctrl+F5</kbd> (or <kbd>Cmd+Shift+R</kbd> on Mac) for a hard reload that bypasses the browser cache.</p>
+
+            <h3>2. Disable VPN or Proxy</h3>
+            <p>If you are using a VPN or proxy, temporarily disable it and try again. Many VPN clients cause connection resets due to routing issues or DNS leaks.</p>
+
+            <h3>3. Flush DNS Cache and Reset Network Settings</h3>
+            <p>On Windows, open Command Prompt as administrator and run:</p>
+            <pre><code>ipconfig /flushdns
+netsh int ip reset
+netsh winsock reset</code></pre>
+            <p>Restart your computer after running these commands.</p>
+
+            <h3>4. Disable Firewall or Antivirus Temporarily</h3>
+            <p>Test whether your security software is the cause by temporarily disabling it and trying the site again. If the error disappears, check your security software's HTTPS inspection or traffic filtering settings.</p>
+
+            <h3>5. Try Incognito Mode or a Different Browser</h3>
+            <p>Open an incognito/private window to disable extensions. If the error does not appear there, a browser extension is likely the cause. Try disabling extensions one by one to identify the culprit.</p>
+
+            <h3>6. Try a Different Network</h3>
+            <p>Switch to mobile data or a different Wi-Fi network. If the error disappears, your ISP or router may be causing the issue.</p>
+
+            <h3>7. Check the Server's HTTP Headers</h3>
+            <p>Use the <a href="/http-latency/">HTTP Latency Checker</a> to verify the server is responding correctly. If it times out or returns an error, the problem may be server-side.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — test whether the server is reachable and measure response times.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — verify the domain resolves to the correct IP address.</li>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — rule out TLS/SSL handshake issues.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is ERR_CONNECTION_RESET the same as a refused connection?</h3>
+            <p>No. A refused connection (<strong>ERR_CONNECTION_REFUSED</strong>) means the server never accepted the TCP connection — the port is closed or no service is listening. A reset means the connection was established but then forcibly terminated. They have different causes and require different troubleshooting steps.</p>
+
+            <h3>Can ERR_CONNECTION_RESET be caused by the website itself?</h3>
+            <p>Yes. If the server has a misconfigured load balancer, aggressive connection timeouts, or a TLS configuration issue, it may reset connections before completing the handshake. If the error occurs consistently on one site but not others, the problem is likely on the server's end.</p>
+
+            <h3>Does this error mean my connection is being monitored?</h3>
+            <p>Not necessarily, but ISP-level DPI (deep packet inspection) or a firewall that inspects HTTPS traffic can cause this error. If you are on a corporate or school network, IT policies may be blocking the connection.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — the server rejected the connection before it was established.</li>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — the domain could not be resolved at all.</li>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> — SSL handshake failed after connection was made.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Check HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

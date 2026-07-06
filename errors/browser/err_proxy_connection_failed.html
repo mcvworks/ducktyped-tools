@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I know if I should be using a proxy?","acceptedAnswer":{"@type":"Answer","text":"Most home users do not need a proxy. If you are on a corporate or school network, your IT department will tell you. If you are unsure, try disabling the proxy — if browsing works without it, you do not need one."}},{"@type":"Question","name":"Can a VPN cause this error?","acceptedAnswer":{"@type":"Answer","text":"Yes. Some VPN software configures a local proxy as part of its setup. If the VPN disconnects but leaves the proxy settings in place, you will see this error. Reconnect the VPN or remove the proxy settings."}},{"@type":"Question","name":"Why does only Chrome show this error while other browsers work?","acceptedAnswer":{"@type":"Answer","text":"Different browsers can have different proxy settings. Chrome uses the system proxy settings on Windows and macOS, while Firefox has its own proxy configuration. Check the proxy settings in each browser independently."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_PROXY_CONNECTION_FAILED — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_PROXY_CONNECTION_FAILED","step":[{"@type":"HowToStep","position":1,"name":"Check and fix proxy settings","text":"Review your proxy configuration in the browser and operating system settings. If you do not need a proxy, disable it entirely."},{"@type":"HowToStep","position":2,"name":"Disable automatic proxy detection","text":"Turn off 'Automatically detect settings' in your network proxy settings. This feature sometimes detects incorrect proxy configurations from the network."},{"@type":"HowToStep","position":3,"name":"Scan for malware","text":"Run a malware scan to check if malicious software has modified your proxy settings. Some malware redirects traffic through rogue proxies for data interception."},{"@type":"HowToStep","position":4,"name":"Contact your network administrator","text":"In corporate or school environments, proxy settings are often managed centrally. Contact your IT department to verify the correct proxy configuration and ensure the proxy server is operational."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_PROXY_CONNECTION_FAILED — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_PROXY_CONNECTION_FAILED in Chrome and other browsers. Learn why proxy connections fail and how to fix proxy settings and network configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_PROXY_CONNECTION_FAILED, ERR_PROXY_CONNECTION_FAILED Chrome, Proxy connection failed, Unable to connect to proxy server, ERR_TUNNEL_CONNECTION_FAILED">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_PROXY_CONNECTION_FAILED — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_PROXY_CONNECTION_FAILED in Chrome and other browsers. Learn why proxy connections fail and how to fix proxy settings and network configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_proxy_connection_failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_proxy_connection_failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_PROXY_CONNECTION_FAILED</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_PROXY_CONNECTION_FAILED</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Browser could not establish a connection to the proxy server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_PROXY_CONNECTION_FAILED</code></li><li><code>ERR_PROXY_CONNECTION_FAILED Chrome</code></li><li><code>Proxy connection failed</code></li><li><code>Unable to connect to proxy server</code></li><li><code>ERR_TUNNEL_CONNECTION_FAILED</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_PROXY_CONNECTION_FAILED occurs when the browser is configured to use a proxy server but cannot establish a connection to that proxy. The browser is not even attempting to connect to the destination website — it fails at the step of connecting to the intermediary proxy. This is typically caused by incorrect proxy settings, the proxy server being offline, or network issues between the client and the proxy.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Proxy server is offline</strong> — The configured proxy server is not running, has crashed, or is undergoing maintenance, making it impossible for the browser to establish a connection.</li>
+                <li><strong>Incorrect proxy settings</strong> — The proxy address, port, or authentication credentials configured in the browser or operating system are wrong, pointing to a non-existent or incorrect proxy server.</li>
+                <li><strong>Proxy auto-configuration (PAC) script errors</strong> — The PAC file that determines which proxy to use contains errors, returns an invalid proxy address, or the PAC file URL itself is unreachable.</li>
+                <li><strong>Malware changed proxy settings</strong> — Malware or adware has modified the system proxy settings to route traffic through a malicious proxy that is no longer available or was taken down.</li>
+                <li><strong>Firewall blocking proxy port</strong> — A firewall is blocking the connection to the proxy server's port, preventing the browser from reaching the proxy even though the proxy itself may be running.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check and fix proxy settings</h3>
+            <p>Review your proxy configuration in the browser and operating system settings. If you do not need a proxy, disable it entirely.</p>
+            <pre><code># Windows: Check proxy settings
+netsh winhttp show proxy
+
+# To reset proxy settings
+netsh winhttp reset proxy</code></pre>
+            <h3>2. Disable automatic proxy detection</h3>
+            <p>Turn off 'Automatically detect settings' in your network proxy settings. This feature sometimes detects incorrect proxy configurations from the network.</p>
+            <h3>3. Scan for malware</h3>
+            <p>Run a malware scan to check if malicious software has modified your proxy settings. Some malware redirects traffic through rogue proxies for data interception.</p>
+            <h3>4. Contact your network administrator</h3>
+            <p>In corporate or school environments, proxy settings are often managed centrally. Contact your IT department to verify the correct proxy configuration and ensure the proxy server is operational.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I know if I should be using a proxy?</h3>
+            <p>Most home users do not need a proxy. If you are on a corporate or school network, your IT department will tell you. If you are unsure, try disabling the proxy — if browsing works without it, you do not need one.</p>
+            <h3>Can a VPN cause this error?</h3>
+            <p>Yes. Some VPN software configures a local proxy as part of its setup. If the VPN disconnects but leaves the proxy settings in place, you will see this error. Reconnect the VPN or remove the proxy settings.</p>
+            <h3>Why does only Chrome show this error while other browsers work?</h3>
+            <p>Different browsers can have different proxy settings. Chrome uses the system proxy settings on Windows and macOS, while Firefox has its own proxy configuration. Check the proxy settings in each browser independently.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Server refused the connection</li>
+                <li><a href="/errors/browser/err_internet_disconnected">ERR_INTERNET_DISCONNECTED</a> — No internet connection</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS could not resolve the domain name</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

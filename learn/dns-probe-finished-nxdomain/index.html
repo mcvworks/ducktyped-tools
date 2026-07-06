@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Causes DNS_PROBE_FINISHED_NXDOMAIN?","description":"Understand why the DNS_PROBE_FINISHED_NXDOMAIN error occurs, what NXDOMAIN means in DNS, common causes, and how to diagnose and fix the issue.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/dns-probe-finished-nxdomain/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Causes DNS_PROBE_FINISHED_NXDOMAIN?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does DNS_PROBE_FINISHED_NXDOMAIN mean?","acceptedAnswer":{"@type":"Answer","text":"DNS_PROBE_FINISHED_NXDOMAIN means that your browser attempted a DNS lookup for the domain you entered, and the DNS system responded with NXDOMAIN -- Non-Existent Domain. The domain name could not be resolved to an IP address, so the browser cannot connect to any server."}},{"@type":"Question","name":"What does NXDOMAIN mean?","acceptedAnswer":{"@type":"Answer","text":"NXDOMAIN stands for Non-Existent Domain. It is a DNS response code (RCODE 3) that indicates the queried domain name does not exist in the DNS system. This is different from NODATA, which means the domain exists but has no records of the requested type."}},{"@type":"Question","name":"Can DNS_PROBE_FINISHED_NXDOMAIN be caused by DNS propagation?","acceptedAnswer":{"@type":"Answer","text":"Yes. If a domain was recently registered or its nameservers were recently changed, some DNS resolvers may not yet have the updated information. During this propagation window, some resolvers may return NXDOMAIN while others correctly resolve the domain."}},{"@type":"Question","name":"How do I fix DNS_PROBE_FINISHED_NXDOMAIN on my own computer?","acceptedAnswer":{"@type":"Answer","text":"First, verify the domain name is spelled correctly. Then try flushing your local DNS cache, switching to a public DNS resolver like 8.8.8.8 or 1.1.1.1, and checking if the domain resolves from other devices or networks. If the domain genuinely does not exist in DNS, the issue is on the domain owner's side."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_FINISHED_NXDOMAIN Explained — duckTyped</title>
+    <meta name="description" content="Understand why the DNS_PROBE_FINISHED_NXDOMAIN error occurs, what NXDOMAIN means in DNS, common causes, and how to diagnose and fix the issue.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Causes DNS_PROBE_FINISHED_NXDOMAIN? — Understanding NXDOMAIN — duckTyped">
+    <meta property="og:description" content="Understand why DNS_PROBE_FINISHED_NXDOMAIN occurs, what NXDOMAIN means, and how to fix it.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/dns-probe-finished-nxdomain/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Causes DNS_PROBE_FINISHED_NXDOMAIN? — duckTyped">
+    <meta name="twitter:description" content="Understand why DNS_PROBE_FINISHED_NXDOMAIN occurs and how to diagnose it.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/dns-probe-finished-nxdomain/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Causes DNS_PROBE_FINISHED_NXDOMAIN?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Causes DNS_PROBE_FINISHED_NXDOMAIN?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNS_PROBE_FINISHED_NXDOMAIN is a browser error indicating that the domain name you tried to visit does not exist in the DNS system. This guide explains what NXDOMAIN means, why it happens, and how to diagnose the root cause.</p>
+
+            <h2>What NXDOMAIN Means</h2>
+            <p><strong>NXDOMAIN</strong> stands for <strong>Non-Existent Domain</strong>. It is a specific DNS response code (RCODE 3) returned by DNS servers when the queried domain name has no records of any type in the DNS system. This is different from other DNS errors:</p>
+            <ul>
+                <li><strong>NXDOMAIN</strong> -- the domain itself does not exist in DNS.</li>
+                <li><strong>NODATA</strong> -- the domain exists but has no records of the requested type (for example, the domain has MX records but no A record).</li>
+                <li><strong>SERVFAIL</strong> -- the DNS server encountered an error while processing the query.</li>
+                <li><strong>REFUSED</strong> -- the DNS server refused to answer the query.</li>
+            </ul>
+            <p>When Chrome (or another Chromium-based browser) receives an NXDOMAIN response, it displays the error as <code>DNS_PROBE_FINISHED_NXDOMAIN</code>. Firefox displays a similar "Hmm. We're having trouble finding that site" message. Safari shows "Safari Can't Find the Server."</p>
+
+            <h2>Common Causes</h2>
+
+            <h3>Typo in the Domain Name</h3>
+            <p>The most frequent cause is simply a misspelled domain name. A single wrong character -- <code>gogle.com</code> instead of <code>google.com</code> -- results in a query for a domain that does not exist. Always double-check the URL in your address bar.</p>
+
+            <h3>Domain Not Registered</h3>
+            <p>The domain may genuinely not be registered. Someone may have shared a link to a domain that has not been purchased, or a domain registration may have expired without renewal. You can use a WHOIS lookup to check whether the domain is currently registered.</p>
+
+            <h3>Expired Domain</h3>
+            <p>When a domain registration expires, the registrar eventually removes its DNS records. The domain enters a grace period, then a redemption period, and finally becomes available for re-registration. During and after this process, DNS queries for the domain return NXDOMAIN.</p>
+
+            <h3>Missing DNS Records</h3>
+            <p>The domain may be registered but have no DNS records configured. This can happen if the domain was recently purchased and the owner has not yet set up hosting, or if nameserver delegation is pointed to servers that do not have a zone configured for the domain.</p>
+
+            <h3>Nameserver Misconfiguration</h3>
+            <p>If the domain's NS records at the registrar point to nameservers that do not have a zone file for the domain, the authoritative servers will return NXDOMAIN or REFUSED. This commonly occurs when switching DNS providers without properly setting up the zone on the new provider first.</p>
+
+            <h3>DNS Propagation</h3>
+            <p>If a domain was recently registered or had its nameservers changed, some resolvers may not yet have the updated information. During this propagation window, some resolvers will return NXDOMAIN while others correctly resolve the domain. Propagation typically completes within 24-48 hours.</p>
+
+            <h3>Local DNS Issues</h3>
+            <p>Sometimes the problem is on the user's side rather than the domain's:</p>
+            <ul>
+                <li><strong>Stale DNS cache</strong> -- your computer or router may have cached an old NXDOMAIN response.</li>
+                <li><strong>DNS resolver problems</strong> -- your ISP's DNS resolver may be experiencing issues or filtering certain domains.</li>
+                <li><strong>VPN or proxy interference</strong> -- a VPN or proxy may be using DNS servers that return different results.</li>
+                <li><strong>Hosts file override</strong> -- an entry in your system's hosts file may be interfering with resolution.</li>
+            </ul>
+
+            <h2>How to Diagnose</h2>
+            <ol>
+                <li><strong>Verify the domain name</strong> -- check for typos carefully.</li>
+                <li><strong>Use a DNS lookup tool</strong> -- query the domain using duckTyped's DNS Record Checker to see if authoritative servers return any records.</li>
+                <li><strong>Check WHOIS</strong> -- verify the domain is registered and has not expired.</li>
+                <li><strong>Try a different DNS resolver</strong> -- switch to <code>8.8.8.8</code> (Google) or <code>1.1.1.1</code> (Cloudflare) to rule out resolver-specific issues.</li>
+                <li><strong>Flush your DNS cache</strong> -- on Windows, run <code>ipconfig /flushdns</code>. On macOS, run <code>sudo dscacheutil -flushcache</code>. On Linux, run <code>sudo systemd-resolve --flush-caches</code>.</li>
+                <li><strong>Test from another device or network</strong> -- if the domain resolves on another network, the problem is likely with your local DNS configuration.</li>
+            </ol>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- query DNS records directly from authoritative servers to verify domain configuration.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> -- check if a domain is registered and when it expires.</li>
+                <li><a href="/reverse-dns/">Reverse DNS Lookup</a> -- verify PTR records for IP addresses.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS Records guide</a>, <a href="/learn/dns-propagation/">What is DNS propagation</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">Fix DNS_PROBE_FINISHED_NXDOMAIN</a> -- step-by-step troubleshooting guide for this error.</li>
+                <li><a href="/errors/dns/">All DNS Errors</a> -- browse all DNS-related error troubleshooting guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Record Checker</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

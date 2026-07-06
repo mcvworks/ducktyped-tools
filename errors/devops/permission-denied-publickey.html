@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I use RSA or Ed25519 keys?","acceptedAnswer":{"@type":"Answer","text":"Ed25519 is recommended. It is faster, more secure, and produces shorter keys than RSA. Use 'ssh-keygen -t ed25519'. Only use RSA if the server does not support Ed25519."}},{"@type":"Question","name":"How do I use different SSH keys for different services?","acceptedAnswer":{"@type":"Answer","text":"Configure the ~/.ssh/config file to specify which key to use for each host. For example, set IdentityFile for github.com and a different IdentityFile for your company's GitLab."}},{"@type":"Question","name":"Why does this work on one machine but not another?","acceptedAnswer":{"@type":"Answer","text":"Each machine has its own SSH keys. You need to either copy your keys to the new machine or generate new keys and add them to the remote service."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Permission Denied (publickey) — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Permission Denied (publickey)","step":[{"@type":"HowToStep","position":1,"name":"Generate and add SSH key","text":"Generate a new SSH key and add it to your GitHub/GitLab account or remote server."},{"@type":"HowToStep","position":2,"name":"Add key to ssh-agent","text":"Start the ssh-agent and add your private key."},{"@type":"HowToStep","position":3,"name":"Fix SSH key permissions","text":"Set correct permissions on SSH files. Incorrect permissions cause SSH to silently ignore keys."},{"@type":"HowToStep","position":4,"name":"Test SSH connection","text":"Verify that SSH authentication works with the target service."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permission Denied (publickey) — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'Permission denied (publickey)' SSH error. Learn how to configure SSH keys, ssh-agent, and authorized_keys for GitHub, GitLab, and servers.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Permission denied (publickey), SSH permission denied, git@github.com: Permission denied (publickey), Could not read from remote repository, Host key verification failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Permission Denied (publickey) — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'Permission denied (publickey)' SSH error. Learn how to configure SSH keys, ssh-agent, and authorized_keys for GitHub, GitLab, and servers.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/permission-denied-publickey">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/permission-denied-publickey">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Permission Denied (publickey)</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Permission Denied (publickey)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSH authentication failed using public key</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Permission denied (publickey)</code></li><li><code>SSH permission denied</code></li><li><code>git@github.com: Permission denied (publickey)</code></li><li><code>Could not read from remote repository</code></li><li><code>Host key verification failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when an SSH connection attempt fails because the server does not accept any of the public keys presented by the client. SSH key authentication requires the client's public key to be registered on the server (in authorized_keys) or with the service (GitHub, GitLab). If no matching key is found, the connection is rejected.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>SSH key not added to the remote service</strong> — Your public key has not been added to your GitHub, GitLab, or server account. The service does not recognize your key and rejects the connection.</li>
+                <li><strong>SSH key not loaded in ssh-agent</strong> — The SSH key exists on disk but is not loaded into the ssh-agent, so the SSH client does not present it during authentication.</li>
+                <li><strong>Wrong key being used</strong> — Multiple SSH keys exist and the client is presenting the wrong one. SSH tries keys in order, and if the correct key is not tried before the server's authentication limit, the connection fails.</li>
+                <li><strong>Incorrect file permissions on SSH keys</strong> — SSH refuses to use private keys with overly permissive file permissions. The private key file must be readable only by the owner (600 or 400 on Unix).</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Generate and add SSH key</h3>
+            <p>Generate a new SSH key and add it to your GitHub/GitLab account or remote server.</p>
+            <pre><code>ssh-keygen -t ed25519 -C &quot;your@email.com&quot;
+# Copy public key:
+cat ~/.ssh/id_ed25519.pub
+# Add to GitHub: Settings &gt; SSH Keys &gt; New SSH Key</code></pre>
+            <h3>2. Add key to ssh-agent</h3>
+            <p>Start the ssh-agent and add your private key.</p>
+            <pre><code>eval &quot;$(ssh-agent -s)&quot;
+ssh-add ~/.ssh/id_ed25519</code></pre>
+            <h3>3. Fix SSH key permissions</h3>
+            <p>Set correct permissions on SSH files. Incorrect permissions cause SSH to silently ignore keys.</p>
+            <pre><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub</code></pre>
+            <h3>4. Test SSH connection</h3>
+            <p>Verify that SSH authentication works with the target service.</p>
+            <pre><code>ssh -T git@github.com
+ssh -vT git@github.com  # Verbose mode for debugging</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Should I use RSA or Ed25519 keys?</h3>
+            <p>Ed25519 is recommended. It is faster, more secure, and produces shorter keys than RSA. Use 'ssh-keygen -t ed25519'. Only use RSA if the server does not support Ed25519.</p>
+            <h3>How do I use different SSH keys for different services?</h3>
+            <p>Configure the ~/.ssh/config file to specify which key to use for each host. For example, set IdentityFile for github.com and a different IdentityFile for your company's GitLab.</p>
+            <h3>Why does this work on one machine but not another?</h3>
+            <p>Each machine has its own SSH keys. You need to either copy your keys to the new machine or generate new keys and add them to the remote service.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/git-repository-not-found">Repository Not Found</a> — Git cannot find the remote repository</li>
+                <li><a href="/errors/devops/git-remote-origin-already-exists">Remote Origin Already Exists</a> — Git remote origin is already configured</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Connection refused by server</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

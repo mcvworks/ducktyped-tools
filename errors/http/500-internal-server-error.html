@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 500 Internal Server Error mean?","acceptedAnswer":{"@type":"Answer","text":"A 500 Internal Server Error means the server encountered an unexpected condition that prevented it from completing the request. It is a generic catch-all error for unhandled server-side exceptions. The problem is always on the server, not the client."}},{"@type":"Question","name":"What causes a 500 Internal Server Error?","acceptedAnswer":{"@type":"Answer","text":"Common causes include unhandled exceptions in application code, PHP fatal errors, misconfigured server settings, exhausted memory limits, database connection failures, and corrupted .htaccess files in Apache."}},{"@type":"Question","name":"How do I debug a 500 Internal Server Error?","acceptedAnswer":{"@type":"Answer","text":"Check the server's error logs — Apache logs to /var/log/apache2/error.log, nginx to /var/log/nginx/error.log. Enable detailed error output in your application during development. Look for PHP fatal errors, syntax errors, or unhandled exceptions in your application code."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"500 Internal Server Error — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 500 Internal Server Error","step":[{"@type":"HowToStep","position":1,"name":"Check Server Error Logs","text":"The specific error is almost always in the server logs:"},{"@type":"HowToStep","position":2,"name":"Enable Detailed Error Output (Development Only)","text":"Temporarily enable detailed errors to see them in the browser. Never do this in production:"},{"@type":"HowToStep","position":3,"name":"Check for Corrupted .htaccess","text":"Rename your .htaccess file temporarily to test if it is the cause. An invalid directive in .htaccess causes a 500 error on every request in that directory."},{"@type":"HowToStep","position":4,"name":"Check Database Connectivity","text":"Verify your database server is running, credentials are correct, and the connection limit has not been exceeded."},{"@type":"HowToStep","position":5,"name":"Increase PHP Memory Limit","text":"If logs show \"Allowed memory size exhausted,\" increase the limit in php.ini:"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Internal Server Error — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 500 Internal Server Error means and how to debug it. Covers server logs, PHP errors, database failures, and application exceptions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 500, 500 Internal Server Error, Error 500, 500 error, Internal server error, Server error 500, 500 error nginx, 500 error Apache, 500 error PHP, Something went wrong">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="500 Internal Server Error — Causes &amp; Fixes">
+    <meta property="og:description" content="Debug 500 Internal Server Errors by checking server logs, fixing application exceptions, and reviewing server configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/500-internal-server-error">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/500-internal-server-error">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>500 Internal Server Error</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>500 Internal Server Error</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 500 error means the server crashed or encountered an unhandled exception while processing your request. The fault is always on the server side.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 500</code></li><li><code>500 Internal Server Error</code></li><li><code>Error 500</code></li><li><code>500 error</code></li><li><code>Internal server error</code></li><li><code>Server error 500</code></li><li><code>500 error nginx</code></li><li><code>500 error Apache</code></li><li><code>500 error PHP</code></li><li><code>Something went wrong</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 500 is a generic server-side error indicating something went wrong internally that the server did not anticipate. The server could not complete the request because of an unexpected condition — a bug in the application code, a failed dependency, or a misconfiguration.</p>
+            <p>The 500 response intentionally hides the specific error message from the client to prevent leaking sensitive internal details. The actual cause is recorded in the server's error logs.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Unhandled exception</strong> — application code threw an error that was not caught.</li>
+                <li><strong>PHP fatal error</strong> — syntax error, undefined function call, or memory limit exceeded.</li>
+                <li><strong>Database connection failure</strong> — the app cannot connect to its database.</li>
+                <li><strong>Corrupted .htaccess</strong> — invalid Apache configuration in a .htaccess file.</li>
+                <li><strong>File permission error</strong> — the server process cannot read a required file or write to a required directory.</li>
+                <li><strong>Memory exhaustion</strong> — the application exceeded PHP's <code>memory_limit</code> or the server's RAM.</li>
+                <li><strong>Missing dependencies</strong> — a library, module, or configuration file the application needs is absent.</li>
+                <li><strong>Infinite loop or timeout</strong> — server-side code running too long and hitting the max execution time.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check Server Error Logs</h3>
+            <p>The specific error is almost always in the server logs:</p>
+            <ul>
+                <li><strong>Apache:</strong> <code>/var/log/apache2/error.log</code> or <code>/var/log/httpd/error_log</code></li>
+                <li><strong>nginx:</strong> <code>/var/log/nginx/error.log</code></li>
+                <li><strong>PHP:</strong> Check <code>php.ini</code> for the <code>error_log</code> path</li>
+                <li><strong>Application:</strong> Check your app's logging configuration (Laravel, Django, Rails, etc.)</li>
+            </ul>
+
+            <h3>2. Enable Detailed Error Output (Development Only)</h3>
+            <p>Temporarily enable detailed errors to see them in the browser. Never do this in production:</p>
+            <ul>
+                <li>PHP: set <code>display_errors = On</code> in php.ini</li>
+                <li>Node.js: use a development error handler middleware</li>
+            </ul>
+
+            <h3>3. Check for Corrupted .htaccess</h3>
+            <p>Rename your <code>.htaccess</code> file temporarily to test if it is the cause. An invalid directive in .htaccess causes a 500 error on every request in that directory.</p>
+
+            <h3>4. Check Database Connectivity</h3>
+            <p>Verify your database server is running, credentials are correct, and the connection limit has not been exceeded.</p>
+
+            <h3>5. Increase PHP Memory Limit</h3>
+            <p>If logs show "Allowed memory size exhausted," increase the limit in <code>php.ini</code>:</p>
+            <pre><code>memory_limit = 256M</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does a 500 error mean I was hacked?</h3>
+            <p>Not typically. Most 500 errors are caused by bugs or misconfigurations. However, if you recently experienced unusual traffic or suspect a breach, check logs for suspicious requests alongside the errors.</p>
+
+            <h3>Can a 500 error affect my SEO?</h3>
+            <p>Temporary 500 errors are not a major SEO concern — search engines retry these pages. Persistent 500 errors on important pages can cause Googlebot to temporarily stop crawling them and may affect rankings.</p>
+
+            <h3>Is there anything a visitor can do to fix a 500 error?</h3>
+            <p>Usually no. Visitors can try reloading the page (it may have been a transient error) or waiting and trying again. But the fix must come from the server owner.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — invalid response from upstream server.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server temporarily unavailable.</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — upstream server did not respond in time.</li>
+                <li><a href="/errors/http/501-not-implemented">501 Not Implemented</a> — server does not support the requested method.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Test Server Response</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

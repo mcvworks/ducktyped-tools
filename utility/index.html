@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>duckTyped — Technical tools without the noise.</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Free technical tools: DNS checker, SSL validator, password generator, WHOIS lookup, port scanner, and more. No noise, no registration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="duckTyped — Technical tools without the noise.">
+    <meta property="og:description" content="Free technical tools: DNS, SSL, passwords, WHOIS, port scanning, and more. No registration required.">
+    <meta property="og:url" content="https://ducktyped.xyz/utility/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="duckTyped — Free IT & Network Tools">
+    <meta name="twitter:description" content="Technical tools without the noise. DNS, SSL, passwords, and network utilities.">
+    <meta name="twitter:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    
+    <!-- Schema.org Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "duckTyped",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free IT professional tools including DNS checker, SSL certificate validator, password generator, WHOIS lookup, port scanner, MAC address lookup, ping latency checker, ISP checker, and network utilities. No registration required.",
+      "featureList": [
+        "DNS Record Checker (A, AAAA, MX, NS, TXT, SPF, DKIM, DMARC)",
+        "SSL Certificate Checker and Validator",
+        "Secure Password Generator",
+        "WHOIS Domain Lookup",
+        "Port Scanner and Connectivity Tester",
+        "MAC Address Vendor Lookup",
+        "Ping and Latency Checker",
+        "ISP Checker by IP Address",
+        "Encrypted Note Sender",
+        "Plain Text Notes with Auto-save"
+      ],
+      "browserRequirements": "Requires JavaScript",
+      "softwareVersion": "3.0",
+      "author": {
+        "@type": "Organization",
+        "name": "duckTyped"
+      }
+    }
+    </script>
+    
+    <!-- BreadcrumbList Schema for better search results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ducktyped.xyz"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "IT Tools",
+          "item": "https://ducktyped.xyz/utility/#tools"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ducktyped.xyz/utility/">
+    
+    <!-- Preconnect to external APIs for faster loading -->
+    <link rel="preconnect" href="https://dns.google">
+    <!-- ip-api.com doesn't support HTTPS preconnect, removing -->
+    <link rel="dns-prefetch" href="https://api.macvendors.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="apple-touch-icon" href="/dtlogo_lg.svg">
+    
+    <link rel="preload" href="styles.css?v=20260308" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles.css?v=20260308">
+    <!-- AdSense: uncomment and replace ca-pub-XXXXXXXXXX with your publisher ID when ready
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+         crossorigin="anonymous"></script>
+    -->
+    
+    <!-- QR Code Libraries: lazy-loaded on first use by tools-qr.js -->
+</head>
+<body class="has-tool-search">
+    <a href="#toolsGrid" class="skip-nav" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;" onfocus="this.style.cssText='position:fixed;top:10px;left:10px;z-index:9999;background:var(--primary-color);color:#16131c;padding:12px 20px;border-radius:8px;font-weight:700;font-family:var(--font-mono);text-decoration:none;'" onblur="this.style.cssText='position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;'">Skip to tools</a>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});
+    var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+
+        <!-- Tool Visibility Toggles -->
+
+
+        <!-- STICKY COMMAND BAR -->
+        <div class="command-bar" id="commandBar">
+            <div class="command-bar-inner">
+                <div class="search-row">
+                    <select class="sort-select" id="sortSelect" onchange="sortTools(this.value)" aria-label="Sort tools">
+                        <option value="default">Default</option>
+                        <option value="az">A → Z</option>
+                        <option value="za">Z → A</option>
+                        <option value="recent">Recently Used</option>
+                    </select>
+                    <div class="search-wrapper">
+                        <input type="text" class="search-input" id="toolSearch"
+                            placeholder="Search tools..." autocomplete="off" spellcheck="false" aria-label="Search tools">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <span class="search-shortcut" aria-hidden="true">/</span>
+                        <button class="search-clear" id="searchClear" onclick="clearToolSearch()" aria-label="Clear search">×</button>
+                    </div>
+                    <div class="tool-count-badge" id="toolCountBadge"><span id="visibleToolCount">57</span> tools</div>
+                </div>
+                <div class="filter-row" id="filterRow">
+                    <button class="filter-pill active" onclick="filterByCat(this, 'all')">All</button>
+                    <button class="filter-pill" data-filter="favorites" onclick="filterByCat(this, 'favorites')">&#9733; Favorites</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'network')">🌐 Network</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'security')">🔒 Security</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'email')">📧 Email</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'url')">🔗 Web / URL</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'lookup')">🔍 Lookup</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'qr')">📱 QR</button>
+                    <button class="filter-pill" onclick="filterByCat(this, 'dev')">🛠️ Dev</button>
+                </div>
+                <div class="active-filter-bar" id="activeFilterBar" style="display:none;">
+                    <span class="active-filter-label" id="activeFilterLabel"></span>
+                    <button class="active-filter-clear" onclick="clearAllFilters()" title="Clear filters">&times; Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recently Used Tools -->
+        <div class="recent-tools-section" id="recentSection" style="display: none;">
+            <div class="recent-tools-header">
+                <span>Recently Used</span>
+                <button class="recent-clear-btn" id="recentClearBtn" onclick="clearRecentTools()" title="Clear recent tools">Clear</button>
+            </div>
+            <div class="recent-tools-row" id="recentRow"></div>
+        </div>
+
+        <!-- Trending Tools (most used in last 7 days) -->
+        <div class="trending-tools-section" id="trendingSection" style="display: none;">
+            <div class="trending-tools-header">
+                <span>Trending This Week</span>
+            </div>
+            <div class="trending-tools-row"></div>
+        </div>
+
+        <!-- Popular Tools -->
+        <div class="popular-tools-section" id="popularSection">
+            <div class="popular-tools-header">
+                <span>Popular Tools</span>
+            </div>
+            <div class="popular-tools-grid"></div>
+        </div>
+
+        <!-- Browse by Category -->
+        <div class="category-browse-section" id="categoryBrowseSection">
+            <div class="category-browse-header">
+                <span>Browse by Category</span>
+            </div>
+            <div class="category-browse-grid">
+                <div class="cat-browse-card" data-cat="network" onclick="browseCat('network')">
+                    <span class="cat-icon">🌐</span>
+                    <span class="cat-label">Network</span>
+                    <span class="cat-num">16</span>
+                </div>
+                <div class="cat-browse-card" data-cat="security" onclick="browseCat('security')">
+                    <span class="cat-icon">🔒</span>
+                    <span class="cat-label">Security</span>
+                    <span class="cat-num">18</span>
+                </div>
+                <div class="cat-browse-card" data-cat="email" onclick="browseCat('email')">
+                    <span class="cat-icon">📧</span>
+                    <span class="cat-label">Email</span>
+                    <span class="cat-num">6</span>
+                </div>
+                <div class="cat-browse-card" data-cat="url" onclick="browseCat('url')">
+                    <span class="cat-icon">🔗</span>
+                    <span class="cat-label">Web / URL</span>
+                    <span class="cat-num">10</span>
+                </div>
+                <div class="cat-browse-card" data-cat="lookup" onclick="browseCat('lookup')">
+                    <span class="cat-icon">🔍</span>
+                    <span class="cat-label">Lookup</span>
+                    <span class="cat-num">11</span>
+                </div>
+                <div class="cat-browse-card" data-cat="qr" onclick="browseCat('qr')">
+                    <span class="cat-icon">📱</span>
+                    <span class="cat-label">QR</span>
+                    <span class="cat-num">2</span>
+                </div>
+                <div class="cat-browse-card" data-cat="dev" onclick="browseCat('dev')">
+                    <span class="cat-icon">🛠️</span>
+                    <span class="cat-label">Dev</span>
+                    <span class="cat-num">24</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults">
+            <div class="nr-icon">🔍</div>
+            <div class="nr-title">No tools found</div>
+            <div class="nr-desc" id="noResultsDesc">Try a different search term or clear filters</div>
+            <button class="nr-clear-btn" onclick="clearAllFilters()">Clear All Filters</button>
+        </div>
+
+        <!-- Preset View Banner (hidden by default, shown when ?preset= is active) -->
+        <div class="preset-banner" id="presetBanner" style="display: none;">
+            <span class="preset-banner-label" id="presetBannerLabel">Preset View</span>
+            <a href="/utility/" class="preset-banner-link">Show All Tools</a>
+        </div>
+        <!-- Customize panel: organize mode, show/hide all, per-tool visibility -->
+        <div class="site-info-section" style="margin-bottom: 15px;">
+            <div class="site-info-header" onclick="toggleFilterCustomize()">
+                <span class="site-info-toggle" id="filterCustomizeToggle">+</span>
+                <h3>&#9881; Customize</h3>
+            </div>
+            <div class="site-info-content" id="filterContent">
+        <!-- Organize Mode Bar -->
+        <div class="organize-bar" id="organizeBar" style="justify-content: flex-start; margin: 4px 0 14px; padding: 0;">
+            <label class="organize-switch" title="Toggle drag-and-drop reordering">
+                <input type="checkbox" id="organizeModeToggle" onchange="toggleOrganizeMode(this.checked)">
+                <span class="organize-track"><span class="organize-thumb"></span></span>
+                <span class="organize-label" id="organizeModeLabel">Organize</span>
+            </label>
+            <button class="organize-reset-btn" id="organizeResetBtn" style="display:none" onclick="resetLayout()" title="Reset to default order">Reset Order</button>
+        </div>
+        <div class="tool-toggle-bar" style="border: none; background: transparent; padding: 12px 0 0; margin-bottom: 0; backdrop-filter: none;">
+            <button class="toggle-all-btn terminal-toggle tools-visible" onclick="toggleAllTools()" id="toggleAllBtn">
+                <span class="term-prompt">$</span>
+                <span class="term-command" id="termCommand">hide --all</span>
+                <span class="term-cursor"></span>
+            </button>
+            <div class="info-icon">
+                i
+                <div class="info-tooltip">
+                    <strong>💾 Settings Saved Locally</strong>
+                    Your preferences are saved in your browser:
+                    <ul>
+                        <li>Tool order & visibility</li>
+                        <li>Color theme & day/night</li>
+                    </ul>
+                    <strong>⚠️ Settings Clear When:</strong>
+                    <ul>
+                        <li>You clear browser cache/cookies</li>
+                        <li>Using incognito/private mode</li>
+                        <li>Using a different browser/device</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tool-toggles">
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-passwordGen" checked onchange="toggleToolVisibility('passwordGen')">
+                    <label for="toggle-passwordGen">Password Generator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-noteSender" checked onchange="toggleToolVisibility('noteSender')">
+                    <label for="toggle-noteSender">Secure Note Sender</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-sslChecker" checked onchange="toggleToolVisibility('sslChecker')">
+                    <label for="toggle-sslChecker">SSL Certificate Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-whoisChecker" checked onchange="toggleToolVisibility('whoisChecker')">
+                    <label for="toggle-whoisChecker">WHOIS / IP Lookup</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-portScanner" checked onchange="toggleToolVisibility('portScanner')">
+                    <label for="toggle-portScanner">Port Scanner</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-plainNotes" checked onchange="toggleToolVisibility('plainNotes')">
+                    <label for="toggle-plainNotes">Plain Notes</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-pingChecker" checked onchange="toggleToolVisibility('pingChecker')">
+                    <label for="toggle-pingChecker">HTTP Latency Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-ispChecker" checked onchange="toggleToolVisibility('ispChecker')">
+                    <label for="toggle-ispChecker">ISP Checker by IP</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-macLookup" checked onchange="toggleToolVisibility('macLookup')">
+                    <label for="toggle-macLookup">MAC Address Lookup</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-emailHeaderAnalyzer" checked onchange="toggleToolVisibility('emailHeaderAnalyzer')">
+                    <label for="toggle-emailHeaderAnalyzer">Email Header Analyzer</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-smtpChecker" checked onchange="toggleToolVisibility('smtpChecker')">
+                    <label for="toggle-smtpChecker">SMTP Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-emailValidator" checked onchange="toggleToolVisibility('emailValidator')">
+                    <label for="toggle-emailValidator">Email Validator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-dnsChecker" checked onchange="toggleToolVisibility('dnsChecker')">
+                    <label for="toggle-dnsChecker">DNS Record Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-qrGenerator" checked onchange="toggleToolVisibility('qrGenerator')">
+                    <label for="toggle-qrGenerator">QR Code Generator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-qrScanner" checked onchange="toggleToolVisibility('qrScanner')">
+                    <label for="toggle-qrScanner">QR Code Scanner</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-urlSafety" checked onchange="toggleToolVisibility('urlSafety')">
+                    <label for="toggle-urlSafety">URL Safety Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-urlRedirect" checked onchange="toggleToolVisibility('urlRedirect')">
+                    <label for="toggle-urlRedirect">Redirect Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-urlStatus" checked onchange="toggleToolVisibility('urlStatus')">
+                    <label for="toggle-urlStatus">Broken Link Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-urlMetadata" checked onchange="toggleToolVisibility('urlMetadata')">
+                    <label for="toggle-urlMetadata">URL Metadata Extractor</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-traceroute" checked onchange="toggleToolVisibility('traceroute')">
+                    <label for="toggle-traceroute">Traceroute</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-reverseDns" checked onchange="toggleToolVisibility('reverseDns')">
+                    <label for="toggle-reverseDns">Reverse DNS Lookup</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-subnetCalc" checked onchange="toggleToolVisibility('subnetCalc')">
+                    <label for="toggle-subnetCalc">Subnet Calculator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-secHeaders" checked onchange="toggleToolVisibility('secHeaders')">
+                    <label for="toggle-secHeaders">Security Headers Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-breachChecker" checked onchange="toggleToolVisibility('breachChecker')">
+                    <label for="toggle-breachChecker">Password Breach Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-blacklistChecker" checked onchange="toggleToolVisibility('blacklistChecker')">
+                    <label for="toggle-blacklistChecker">Blacklist / RBL Checker</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-techDetector" checked onchange="toggleToolVisibility('techDetector')">
+                    <label for="toggle-techDetector">Tech Stack Detector</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-robotsAnalyzer" checked onchange="toggleToolVisibility('robotsAnalyzer')">
+                    <label for="toggle-robotsAnalyzer">Robots.txt & Sitemap Analyzer</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-base64Tool" checked onchange="toggleToolVisibility('base64Tool')">
+                    <label for="toggle-base64Tool">Base64 Encode/Decode</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-urlEncodeTool" checked onchange="toggleToolVisibility('urlEncodeTool')">
+                    <label for="toggle-urlEncodeTool">URL Encode/Decode</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-jsonFormatter" checked onchange="toggleToolVisibility('jsonFormatter')">
+                    <label for="toggle-jsonFormatter">JSON Formatter / Validator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-regexTester" checked onchange="toggleToolVisibility('regexTester')">
+                    <label for="toggle-regexTester">Regex Tester</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-hashGenerator" checked onchange="toggleToolVisibility('hashGenerator')">
+                    <label for="toggle-hashGenerator">Hash Generator</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-jwtDecoder" checked onchange="toggleToolVisibility('jwtDecoder')">
+                    <label for="toggle-jwtDecoder">JWT Decoder</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-timestampConverter" checked onchange="toggleToolVisibility('timestampConverter')">
+                    <label for="toggle-timestampConverter">Unix Timestamp Converter</label>
+                </div>
+                <div class="tool-toggle-item">
+                    <input type="checkbox" id="toggle-colorConverter" checked onchange="toggleToolVisibility('colorConverter')">
+                    <label for="toggle-colorConverter">Color Converter</label>
+                </div>
+            </div>
+        </div>
+            </div> <!-- end filterContent -->
+        </div> <!-- end collapsible -->
+
+        <div class="tools-grid" id="toolsGrid">
+            <!-- Password Generator -->
+            <div class="tool-card" id="passwordGen" draggable="false" data-categories="security,lookup" data-usertypes="security" data-keywords="password generate random secure strong crypto uppercase lowercase symbols">
+                <h2>Random Password Generator</h2>
+                <a href="/password-generator/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/password-generator/" class="learn-more-link" title="Learn about password security">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Generate cryptographically secure random passwords with customizable length (8-64 characters) and character types. Free password generator for creating strong, unique passwords.
+                </p>
+                
+                <!-- Password Length Controls -->
+                <div style="margin-bottom: 20px; display: flex; flex-direction: column; align-items: center;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary); text-align: center;">
+                        Password Length: <span id="lengthValue" style="color: var(--primary-color); font-size: 1.05em;">16</span> characters
+                    </label>
+                    
+                    <!-- Input Field Only -->
+                    <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                        <input type="text" id="passwordLengthInput" value="16" aria-label="Password length" 
+                            oninput="updateLengthFromInput(this.value)"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            style="
+                                padding: 10px;
+                                font-size: 1em;
+                                text-align: center;
+                                font-weight: 600;
+                                background: var(--input-background);
+                                color: var(--text-primary);
+                                border: 2px solid var(--border-color);
+                                border-radius: 6px;
+                                width: 80px;
+                            ">
+                    </div>
+                    
+                    <!-- Preset Buttons -->
+                    <div style="display: flex; gap: 8px; justify-content: center; max-width: 320px;">
+                        <button onclick="setPasswordLength(12)" class="preset-btn green">
+                            Min (12)
+                        </button>
+                        <button onclick="setPasswordLength(16)" class="preset-btn blue">
+                            Med (16)
+                        </button>
+                        <button onclick="setPasswordLength(32)" class="preset-btn red">
+                            Max (32)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="includeUppercase" checked> Uppercase (A-Z)</label>
+                    <label><input type="checkbox" id="includeLowercase" checked> Lowercase (a-z)</label>
+                    <label><input type="checkbox" id="includeNumbers" checked> Numbers (0-9)</label>
+                    <label><input type="checkbox" id="includeSymbols" checked> Symbols (!@#$...)</label>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <button onclick="generatePassword()" style="max-width: 250px;">Generate Password</button>
+                </div>
+                <div class="output" id="passwordOutput">
+                    <div class="output-label" style="color: var(--primary-color); font-weight: 700;">Generated Password:</div>
+                    <div class="output-content" id="passwordText"></div>
+                    <button class="copy-btn" onclick="copyPassword()">Copy to Clipboard</button>
+                </div>
+            </div>
+
+            <!-- Encrypted Note Sender -->
+            <div class="tool-card" id="noteSender" draggable="false" data-categories="security" data-usertypes="security" data-keywords="encrypted note message secure send private aes 256 password expiration">
+                <h2>Secure Note Sender</h2>
+                <a href="/secure-note/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/encrypted-note/" class="learn-more-link" title="Learn about encrypted notes">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Send encrypted messages securely. Messages are encrypted client-side using AES-256 encryption with customizable expiration times. Optional password protection for added security.
+                </p>
+                <div id="encryptView">
+                    <div class="input-group">
+                        <label>Your Message:</label>
+                        <textarea id="noteMessage" placeholder="Enter your confidential message here..." aria-label="Secret message to encrypt"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="requirePassword" checked onchange="togglePasswordField()"> 
+                            Require Password
+                        </label>
+                        <small style="color: var(--text-secondary); font-size: 0.85em; display: block; margin-top: 5px;">
+                            If unchecked, anyone with the link can read the message
+                        </small>
+                    </div>
+                    
+                    <div class="input-group" id="passwordFieldGroup">
+                        <label>Encryption Password:</label>
+                        <input type="text" id="encryptPassword" placeholder="Create a strong password" aria-label="Encryption password">
+                    </div>
+                    
+                    <div class="input-group" style="display: flex; gap: 12px;">
+                        <div style="flex: 1;">
+                            <label>Expires after (hours):</label>
+                            <input type="number" id="expirationTime" value="24" min="1" max="8760" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 2px solid var(--border-color); border-radius: 8px; font-size: 1em;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label>Expires after (opens):</label>
+                            <input type="number" id="expirationOpens" value="1" min="0" max="999" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 2px solid var(--border-color); border-radius: 8px; font-size: 1em;">
+                            <small style="color: var(--text-secondary); font-size: 0.8em; display: block; margin-top: 4px;">0 = unlimited</small>
+                        </div>
+                    </div>
+                    
+                    <button onclick="encryptNote()" id="createLinkBtn">Create Secure Link</button>
+                    <div class="output" id="encryptOutput">
+                        <div class="output-label" style="color: var(--primary-color); font-weight: 700;">Share this link with the recipient:</div>
+                        <div class="output-content" id="encryptedLink" style="word-break: break-all;"></div>
+                        <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+                        <div class="info-box" id="passwordInfo">
+                            <strong>🔒 Password Protected:</strong> Share the password separately (via phone, in person, etc.) for maximum security.<br>
+                            <small>⏱️ Note: Messages automatically expire for security.</small>
+                        </div>
+                        <div class="info-box hidden" id="noPasswordInfo">
+                            <strong>⚠️ No Password:</strong> Anyone with this link can read the message. Use this only for non-sensitive information.<br>
+                            <small>⏱️ Note: Messages automatically expire for security.</small>
+                        </div>
+                    </div>
+                    <div class="warning" id="backendWarning" style="display: none;">
+                        <strong>⚠️ Backend Not Configured</strong><br>
+                        The tracking backend is not set up. Please configure the WORKER_URL in the code or limits won't be enforced.
+                    </div>
+                </div>
+                <div id="decryptView" style="display: none;">
+                    <div class="success" style="margin-bottom: 15px;" id="decryptHeader">
+                        <strong>🔒 Encrypted message received</strong><br>
+                        Enter the password to decrypt and read the message.
+                    </div>
+                    <div class="input-group">
+                        <label>Decryption Password:</label>
+                        <input type="text" id="decryptPassword" placeholder="Enter the password shared with you" aria-label="Decryption password">
+                    </div>
+                    <button onclick="decryptNote()" id="decryptBtn">Decrypt Message</button>
+                    <div class="output" id="decryptOutput">
+                        <div class="output-label">Decrypted Message:</div>
+                        <div class="output-content" id="decryptedText"></div>
+                    </div>
+                    <button onclick="resetNoteApp()" style="background: var(--text-secondary); color: #ffffff; margin-top: 15px;">Create New Message</button>
+                </div>
+            </div>
+
+            <!-- SSL Certificate Checker -->
+            <div class="tool-card" id="sslChecker" draggable="false" data-categories="security,network" data-usertypes="itpro,webdev,security,netadmin" data-keywords="ssl tls certificate https expiry chain issuer validate secure">
+                <h2>SSL Certificate Checker</h2>
+                <a href="/ssl-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/ssl-checker/" class="learn-more-link" title="Learn about SSL certificates">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check SSL certificate validity, expiration dates, and issuer information for any domain. Free SSL certificate validator for website security monitoring.
+                </p>
+                <div class="input-group">
+                    <label>Domain Name:</label>
+                    <input type="text" id="sslDomain" placeholder="example.com" aria-label="Domain for SSL check" onkeypress="if(event.key==='Enter') checkSSL()">
+                </div>
+                <button onclick="checkSSL()">Check SSL Certificate</button>
+                <div id="sslResults"></div>
+            </div>
+
+            <!-- WHOIS / IP Lookup -->
+            <div class="tool-card" id="whoisChecker" draggable="false" data-categories="network,lookup" data-usertypes="itpro,netadmin" data-keywords="whois domain registrar registration expiry nameserver ip lookup owner">
+                <h2>WHOIS / IP Lookup</h2>
+                <a href="/whois-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/whois-lookup/" class="learn-more-link" title="Learn about WHOIS lookups">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Lookup domain registration information, IP address details, ISP, location, and network information. Leave blank to automatically check your own IP. Free WHOIS lookup tool for domain research.
+                </p>
+                <div class="input-group">
+                    <label>Domain or IP Address:</label>
+                    <input type="text" id="whoisInput" placeholder="example.com, 8.8.8.8, or leave blank for your IP" aria-label="Domain or IP for WHOIS lookup" onkeypress="if(event.key==='Enter') lookupWhois()">
+                </div>
+                <button onclick="lookupWhois()">Lookup Information</button>
+                <div id="whoisResults"></div>
+            </div>
+
+            <!-- Port Scanner -->
+            <div class="tool-card" id="portScanner" draggable="false" data-categories="network,security" data-usertypes="itpro,security,netadmin" data-keywords="port scan open closed firewall nmap service tcp connection">
+                <h2>Port Scanner</h2>
+                <a href="/port-scanner/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/port-scanner/" class="learn-more-link" title="Learn about port scanning">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check if specific ports are open or closed on any server. Select which ports to scan below.
+                </p>
+                <div class="input-group">
+                    <label>Host (Domain or IP):</label>
+                    <input type="text" id="portScanHost" placeholder="example.com or 192.168.1.1" aria-label="Host for port scan" onkeypress="if(event.key==='Enter') scanSelectedPorts()">
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Select Ports to Scan:</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 15px;">
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="80" data-name="HTTP" checked >
+                            <span>80 - HTTP</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="443" data-name="HTTPS" checked >
+                            <span>443 - HTTPS</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="22" data-name="SSH" checked >
+                            <span>22 - SSH</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="21" data-name="FTP" checked >
+                            <span>21 - FTP</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="25" data-name="SMTP" checked >
+                            <span>25 - SMTP</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="3389" data-name="RDP" checked >
+                            <span>3389 - RDP</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="110" data-name="POP3" >
+                            <span>110 - POP3</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="143" data-name="IMAP" >
+                            <span>143 - IMAP</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="3306" data-name="MySQL" >
+                            <span>3306 - MySQL</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="5432" data-name="PostgreSQL" >
+                            <span>5432 - PostgreSQL</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="8080" data-name="HTTP Alt" >
+                            <span>8080 - HTTP Alt</span>
+                        </label>
+                        <label class="port-label">
+                            <input type="checkbox" class="port-checkbox" value="8443" data-name="HTTPS Alt" >
+                            <span>8443 - HTTPS Alt</span>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <label style="display: block; margin-bottom: 5px; font-size: 0.9em; color: var(--text-secondary);">Or scan a custom port:</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="number" id="customPortNumber" placeholder="e.g., 8888" aria-label="Custom port number" min="1" max="65535" style="flex: 1; max-width: 150px; font-size: 0.9em;" onkeypress="if(event.key==='Enter') addCustomPort()">
+                            <button onclick="addCustomPort()" style="width: auto; margin: 0; padding: 8px 16px; font-size: 0.85em;">+ Add</button>
+                        </div>
+                        <div id="customPortsList" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                    </div>
+                </div>
+                
+                <button onclick="scanSelectedPorts()" style="width: 100%;">🔍 Scan Ports</button>
+                <div id="portResults"></div>
+            </div>
+
+            <!-- AdSense Ad #1 - Hidden until approval
+            <div class="ad-container" style="grid-column: 1 / -1; margin: 20px 0; text-align: center;">
+                <p style="font-size: 0.75em; color: var(--text-secondary); margin-bottom: 8px;">Advertisement</p>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"
+                     data-ad-client="ca-pub-XXXXXXXXXX"
+                     data-ad-slot="YYYYYYYYYY"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            -->
+
+            <!-- Plain Notes -->
+            <div class="tool-card" id="plainNotes" draggable="false" data-categories="lookup" data-usertypes="itpro" data-keywords="plain notes text editor notepad save local scratchpad">
+                <h2>Plain Notes</h2>
+                <a href="/plain-notes/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/plain-notes/" class="learn-more-link" title="Learn about Plain Notes">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Simple notepad with auto-save functionality. Your notes are saved locally in your browser with automatic backup every 30 seconds.
+                </p>
+                <div class="input-group">
+                    <label>Your Notes:</label>
+                    <textarea id="notesTextarea" aria-label="Plain notes" placeholder="Type your notes here... (auto-saves every 30 seconds)" style="min-height: 300px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                    <button onclick="saveNotes()" style="flex: 1; min-width: 120px;">💾 Save Notes</button>
+                    <button onclick="clearNotes()" style="flex: 1; min-width: 120px; background: var(--error-color); color: #ffffff;">🗑️ Clear</button>
+                    <button onclick="downloadNotes()" style="flex: 1; min-width: 120px;">⬇️ Download</button>
+                </div>
+                <div id="notesSaveStatus" style="margin-top: 10px; font-size: 0.9em; color: var(--success-color); display: none;">
+                    ✓ Notes saved!
+                </div>
+            </div>
+
+            <!-- Ping/Latency Checker -->
+            <div class="tool-card" id="pingChecker" draggable="false" data-categories="network" data-usertypes="itpro,netadmin" data-keywords="ping latency rtt packet loss icmp http response time">
+                <h2>Ping / Latency Checker</h2>
+                <a href="/http-latency/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/http-latency/" class="learn-more-link" title="Learn about HTTP latency">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    <strong>ICMP Ping</strong> — sends real ping packets to measure round-trip time and packet loss.<br>
+                    <strong>HTTP Latency</strong> — measures how long a server takes to respond to an HTTP request; useful for URLs that block ICMP.
+                </p>
+                <div class="input-group">
+                    <label>Mode:</label>
+                    <select id="pingMode" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                        <option value="icmp">ICMP Ping (RTT + packet loss)</option>
+                        <option value="http">HTTP Latency (response time)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Target host or URL:</label>
+                    <input type="text" id="pingHost" placeholder="google.com or 8.8.8.8" aria-label="Host for ping or latency check" onkeypress="if(event.key==='Enter') checkPing()">
+                </div>
+                <button onclick="checkPing()">Run</button>
+                <div id="pingResults"></div>
+            </div>
+
+            <!-- ISP Checker by IP -->
+            <div class="tool-card" id="ispChecker" draggable="false" data-categories="network,lookup" data-usertypes="itpro,netadmin" data-keywords="isp provider geolocation asn ip address organization internet service">
+                <h2>ISP Checker by IP</h2>
+                <a href="/isp-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/isp-lookup/" class="learn-more-link" title="Learn about ISP lookups">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Identify ISP provider, organization, and geolocation from any IP address. Leave blank to automatically check your own IP, or enter any public IP address.
+                </p>
+                <div class="input-group">
+                    <label>IP Address:</label>
+                    <input type="text" id="ispInput" placeholder="8.8.8.8 or leave blank for your IP" aria-label="IP address for ISP lookup" onkeypress="if(event.key==='Enter') checkISP()">
+                </div>
+                <button onclick="checkISP()">Check ISP Info</button>
+                <div id="ispResults"></div>
+            </div>
+
+            <!-- MAC Address Lookup -->
+            <div class="tool-card" id="macLookup" draggable="false" data-categories="lookup" data-usertypes="itpro" data-keywords="mac address vendor manufacturer oui ethernet hardware">
+                <h2>MAC Address Lookup</h2>
+                <a href="/mac-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/mac-lookup/" class="learn-more-link" title="Learn about MAC addresses">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Find network device manufacturer and vendor information from MAC addresses. Lookup OUI (Organizationally Unique Identifier) database.
+                </p>
+                <div class="input-group">
+                    <label>MAC Address:</label>
+                    <input type="text" id="macInput" placeholder="00:1A:2B:3C:4D:5E or 001A2B3C4D5E" aria-label="MAC address to look up" onkeypress="if(event.key==='Enter') lookupMAC()">
+                </div>
+                <button onclick="lookupMAC()">Lookup Vendor</button>
+                <button onclick="generateRandomMAC()" >Generate Random MAC</button>
+                <div id="macResults"></div>
+                <div class="output" style="margin-top: 15px;">
+                    <strong>MAC Address Format:</strong>
+                    <div class="output-content" style="margin-top: 10px;">
+                        Accepted formats: <code>00:1A:2B:3C:4D:5E</code>, <code>00-1A-2B-3C-4D-5E</code>, <code>001A.2B3C.4D5E</code>, <code>001A2B3C4D5E</code>
+                        <br><br>
+                        <strong>OUI (First 6 characters):</strong> Identifies the manufacturer/vendor<br>
+                        <strong>Device ID (Last 6 characters):</strong> Unique device identifier
+                        <br><br>
+                        <strong>Useful Links:</strong><br>
+                        • <a href="https://maclookup.app/" target="_blank" rel="noopener noreferrer">MAC Lookup Database</a><br>
+                        • <a href="https://www.wireshark.org/tools/oui-lookup.html" target="_blank" rel="noopener noreferrer">Wireshark OUI Lookup</a><br>
+                        • <a href="https://standards-oui.ieee.org/" target="_blank" rel="noopener noreferrer">IEEE OUI Registry</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Lookup -->
+            <div class="tool-card" id="deviceLookup" draggable="false"
+                 data-categories="lookup"
+                 data-usertypes="itpro,netadmin"
+                 data-keywords="imei serial number device lookup tac apple dell service tag model warranty phone tablet laptop">
+                <h2>Device Lookup</h2>
+                <a href="/device-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/device-lookup/" class="learn-more-link" title="Learn about device identifiers">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Identify device make, model, and specs from IMEI, Apple serial number, or Dell service tag.
+                </p>
+                <div class="input-group">
+                    <label>Device Identifier:</label>
+                    <input type="text" id="dashDeviceInput" placeholder="Enter IMEI, Apple Serial, or Dell Service Tag" aria-label="Device identifier" onkeypress="if(event.key==='Enter') dashDeviceLookup()">
+                </div>
+                <button onclick="dashDeviceLookup()">Lookup</button>
+                <div id="dashDeviceDetected" style="display:none; margin-bottom: 10px; padding: 6px 12px; background: var(--input-background); border-radius: 6px; font-size: 0.9em; color: var(--text-secondary);"></div>
+                <div id="dashDeviceResults"></div>
+            </div>
+
+            <!-- AdSense Ad #2 - Hidden until approval
+            <div class="ad-container" style="grid-column: 1 / -1; margin: 20px 0; text-align: center;">
+                <p style="font-size: 0.75em; color: var(--text-secondary); margin-bottom: 8px;">Advertisement</p>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"
+                     data-ad-client="ca-pub-XXXXXXXXXX"
+                     data-ad-slot="ZZZZZZZZZZ"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            -->
+
+            <!-- Email Header Analyzer -->
+            <div class="tool-card" id="emailHeaderAnalyzer" draggable="false" data-categories="email,lookup" data-usertypes="itpro" data-keywords="email header analyze trace route delay authentication spf dkim dmarc received">
+                <h2>Email Header Analyzer</h2>
+                <a href="/email-header-analyzer/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/email-header-analyzer/" class="learn-more-link" title="Learn about email headers">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Parse and analyze email headers to troubleshoot delivery issues. Check SPF, DKIM, DMARC authentication and trace email routing path.
+                </p>
+                <div class="input-group">
+                    <label>Email Headers:</label>
+                    <textarea id="emailHeaders" aria-label="Email headers to analyze" placeholder="Paste full email headers here (including Received:, From:, To:, Subject:, etc.)..." style="min-height: 200px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
+                </div>
+                <button onclick="analyzeEmailHeaders()">Analyze Headers</button>
+                <div id="emailHeaderResults"></div>
+                <div class="output" style="margin-top: 15px;">
+                    <strong>How to get email headers:</strong>
+                    <div class="output-content" style="margin-top: 10px;">
+                        <strong>Gmail:</strong> Open email → Click ⋮ (three dots) → "Show original" → Copy all text<br>
+                        <strong>Outlook:</strong> Open email → File → Properties → Copy "Internet headers"<br>
+                        <strong>Yahoo:</strong> Open email → More → "View Raw Message"<br>
+                        <strong>Apple Mail:</strong> View → Message → All Headers → Select and copy<br><br>
+                        <strong>What we analyze:</strong><br>
+                        • Email routing path (all servers the email passed through)<br>
+                        • Delivery timeline and delays<br>
+                        • Sender information (IP, domain, SPF/DKIM/DMARC status)<br>
+                        • Authentication results (SPF, DKIM, DMARC)<br>
+                        • Spam score and filtering information<br>
+                        • Reply-To and Return-Path details<br>
+                        • Message-ID and threading information
+                    </div>
+                </div>
+            </div>
+
+            <!-- SMTP Checker -->
+            <div class="tool-card" id="smtpChecker" draggable="false" data-categories="email,security,network" data-usertypes="itpro,security" data-keywords="smtp mail server connection test banner port 25 mx relay">
+                <h2>SMTP Server Checker</h2>
+                <a href="/smtp-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/smtp-checker/" class="learn-more-link" title="Learn about SMTP">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Test SMTP server connectivity and verify email server configuration. Check if your mail server accepts connections on common SMTP ports (25, 465, 587).
+                </p>
+                <div class="input-group">
+                    <label>Mail Server (MX Record or Domain):</label>
+                    <input type="text" id="smtpHost" placeholder="mail.example.com or example.com" aria-label="SMTP host to check" onkeypress="if(event.key==='Enter') checkSMTP()">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">SMTP Ports to Check:</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <label class="smtp-label" title="Outbound port 25 is blocked at our scanning server (anti-spam policy)">
+                            <input type="checkbox" class="smtp-port-checkbox" value="25" data-name="SMTP" disabled >
+                            <span>25 - SMTP (untestable from our server)</span>
+                        </label>
+                        <label class="smtp-label">
+                            <input type="checkbox" class="smtp-port-checkbox" value="465" data-name="SMTPS (SSL)" checked >
+                            <span>465 - SMTPS (SSL)</span>
+                        </label>
+                        <label class="smtp-label">
+                            <input type="checkbox" class="smtp-port-checkbox" value="587" data-name="Submission (TLS)" checked >
+                            <span>587 - Submission (TLS)</span>
+                        </label>
+                    </div>
+                </div>
+                <button onclick="checkSMTP()">Check SMTP Server</button>
+                <div id="smtpResults"></div>
+            </div>
+
+            <!-- Email Address Validator -->
+            <div class="tool-card" id="emailValidator" draggable="false" data-categories="email,security" data-usertypes="itpro,security" data-keywords="email validate verify mx syntax disposable check address">
+                <h2>Email Address Validator</h2>
+                <a href="/email-validator/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/email-validator/" class="learn-more-link" title="Learn about email validation">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Validate email address format, check domain existence, and verify MX records. Performs syntax validation, DNS lookup, and disposable email detection.
+                </p>
+                <div class="input-group">
+                    <label>Email Address:</label>
+                    <input type="email" id="emailToValidate" placeholder="user@example.com" aria-label="Email address to validate" onkeypress="if(event.key==='Enter') validateEmail()">
+                </div>
+                <button onclick="validateEmail()">Validate Email</button>
+                <div id="emailValidationResults"></div>
+            </div>
+
+            <!-- DNS Checker -->
+            <div class="tool-card" id="dnsChecker" draggable="false" data-categories="network,email,security,lookup" data-usertypes="itpro,webdev,security,netadmin" data-keywords="dns records mx txt nameserver domain spf dkim dmarc a aaaa ns soa cname caa">
+                <h2>DNS Record Checker</h2>
+                <a href="/dns-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/dns-lookup/" class="learn-more-link" title="Learn about DNS records">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check all DNS records for any domain including A, AAAA, MX, NS, TXT, SPF, DKIM, and DMARC. Free DNS lookup tool for troubleshooting email delivery and domain configuration.
+                </p>
+                <div class="input-group">
+                    <label>Domain Name:</label>
+                    <input type="text" id="domainName" placeholder="example.com" aria-label="Domain for DNS lookup" onkeypress="if(event.key==='Enter') checkDNS()">
+                </div>
+                <button onclick="checkDNS()">Check All DNS Records</button>
+                <div id="dnsResults"></div>
+            </div>
+
+            <!-- QR Code Generator (Combined) -->
+            <div class="tool-card" id="qrGenerator" draggable="false" data-categories="qr" data-usertypes="marketing" data-keywords="qr code generate create url wifi vcard barcode">
+                <h2>QR Code Generator</h2>
+                <a href="/qr-generator/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/qr-generator/" class="learn-more-link" title="Learn about QR codes">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Generate QR codes for URLs, text, WiFi networks, and contact cards. Customize size and download as PNG.
+                </p>
+                
+                <!-- Mode Selector -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">QR Code Type:</label>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button onclick="switchQRMode('text')" id="qrModeText" class="qr-mode-btn active" >📝 Text/URL</button>
+                        
+                        <button onclick="switchQRMode('wifi')" id="qrModeWifi" class="qr-mode-btn" >📶 WiFi</button>
+                        
+                        <button onclick="switchQRMode('vcard')" id="qrModeVcard" class="qr-mode-btn" >👤 Contact</button>
+                    </div>
+                </div>
+                
+                <!-- Text/URL Mode -->
+                <div id="qrModeTextContent">
+                    <div class="input-group">
+                        <label>QR Code Type:</label>
+                        <select id="qrType" onchange="updateQRInputs()" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                            <option value="url">URL / Website</option>
+                            <option value="text">Plain Text</option>
+                            <option value="email">Email Address</option>
+                            <option value="phone">Phone Number</option>
+                            <option value="sms">SMS Message</option>
+                        </select>
+                    </div>
+                    <div id="qrInputContainer">
+                        <div class="input-group">
+                            <label>URL:</label>
+                            <input type="url" id="qrURL" placeholder="https://example.com" aria-label="URL for QR code">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WiFi Mode -->
+                <div id="qrModeWifiContent" style="display: none;">
+                    <div class="input-group">
+                        <label>Network Name (SSID):</label>
+                        <input type="text" id="wifiSSID" placeholder="MyWiFiNetwork" aria-label="WiFi network name">
+                    </div>
+                    <div class="input-group">
+                        <label>Password:</label>
+                        <input type="text" id="wifiPassword" placeholder="YourWiFiPassword" aria-label="WiFi password">
+                    </div>
+                    <div class="input-group">
+                        <label>Security Type:</label>
+                        <select id="wifiSecurity" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                            <option value="WPA">WPA/WPA2</option>
+                            <option value="WEP">WEP</option>
+                            <option value="">None (Open Network)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="wifiHidden" style="width: auto; margin-right: 5px;">
+                            Hidden Network (SSID not broadcast)
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- vCard Mode -->
+                <div id="qrModeVcardContent" style="display: none;">
+                    <div class="input-group">
+                        <label>Full Name:</label>
+                        <input type="text" id="vcardName" placeholder="John Doe" aria-label="Contact full name">
+                    </div>
+                    <div class="input-group">
+                        <label>Organization/Company:</label>
+                        <input type="text" id="vcardOrg" placeholder="Acme Corp (optional)" aria-label="Organization name">
+                    </div>
+                    <div class="input-group">
+                        <label>Job Title:</label>
+                        <input type="text" id="vcardTitle" placeholder="CEO (optional)" aria-label="Job title">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number:</label>
+                        <input type="tel" id="vcardPhone" placeholder="+1-555-123-4567" aria-label="Phone number">
+                    </div>
+                    <div class="input-group">
+                        <label>Email:</label>
+                        <input type="email" id="vcardEmail" placeholder="john@example.com" aria-label="Email address">
+                    </div>
+                    <div class="input-group">
+                        <label>Website:</label>
+                        <input type="url" id="vcardWebsite" placeholder="https://example.com (optional)" aria-label="Website URL">
+                    </div>
+                    <div class="input-group">
+                        <label>Address:</label>
+                        <textarea id="vcardAddress" aria-label="Mailing address" placeholder="123 Main St, City, State, ZIP (optional)" style="min-height: 60px;"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Common QR Settings -->
+                <div class="input-group">
+                    <label>Size:</label>
+                    <select id="qrSize" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                        <option value="200">Small (200x200)</option>
+                        <option value="300" selected>Medium (300x300)</option>
+                        <option value="400">Large (400x400)</option>
+                        <option value="500">Extra Large (500x500)</option>
+                    </select>
+                </div>
+                
+                <button onclick="generateUnifiedQR()" id="generateQRBtn">Generate QR Code</button>
+                <div id="qrOutput" style="margin-top: 15px; text-align: center;"></div>
+            </div>
+
+            <!-- QR Code Scanner -->
+            <div class="tool-card" id="qrScanner" draggable="false" data-categories="qr" data-usertypes="marketing" data-keywords="qr code scan read decode camera image upload">
+                <h2>QR Code Scanner</h2>
+                <a href="/qr-scanner/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/qr-scanner/" class="learn-more-link" title="Learn about QR scanning">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Scan and decode QR codes from images. Upload a QR code image or use your camera to scan. Free QR code reader and decoder.
+                </p>
+                <div class="input-group">
+                    <label>Upload QR Code Image:</label>
+                    <input type="file" id="qrImageUpload" accept="image/*" aria-label="Upload image to scan for QR code" onchange="scanQRFromFile()" style="padding: 8px;">
+                </div>
+                <div style="text-align: center; margin: 15px 0;">
+                    <strong style="color: var(--text-secondary);">- OR -</strong>
+                </div>
+                <button onclick="scanQRFromCamera()" >📷 Scan with Camera</button>
+                <div id="qrCameraContainer" style="margin-top: 15px; display: none;">
+                    <video id="qrVideo" style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid var(--border-color);"></video>
+                    <button onclick="stopQRCamera()" style="margin-top: 10px; background: var(--error-color); color: #ffffff;">Stop Camera</button>
+                </div>
+                <div id="qrScanResults"></div>
+            </div>
+
+            <!-- URL Safety Checker -->
+            <div class="tool-card" id="urlSafety" draggable="false" data-categories="url,security" data-usertypes="webdev,security" data-keywords="url safety scan malware phishing virus check safe link">
+                <h2>URL Safety Checker</h2>
+                <a href="/url-safety/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/url-safety/" class="learn-more-link" title="Learn about URL safety">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check if a URL is safe before clicking. Detects phishing, malware, suspicious patterns, and verifies SSL certificates. Protect yourself from malicious links.
+                </p>
+                <div class="input-group">
+                    <label>URL to Check:</label>
+                    <input type="url" id="urlToCheck" placeholder="https://example.com" aria-label="URL to check safety" onkeypress="if(event.key==='Enter') checkURLSafety()">
+                </div>
+                <button onclick="checkURLSafety()">🔒 Check URL Safety</button>
+                <div id="urlSafetyResults"></div>
+            </div>
+
+            <!-- URL Redirect Checker -->
+            <div class="tool-card" id="urlRedirect" draggable="false" data-categories="url,network" data-usertypes="webdev,itpro" data-keywords="redirect chain 301 302 trace follow url hop location">
+                <h2>URL Redirect Checker</h2>
+                <a href="/redirect-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/redirect-checker/" class="learn-more-link" title="Learn about redirects">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Follow URL redirects and see the complete redirect chain. Identify all 301, 302, and other HTTP redirects. Essential for SEO and debugging.
+                </p>
+                <div class="input-group">
+                    <label>URL to Trace:</label>
+                    <input type="url" id="urlToTrace" placeholder="https://example.com" aria-label="URL to trace redirects" onkeypress="if(event.key==='Enter') checkRedirects()">
+                </div>
+                <button onclick="checkRedirects()">🔄 Trace Redirects</button>
+                <div id="urlRedirectResults"></div>
+            </div>
+
+            <!-- Broken Link Checker -->
+            <div class="tool-card" id="urlStatus" draggable="false" data-categories="url,network" data-usertypes="webdev,itpro" data-keywords="broken link status http response code 404 check alive dead">
+                <h2>Broken Link Checker</h2>
+                <a href="/link-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/link-checker/" class="learn-more-link" title="Learn about link checking">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check if a URL is working or broken. Get HTTP status code, response time, and server information. Quick uptime verification.
+                </p>
+                <div class="input-group">
+                    <label>URL to Test:</label>
+                    <input type="url" id="urlToTest" placeholder="https://example.com" aria-label="URL to test for broken links" onkeypress="if(event.key==='Enter') checkLinkStatus()">
+                </div>
+                <button onclick="checkLinkStatus()">✓ Check Link Status</button>
+                <div id="urlStatusResults"></div>
+            </div>
+
+            <!-- URL Metadata Extractor -->
+            <div class="tool-card" id="urlMetadata" draggable="false" data-categories="url,email,lookup" data-usertypes="webdev,marketing" data-keywords="metadata og opengraph twitter card seo meta tags extract title description">
+                <h2>URL Metadata Extractor</h2>
+                <a href="/metadata-extractor/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/metadata-extractor/" class="learn-more-link" title="Learn about URL metadata">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Extract page title, description, Open Graph tags, and metadata from any URL. See how links appear when shared on social media.
+                </p>
+                <div class="input-group">
+                    <label>URL to Extract:</label>
+                    <input type="url" id="urlToExtract" placeholder="https://example.com" aria-label="URL to extract metadata from" onkeypress="if(event.key==='Enter') extractMetadata()">
+                </div>
+                <button onclick="extractMetadata()">📄 Extract Metadata</button>
+                <div id="urlMetadataResults"></div>
+            </div>
+
+            <!-- Traceroute -->
+            <div class="tool-card" id="traceroute" draggable="false" data-categories="network" data-usertypes="itpro,netadmin" data-keywords="traceroute trace route hops path network latency hop gateway">
+                <h2>Traceroute</h2>
+                <a href="/traceroute/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/traceroute/" class="learn-more-link" title="Learn about traceroute">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Trace the network path to any host. See every hop your data takes, with IP addresses and response times. Essential for diagnosing routing issues.
+                </p>
+                <div class="input-group">
+                    <label>Host (Domain or IP):</label>
+                    <input type="text" id="tracerouteHost" placeholder="example.com or 8.8.8.8" aria-label="Host for traceroute" onkeypress="if(event.key==='Enter') runTraceroute()">
+                </div>
+                <button onclick="runTraceroute()">🛤️ Run Traceroute</button>
+                <div id="tracerouteResults"></div>
+            </div>
+
+            <!-- Reverse DNS -->
+            <div class="tool-card" id="reverseDns" draggable="false" data-categories="network,lookup" data-usertypes="itpro,netadmin" data-keywords="reverse dns ptr record ip hostname lookup rdns pointer">
+                <h2>Reverse DNS Lookup</h2>
+                <a href="/reverse-dns/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/reverse-dns/" class="learn-more-link" title="Learn about reverse DNS">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Look up the hostname associated with an IP address. Reverse DNS (PTR record) lookup helps identify servers and verify email sending infrastructure.
+                </p>
+                <div class="input-group">
+                    <label>IP Address:</label>
+                    <input type="text" id="reverseDnsInput" placeholder="8.8.8.8" aria-label="IP address for reverse DNS" onkeypress="if(event.key==='Enter') lookupReverseDns()">
+                </div>
+                <button onclick="lookupReverseDns()">🔄 Lookup Hostname</button>
+                <div id="reverseDnsResults"></div>
+            </div>
+
+            <!-- Subnet Calculator -->
+            <div class="tool-card" id="subnetCalc" draggable="false" data-categories="network" data-usertypes="itpro,netadmin" data-keywords="subnet calculator cidr network broadcast mask hosts ip address range wildcard">
+                <h2>Subnet Calculator</h2>
+                <a href="/subnet-calculator/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/subnet-calculator/" class="learn-more-link" title="Learn about subnets">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Calculate network address, broadcast address, subnet mask, and usable host range from an IP address and CIDR notation.
+                </p>
+                <div class="input-group">
+                    <label>IP Address:</label>
+                    <input type="text" id="subnetIp" placeholder="192.168.1.0" aria-label="IP address for subnet calculation" onkeypress="if(event.key==='Enter') calculateSubnet()">
+                </div>
+                <div class="input-group">
+                    <label>CIDR Prefix Length:</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span style="font-size: 1.1em; font-weight: 600;">/</span>
+                        <input type="number" id="subnetCidr" placeholder="24" min="0" max="32" value="24" aria-label="CIDR prefix" style="max-width: 100px;" onkeypress="if(event.key==='Enter') calculateSubnet()">
+                    </div>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
+                        <button onclick="document.getElementById('subnetCidr').value='8'; calculateSubnet()" class="preset-btn green" style="padding: 6px 12px; font-size: 0.8em;">/8</button>
+                        <button onclick="document.getElementById('subnetCidr').value='16'; calculateSubnet()" class="preset-btn green" style="padding: 6px 12px; font-size: 0.8em;">/16</button>
+                        <button onclick="document.getElementById('subnetCidr').value='24'; calculateSubnet()" class="preset-btn blue" style="padding: 6px 12px; font-size: 0.8em;">/24</button>
+                        <button onclick="document.getElementById('subnetCidr').value='25'; calculateSubnet()" class="preset-btn blue" style="padding: 6px 12px; font-size: 0.8em;">/25</button>
+                        <button onclick="document.getElementById('subnetCidr').value='28'; calculateSubnet()" class="preset-btn red" style="padding: 6px 12px; font-size: 0.8em;">/28</button>
+                        <button onclick="document.getElementById('subnetCidr').value='30'; calculateSubnet()" class="preset-btn red" style="padding: 6px 12px; font-size: 0.8em;">/30</button>
+                    </div>
+                </div>
+                <button onclick="calculateSubnet()">🔢 Calculate Subnet</button>
+                <div id="subnetResults"></div>
+            </div>
+
+            <!-- Security Headers Checker -->
+            <div class="tool-card" id="secHeaders" draggable="false" data-categories="security,url" data-usertypes="webdev,security" data-keywords="security headers hsts csp xss content-security-policy x-frame-options grade">
+                <h2>Security Headers Checker</h2>
+                <a href="/security-headers/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/security-headers/" class="learn-more-link" title="Learn about security headers">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Analyze a website's HTTP security headers and get a grade from A+ to F. Check for HSTS, CSP, X-Frame-Options, and more.
+                </p>
+                <div class="input-group">
+                    <label>Website URL:</label>
+                    <input type="url" id="secHeadersUrl" placeholder="https://example.com" aria-label="URL for security headers check" onkeypress="if(event.key==='Enter') checkSecurityHeaders()">
+                </div>
+                <button onclick="checkSecurityHeaders()">🛡️ Check Security Headers</button>
+                <div id="secHeadersResults"></div>
+            </div>
+
+            <!-- Password Breach Checker -->
+            <div class="tool-card" id="breachChecker" draggable="false" data-categories="security" data-usertypes="security,itpro" data-keywords="password breach pwned haveibeenpwned hibp data leak compromised check">
+                <h2>Password Breach Checker</h2>
+                <a href="/breach-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/breach-checker/" class="learn-more-link" title="Learn about password breaches">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check if a password has appeared in known data breaches using the Have I Been Pwned API. Uses k-anonymity — your full password is never sent over the network.
+                </p>
+                <div class="input-group">
+                    <label>Password to Check:</label>
+                    <div style="position: relative;">
+                        <input type="password" id="breachPassword" placeholder="Enter a password to check" aria-label="Password to check for breaches" onkeypress="if(event.key==='Enter') checkPasswordBreach()">
+                        <button onclick="toggleBreachPasswordVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px 8px; width: auto; min-width: auto; margin-top: 0;">👁️</button>
+                    </div>
+                </div>
+                <button onclick="checkPasswordBreach()">🔓 Check for Breaches</button>
+                <div id="breachResults"></div>
+                <div style="margin-top: 15px; padding: 12px; background: var(--input-background); border-radius: 6px; border-left: 3px solid var(--primary-color);">
+                    <p style="color: var(--text-secondary); margin: 0; font-size: 0.9em; line-height: 1.5;">
+                        <strong>🔒 Privacy Note:</strong> Your password is hashed locally using SHA-1. Only the first 5 characters of the hash are sent to the API (k-anonymity). Your actual password never leaves your browser.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Blacklist / RBL Checker -->
+            <div class="tool-card" id="blacklistChecker" draggable="false" data-categories="email,security,network" data-usertypes="itpro,netadmin" data-keywords="blacklist rbl dnsbl spamhaus barracuda spamcop email ip reputation blocklist">
+                <h2>Blacklist / RBL Checker</h2>
+                <a href="/blacklist-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/blacklist-checker/" class="learn-more-link" title="Learn about blacklists">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Check if an IP address is listed on major email blacklists (DNSBL/RBL). Checks Spamhaus, Barracuda, SpamCop, SORBS, and more.
+                </p>
+                <div class="input-group">
+                    <label>IP Address:</label>
+                    <input type="text" id="blacklistIp" placeholder="203.0.113.1" aria-label="IP address for blacklist check" onkeypress="if(event.key==='Enter') checkBlacklist()">
+                </div>
+                <button onclick="checkBlacklist()">📋 Check Blacklists</button>
+                <div id="blacklistResults"></div>
+            </div>
+
+            <!-- Tech Stack Detector -->
+            <div class="tool-card" id="techDetector" draggable="false" data-categories="url,lookup" data-usertypes="webdev,marketing" data-keywords="technology stack detect wappalyzer framework cms wordpress react angular vue server hosting">
+                <h2>Tech Stack Detector</h2>
+                <a href="/tech-detector/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/tech-detector/" class="learn-more-link" title="Learn about tech detection">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Detect what technologies a website uses — CMS, frameworks, analytics, CDNs, hosting, and more. Analyze server headers and HTML source.
+                </p>
+                <div class="input-group">
+                    <label>Website URL:</label>
+                    <input type="url" id="techDetectUrl" placeholder="https://example.com" aria-label="URL for technology detection" onkeypress="if(event.key==='Enter') detectTechStack()">
+                </div>
+                <button onclick="detectTechStack()">🔍 Detect Technologies</button>
+                <div id="techDetectResults"></div>
+            </div>
+
+            <!-- Robots.txt & Sitemap Analyzer -->
+            <div class="tool-card" id="robotsAnalyzer" draggable="false" data-categories="url,lookup" data-usertypes="webdev,marketing" data-keywords="robots txt sitemap xml seo crawl index search engine spider bot allow disallow">
+                <h2>Robots.txt & Sitemap Analyzer</h2>
+                <a href="/robots-analyzer/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/robots-analyzer/" class="learn-more-link" title="Learn about robots.txt">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Analyze a website's robots.txt file and sitemap. Check crawl rules, find sitemaps, and see how search engines interact with the site.
+                </p>
+                <div class="input-group">
+                    <label>Website URL:</label>
+                    <input type="url" id="robotsUrl" placeholder="https://example.com" aria-label="URL for robots.txt analysis" onkeypress="if(event.key==='Enter') analyzeRobots()">
+                </div>
+                <button onclick="analyzeRobots()">🤖 Analyze Robots & Sitemap</button>
+                <div id="robotsResults"></div>
+            </div>
+
+            <!-- Base64 Encode/Decode -->
+            <div class="tool-card" id="base64Tool" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="base64 encode decode binary text convert btoa atob data encoding" data-new>
+                <h2>Base64 Encode/Decode</h2>
+                <a href="/base64-encoder/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/base64-encoder/" class="learn-more-link" title="Learn about Base64 encoding">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Encode text to Base64 or decode Base64 back to text. Supports Unicode characters. Useful for encoding data in URLs, APIs, and data URIs.
+                </p>
+                <div class="input-group">
+                    <label>Input:</label>
+                    <textarea id="base64Input" placeholder="Enter text to encode, or Base64 string to decode..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
+                </div>
+                <div class="encode-decode-btns">
+                    <button onclick="encodeBase64()">Encode</button>
+                    <button onclick="decodeBase64()">Decode</button>
+                </div>
+                <div id="base64Results"></div>
+            </div>
+
+            <!-- URL Encode/Decode -->
+            <div class="tool-card" id="urlEncodeTool" draggable="false" data-categories="dev,url" data-usertypes="webdev" data-keywords="url encode decode percent encoding uri component query string escape unescape" data-new>
+                <h2>URL Encode/Decode</h2>
+                <a href="/url-encoder/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/url-encoder/" class="learn-more-link" title="Learn about URL encoding">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Encode special characters for safe use in URLs, or decode percent-encoded strings back to readable text. Essential for working with query strings and API parameters.
+                </p>
+                <div class="input-group">
+                    <label>Input:</label>
+                    <textarea id="urlEncodeInput" placeholder="Enter text to URL-encode, or encoded string to decode..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
+                </div>
+                <div class="encode-decode-btns">
+                    <button onclick="encodeURL()">Encode</button>
+                    <button onclick="decodeURL()">Decode</button>
+                </div>
+                <div id="urlEncodeResults"></div>
+            </div>
+
+            <!-- JSON Formatter / Validator -->
+            <div class="tool-card" id="jsonFormatter" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="json format validate beautify minify pretty print parse lint syntax" data-new>
+                <h2>JSON Formatter / Validator</h2>
+                <a href="/json-formatter/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/json-formatter/" class="learn-more-link" title="Learn about JSON">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Format, validate, and minify JSON data. Paste messy JSON and get clean, syntax-highlighted output with instant error detection.
+                </p>
+                <div class="input-group">
+                    <label>JSON Input:</label>
+                    <textarea id="jsonInput" placeholder='{"key": "value", "nested": {"array": [1, 2, 3]}}' style="min-height: 180px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
+                </div>
+                <div class="encode-decode-btns">
+                    <button onclick="formatJSON()">Format</button>
+                    <button onclick="minifyJSON()">Minify</button>
+                </div>
+                <div id="jsonResults"></div>
+            </div>
+
+            <!-- Regex Tester -->
+            <div class="tool-card" id="regexTester" draggable="false" data-categories="dev" data-usertypes="webdev" data-keywords="regex regular expression pattern test match replace flags global case insensitive multiline" data-new>
+                <h2>Regex Tester</h2>
+                <a href="/regex-tester/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/regex-tester/" class="learn-more-link" title="Learn about regex">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Test regular expressions against sample text in real time. See highlighted matches, capture groups, and match count.
+                </p>
+                <div class="input-group">
+                    <label>Pattern:</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
+                        <input type="text" id="regexPattern" placeholder="[a-z]+@[a-z]+\.[a-z]+" style="flex: 1; font-family: var(--font-mono);" oninput="testRegex()">
+                        <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
+                        <input type="text" id="regexFlags" value="g" placeholder="gi" style="width: 60px; text-align: center; font-family: var(--font-mono);" oninput="testRegex()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Test String:</label>
+                    <textarea id="regexTestString" placeholder="Enter text to test your regex against..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;" oninput="testRegex()"></textarea>
+                </div>
+                <div id="regexResults"></div>
+            </div>
+
+            <!-- Hash Generator -->
+            <div class="tool-card" id="hashGenerator" draggable="false" data-categories="dev,security" data-usertypes="webdev,security,itpro" data-keywords="hash sha256 sha512 sha1 sha384 digest checksum crypto web crypto api fingerprint" data-new>
+                <h2>Hash Generator</h2>
+                <a href="/hash-generator/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/hash-generator/" class="learn-more-link" title="Learn about hashing">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text using the Web Crypto API. All hashing is done locally in your browser.
+                </p>
+                <div class="input-group">
+                    <label>Text to Hash:</label>
+                    <textarea id="hashInput" placeholder="Enter text to generate hashes..." style="min-height: 100px;"></textarea>
+                </div>
+                <button onclick="generateHashes()">Generate Hashes</button>
+                <div id="hashResults"></div>
+            </div>
+
+            <!-- JWT Decoder -->
+            <div class="tool-card" id="jwtDecoder" draggable="false" data-categories="dev,security" data-usertypes="webdev,security" data-keywords="jwt json web token decode parse header payload claims expiry iat exp sub iss" data-new>
+                <h2>JWT Decoder</h2>
+                <a href="/jwt-decoder/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/jwt-decoder/" class="learn-more-link" title="Learn about JWT tokens">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Decode JSON Web Tokens to inspect header, payload, and claims. Check expiration status and issued-at time. Runs entirely in your browser.
+                </p>
+                <div class="input-group">
+                    <label>JWT Token:</label>
+                    <textarea id="jwtInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="min-height: 100px; font-family: var(--font-mono); font-size: 0.85em; word-break: break-all;"></textarea>
+                </div>
+                <button onclick="decodeJWT()">Decode JWT</button>
+                <div id="jwtResults"></div>
+            </div>
+
+            <!-- Unix Timestamp Converter -->
+            <div class="tool-card" id="timestampConverter" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="unix timestamp epoch date time convert utc iso 8601 seconds milliseconds human readable now" data-new>
+                <h2>Unix Timestamp Converter</h2>
+                <a href="/timestamp-converter/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/timestamp-converter/" class="learn-more-link" title="Learn about timestamps">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Convert between Unix timestamps and human-readable dates. See the current epoch time live. Supports seconds and milliseconds.
+                </p>
+                <div class="timestamp-live" id="timestampLive">Current Epoch: --</div>
+                <div class="input-group">
+                    <label>Unix Timestamp:</label>
+                    <input type="text" id="timestampInput" placeholder="1700000000" aria-label="Unix timestamp" onkeypress="if(event.key==='Enter') convertTimestamp()">
+                </div>
+                <button onclick="convertTimestamp()">Timestamp → Date</button>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Date/Time:</label>
+                    <input type="datetime-local" id="dateInput" aria-label="Date and time" style="font-family: var(--font-mono);">
+                </div>
+                <button onclick="convertDateToTimestamp()">Date → Timestamp</button>
+                <div id="timestampResults"></div>
+            </div>
+
+            <!-- Color Converter -->
+            <div class="tool-card" id="colorConverter" draggable="false" data-categories="dev" data-usertypes="webdev" data-keywords="color hex rgb hsl convert picker preview css web design palette swatch" data-new>
+                <h2>Color Converter</h2>
+                <a href="/color-converter/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
+                <a href="/learn/color-converter/" class="learn-more-link" title="Learn about color conversion">Learn</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Convert colors between HEX, RGB, and HSL formats. Use the color picker or type a value. Instant visual preview with one-click copy.
+                </p>
+                <div style="display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap;">
+                    <div class="input-group" style="flex: 1; min-width: 200px;">
+                        <label>Color Value:</label>
+                        <input type="text" id="colorInput" placeholder="#F2C200, rgb(242,194,0), hsl(48,100%,47%)" aria-label="Color value" onkeypress="if(event.key==='Enter') convertColor()" oninput="convertColor()">
+                    </div>
+                    <div class="input-group" style="width: 60px;">
+                        <label>Pick:</label>
+                        <input type="color" id="colorPicker" value="#F2C200" oninput="updateColorFromPicker()" style="width: 50px; height: 40px; padding: 2px; cursor: pointer; border: 2px solid var(--border-color); border-radius: 6px; background: var(--input-background);">
+                    </div>
+                </div>
+                <div id="colorResults"></div>
+            </div>
+
+            <!-- UUID Generator -->
+            <div class="tool-card" id="uuidGen" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="uuid generate validate v4 unique identifier guid random">
+                <h2>UUID Generator</h2>
+                <a href="/uuid-generator/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate random UUID v4 values or validate existing UUIDs. Bulk generation supported.</p>
+                <button onclick="window.location='/uuid-generator/'">Open UUID Generator</button>
+            </div>
+
+            <!-- Cron Expression Parser -->
+            <div class="tool-card" id="cronParser" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="cron expression parse schedule job timer interval minute hour">
+                <h2>Cron Expression Parser</h2>
+                <a href="/cron-parser/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Parse cron expressions into human-readable descriptions and see next run times.</p>
+                <button onclick="window.location='/cron-parser/'">Open Cron Parser</button>
+            </div>
+
+            <!-- Timezone Converter -->
+            <div class="tool-card" id="timezoneConverter" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="timezone convert time zone utc world clock schedule meeting international">
+                <h2>Timezone Converter</h2>
+                <a href="/timezone-converter/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Convert times between time zones. World clock with live updates.</p>
+                <button onclick="window.location='/timezone-converter/'">Open Timezone Converter</button>
+            </div>
+
+            <!-- Character & Word Counter -->
+            <div class="tool-card" id="charCounter" draggable="false" data-categories="dev" data-usertypes="webdev,marketing" data-keywords="character word count sentence line paragraph reading time text length">
+                <h2>Character &amp; Word Counter</h2>
+                <a href="/character-counter/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Count characters, words, sentences, lines, paragraphs, and reading time in real-time.</p>
+                <button onclick="window.location='/character-counter/'">Open Character Counter</button>
+            </div>
+
+            <!-- Base32 Encoder / Decoder -->
+            <div class="tool-card" id="base32Tool" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="base32 encode decode totp 2fa secret key rfc 4648">
+                <h2>Base32 Encoder / Decoder</h2>
+                <a href="/base32-encoder/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Encode text to Base32 or decode Base32 strings. Commonly used with TOTP/2FA keys.</p>
+                <button onclick="window.location='/base32-encoder/'">Open Base32 Tool</button>
+            </div>
+
+            <!-- Query String Parser -->
+            <div class="tool-card" id="qsParser" draggable="false" data-categories="dev,url" data-usertypes="webdev" data-keywords="query string parse build url parameters key value api request">
+                <h2>Query String Parser</h2>
+                <a href="/query-string-parser/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Parse URL query strings into key-value pairs or build query strings from parameters.</p>
+                <button onclick="window.location='/query-string-parser/'">Open Query String Parser</button>
+            </div>
+
+            <!-- ASCII Table -->
+            <div class="tool-card" id="asciiTable" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="ascii table character code decimal hex octal binary reference lookup">
+                <h2>ASCII Table</h2>
+                <a href="/ascii-table/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Complete ASCII character table with decimal, hex, octal, and binary values. Searchable and filterable.</p>
+                <button onclick="window.location='/ascii-table/'">Open ASCII Table</button>
+            </div>
+
+            <!-- URL Parser -->
+            <div class="tool-card" id="urlParser" draggable="false" data-categories="dev,url" data-usertypes="webdev" data-keywords="url parse breakdown protocol host port path query fragment component analyze">
+                <h2>URL Parser</h2>
+                <a href="/url-parser/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Parse URLs into protocol, hostname, port, path, query, and fragment components.</p>
+                <button onclick="window.location='/url-parser/'">Open URL Parser</button>
+            </div>
+
+            <!-- Text Diff -->
+            <div class="tool-card" id="textDiff" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="text diff compare difference side by side code config change review">
+                <h2>Text Diff Tool</h2>
+                <a href="/text-diff/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Compare two texts side by side with highlighted additions and deletions.</p>
+                <button onclick="window.location='/text-diff/'">Open Text Diff</button>
+            </div>
+
+            <!-- Line Tools -->
+            <div class="tool-card" id="lineTools" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="line sort deduplicate reverse remove blank trim number shuffle text process">
+                <h2>Line Tools</h2>
+                <a href="/line-tools/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Sort, deduplicate, reverse, filter, trim, and process text lines.</p>
+                <button onclick="window.location='/line-tools/'">Open Line Tools</button>
+            </div>
+
+            <!-- Env File Parser -->
+            <div class="tool-card" id="envParser" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="env file parse dotenv environment variable validate json convert config">
+                <h2>Env File Parser</h2>
+                <a href="/env-file-parser/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Parse .env files into key-value pairs, validate syntax, and convert to JSON.</p>
+                <button onclick="window.location='/env-file-parser/'">Open Env File Parser</button>
+            </div>
+
+            <!-- Docker Compose Validator -->
+            <div class="tool-card" id="dockerValidator" draggable="false" data-categories="dev" data-usertypes="webdev,itpro" data-keywords="docker compose yaml validate check syntax services container config devops">
+                <h2>Docker Compose Validator</h2>
+                <a href="/docker-compose-validator/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Validate docker-compose.yml files for syntax errors and common configuration issues.</p>
+                <button onclick="window.location='/docker-compose-validator/'">Open Docker Compose Validator</button>
+            </div>
+
+            <!-- HTTP Request Builder -->
+            <div class="tool-card" id="httpBuilder" draggable="false" data-categories="dev,network" data-usertypes="webdev,itpro" data-keywords="http request build curl fetch python api post get put delete header body generate code">
+                <h2>HTTP Request Builder</h2>
+                <a href="/http-request-builder/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Build HTTP requests visually and generate curl, JavaScript fetch, and Python code.</p>
+                <button onclick="window.location='/http-request-builder/'">Open HTTP Request Builder</button>
+            </div>
+
+            <!-- Webhook Payload Builder -->
+            <div class="tool-card" id="webhookBuilder" draggable="false" data-categories="dev" data-usertypes="webdev" data-keywords="webhook payload test github stripe slack discord generate hmac signature">
+                <h2>Webhook Payload Builder</h2>
+                <a href="/webhook-tester/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate webhook payloads for GitHub, Stripe, Slack, and Discord with HMAC signatures.</p>
+                <button onclick="window.location='/webhook-tester/'">Open Webhook Builder</button>
+            </div>
+
+            <!-- Password Entropy Calculator -->
+            <div class="tool-card" id="pwEntropy" draggable="false" data-categories="security" data-usertypes="security,itpro" data-keywords="password entropy strength crack time bits pool size brute force measure">
+                <h2>Password Entropy Calculator</h2>
+                <a href="/password-entropy/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Calculate password entropy in bits and estimated crack times at various attack speeds.</p>
+                <button onclick="window.location='/password-entropy/'">Open Entropy Calculator</button>
+            </div>
+
+            <!-- HMAC Generator -->
+            <div class="tool-card" id="hmacGen" draggable="false" data-categories="dev,security" data-usertypes="webdev,security" data-keywords="hmac hash message authentication code sha256 sha512 sign verify webhook api">
+                <h2>HMAC Generator</h2>
+                <a href="/hmac-generator/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate HMAC signatures using SHA-256, SHA-384, SHA-512, and SHA-1.</p>
+                <button onclick="window.location='/hmac-generator/'">Open HMAC Generator</button>
+            </div>
+
+            <!-- JWT Generator -->
+            <div class="tool-card" id="jwtGen" draggable="false" data-categories="dev,security" data-usertypes="webdev,security" data-keywords="jwt json web token generate create sign hmac sha256 claims header payload">
+                <h2>JWT Generator</h2>
+                <a href="/jwt-generator/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate JSON Web Tokens with custom claims and HMAC-SHA256 signing.</p>
+                <button onclick="window.location='/jwt-generator/'">Open JWT Generator</button>
+            </div>
+
+            <!-- Public Key Decoder -->
+            <div class="tool-card" id="pubKeyDecoder" draggable="false" data-categories="security" data-usertypes="security,itpro" data-keywords="public key pem decode rsa ec ed25519 asn1 der certificate inspect">
+                <h2>Public Key Decoder</h2>
+                <a href="/public-key-decoder/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Decode PEM-encoded public keys to view type, size, algorithm, and ASN.1 structure.</p>
+                <button onclick="window.location='/public-key-decoder/'">Open Public Key Decoder</button>
+            </div>
+
+            <!-- CSR Decoder -->
+            <div class="tool-card" id="csrDecoder" draggable="false" data-categories="security" data-usertypes="security,itpro" data-keywords="csr certificate signing request decode pem subject cn organization ssl tls">
+                <h2>CSR Decoder</h2>
+                <a href="/csr-decoder/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Decode Certificate Signing Requests to view subject, key info, and extensions.</p>
+                <button onclick="window.location='/csr-decoder/'">Open CSR Decoder</button>
+            </div>
+
+            <!-- IP Range Generator -->
+            <div class="tool-card" id="ipRangeGen" draggable="false" data-categories="network" data-usertypes="itpro,netadmin" data-keywords="ip range generate cidr block list enumerate subnet address network inventory">
+                <h2>IP Range Generator</h2>
+                <a href="/ip-range-generator/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate IP address lists from CIDR blocks or start/end ranges.</p>
+                <button onclick="window.location='/ip-range-generator/'">Open IP Range Generator</button>
+            </div>
+
+            <!-- DNS Propagation Checker -->
+            <div class="tool-card" id="dnsPropagation" draggable="false" data-categories="network" data-usertypes="itpro,netadmin,webdev" data-keywords="dns propagation check global resolver google cloudflare quad9 record spread worldwide">
+                <h2>DNS Propagation Checker</h2>
+                <a href="/dns-propagation/" class="fullscreen-link" title="Open in full page">&#x26F6; Open full page</a>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check DNS propagation across Google, Cloudflare, and Quad9 resolvers.</p>
+                <button onclick="window.location='/dns-propagation/'">Open DNS Propagation Checker</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Site Info Section -->
+        <div class="site-info-section">
+            <div class="site-info-header" onclick="toggleSiteInfo()">
+                <span class="site-info-toggle" id="siteInfoToggle">+</span>
+                <h3>Site Info & FAQ</h3>
+            </div>
+            <div class="site-info-content" id="siteInfoContent">
+                <p><strong>🔒 Privacy & Security:</strong> All tools run entirely in your browser. No data is sent to external servers—your information never leaves your device.</p>
+                
+                <p><strong>💾 Settings Storage:</strong> Your preferences (tool visibility, theme, layout) are saved locally in your browser using localStorage. These settings persist across visits.</p>
+                
+                <p><strong>🎨 Customization Features:</strong></p>
+                <ul>
+                    <li><strong>Quick Search:</strong> Press <code style="background: #F2C200; color: #111318; padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-weight: 600;">/</code> anywhere on the page to jump to the search bar. Press <code style="background: #F2C200; color: #111318; padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-weight: 600;">Esc</code> to clear and close</li>
+                    <li><strong>Category Filters:</strong> Use the filter pills below the search bar to narrow tools by category</li>
+                    <li><strong>Recently Used:</strong> Tools you use are remembered and shown as quick-access chips at the top of the page</li>
+                    <li><strong>Drag &amp; Drop:</strong> Turn on Organize in the &#9881; Customize panel, then drag tool cards into your preferred order</li>
+                    <li><strong>Show/Hide Tools:</strong> Toggle individual tools on/off in the &#9881; Customize panel above the tool grid</li>
+                    <li><strong>Day/Night Theme:</strong> Switch between dark and light themes with the plug toggle button</li>
+                    <li><strong>Layout Reset:</strong> Return all tools to their original order with the "Reset Layout" button</li>
+                </ul>
+                
+                <p><strong>⚡ Smart Caching & Performance:</strong> Responses are cached locally to speed up repeated queries and reduce API usage. Cache durations vary by tool type (1 minute to 30 days based on data stability).</p>
+                
+                <p><strong>📊 Rate Limits & API Usage:</strong> To ensure fair usage and stay within free tier API limits, the following rate limits apply:</p>
+                <ul style="font-size: 0.9em; line-height: 1.6;">
+                    <li><strong>DNS Checker:</strong> 45 requests/minute, 1,500/day</li>
+                    <li><strong>WHOIS Lookup:</strong> 45 requests/minute, 1,000/day</li>
+                    <li><strong>ISP Checker:</strong> 45 requests/minute, 1,000/day</li>
+                    <li><strong>MAC Lookup:</strong> 30 requests/minute, 1,000/day</li>
+                    <li><strong>SSL/Port Scanner:</strong> 60 requests/minute, 10,000/day</li>
+                    <li><strong>Device Lookup (Dell):</strong> 30 requests/minute, 1,000/day (IMEI &amp; Apple lookups are offline — no limits)</li>
+                    <li><em>Note: You'll receive warnings when approaching limits. Type <code style="background: #F2C200; color: #111318; padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-weight: 600;">showAPIUsage()</code> in browser console to view your current usage.</em></li>
+                </ul>
+                
+                <p><strong>🗑️ Settings Reset:</strong> Your saved settings will be cleared if you:</p>
+                <ul>
+                    <li>Clear your browser cache or cookies</li>
+                    <li>Use incognito/private browsing mode</li>
+                    <li>Switch to a different browser or device</li>
+                </ul>
+                
+                <button class="clear-cache-btn" onclick="clearLocalSettings()">🗑️ Clear All Settings & Reset</button>
+                
+                <div class="faq-divider"></div>
+                
+                <div class="faq-section-header" onclick="toggleFAQSection()">
+                    <span class="faq-section-toggle" id="faqSectionToggle">+</span>
+                    <h4 class="faq-section-title">❓ Frequently Asked Questions</h4>
+                </div>
+                
+                <div class="faq-questions-container" id="faqQuestionsContainer">
+                    <div class="faq-item">
+                        <div class="faq-question-static">
+                            <strong>What is duckTyped?</strong>
+                        </div>
+                        <div class="faq-answer-static">
+                            <p>duckTyped is a free collection of IT professional tools for DNS checking, SSL validation, password generation, WHOIS lookup, and network diagnostics. All tools work in your browser with no registration required.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question-static">
+                            <strong>Is duckTyped completely free?</strong>
+                        </div>
+                        <div class="faq-answer-static">
+                            <p>Yes! All tools are 100% free with no hidden fees, no registration, and no credit card required. We believe IT tools should be accessible to everyone.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question-static">
+                            <strong>Is my data private and secure?</strong>
+                        </div>
+                        <div class="faq-answer-static">
+                            <p>Yes! Most tools process everything client-side in your browser. Your data never leaves your device. We don't collect, store, or share any personal information.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question-static">
+                            <strong>Can I use these tools offline?</strong>
+                        </div>
+                        <div class="faq-answer-static">
+                            <p>Most tools work offline! The Password Generator, Plain Notes, and Encrypted Note Sender work without internet. Network tools like DNS Checker and WHOIS Lookup require connectivity.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question-static">
+                            <strong>What tools are included?</strong>
+                        </div>
+                        <div class="faq-answer-static">
+                            <p>We offer more than 55 free tools across network, security, email, web/URL, QR, lookup, and developer categories — including a DNS record checker with SPF/DKIM/DMARC validation, SSL certificate checker, WHOIS/IP lookup, port scanner, password generator, JSON formatter, regex tester, JWT decoder, email header analyzer, SMTP checker, QR code tools, and URL safety, redirect, and broken-link checkers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- AdSense Ad #3 - Hidden until approval
+    <div class="ad-container" style="max-width: 900px; margin: 40px auto; text-align: center; padding: 20px;">
+        <p style="font-size: 0.75em; color: var(--text-secondary); margin-bottom: 8px;">Advertisement</p>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-format="auto"
+             data-full-width-responsive="true"
+             data-ad-client="ca-pub-XXXXXXXXXX"
+             data-ad-slot="AAAAAAAAAA"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    -->
+
+    <!-- FAQ Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is duckTyped?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "duckTyped is a free collection of IT professional tools for DNS checking, SSL validation, password generation, WHOIS lookup, and network diagnostics. All tools work in your browser with no registration required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is duckTyped completely free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! All tools are 100% free with no hidden fees, no registration, and no credit card required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to create an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No account needed! All tools work immediately in your browser. Your settings are saved locally on your device using browser localStorage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private and secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Most tools process everything client-side in your browser. Your data never leaves your device. We don't collect, store, or share any personal information."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use these tools offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most tools work offline! The Password Generator, Plain Notes, and Encrypted Note Sender work without internet. Network tools like DNS Checker and WHOIS Lookup require connectivity."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What tools are included?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer more than 55 free tools across network, security, email, web/URL, QR, lookup, and developer categories — including a DNS record checker with SPF/DKIM/DMARC validation, SSL certificate checker, WHOIS/IP lookup, port scanner, password generator, JSON formatter, regex tester, JWT decoder, email header analyzer, SMTP checker, QR code tools, and URL safety, redirect, and broken-link checkers."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+                <!-- Explore Section -->
+                <div class="footer-section">
+                    <h3>Explore</h3>
+                    <ul>
+                        <li><a href="/utility/">All Tools</a></li>
+                        <li><a href="/learn/">Learn</a></li>
+                        <li><a href="/errors/">Troubleshoot</a></li>
+                        <li><a href="/feedback/">Suggest &amp; Feedback</a></li>
+                    </ul>
+                    <h3 style="margin-top: 24px;">Keyboard Shortcuts</h3>
+                    <ul class="footer-shortcuts">
+                        <li><kbd>/</kbd> <span>Focus search</span></li>
+                        <li><kbd>Esc</kbd> <span>Clear search / close modal</span></li>
+                    </ul>
+                </div>
+
+                <!-- Stats + Privacy Section -->
+                <div class="footer-section">
+                    <h3>At a Glance</h3>
+                    <div class="footer-stats">
+                        <div class="footer-stat">
+                            <span class="footer-stat-num" id="footerToolCount">57</span>
+                            <span class="footer-stat-label">Tools</span>
+                        </div>
+                        <div class="footer-stat">
+                            <span class="footer-stat-num">7</span>
+                            <span class="footer-stat-label">Categories</span>
+                        </div>
+                        <div class="footer-stat">
+                            <span class="footer-stat-num">0</span>
+                            <span class="footer-stat-label">Trackers</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px;">No accounts, no cookies, no telemetry. Most tools run entirely in your browser. Some tools (DNS, SSL, SMTP, etc.) use a minimal server proxy to perform lookups — no data is stored.</p>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="footer-section">
+                    <div class="footer-contact-card">
+                        <h3>Get in Touch</h3>
+                        <p style="font-size: 0.85em; color: var(--text-secondary); margin-bottom: 16px;">Request a tool, report a bug, or just say hello.</p>
+                        <form id="contactForm" class="footer-contact-form">
+                            <!-- Honeypot field - hidden from humans, visible to bots -->
+                            <input
+                                type="text"
+                                name="_honey"
+                                id="contactHoneypot"
+                                tabindex="-1"
+                                autocomplete="off"
+                                style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;">
+
+                            <!-- Time tracking - detects instant bot submissions -->
+                            <input type="hidden" id="formLoadTime" value="">
+
+                            <input type="text" id="contactName" aria-label="Your name" placeholder="Name" required>
+                            <input type="email" id="contactEmail" aria-label="Your email address" placeholder="Email" required>
+                            <textarea id="contactMessage" aria-label="Your message" placeholder="Message" required rows="3"></textarea>
+                            <button type="submit">Send</button>
+                            <div id="contactFormStatus" style="font-size: 0.85em; display: none;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span class="footer-year"></span> duckTyped. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+
+    <!-- Core (config, cache, worker, toast, utilities) - must load first -->
+    <script defer src="core.js"></script>
+    <!-- Reusable encoding/color libraries (pure functions, no DOM) -->
+    <script defer src="tools-encoding.js"></script>
+    <!-- Shared helpers (must load before tool modules) -->
+    <script defer src="tools-helpers.js"></script>
+    <!-- Tool modules (order doesn't matter, all depend on core + helpers) -->
+    <script defer src="tools-password.js"></script>
+    <script defer src="tools-network.js"></script>
+    <script defer src="tools-email.js"></script>
+    <script defer src="tools-qr.js"></script>
+    <script defer src="tools-url.js"></script>
+    <script defer src="tools-dev.js"></script>
+    <script defer src="tools-device.js"></script>
+    <!-- UI (depends on everything above) - must load last -->
+    <script defer src="ui.js"></script>
+    <script defer src="/utility/site-search.js"></script>
+
+    <script>
+    function dashDeviceLookup() {
+        var input = document.getElementById('dashDeviceInput').value.trim();
+        var resultsEl = document.getElementById('dashDeviceResults');
+        var detectedEl = document.getElementById('dashDeviceDetected');
+
+        if (!input) {
+            resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Please enter an IMEI, Apple serial number, or Dell service tag.</p>';
+            detectedEl.style.display = 'none';
+            return;
+        }
+
+        var detected = DT.device.detectInputType(input);
+        var typeLabels = { 'imei': 'IMEI Number', 'apple-serial-pre2021': 'Apple Serial (Pre-2021)', 'apple-serial-post2021': 'Apple Serial (Post-2021)', 'dell-service-tag': 'Dell Service Tag' };
+
+        if (detected.type === 'unknown') {
+            detectedEl.style.display = 'none';
+            resultsEl.innerHTML = '<p style="color: #e74c3c;">Could not identify input type. Enter a 14-15 digit IMEI, Apple serial, or 5-7 character Dell service tag.</p>';
+            return;
+        }
+
+        detectedEl.style.display = 'block';
+        detectedEl.innerHTML = '<strong>Detected:</strong> ' + typeLabels[detected.type];
+
+        function esc(s) { return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
+
+        if (detected.type === 'imei') {
+            resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Loading TAC database...</p>';
+            DT.device.loadTacDb().then(function () {
+                var r = DT.device.decodeIMEI(detected.cleaned);
+                var h = '<div class="result-group" style="color: var(--text-secondary);"><h3 style="margin-top:0; color: var(--primary-color);">IMEI Results</h3>';
+                if (!r.valid) { h += '<p style="color:#e74c3c;">Invalid IMEI — Luhn checksum failed.</p>'; }
+                else {
+                    h += '<table class="result-table"><tbody>';
+                    if (r.is14Digit) { h += '<tr><td><strong>Valid</strong></td><td style="color:#27ae60;">Yes (14-digit, no check digit)</td></tr>'; }
+                    h += '<tr><td><strong>TAC</strong></td><td><code>' + r.tac + '</code></td></tr>';
+                    if (r.brand) h += '<tr><td><strong>Brand</strong></td><td>' + esc(r.brand) + '</td></tr>';
+                    else h += '<tr><td><strong>Brand</strong></td><td style="color:var(--text-secondary);">Not in database</td></tr>';
+                    if (r.model) h += '<tr><td><strong>Model</strong></td><td>' + esc(r.model) + '</td></tr>';
+                    else h += '<tr><td><strong>Model</strong></td><td style="color:var(--text-secondary);">Not in database</td></tr>';
+                    h += '<tr><td><strong>Serial</strong></td><td><code>' + r.serial + '</code></td></tr>';
+                    h += '</tbody></table>';
+                }
+                h += '</div>';
+                resultsEl.innerHTML = h;
+            }).catch(function (e) { resultsEl.innerHTML = '<p style="color:#e74c3c;">Failed to load TAC database.</p>'; });
+        } else if (detected.type === 'apple-serial-pre2021' || detected.type === 'apple-serial-post2021') {
+            resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Loading Apple serial database...</p>';
+            DT.device.loadAppleDb().then(function () {
+                var r = DT.device.decodeAppleSerial(detected.cleaned);
+                var h = '<div class="result-group" style="color: var(--text-secondary);"><h3 style="margin-top:0; color: var(--primary-color);">Apple Serial Results</h3>';
+                if (r.message && !r.valid) { h += '<p style="color:var(--text-secondary);">' + esc(r.message) + '</p>'; }
+                else {
+                    h += '<table class="result-table"><tbody>';
+                    h += '<tr><td><strong>Format</strong></td><td>' + esc(r.format) + '</td></tr>';
+                    if (r.factory) h += '<tr><td><strong>Factory</strong></td><td>' + esc(r.factory) + ' <code>(' + esc(r.factoryCode) + ')</code></td></tr>';
+                    if (r.year) h += '<tr><td><strong>Year</strong></td><td>' + r.year + ' (half ' + r.half + ')</td></tr>';
+                    if (r.model) h += '<tr><td><strong>Model</strong></td><td>' + esc(r.model) + '</td></tr>';
+                    h += '</tbody></table>';
+                }
+                h += '</div>';
+                resultsEl.innerHTML = h;
+            }).catch(function (e) { resultsEl.innerHTML = '<p style="color:#e74c3c;">Failed to load Apple serial database.</p>'; });
+        } else if (detected.type === 'dell-service-tag') {
+            resultsEl.innerHTML = '<p style="color: var(--text-secondary);">Looking up Dell service tag...</p>';
+            DT.device.lookupDell(detected.cleaned).then(function (r) {
+                var h = '<div class="result-group" style="color: var(--text-secondary);"><h3 style="margin-top:0; color: var(--primary-color);">Dell Results</h3><table class="result-table"><tbody>';
+                if (r.model) h += '<tr><td><strong>Model</strong></td><td>' + esc(r.model) + '</td></tr>';
+                if (r.warranty && r.warranty.length > 0) {
+                    h += '<tr><td><strong>Warranty</strong></td><td>';
+                    for (var i = 0; i < r.warranty.length; i++) { var w = r.warranty[i]; h += esc(w.type) + ': ' + esc(w.start) + ' — ' + esc(w.end); if (i < r.warranty.length - 1) h += '<br>'; }
+                    h += '</td></tr>';
+                } else { h += '<tr><td><strong>Warranty</strong></td><td style="color:var(--text-secondary);">No warranty data found</td></tr>'; }
+                h += '</tbody></table></div>';
+                resultsEl.innerHTML = h;
+            }).catch(function (e) { resultsEl.innerHTML = '<p style="color:#e74c3c;">' + esc(e.message || 'Dell lookup failed') + '</p>'; });
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is DNS Propagation?","description":"Learn what DNS propagation is, why DNS changes take time to spread globally, how TTL affects propagation speed, and how to check propagation status.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/dns-propagation/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Is DNS Propagation?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does DNS propagation take?","acceptedAnswer":{"@type":"Answer","text":"DNS propagation typically takes anywhere from a few minutes to 48 hours. The actual time depends on the TTL (Time to Live) of the previous DNS records, how aggressively resolvers cache, and how many layers of caching exist between end users and authoritative nameservers."}},{"@type":"Question","name":"Can I speed up DNS propagation?","acceptedAnswer":{"@type":"Answer","text":"You can speed up future propagation by lowering your TTL values in advance of a change. Set TTL to 300 seconds (5 minutes) at least 24-48 hours before making the change, then update the record. After confirming the change works, raise the TTL back to a longer value like 3600 or 86400."}},{"@type":"Question","name":"Why do some users see the old DNS record while others see the new one?","acceptedAnswer":{"@type":"Answer","text":"Different DNS resolvers cache records independently. A resolver that cached the old record recently will continue serving it until the TTL expires. Resolvers that haven't cached the record yet, or whose cache has expired, will fetch the new record immediately. This creates a window where different users see different results."}},{"@type":"Question","name":"Does flushing my DNS cache help with propagation?","acceptedAnswer":{"@type":"Answer","text":"Flushing your local DNS cache only affects your own device. It forces your computer to query your ISP's resolver again, but if that resolver still has the old record cached, you will still see the old result. Flushing helps confirm whether your local cache was stale, but it cannot speed up global propagation."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is DNS Propagation? — How DNS Changes Spread Globally — duckTyped</title>
+    <meta name="description" content="Learn what DNS propagation is, why DNS changes take time to spread globally, how TTL affects propagation speed, and how to check propagation status.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Is DNS Propagation? — How DNS Changes Spread Globally — duckTyped">
+    <meta property="og:description" content="Learn what DNS propagation is, why DNS changes take time to spread globally, and how TTL affects propagation speed.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/dns-propagation/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Is DNS Propagation? — How DNS Changes Spread Globally — duckTyped">
+    <meta name="twitter:description" content="Learn what DNS propagation is and why DNS changes take time to spread globally.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/dns-propagation/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Is DNS Propagation?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Is DNS Propagation?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNS propagation is the process by which updated DNS records spread across the global network of DNS resolvers. When you change a DNS record, the update does not take effect everywhere instantly -- it gradually propagates as cached copies of the old record expire.</p>
+
+            <h2>How DNS Caching Creates Propagation Delays</h2>
+            <p>The Domain Name System is designed for speed and resilience. To avoid querying authoritative nameservers for every single DNS lookup, resolvers at every level -- your browser, your operating system, your ISP's recursive resolver -- cache DNS responses. Each cached record is stored for a duration defined by its <strong>TTL (Time to Live)</strong> value, measured in seconds.</p>
+            <p>When you update a DNS record on your authoritative nameserver, the change is immediately available there. However, every resolver that already has the old record cached will continue serving it until the TTL expires. Only after the cached copy expires will the resolver fetch the updated record from the authoritative server.</p>
+            <p>This is why DNS propagation is not a single event but a gradual process. Different resolvers around the world cached the old record at different times, so their caches expire at different times.</p>
+
+            <h2>What Determines Propagation Speed</h2>
+            <p>Several factors affect how quickly DNS changes propagate globally:</p>
+
+            <h3>TTL of the Previous Record</h3>
+            <p>The most important factor is the TTL that was set on the <strong>old</strong> record -- not the new one. If your A record had a TTL of 86400 (24 hours), resolvers that cached it just before you made the change could serve the old value for up to 24 more hours. If the TTL was 300 (5 minutes), the maximum wait is much shorter.</p>
+
+            <h3>Resolver Behavior</h3>
+            <p>Not all resolvers strictly respect TTL values. Some ISP resolvers impose minimum TTL floors (sometimes 30 minutes or longer) to reduce their query volume. Others may cache records slightly beyond their TTL. Public resolvers like Google (<code>8.8.8.8</code>) and Cloudflare (<code>1.1.1.1</code>) generally respect TTLs accurately.</p>
+
+            <h3>Multiple Caching Layers</h3>
+            <p>DNS responses are cached at multiple levels: the browser, the operating system stub resolver, the local network resolver (such as a home router), and the ISP's recursive resolver. Each layer may have its own cache with its own expiry time. Even if one layer refreshes, another may still hold the old record.</p>
+
+            <h3>Negative Caching</h3>
+            <p>If a domain did not previously have a certain record type, resolvers may cache the <strong>negative response</strong> (NXDOMAIN or NODATA) according to the SOA record's minimum TTL. This means adding a brand-new record can also experience propagation delays if resolvers previously cached the fact that the record did not exist.</p>
+
+            <h2>How to Minimize Propagation Time</h2>
+            <p>While you cannot eliminate propagation delays entirely, you can minimize them with planning:</p>
+            <ol>
+                <li><strong>Lower the TTL in advance</strong> -- at least 24-48 hours before making a DNS change, reduce the TTL on the record you plan to modify to a low value like 300 seconds (5 minutes). This ensures that by the time you make the change, most resolvers have the short-TTL version cached.</li>
+                <li><strong>Make the change</strong> -- update the DNS record on your authoritative nameserver.</li>
+                <li><strong>Verify propagation</strong> -- use DNS lookup tools to query multiple resolvers and confirm they are returning the new record.</li>
+                <li><strong>Raise the TTL</strong> -- once propagation is confirmed and the change is working correctly, increase the TTL back to a longer value (such as 3600 or 86400) to reduce query load on your nameservers.</li>
+            </ol>
+
+            <h2>Common Propagation Scenarios</h2>
+
+            <h3>Migrating to a New Web Host</h3>
+            <p>When moving your website to a new server, you need to update your A record to point to the new IP address. During propagation, some users will reach the old server while others reach the new one. To handle this gracefully, keep the old server running until propagation is complete, and ensure both servers serve your site correctly.</p>
+
+            <h3>Switching Email Providers</h3>
+            <p>Changing MX records to point to a new email provider means that during propagation, some incoming emails will be delivered to the old provider and some to the new one. Plan the switch carefully, and monitor both mailboxes during the transition period.</p>
+
+            <h3>Adding or Modifying TXT Records</h3>
+            <p>SPF, DKIM, and DMARC records are stored as TXT records. When updating these, email authentication may be inconsistent during propagation. Lowering TTLs beforehand is especially important for email-related records, since authentication failures can cause messages to be rejected or sent to spam.</p>
+
+            <h2>Checking Propagation Status</h2>
+            <p>You can verify whether your DNS changes have propagated by querying different DNS resolvers directly. The duckTyped DNS Record Checker queries authoritative servers, giving you the current state of your records. Comparing results from multiple public resolvers (Google, Cloudflare, OpenDNS) will show you whether resolvers have picked up the change yet.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-propagation/">DNS Propagation Checker</a> -- compare answers from multiple public resolvers to see whether your change has propagated yet.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- look up current DNS records for any domain and verify your changes are live on authoritative servers.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> -- check nameserver delegation and domain registration details.</li>
+                <li><a href="/reverse-dns/">Reverse DNS Lookup</a> -- verify PTR records after IP address changes.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS Records guide</a>, <a href="/learn/dns-probe-finished-nxdomain/">What causes DNS_PROBE_FINISHED_NXDOMAIN</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> -- can occur during propagation if resolvers have not yet received the new record.</li>
+                <li><a href="/errors/dns/">DNS Errors</a> -- browse all DNS-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-propagation/" class="cta-btn-primary">Try DNS Propagation Checker</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Generator","url":"https://ducktyped.xyz/jwt-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Generate JSON Web Tokens (JWT) with custom claims and signing. Create JWTs for testing and development.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a JWT generator used for?","acceptedAnswer":{"@type":"Answer","text":"A JWT generator creates JSON Web Tokens for testing API authentication, developing token-based auth systems, and debugging JWT implementations. It lets you specify custom claims, algorithms, and expiration times."}},{"@type":"Question","name":"Is it safe to generate JWTs in the browser?","acceptedAnswer":{"@type":"Answer","text":"Yes, for testing and development purposes. All token generation happens client-side. For production systems, generate JWTs on your server using a secure signing key."}},{"@type":"Question","name":"What signing algorithms are supported?","acceptedAnswer":{"@type":"Answer","text":"This tool supports HS256, HS384, and HS512 (HMAC-based) signing algorithms. You provide the secret key and the tool generates a properly signed JWT."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Generator — Create JSON Web Tokens — duckTyped</title>
+    <meta name="description" content="Generate JSON Web Tokens (JWT) with custom claims and signing. Create JWTs for testing and development.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JWT Generator — Create JSON Web Tokens — duckTyped">
+    <meta property="og:description" content="Generate JSON Web Tokens (JWT) with custom claims and signing. Create JWTs for testing and development.">
+    <meta property="og:url" content="https://ducktyped.xyz/jwt-generator/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/jwt-generator.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JWT Generator — Create JSON Web Tokens — duckTyped">
+    <meta name="twitter:description" content="Generate JSON Web Tokens (JWT) with custom claims and signing. Create JWTs for testing and development.">
+    <link rel="canonical" href="https://ducktyped.xyz/jwt-generator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <!-- SEO Content -->
+        <div class="standalone-hero">
+            <h1>JWT Generator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Generate JSON Web Tokens (JWT) with custom header and payload claims. Create tokens signed with HMAC-SHA256 for testing your authentication systems.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Creating test JWTs for API development, generating tokens with specific claims for debugging, testing JWT validation logic, or learning JWT structure.</p></div>
+            <a href="/learn/jwt-generator/" class="learn-more-link">Learn about JWT structure, claims, and signing</a>
+        </div>
+
+        <!-- Tool -->
+        <div class="standalone-tool-wrap">
+            <div class="tool-card standalone-card" id="jwtGenerator">
+                <h2>JWT Generator</h2>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Create JSON Web Tokens with custom claims signed using HMAC-SHA256. All processing happens locally in your browser.
+                </p>
+
+                <div class="input-group">
+                    <label>Header (JSON):</label>
+                    <textarea id="jwtHeader" style="min-height: 60px; font-family: var(--font-mono); font-size: 0.85em;">{"alg":"HS256","typ":"JWT"}</textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Payload (JSON):</label>
+                    <textarea id="jwtPayload" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.85em;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <button onclick="addClaim('iss')" class="preset-btn blue" style="font-size: 0.8em; padding: 4px 10px;">Add iss</button>
+                    <button onclick="addClaim('aud')" class="preset-btn blue" style="font-size: 0.8em; padding: 4px 10px;">Add aud</button>
+                    <button onclick="addClaim('exp')" class="preset-btn green" style="font-size: 0.8em; padding: 4px 10px;">Add exp (+1h)</button>
+                    <button onclick="addClaim('iat')" class="preset-btn green" style="font-size: 0.8em; padding: 4px 10px;">Add iat (now)</button>
+                    <button onclick="addClaim('jti')" class="preset-btn red" style="font-size: 0.8em; padding: 4px 10px;">Add jti (random)</button>
+                </div>
+
+                <div class="input-group">
+                    <label>Secret Key:</label>
+                    <input type="text" id="jwtSecret" value="your-secret-key" style="font-family: var(--font-mono); font-size: 0.85em;">
+                </div>
+
+                <button onclick="generateJWT()">Generate JWT</button>
+                <div id="jwtResults"></div>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <div class="standalone-tool-wrap" style="margin-top: 20px;">
+            <div class="tool-card standalone-card">
+                <h3 style="margin-bottom: 12px;">Related Tools</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/jwt-decoder/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">JWT Decoder</a>
+                    <a href="/hash-generator/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Hash Generator</a>
+                    <a href="/base64-encoder/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Base64 Encoder</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/jwt-decoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JWT Decoder</span>
+                    <span class="recommended-tool-desc">Decode and inspect JSON Web Token (JWT) header, payload, and signature</span>
+                </a>
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/jwt-generator/">JWT Generator — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta">
+            <p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    // Set default payload with dynamic exp
+    (function() {
+        var now = Math.floor(Date.now() / 1000);
+        var defaultPayload = {
+            "sub": "1234567890",
+            "name": "John Doe",
+            "iat": now,
+            "exp": now + 3600
+        };
+        document.getElementById('jwtPayload').value = JSON.stringify(defaultPayload, null, 2);
+    })();
+
+    function base64url(input) {
+        var str;
+        if (typeof input === 'string') {
+            str = btoa(input);
+        } else {
+            var bytes = new Uint8Array(input);
+            var binary = '';
+            for (var i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            str = btoa(binary);
+        }
+        return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function addClaim(type) {
+        var textarea = document.getElementById('jwtPayload');
+        var payload;
+        try {
+            payload = JSON.parse(textarea.value);
+        } catch (e) {
+            payload = {};
+        }
+        var now = Math.floor(Date.now() / 1000);
+        switch (type) {
+            case 'iss': payload.iss = 'https://example.com'; break;
+            case 'aud': payload.aud = 'https://api.example.com'; break;
+            case 'exp': payload.exp = now + 3600; break;
+            case 'iat': payload.iat = now; break;
+            case 'jti': payload.jti = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substr(2, 16); break;
+        }
+        textarea.value = JSON.stringify(payload, null, 2);
+    }
+
+    async function generateJWT() {
+        var resultsDiv = document.getElementById('jwtResults');
+        var headerText = document.getElementById('jwtHeader').value.trim();
+        var payloadText = document.getElementById('jwtPayload').value.trim();
+        var secret = document.getElementById('jwtSecret').value;
+
+        var header, payload;
+        try {
+            header = JSON.parse(headerText);
+        } catch (e) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Invalid header JSON — ' + escapeHtml(e.message) + '</div>';
+            return;
+        }
+        try {
+            payload = JSON.parse(payloadText);
+        } catch (e) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Invalid payload JSON — ' + escapeHtml(e.message) + '</div>';
+            return;
+        }
+
+        try {
+            var enc = new TextEncoder();
+            var headerB64 = base64url(JSON.stringify(header));
+            var payloadB64 = base64url(JSON.stringify(payload));
+            var data = headerB64 + '.' + payloadB64;
+
+            var key = await crypto.subtle.importKey(
+                'raw', enc.encode(secret),
+                { name: 'HMAC', hash: 'SHA-256' },
+                false, ['sign']
+            );
+            var sig = await crypto.subtle.sign('HMAC', key, enc.encode(data));
+            var sigB64 = base64url(sig);
+            var token = data + '.' + sigB64;
+
+            resultsDiv.innerHTML =
+                '<div style="margin-top: 15px;">' +
+                '<label style="font-weight: 600; margin-bottom: 8px; display: block;">Generated JWT:</label>' +
+                '<div id="jwtOutput" style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; font-family: var(--font-mono); font-size: 0.85em; word-break: break-all; line-height: 1.6;">' +
+                '<span style="color: #e74c3c;">' + headerB64 + '</span>' +
+                '<span style="color: var(--text-secondary);">.</span>' +
+                '<span style="color: #8e44ad;">' + payloadB64 + '</span>' +
+                '<span style="color: var(--text-secondary);">.</span>' +
+                '<span style="color: #2980b9;">' + sigB64 + '</span>' +
+                '</div>' +
+                '<div style="display: flex; gap: 6px; margin-top: 8px; font-size: 0.8em;">' +
+                '<span style="color: #e74c3c;">&#9632; Header</span>' +
+                '<span style="color: #8e44ad;">&#9632; Payload</span>' +
+                '<span style="color: #2980b9;">&#9632; Signature</span>' +
+                '</div>' +
+                '<button onclick="copyJWT()" style="margin-top: 10px; font-size: 0.85em;">Copy JWT</button>' +
+                '<input type="hidden" id="jwtTokenFull" value="' + token.replace(/"/g, '&quot;') + '">' +
+                '</div>';
+        } catch (e) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> ' + escapeHtml(e.message) + '</div>';
+        }
+    }
+
+    function copyJWT() {
+        var token = document.getElementById('jwtTokenFull').value;
+        navigator.clipboard.writeText(token).then(function() {
+            var btn = event.target;
+            var orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(function() { btn.textContent = orig; }, 1500);
+        });
+    }
+    </script>
+</body>
+</html>

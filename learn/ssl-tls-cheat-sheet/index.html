@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL/TLS Cheat Sheet","description":"Quick reference for SSL/TLS: handshake steps for TLS 1.2 and 1.3, cipher suite notation, certificate types, PEM/DER/PKCS#12 formats, OpenSSL commands, HSTS, and CAA records.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/ssl-tls-cheat-sheet/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"SSL/TLS Cheat Sheet"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between TLS 1.2 and TLS 1.3?","acceptedAnswer":{"@type":"Answer","text":"TLS 1.3 completes the handshake in one round trip instead of two, removes insecure features (RSA key exchange, static Diffie-Hellman, CBC ciphers, SHA-1, compression), encrypts more of the handshake, and supports 0-RTT session resumption. TLS 1.3 only allows five cipher suites, all with forward secrecy."}},{"@type":"Question","name":"How do I read a cipher suite name like TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384?","acceptedAnswer":{"@type":"Answer","text":"Read it as four parts: ECDHE is the key exchange algorithm, RSA is the authentication algorithm (the certificate key type), AES_256_GCM is the bulk encryption cipher and mode, and SHA384 is the hash used for the PRF/HMAC. TLS 1.3 suites are shorter (e.g., TLS_AES_256_GCM_SHA384) because key exchange and authentication are negotiated separately."}},{"@type":"Question","name":"What is the difference between PEM, DER, and PKCS#12?","acceptedAnswer":{"@type":"Answer","text":"PEM is Base64-encoded text wrapped in BEGIN/END markers, used by Apache, Nginx, and most Unix tools. DER is the same data in raw binary, used by Java and some Windows contexts. PKCS#12 (.pfx/.p12) is a password-protected binary container that bundles the certificate, chain, and private key together, used by Windows IIS and for import/export."}},{"@type":"Question","name":"What are DV, OV, and EV certificates?","acceptedAnswer":{"@type":"Answer","text":"DV (Domain Validated) certificates only prove control of the domain and issue in minutes — Let's Encrypt is DV. OV (Organization Validated) adds verification of the company's legal identity. EV (Extended Validation) requires the strictest vetting. All three provide identical encryption strength; they differ only in identity assurance."}},{"@type":"Question","name":"How do I test a TLS connection with OpenSSL?","acceptedAnswer":{"@type":"Answer","text":"Run: openssl s_client -connect example.com:443 -servername example.com. The -servername flag sends SNI, which is required for servers hosting multiple certificates. Add -showcerts to print the full chain, or pipe to openssl x509 -noout -dates to check expiry."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL/TLS Cheat Sheet — Handshake, Ciphers, OpenSSL — duckTyped</title>
+    <meta name="description" content="SSL/TLS cheat sheet: TLS 1.2 vs 1.3 handshake, cipher suites explained, DV/OV/EV cert types, PEM/DER/PKCS#12 formats, OpenSSL commands, HSTS, and CAA records.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL cheat sheet, TLS cheat sheet, TLS handshake steps, cipher suites explained, OpenSSL commands, PEM vs DER, PKCS12, HSTS header, CAA record, certificate types">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL/TLS Cheat Sheet — Handshake, Ciphers, OpenSSL — duckTyped">
+    <meta property="og:description" content="TLS 1.2 vs 1.3 handshake, cipher suite notation, certificate types, file formats, OpenSSL command reference, HSTS, and CAA records.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-tls-cheat-sheet/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SSL/TLS Cheat Sheet — duckTyped">
+    <meta name="twitter:description" content="Quick reference for TLS handshakes, cipher suites, certificate types, file formats, and OpenSSL commands.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/ssl-tls-cheat-sheet/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>SSL/TLS Cheat Sheet</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL/TLS Cheat Sheet</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Quick reference for everything TLS: handshake flows, cipher suite notation, certificate types, file formats, OpenSSL commands, HSTS, and CAA. Bookmark this page for fast lookups when configuring servers or debugging certificate errors.</p>
+
+            <p>For a step-by-step walkthrough of the handshake, see the <a href="/learn/ssl-tls-handshake/">SSL/TLS Handshake Explained</a> guide. To inspect a live certificate, use the <a href="/ssl-checker/">SSL Checker</a>.</p>
+
+            <h2>TLS Versions at a Glance</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Version</th><th>Year</th><th>Status</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>SSL 2.0</strong></td><td>1995</td><td>Prohibited (RFC 6176)</td><td>Fundamentally broken; never use</td></tr>
+                        <tr><td><strong>SSL 3.0</strong></td><td>1996</td><td>Prohibited (RFC 7568)</td><td>POODLE attack; disabled everywhere</td></tr>
+                        <tr><td><strong>TLS 1.0</strong></td><td>1999</td><td>Deprecated (RFC 8996)</td><td>BEAST; removed from browsers in 2020</td></tr>
+                        <tr><td><strong>TLS 1.1</strong></td><td>2006</td><td>Deprecated (RFC 8996)</td><td>Removed from browsers in 2020</td></tr>
+                        <tr><td><strong>TLS 1.2</strong></td><td>2008</td><td>Acceptable</td><td>Still widely used; safe with modern cipher suites</td></tr>
+                        <tr><td><strong>TLS 1.3</strong></td><td>2018</td><td>Recommended (RFC 8446)</td><td>Faster handshake, forward secrecy mandatory</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>TLS Handshake: 1.2 vs 1.3</h2>
+
+            <h3>TLS 1.2 Handshake (2 round trips)</h3>
+            <pre><code>Client                                Server
+------                                ------
+ClientHello          ───────────────▶          (versions, cipher suites,
+                                                SNI, random)
+                     ◀───────────────  ServerHello
+                     ◀───────────────  Certificate
+                     ◀───────────────  ServerKeyExchange (ECDHE params)
+                     ◀───────────────  ServerHelloDone
+ClientKeyExchange    ───────────────▶
+ChangeCipherSpec     ───────────────▶
+Finished (encrypted) ───────────────▶
+                     ◀───────────────  ChangeCipherSpec
+                     ◀───────────────  Finished (encrypted)
+Application data     ◀──────────────▶  Application data</code></pre>
+            <p>Two full round trips (2-RTT) before application data flows. The certificate is sent in plaintext.</p>
+
+            <h3>TLS 1.3 Handshake (1 round trip)</h3>
+            <pre><code>Client                                Server
+------                                ------
+ClientHello          ───────────────▶          (+ key_share: client guesses
+                                                the key exchange group)
+                     ◀───────────────  ServerHello (+ key_share)
+                     ◀───────────────  {EncryptedExtensions}
+                     ◀───────────────  {Certificate}
+                     ◀───────────────  {CertificateVerify}
+                     ◀───────────────  {Finished}
+{Finished}           ───────────────▶
+Application data     ◀──────────────▶  Application data
+
+{braces} = encrypted with handshake keys</code></pre>
+            <p>Key differences in TLS 1.3:</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Feature</th><th>TLS 1.2</th><th>TLS 1.3</th></tr></thead>
+                    <tbody>
+                        <tr><td>Round trips to first byte</td><td>2-RTT</td><td>1-RTT (0-RTT with resumption)</td></tr>
+                        <tr><td>Key exchange</td><td>RSA, DHE, ECDHE</td><td>(EC)DHE only — forward secrecy mandatory</td></tr>
+                        <tr><td>Certificate visibility</td><td>Sent in plaintext</td><td>Encrypted</td></tr>
+                        <tr><td>Cipher modes</td><td>CBC, GCM, others</td><td>AEAD only (GCM, CCM, ChaCha20-Poly1305)</td></tr>
+                        <tr><td>Session resumption</td><td>Session IDs / tickets</td><td>PSK-based, optional 0-RTT</td></tr>
+                        <tr><td>Renegotiation, compression</td><td>Allowed</td><td>Removed</td></tr>
+                        <tr><td>Cipher suite count</td><td>Hundreds defined</td><td>Five</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>0-RTT caveat:</strong> TLS 1.3 early data (0-RTT) is replayable. Only allow it for idempotent requests (GET), never for state-changing operations.</p>
+
+            <h2>Cipher Suite Notation Explained</h2>
+            <p>A TLS 1.2 cipher suite name encodes four algorithms:</p>
+            <pre><code>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    ─────  ───      ───────────  ──────
+      │     │            │          │
+      │     │            │          └─ Hash: SHA-384 (PRF / HMAC)
+      │     │            └─ Bulk cipher: AES, 256-bit key, GCM mode
+      │     └─ Authentication: RSA (certificate key type)
+      └─ Key exchange: Elliptic-Curve Diffie-Hellman, Ephemeral</code></pre>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Component</th><th>Common Values</th><th>What It Does</th></tr></thead>
+                    <tbody>
+                        <tr><td>Key exchange</td><td><code>ECDHE</code>, <code>DHE</code>, <code>RSA</code></td><td>How the session key is agreed. Ephemeral (E) variants give forward secrecy; plain RSA key exchange does not.</td></tr>
+                        <tr><td>Authentication</td><td><code>RSA</code>, <code>ECDSA</code></td><td>The certificate's key type, used to prove server identity.</td></tr>
+                        <tr><td>Bulk cipher</td><td><code>AES_128_GCM</code>, <code>AES_256_GCM</code>, <code>CHACHA20_POLY1305</code>, <code>AES_128_CBC</code></td><td>Encrypts application data. AEAD modes (GCM, Poly1305) are preferred; CBC is legacy.</td></tr>
+                        <tr><td>Hash</td><td><code>SHA256</code>, <code>SHA384</code></td><td>Used in the PRF for key derivation (and HMAC in CBC suites).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>TLS 1.3 suites name only the AEAD cipher and hash, because key exchange and authentication are negotiated separately:</p>
+            <pre><code>TLS_AES_128_GCM_SHA256
+TLS_AES_256_GCM_SHA384
+TLS_CHACHA20_POLY1305_SHA256
+TLS_AES_128_CCM_SHA256
+TLS_AES_128_CCM_8_SHA256</code></pre>
+
+            <h2>Recommended Cipher Suite Configurations</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Profile</th><th>Protocols</th><th>Use When</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Modern</strong></td><td>TLS 1.3 only</td><td>You control all clients (APIs, internal services, current browsers)</td></tr>
+                        <tr><td><strong>Intermediate</strong></td><td>TLS 1.2 + 1.3</td><td>General-purpose public websites (recommended default)</td></tr>
+                        <tr><td><strong>Legacy</strong></td><td>TLS 1.0–1.3</td><td>Only if you must support very old clients; avoid if possible</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Intermediate Profile — TLS 1.2 Cipher List</h3>
+            <pre><code># TLS 1.3 (always enabled, not configurable in most servers)
+TLS_AES_128_GCM_SHA256
+TLS_AES_256_GCM_SHA384
+TLS_CHACHA20_POLY1305_SHA256
+
+# TLS 1.2 — ECDSA certificates
+ECDHE-ECDSA-AES128-GCM-SHA256
+ECDHE-ECDSA-AES256-GCM-SHA384
+ECDHE-ECDSA-CHACHA20-POLY1305
+
+# TLS 1.2 — RSA certificates
+ECDHE-RSA-AES128-GCM-SHA256
+ECDHE-RSA-AES256-GCM-SHA384
+ECDHE-RSA-CHACHA20-POLY1305
+
+# TLS 1.2 — fallback with forward secrecy
+DHE-RSA-AES128-GCM-SHA256
+DHE-RSA-AES256-GCM-SHA384</code></pre>
+
+            <h3>Nginx Example</h3>
+            <pre><code>ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+ssl_prefer_server_ciphers off;
+ssl_session_timeout 1d;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;</code></pre>
+            <p><strong>Avoid:</strong> anything with <code>RC4</code>, <code>3DES</code>, <code>MD5</code>, <code>SHA1</code> (as MAC), <code>NULL</code>, <code>EXPORT</code>, <code>aNULL</code>, or static <code>RSA</code>/<code>DH</code> key exchange.</p>
+
+            <h2>Certificate Types</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Type</th><th>Validates</th><th>Issuance Time</th><th>Typical Use</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>DV</strong> (Domain Validated)</td><td>Control of the domain only</td><td>Minutes (automated)</td><td>Most websites; Let's Encrypt is DV</td></tr>
+                        <tr><td><strong>OV</strong> (Organization Validated)</td><td>Domain + legal organization identity</td><td>1–3 days</td><td>Business sites wanting org name in cert details</td></tr>
+                        <tr><td><strong>EV</strong> (Extended Validation)</td><td>Strictest organization vetting</td><td>Days to weeks</td><td>Banks, finance; browsers no longer show special UI</td></tr>
+                        <tr><td><strong>Wildcard</strong></td><td><code>*.example.com</code> — one level of subdomains</td><td>Varies</td><td>Many subdomains under one cert (does not cover apex unless listed, nor <code>a.b.example.com</code>)</td></tr>
+                        <tr><td><strong>SAN / multi-domain</strong></td><td>Multiple names in one cert via Subject Alternative Name</td><td>Varies</td><td><code>example.com</code>, <code>www.example.com</code>, <code>api.example.net</code> in one cert</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Note:</strong> all types provide identical encryption strength. Browsers validate hostnames against the SAN list, not the Subject CN — every modern certificate is technically a SAN certificate. Check what's in yours with the <a href="/ssl-checker/">SSL Checker</a>.</p>
+
+            <h2>Certificate File Formats</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Format</th><th>Extensions</th><th>Encoding</th><th>Used By</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>PEM</strong></td><td><code>.pem</code> <code>.crt</code> <code>.cer</code> <code>.key</code></td><td>Base64 text with <code>-----BEGIN/END-----</code> markers; multiple blocks per file allowed</td><td>Apache, Nginx, HAProxy, OpenSSL, most Unix tools</td></tr>
+                        <tr><td><strong>DER</strong></td><td><code>.der</code> <code>.cer</code></td><td>Raw binary ASN.1; one object per file</td><td>Java keystores, some Windows contexts</td></tr>
+                        <tr><td><strong>PKCS#12</strong></td><td><code>.pfx</code> <code>.p12</code></td><td>Password-protected binary container: cert + chain + private key</td><td>Windows IIS, code signing, import/export between systems</td></tr>
+                        <tr><td><strong>PKCS#7</strong></td><td><code>.p7b</code> <code>.p7c</code></td><td>Cert + chain only, no private key</td><td>Windows, Java Tomcat chain bundles</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>PEM block markers you'll encounter:</p>
+            <pre><code>-----BEGIN CERTIFICATE-----            # X.509 certificate
+-----BEGIN CERTIFICATE REQUEST-----    # CSR (decode with the CSR Decoder)
+-----BEGIN PRIVATE KEY-----            # PKCS#8 private key (unencrypted)
+-----BEGIN ENCRYPTED PRIVATE KEY-----  # PKCS#8 private key (encrypted)
+-----BEGIN RSA PRIVATE KEY-----        # legacy PKCS#1 RSA key
+-----BEGIN EC PRIVATE KEY-----         # legacy SEC1 EC key
+-----BEGIN PUBLIC KEY-----             # public key (decode with the Public Key Decoder)</code></pre>
+            <p>Paste any CSR into the <a href="/csr-decoder/">CSR Decoder</a> or any public key into the <a href="/public-key-decoder/">Public Key Decoder</a> to inspect the contents without OpenSSL.</p>
+
+            <h2>OpenSSL Command Reference</h2>
+
+            <h3>Generate Keys and CSRs</h3>
+            <pre><code># Generate a 2048-bit RSA private key
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out key.pem
+
+# Generate an EC P-256 private key (smaller, faster)
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out key.pem
+
+# Create a CSR from an existing key
+openssl req -new -key key.pem -out req.csr \
+  -subj "/CN=example.com" \
+  -addext "subjectAltName=DNS:example.com,DNS:www.example.com"
+
+# Key + CSR in one command
+openssl req -new -newkey rsa:2048 -nodes -keyout key.pem -out req.csr
+
+# Self-signed certificate (testing only)
+openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem \
+  -out cert.pem -days 365 -subj "/CN=localhost"</code></pre>
+
+            <h3>Inspect Certificates and CSRs</h3>
+            <pre><code># Print certificate details
+openssl x509 -in cert.pem -noout -text
+
+# Just the expiry dates
+openssl x509 -in cert.pem -noout -dates
+
+# Subject, issuer, and SANs
+openssl x509 -in cert.pem -noout -subject -issuer -ext subjectAltName
+
+# Inspect a CSR
+openssl req -in req.csr -noout -text
+
+# Verify a cert chains to a CA bundle
+openssl verify -CAfile chain.pem cert.pem
+
+# Check that key, cert, and CSR match (compare the hashes)
+openssl x509 -in cert.pem -noout -pubkey | openssl sha256
+openssl pkey -in key.pem -pubout | openssl sha256
+openssl req  -in req.csr -noout -pubkey | openssl sha256</code></pre>
+
+            <h3>Convert Formats</h3>
+            <pre><code># PEM → DER
+openssl x509 -in cert.pem -outform DER -out cert.der
+
+# DER → PEM
+openssl x509 -in cert.der -inform DER -out cert.pem
+
+# PEM (cert + key + chain) → PKCS#12
+openssl pkcs12 -export -in cert.pem -inkey key.pem \
+  -certfile chain.pem -out bundle.pfx
+
+# PKCS#12 → PEM
+openssl pkcs12 -in bundle.pfx -out everything.pem -nodes
+
+# PKCS#7 → PEM
+openssl pkcs7 -in bundle.p7b -print_certs -out chain.pem</code></pre>
+
+            <h3>Test Live Connections</h3>
+            <pre><code># Basic TLS connection test (always send SNI with -servername)
+openssl s_client -connect example.com:443 -servername example.com
+
+# Show the full certificate chain
+openssl s_client -connect example.com:443 -servername example.com -showcerts
+
+# Force a specific protocol version
+openssl s_client -connect example.com:443 -tls1_2
+openssl s_client -connect example.com:443 -tls1_3
+
+# Check expiry of a live certificate
+echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null \
+  | openssl x509 -noout -dates
+
+# Test SMTP with STARTTLS
+openssl s_client -connect mail.example.com:587 -starttls smtp</code></pre>
+            <p>No terminal handy? The <a href="/ssl-checker/">SSL Checker</a> performs the connection test, chain validation, and expiry check from your browser.</p>
+
+            <h2>HSTS — HTTP Strict Transport Security</h2>
+            <p>HSTS is a response header that forces browsers to use HTTPS for all future requests to the domain.</p>
+            <pre><code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code></pre>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Directive</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>max-age=31536000</code></td><td>Enforce HTTPS for this many seconds (1 year). Required.</td></tr>
+                        <tr><td><code>includeSubDomains</code></td><td>Apply the policy to every subdomain too.</td></tr>
+                        <tr><td><code>preload</code></td><td>Signals eligibility for the browser preload list at <code>hstspreload.org</code> — browsers then enforce HTTPS even on the first-ever visit.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Warning:</strong> preload is effectively permanent — removal from the list takes months. Confirm every subdomain serves valid HTTPS before submitting. Check your current headers with the <a href="/security-headers/">Security Headers checker</a>.</p>
+
+            <h2>CAA Records</h2>
+            <p>A CAA DNS record restricts which Certificate Authorities may issue certificates for your domain. CAs are required to check it before issuance.</p>
+            <pre><code>; Only Let's Encrypt may issue certs
+example.com.  CAA  0 issue "letsencrypt.org"
+
+; Allow a CA to issue wildcards
+example.com.  CAA  0 issuewild "letsencrypt.org"
+
+; Forbid all issuance
+example.com.  CAA  0 issue ";"
+
+; Get notified of policy violations
+example.com.  CAA  0 iodef "mailto:security@example.com"</code></pre>
+            <p>Full syntax for CAA and every other record type is in the <a href="/learn/dns-cheat-sheet/">DNS Records Cheat Sheet</a>.</p>
+
+            <h2>Common OpenSSL / TLS Errors</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Error</th><th>Meaning</th><th>Fix</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>certificate has expired</code></td><td>Cert's notAfter date has passed</td><td>Renew and redeploy — see <a href="/learn/ssl-certificate-expired/">SSL Certificate Expired</a></td></tr>
+                        <tr><td><code>unable to get local issuer certificate</code></td><td>Server isn't sending the intermediate chain</td><td>Bundle intermediates with the leaf cert (fullchain) — see <a href="/errors/ssl/certificate-chain-invalid">chain invalid guide</a></td></tr>
+                        <tr><td><code>self signed certificate</code></td><td>Cert isn't signed by a trusted CA</td><td>Install a CA-issued cert, or add the cert to the client trust store</td></tr>
+                        <tr><td><code>hostname mismatch / no alternative certificate subject name matches</code></td><td>The requested hostname isn't in the cert's SANs</td><td>Reissue with the correct SANs; check SNI configuration</td></tr>
+                        <tr><td><code>wrong version number</code></td><td>Plain HTTP (or another protocol) received where TLS was expected</td><td>Fix the port/proxy config — see <a href="/errors/ssl/ssl-wrong-version-number">wrong version number guide</a></td></tr>
+                        <tr><td><code>handshake failure</code></td><td>No common protocol version or cipher suite</td><td>Align supported versions/ciphers — see <a href="/errors/ssl/ssl-handshake-failed">handshake failed guide</a></td></tr>
+                        <tr><td><code>certificate is not yet valid</code></td><td>notBefore is in the future (usually clock skew)</td><td>Fix the client or server clock — see <a href="/errors/ssl/ssl-certificate-not-yet-valid">not yet valid guide</a></td></tr>
+                        <tr><td><code>certificate revoked</code></td><td>The CA revoked the cert (CRL/OCSP)</td><td>Reissue the certificate — see <a href="/errors/ssl/ssl-certificate-revoked">revoked cert guide</a></td></tr>
+                        <tr><td><code>tlsv1 alert protocol version</code></td><td>Peer only supports a TLS version you've disabled</td><td>Upgrade the peer or (temporarily) widen your version range — see <a href="/errors/ssl/tls-version-unsupported">version unsupported guide</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>More SSL/TLS error walkthroughs live in the <a href="/errors/ssl/">SSL troubleshooting section</a>.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is SSL different from TLS?</h3>
+            <p>SSL (Secure Sockets Layer) is the obsolete predecessor of TLS (Transport Layer Security). Every modern "SSL certificate" actually secures TLS connections — the old name simply stuck. SSL 2.0/3.0 are prohibited by RFC; only TLS 1.2 and 1.3 should be enabled today.</p>
+
+            <h3>What is forward secrecy?</h3>
+            <p>Forward secrecy means each session uses a unique, ephemeral key (via ECDHE/DHE), so a future compromise of the server's private key cannot decrypt previously recorded traffic. TLS 1.3 makes it mandatory; in TLS 1.2 you get it by preferring ECDHE suites and avoiding plain RSA key exchange.</p>
+
+            <h3>What is SNI and why does it matter?</h3>
+            <p>Server Name Indication is a ClientHello extension that tells the server which hostname the client wants, so one IP can serve many certificates. Tools that skip SNI (e.g., <code>openssl s_client</code> without <code>-servername</code>) often receive the wrong or default certificate, producing misleading hostname-mismatch errors.</p>
+
+            <h3>How long can a certificate be valid?</h3>
+            <p>Publicly trusted certificates are capped at 398 days, and the CA/Browser Forum has scheduled further reductions (200 days in 2026, stepping down to 47 days by 2029). Automate renewal — manual processes are the leading cause of <a href="/learn/ssl-certificate-expired/">expired-certificate outages</a>.</p>
+
+            <h3>RSA or ECDSA certificates?</h3>
+            <p>ECDSA (P-256) keys are far smaller than RSA-2048 with comparable security, making handshakes faster. All modern browsers support ECDSA; some servers deploy dual certificates and let cipher negotiation pick. For new deployments, ECDSA is a sound default.</p>
+
+            <h2>Related Resources</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — inspect any site's certificate, chain, and expiry</li>
+                <li><a href="/csr-decoder/">CSR Decoder</a> — decode certificate signing requests in the browser</li>
+                <li><a href="/public-key-decoder/">Public Key Decoder</a> — inspect key type, size, and fingerprints</li>
+                <li><a href="/security-headers/">Security Headers</a> — check HSTS and other security headers</li>
+                <li><a href="/learn/ssl-tls-handshake/">SSL/TLS Handshake Explained</a> — deep dive into the handshake</li>
+                <li><a href="/learn/ssl-checker/">SSL Certificates Explained</a> — how certificates and chains work</li>
+                <li><a href="/learn/ssl-certificate-expired/">SSL Certificate Expired</a> — diagnosing expiry errors</li>
+                <li><a href="/errors/ssl/">SSL error troubleshooting</a> — guides for every common TLS error</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-cheat-sheet/">DNS records cheat sheet</a>, <a href="/learn/http-headers-cheat-sheet/">HTTP headers cheat sheet</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

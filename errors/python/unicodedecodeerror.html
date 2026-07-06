@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I read what the error is telling me?","acceptedAnswer":{"@type":"Answer","text":"\"'utf-8' codec can't decode byte 0xe9 in position 2893\" says: decoding assumed UTF-8, byte 0xE9 at offset 2893 is invalid in it. 0xE9 is 'é' in latin-1/cp1252 — a strong hint the file is one of those. Position 0 with a weird byte suggests binary data; a large position in a big file suggests one bad record or a late encoding switch."}},{"@type":"Question","name":"Why does the script work on Linux but crash on Windows?","acceptedAnswer":{"@type":"Answer","text":"open() without encoding= historically follows the locale: UTF-8 on Linux/macOS, cp1252 on most Windows. The same UTF-8 file then decodes fine on one and crashes on the other. Passing encoding='utf-8' everywhere (or running Python in UTF-8 mode with -X utf8) removes the platform dependence."}},{"@type":"Question","name":"What about UnicodeEncodeError — the mirror image?","acceptedAnswer":{"@type":"Answer","text":"That is writing: text containing characters the target encoding cannot represent (e.g. printing emoji to a cp1252 console). Fixes mirror too — write with encoding='utf-8', or set PYTHONIOENCODING=utf-8 for console output on legacy Windows terminals."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python UnicodeDecodeError — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python UnicodeDecodeError — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Python UnicodeDecodeError. Detect real file encodings, open(encoding=...), errors= strategies, Windows cp1252 defaults, and binary-vs-text mistakes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="UnicodeDecodeError: &#39;utf-8&#39; codec can&#39;t decode byte, unicodedecodeerror invalid continuation byte, utf-8 codec cant decode byte 0xe9, &#39;charmap&#39; codec can&#39;t decode byte, python encoding error reading file">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python UnicodeDecodeError — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Python UnicodeDecodeError. Detect real file encodings, open(encoding=...), errors= strategies, Windows cp1252 defaults, and binary-vs-text mistakes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/unicodedecodeerror">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/unicodedecodeerror">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python UnicodeDecodeError</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python UnicodeDecodeError</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash "UnicodeDecodeError: 'utf-8' codec can't decode byte 0x.. in position .." — bytes were decoded with the wrong encoding, or binary data was opened as text.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>UnicodeDecodeError: &#39;utf-8&#39; codec can&#39;t decode byte</code></li><li><code>unicodedecodeerror invalid continuation byte</code></li><li><code>utf-8 codec cant decode byte 0xe9</code></li><li><code>&#39;charmap&#39; codec can&#39;t decode byte</code></li><li><code>python encoding error reading file</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Text on disk is bytes plus an encoding; decoding with the wrong one crashes at the first byte sequence that is invalid in the assumed encoding. The error names the codec used, the offending byte, and its position — enough to diagnose. Three families: the file is genuinely in another encoding (Latin-1/cp1252 exports from Windows tools are the classic), the platform default was wrong (older Python on Windows defaults to cp1252, not UTF-8), or the 'file' is not text at all (opening a PNG, zip, or pickle in text mode).</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The file is not UTF-8</strong> — CSV/TXT exports from Excel, legacy systems, and many European-language datasets are cp1252 or latin-1. Byte 0xE9 ('é' in latin-1) at some position is the signature.</li>
+                <li><strong>Relying on the platform default encoding</strong> — open() without encoding= uses a locale-dependent default (cp1252 on much of Windows before Python 3.15's UTF-8 default). The same script then behaves differently per machine.</li>
+                <li><strong>Binary data opened in text mode</strong> — Images, archives, pickles, or gzip content read with open(path) instead of open(path, 'rb') — typically failing at position 0 with byte 0x89, 0x50, or similar.</li>
+                <li><strong>Mixed or corrupted encodings</strong> — Files concatenated from different sources, or double-encoded data — no single codec decodes them cleanly.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Identify the real encoding first</h3>
+            <p>Ask the file before guessing.</p>
+            <pre><code>file -i data.csv          # quick heuristic (Linux/macOS)
+pip install charset-normalizer
+python3 -m charset_normalizer data.csv</code></pre>
+            <h3>2. Open with the correct encoding — explicitly, always</h3>
+            <p>Make encoding a visible decision at every open().</p>
+            <pre><code>with open('export.csv', encoding='cp1252') as f:
+    rows = f.read()
+
+# pandas:
+df = pd.read_csv('export.csv', encoding='cp1252')</code></pre>
+            <h3>3. Choose an errors= strategy for dirty data</h3>
+            <p>When bytes are genuinely mixed/corrupt, decide explicitly how to degrade: replace marks problems visibly, ignore drops them silently.</p>
+            <pre><code>with open('messy.log', encoding='utf-8', errors='replace') as f:
+    text = f.read()    # bad bytes become \ufffd
+# 'ignore' silently deletes — use only when loss is acceptable</code></pre>
+            <h3>4. Use binary mode for binary data</h3>
+            <p>If position 0 fails, it was never text.</p>
+            <pre><code>with open('image.png', 'rb') as f:
+    data = f.read()</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I read what the error is telling me?</h3>
+            <p>"'utf-8' codec can't decode byte 0xe9 in position 2893" says: decoding assumed UTF-8, byte 0xE9 at offset 2893 is invalid in it. 0xE9 is 'é' in latin-1/cp1252 — a strong hint the file is one of those. Position 0 with a weird byte suggests binary data; a large position in a big file suggests one bad record or a late encoding switch.</p>
+            <h3>Why does the script work on Linux but crash on Windows?</h3>
+            <p>open() without encoding= historically follows the locale: UTF-8 on Linux/macOS, cp1252 on most Windows. The same UTF-8 file then decodes fine on one and crashes on the other. Passing encoding='utf-8' everywhere (or running Python in UTF-8 mode with -X utf8) removes the platform dependence.</p>
+            <h3>What about UnicodeEncodeError — the mirror image?</h3>
+            <p>That is writing: text containing characters the target encoding cannot represent (e.g. printing emoji to a cp1252 console). Fixes mirror too — write with encoding='utf-8', or set PYTHONIOENCODING=utf-8 for console output on legacy Windows terminals.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/attributeerror-nonetype">AttributeError: NoneType</a> — another everyday traceback.</li>
+                <li><a href="/errors/database/mysql-incorrect-string-value">MySQL Incorrect String Value</a> — the same encoding battle in the database.</li>
+                <li><a href="/errors/python/indentationerror">IndentationError</a> — invisible-character parse errors.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder</span>
+                    <span class="recommended-tool-desc">Inspect raw bytes of problem data</span>
+                </a>
+        <a href="/character-counter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Character Counter</span>
+                    <span class="recommended-tool-desc">Examine text and characters</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/base64-encoder/" class="cta-btn-primary">Try Base64 Encoder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

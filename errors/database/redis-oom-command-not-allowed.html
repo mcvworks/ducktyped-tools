@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which eviction policy should I use?","acceptedAnswer":{"@type":"Answer","text":"Pure cache: allkeys-lru (or allkeys-lfu on Redis 4+, which tracks frequency instead of recency). Mixed usage where some keys must never disappear: volatile-lru with TTLs on evictable keys only. Queues/primary data: keep noeviction and size memory properly — silent eviction of a queue is worse than an error."}},{"@type":"Question","name":"Reads still work during OOM — why do some read commands fail too?","acceptedAnswer":{"@type":"Answer","text":"Commands are classified by whether they may increase memory. Some ostensibly read-like operations (SORT with STORE, commands that create temporary structures) allocate and are therefore rejected. Plain GET/HGET/LRANGE keep working."}},{"@type":"Question","name":"What does a high mem_fragmentation_ratio mean?","acceptedAnswer":{"@type":"Answer","text":"used_memory_rss divided by used_memory. Around 1.0–1.5 is normal; well above that after heavy delete churn means the allocator holds unreturned pages. Redis 4+ can fix it live with activedefrag yes; otherwise a restart compacts memory."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Redis OOM Command Not Allowed — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis OOM Command Not Allowed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Redis 'OOM command not allowed' errors. Choose the right maxmemory-policy, find big keys, add TTLs, and understand noeviction behavior.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="OOM command not allowed when used memory &gt; &#39;maxmemory&#39;, redis OOM, redis maxmemory reached, ReplyError: OOM command not allowed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Redis OOM Command Not Allowed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Redis 'OOM command not allowed' errors. Choose the right maxmemory-policy, find big keys, add TTLs, and understand noeviction behavior.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/redis-oom-command-not-allowed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/redis-oom-command-not-allowed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Redis OOM Command Not Allowed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Redis OOM Command Not Allowed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The Redis error 'OOM command not allowed when used memory is greater than maxmemory' — the memory limit is reached and the eviction policy refuses to free space.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>OOM command not allowed when used memory &gt; &#39;maxmemory&#39;</code></li><li><code>redis OOM</code></li><li><code>redis maxmemory reached</code></li><li><code>ReplyError: OOM command not allowed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Redis enforces maxmemory strictly: when used memory reaches the limit and the eviction policy is noeviction (the default), every command that would allocate more memory is rejected with this OOM error, while reads keep working. Whether this is a misconfiguration depends on the workload — a cache should almost certainly evict old keys instead of erroring, while a queue or primary datastore must not silently drop data, so it errors by design and needs either more memory or less data.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>maxmemory reached with policy noeviction</strong> — The default policy never removes keys automatically. Once the limit is hit, all writes fail until something is deleted or the limit is raised.</li>
+                <li><strong>Keys without TTL accumulating forever</strong> — Cache-style data written without expirations never leaves. Sessions, rate-limit counters, and job results quietly grow until the ceiling is hit.</li>
+                <li><strong>A few very large keys</strong> — Multi-hundred-megabyte hashes, lists, or sets (often unbounded queues or aggregation structures) consume the budget alone.</li>
+                <li><strong>Memory fragmentation</strong> — used_memory_rss can substantially exceed logical used_memory after heavy churn; the allocator holds pages Redis cannot reuse, effectively shrinking headroom.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check current memory state and policy</h3>
+            <p>Establish the numbers first: limit, usage, policy, fragmentation.</p>
+            <pre><code>redis-cli INFO memory | grep -E 'used_memory_human|used_memory_peak_human|maxmemory_human|maxmemory_policy|mem_fragmentation_ratio'</code></pre>
+            <h3>2. Set an eviction policy appropriate to the workload</h3>
+            <p>For caches, allkeys-lru (or allkeys-lfu) evicts the least-used keys automatically. volatile-* variants only evict keys that have TTLs.</p>
+            <pre><code>redis-cli CONFIG SET maxmemory-policy allkeys-lru
+# persist in redis.conf:
+# maxmemory 2gb
+# maxmemory-policy allkeys-lru</code></pre>
+            <h3>3. Find and fix the biggest keys</h3>
+            <p>Locate what is actually eating memory, then cap, trim, or expire it.</p>
+            <pre><code>redis-cli --bigkeys
+redis-cli MEMORY USAGE some:large:key
+# trim an unbounded list-queue:
+redis-cli LTRIM jobs:done 0 9999</code></pre>
+            <h3>4. Add TTLs to cache-like data</h3>
+            <p>Expire everything that can be regenerated, so steady-state memory is bounded.</p>
+            <pre><code>SET session:abc123 '{...}' EX 86400
+EXPIRE cache:user:42 3600
+# audit keys without TTL (sample):
+redis-cli --scan --pattern 'cache:*' | head -20 | xargs -I{} redis-cli TTL {}</code></pre>
+            <h3>5. Raise maxmemory or scale only after the above</h3>
+            <p>If the working set is legitimately large, raise maxmemory within the host's RAM budget (leave room for fork-based saves), or shard/cluster the dataset.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Which eviction policy should I use?</h3>
+            <p>Pure cache: allkeys-lru (or allkeys-lfu on Redis 4+, which tracks frequency instead of recency). Mixed usage where some keys must never disappear: volatile-lru with TTLs on evictable keys only. Queues/primary data: keep noeviction and size memory properly — silent eviction of a queue is worse than an error.</p>
+            <h3>Reads still work during OOM — why do some read commands fail too?</h3>
+            <p>Commands are classified by whether they may increase memory. Some ostensibly read-like operations (SORT with STORE, commands that create temporary structures) allocate and are therefore rejected. Plain GET/HGET/LRANGE keep working.</p>
+            <h3>What does a high mem_fragmentation_ratio mean?</h3>
+            <p>used_memory_rss divided by used_memory. Around 1.0–1.5 is normal; well above that after heavy delete churn means the allocator holds unreturned pages. Redis 4+ can fix it live with activedefrag yes; otherwise a restart compacts memory.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/redis-misconf-rdb-snapshots">Redis MISCONF RDB Snapshots</a> — the persistence-failure write block.</li>
+                <li><a href="/errors/database/redis-noauth-authentication-required">Redis NOAUTH</a> — authentication errors.</li>
+                <li><a href="/errors/database/redis-connection-refused">Redis Connection Refused</a> — connectivity failures.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check Redis reachability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

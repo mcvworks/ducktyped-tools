@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 409 Conflict mean?","acceptedAnswer":{"@type":"Answer","text":"A 409 Conflict means the request could not be completed because it conflicts with the current state of the resource on the server. The request itself is valid, but it cannot be applied without creating an inconsistency."}},{"@type":"Question","name":"When should an API return 409?","acceptedAnswer":{"@type":"Answer","text":"APIs should return 409 when a request would cause a conflict, such as creating a resource that already exists with a unique key, submitting a version update when a newer version already exists, or duplicate submission detection."}},{"@type":"Question","name":"How do I fix a 409 Conflict error?","acceptedAnswer":{"@type":"Answer","text":"Fetch the latest state of the resource first, then re-apply your changes based on the current data. For duplicate resource creation, check if the resource already exists before creating it."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"409 Conflict — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>409 Conflict — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 409 Conflict HTTP error means and how to fix it. Covers duplicate resources, version conflicts, and optimistic locking in APIs.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 409, 409 Conflict, 409 error, Resource conflict, Edit conflict, 409 API error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="409 Conflict — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 409 Conflict errors by resolving duplicate resources and state conflicts in API requests.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/409-conflict">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/409-conflict">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>409 Conflict</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>409 Conflict</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 409 error means the request conflicts with the current state of the resource. The request is valid, but applying it would create an inconsistency on the server.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 409</code></li><li><code>409 Conflict</code></li><li><code>409 error</code></li><li><code>Resource conflict</code></li><li><code>Edit conflict</code></li><li><code>409 API error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 409 indicates a state conflict. The server understood your request and you are authorized to make it, but completing it would break the integrity of the server's data. This is common in REST APIs where concurrency and data consistency must be managed.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Duplicate resource creation</strong> — trying to create a user, record, or resource with a unique identifier that already exists.</li>
+                <li><strong>Optimistic locking conflict</strong> — submitting an update based on an old version of a resource that has since been changed by someone else.</li>
+                <li><strong>ETag mismatch</strong> — sending a PUT with an <code>If-Match</code> header whose ETag no longer matches the resource.</li>
+                <li><strong>Duplicate form submission</strong> — submitting the same request twice (e.g., double-clicking a submit button).</li>
+                <li><strong>Business logic conflict</strong> — e.g., trying to cancel an order that is already shipped.</li>
+                <li><strong>Git merge conflicts</strong> — some Git hosting APIs return 409 for push conflicts.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Users</h3>
+
+            <h4>1. Refresh and Retry</h4>
+            <p>The resource may have changed since you loaded the page. Refresh to get the latest state, then retry your action.</p>
+
+            <h4>2. Check for Duplicates</h4>
+            <p>If creating a resource (account, file, entry), check whether it already exists before submitting again.</p>
+
+            <h3>For Developers and API Consumers</h3>
+
+            <h4>3. Fetch Current State Before Updating</h4>
+            <p>Before a PUT or PATCH, GET the current state of the resource. Apply your changes to the latest version to avoid version conflicts.</p>
+
+            <h4>4. Implement Idempotent Operations</h4>
+            <p>Use <code>PUT</code> with a client-generated ID for resource creation where possible. A PUT to an existing resource is idempotent — creating no conflict — whereas POST may create duplicates.</p>
+
+            <h4>5. Handle 409 in Your Client Code</h4>
+            <p>On receiving 409, your client should fetch the latest resource state and present the conflict to the user for manual resolution, or automatically merge non-conflicting changes.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 409 the correct code for duplicate email registration?</h3>
+            <p>Yes. If a user attempts to register with an email that is already taken, returning 409 is semantically correct. Some APIs return 422 for this case, but 409 more accurately represents a conflict with existing state.</p>
+
+            <h3>What is optimistic locking and how does 409 relate to it?</h3>
+            <p>Optimistic locking is a concurrency technique where a record includes a version number. When updating, the client sends the version it read. If another client updated the record in the meantime, the version numbers do not match and the server returns 409 to prevent overwriting the newer data.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — malformed request syntax.</li>
+                <li><a href="/errors/http/422-unprocessable-entity">422 Unprocessable Entity</a> — semantic validation failure.</li>
+                <li><a href="/errors/http/410-gone">410 Gone</a> — resource permanently removed.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

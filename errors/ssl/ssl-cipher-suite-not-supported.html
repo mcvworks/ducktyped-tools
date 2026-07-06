@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What cipher suites should I support?","acceptedAnswer":{"@type":"Answer","text":"At minimum, support ECDHE key exchange with AES-128-GCM and AES-256-GCM cipher suites. Adding ChaCha20-Poly1305 provides a good alternative for clients without AES hardware acceleration. For TLS 1.3, the cipher suites are fixed and negotiated automatically."}},{"@type":"Question","name":"Should I enable CBC cipher suites for compatibility?","acceptedAnswer":{"@type":"Answer","text":"CBC cipher suites (like AES-CBC with HMAC-SHA) are less secure than GCM due to padding oracle vulnerabilities. Enable them only if you need to support very old clients. Prefer GCM and ChaCha20 ciphers for all modern clients."}},{"@type":"Question","name":"Does TLS 1.3 have cipher suite negotiation issues?","acceptedAnswer":{"@type":"Answer","text":"TLS 1.3 simplified cipher suite negotiation significantly. It only supports five cipher suites, all of which use AEAD encryption. Cipher suite mismatches are rare with TLS 1.3 — they are primarily a TLS 1.2 and older issue."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Cipher Suite Not Supported — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SSL Cipher Suite Not Supported","step":[{"@type":"HowToStep","position":1,"name":"Configure recommended cipher suites on the server","text":"Use a modern cipher suite configuration that balances security and compatibility."},{"@type":"HowToStep","position":2,"name":"Check supported cipher suites","text":"Test which cipher suites the server supports and compare with the client's capabilities."},{"@type":"HowToStep","position":3,"name":"Update the client","text":"If the client is outdated, update the browser, operating system, or application to a version that supports modern cipher suites. Ensure the TLS library (OpenSSL, NSS, etc.) is current."},{"@type":"HowToStep","position":4,"name":"Use Mozilla SSL Configuration Generator","text":"Use Mozilla's SSL Configuration Generator (ssl-config.mozilla.org) to generate a recommended cipher configuration for your specific server software and desired compatibility level."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Cipher Suite Not Supported — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SSL cipher suite not supported errors. Learn why cipher suite negotiation fails, which cipher suites to enable, and how to configure modern TLS security.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL cipher suite not supported, No shared cipher, No common cipher suite, Cipher suite mismatch, ssl_error_no_cypher_overlap">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Cipher Suite Not Supported — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SSL cipher suite not supported errors. Learn why cipher suite negotiation fails, which cipher suites to enable, and how to configure modern TLS security.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-cipher-suite-not-supported">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-cipher-suite-not-supported">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Cipher Suite Not Supported</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Cipher Suite Not Supported</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">No common cipher suite between client and server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL cipher suite not supported</code></li><li><code>No shared cipher</code></li><li><code>No common cipher suite</code></li><li><code>Cipher suite mismatch</code></li><li><code>ssl_error_no_cypher_overlap</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SSL Cipher Suite Not Supported occurs when the TLS client and server cannot agree on a cipher suite during the handshake. The client sends a list of cipher suites it supports, and the server selects one from that list. If the server does not support any of the client's offered cipher suites, the handshake fails. This typically happens when one side supports only modern ciphers and the other only supports deprecated ones, or when restrictive security policies eliminate all overlapping cipher suites.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server only supports deprecated ciphers</strong> — The server is configured with only older cipher suites (such as RC4, DES, or export-grade ciphers) that modern browsers have removed. Current browsers only support AEAD cipher suites like AES-GCM and ChaCha20-Poly1305.</li>
+                <li><strong>Overly restrictive server cipher configuration</strong> — The server administrator configured a very narrow set of cipher suites that does not overlap with what the client supports. For example, allowing only TLS 1.3 cipher suites while the client only supports TLS 1.2.</li>
+                <li><strong>Client is too old to support modern ciphers</strong> — An older client (legacy browser, embedded device, or old application) does not support modern cipher suites like ECDHE with AES-GCM, and the server has correctly disabled the older insecure ciphers.</li>
+                <li><strong>Security appliance stripping cipher suites</strong> — A network security appliance or TLS inspection proxy is modifying the ClientHello and removing cipher suites from the client's list, resulting in no common ciphers with the server.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Configure recommended cipher suites on the server</h3>
+            <p>Use a modern cipher suite configuration that balances security and compatibility.</p>
+            <pre><code># Nginx — modern configuration
+ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305';
+ssl_prefer_server_ciphers on;
+
+# Apache
+SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+SSLHonorCipherOrder on</code></pre>
+            <h3>2. Check supported cipher suites</h3>
+            <p>Test which cipher suites the server supports and compare with the client's capabilities.</p>
+            <pre><code># List server's supported ciphers
+nmap --script ssl-enum-ciphers -p 443 example.com
+
+# Test specific cipher
+openssl s_client -connect example.com:443 -cipher ECDHE-RSA-AES128-GCM-SHA256</code></pre>
+            <h3>3. Update the client</h3>
+            <p>If the client is outdated, update the browser, operating system, or application to a version that supports modern cipher suites. Ensure the TLS library (OpenSSL, NSS, etc.) is current.</p>
+            <h3>4. Use Mozilla SSL Configuration Generator</h3>
+            <p>Use Mozilla's SSL Configuration Generator (ssl-config.mozilla.org) to generate a recommended cipher configuration for your specific server software and desired compatibility level.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What cipher suites should I support?</h3>
+            <p>At minimum, support ECDHE key exchange with AES-128-GCM and AES-256-GCM cipher suites. Adding ChaCha20-Poly1305 provides a good alternative for clients without AES hardware acceleration. For TLS 1.3, the cipher suites are fixed and negotiated automatically.</p>
+            <h3>Should I enable CBC cipher suites for compatibility?</h3>
+            <p>CBC cipher suites (like AES-CBC with HMAC-SHA) are less secure than GCM due to padding oracle vulnerabilities. Enable them only if you need to support very old clients. Prefer GCM and ChaCha20 ciphers for all modern clients.</p>
+            <h3>Does TLS 1.3 have cipher suite negotiation issues?</h3>
+            <p>TLS 1.3 simplified cipher suite negotiation significantly. It only supports five cipher suites, all of which use AEAD encryption. Cipher suite mismatches are rare with TLS 1.3 — they are primarily a TLS 1.2 and older issue.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> — SSL/TLS protocol error</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS handshake could not complete</li>
+                <li><a href="/errors/ssl/tls-version-unsupported">TLS Version Not Supported</a> — TLS version not supported by server or client</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL/TLS configuration and cipher suites</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check security configuration</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

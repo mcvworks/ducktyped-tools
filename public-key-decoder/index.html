@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Public Key Decoder","url":"https://ducktyped.xyz/public-key-decoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode and inspect PEM-encoded public keys. View key type, size, algorithm, and modulus details.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a public key decoder?","acceptedAnswer":{"@type":"Answer","text":"A public key decoder parses PEM-encoded public keys and displays their properties: algorithm (RSA, EC, Ed25519), key size, modulus, exponent, curve parameters, and other cryptographic details."}},{"@type":"Question","name":"What is the difference between a public and private key?","acceptedAnswer":{"@type":"Answer","text":"In asymmetric cryptography, the public key encrypts data and verifies signatures, while the private key decrypts and signs. The public key can be shared freely; the private key must be kept secret."}},{"@type":"Question","name":"What formats are supported?","acceptedAnswer":{"@type":"Answer","text":"This tool decodes PEM-formatted public keys (-----BEGIN PUBLIC KEY-----) including RSA, EC (ECDSA), and Ed25519 keys."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Key Decoder — Decode PEM Public Keys — duckTyped</title>
+    <meta name="description" content="Decode and inspect PEM-encoded public keys. View key type, size, algorithm, and modulus details.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Public Key Decoder — Decode PEM Public Keys — duckTyped">
+    <meta property="og:description" content="Decode and inspect PEM-encoded public keys. View key type, size, algorithm, and modulus details.">
+    <meta property="og:url" content="https://ducktyped.xyz/public-key-decoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/public-key-decoder.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Public Key Decoder — Decode PEM Public Keys — duckTyped">
+    <meta name="twitter:description" content="Decode and inspect PEM-encoded public keys. View key type, size, algorithm, and modulus details.">
+    <link rel="canonical" href="https://ducktyped.xyz/public-key-decoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <!-- SEO Content -->
+        <div class="standalone-hero">
+            <h1>Public Key Decoder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Decode PEM-encoded public keys and certificates to view their details including key type, algorithm, key size, and encoded components. All processing happens client-side.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Inspecting SSH or TLS public keys, verifying key sizes for security compliance, examining certificate public keys, or learning about public key cryptography formats.</p></div>
+            <a href="/learn/public-key-decoder/" class="learn-more-link">Learn about PEM, DER, and public key formats</a>
+        </div>
+
+        <!-- Tool -->
+        <div class="standalone-tool-wrap">
+            <div class="tool-card standalone-card" id="publicKeyDecoder">
+                <h2>Public Key Decoder</h2>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Paste a PEM-encoded public key to decode its structure, algorithm, and key details. Everything runs locally in your browser.
+                </p>
+
+                <div class="input-group">
+                    <label>PEM Public Key:</label>
+                    <textarea id="pemInput" placeholder="-----BEGIN PUBLIC KEY-----&#10;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...&#10;-----END PUBLIC KEY-----" style="min-height: 140px; font-family: var(--font-mono); font-size: 0.82em;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <button onclick="loadExampleRSA()" class="preset-btn blue" style="font-size: 0.8em; padding: 4px 10px;">Load Example RSA Key</button>
+                    <button onclick="loadExampleEC()" class="preset-btn green" style="font-size: 0.8em; padding: 4px 10px;">Load Example EC Key</button>
+                </div>
+
+                <button onclick="decodePublicKey()">Decode</button>
+                <div id="pkResults"></div>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <div class="standalone-tool-wrap" style="margin-top: 20px;">
+            <div class="tool-card standalone-card">
+                <h3 style="margin-bottom: 12px;">Related Tools</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/ssl-checker/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">SSL Checker</a>
+                    <a href="/hash-generator/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Hash Generator</a>
+                    <a href="/csr-decoder/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">CSR Decoder</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check SSL/TLS certificate validity, expiry date, and certificate chain for…</span>
+                </a>
+                <a href="/password-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Password Generator</span>
+                    <span class="recommended-tool-desc">Generate cryptographically secure random passwords with customizable length…</span>
+                </a>
+                <a href="/breach-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Breach Checker</span>
+                    <span class="recommended-tool-desc">Check if an email address has appeared in known data breaches</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/public-key-decoder/">Public Key Decoder — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta">
+            <p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var EXAMPLE_RSA = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0Z3VS5JJcds3xfn/ygWe\nFPE8cdAqdOuKiH1HXg0mLAkmtAqGVOxLJJqMJqvnylQCAFqkMYIgJONSKad6pbkl\nHx6bDujAKh1ZZ7RE5cessHgGTKEl5Jhvs1IQ1cOEX4fafxdFemCJnYJqycXfYnl0\nmZbBRELG1VGanBnPM7OYPkiu2eMqShEJp2TYJLBR3CqLVbfx9VYqnTEBIEdhT1qI\nmXBLxPn2dWEBPjgJIexNUvhHRnpSWn8gXlPmifsAmNq1dol5rGy4JGBQxbBMGNqN\nn7F3vGx0jGmah0JhVSmqdMMfoMWpXxQadgi8SZSSnLEqUvJzhfl2hJPnMB+bqHvV\nRwIDAQAB\n-----END PUBLIC KEY-----";
+
+    var EXAMPLE_EC = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2adMrdG7aUfZH57aeKFFM01dPnkE\nC4EGVcjCARIbF8oolIr0zfxuEk2NXIV+B1BjCJSXmDuZLkVmrmnKPvWP2Q==\n-----END PUBLIC KEY-----";
+
+    function loadExampleRSA() {
+        document.getElementById('pemInput').value = EXAMPLE_RSA;
+    }
+
+    function loadExampleEC() {
+        document.getElementById('pemInput').value = EXAMPLE_EC;
+    }
+
+    function b64ToBytes(b64) {
+        var binary = atob(b64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return bytes;
+    }
+
+    function bytesToHex(bytes, limit) {
+        var hex = [];
+        var max = limit ? Math.min(bytes.length, limit) : bytes.length;
+        for (var i = 0; i < max; i++) hex.push(bytes[i].toString(16).padStart(2, '0'));
+        return hex.join(' ');
+    }
+
+    var KNOWN_OIDS = {
+        '1.2.840.113549.1.1.1': 'RSA Encryption (rsaEncryption)',
+        '1.2.840.113549.1.1.11': 'SHA256 with RSA (sha256WithRSAEncryption)',
+        '1.2.840.10045.2.1': 'EC Public Key (ecPublicKey)',
+        '1.2.840.10045.3.1.7': 'P-256 (prime256v1 / secp256r1)',
+        '1.3.132.0.34': 'P-384 (secp384r1)',
+        '1.3.132.0.35': 'P-521 (secp521r1)',
+        '1.3.101.110': 'X25519',
+        '1.3.101.112': 'Ed25519'
+    };
+
+    function parseOID(bytes, offset, length) {
+        var oid = [];
+        var first = bytes[offset];
+        oid.push(Math.floor(first / 40));
+        oid.push(first % 40);
+        var value = 0;
+        for (var i = 1; i < length; i++) {
+            value = (value << 7) | (bytes[offset + i] & 0x7F);
+            if ((bytes[offset + i] & 0x80) === 0) {
+                oid.push(value);
+                value = 0;
+            }
+        }
+        return oid.join('.');
+    }
+
+    function parseLength(bytes, offset) {
+        var b = bytes[offset];
+        if (b < 0x80) return { length: b, bytesUsed: 1 };
+        var numBytes = b & 0x7F;
+        var length = 0;
+        for (var i = 0; i < numBytes; i++) {
+            length = (length << 8) | bytes[offset + 1 + i];
+        }
+        return { length: length, bytesUsed: 1 + numBytes };
+    }
+
+    function parseASN1(bytes, offset, depth, results) {
+        if (offset >= bytes.length) return offset;
+        var tag = bytes[offset];
+        var lenInfo = parseLength(bytes, offset + 1);
+        var contentOffset = offset + 1 + lenInfo.bytesUsed;
+        var contentLength = lenInfo.length;
+        var indent = '  '.repeat(depth);
+        var tagNames = { 0x30: 'SEQUENCE', 0x31: 'SET', 0x02: 'INTEGER', 0x03: 'BIT STRING', 0x04: 'OCTET STRING', 0x05: 'NULL', 0x06: 'OBJECT IDENTIFIER', 0x0C: 'UTF8String', 0x13: 'PrintableString', 0x16: 'IA5String' };
+        var tagName = tagNames[tag] || ('TAG 0x' + tag.toString(16).padStart(2, '0'));
+
+        if (tag === 0x06) {
+            var oidStr = parseOID(bytes, contentOffset, contentLength);
+            var oidName = KNOWN_OIDS[oidStr] || 'Unknown';
+            results.push(indent + tagName + ' (' + contentLength + ' bytes): ' + oidStr + ' = ' + oidName);
+        } else if (tag === 0x02) {
+            var hexVal = bytesToHex(bytes.slice(contentOffset, contentOffset + Math.min(contentLength, 16)));
+            var extra = contentLength > 16 ? '... (' + contentLength + ' bytes total)' : '';
+            results.push(indent + tagName + ' (' + contentLength + ' bytes): ' + hexVal + extra);
+        } else if (tag === 0x03) {
+            results.push(indent + tagName + ' (' + contentLength + ' bytes)');
+            if (contentLength > 1 && bytes[contentOffset] === 0x00) {
+                parseASN1(bytes, contentOffset + 1, depth + 1, results);
+            }
+        } else if (tag === 0x05) {
+            results.push(indent + tagName);
+        } else if (tag === 0x30 || tag === 0x31) {
+            results.push(indent + tagName + ' (' + contentLength + ' bytes)');
+            var pos = contentOffset;
+            while (pos < contentOffset + contentLength) {
+                pos = parseASN1(bytes, pos, depth + 1, results);
+            }
+        } else {
+            results.push(indent + tagName + ' (' + contentLength + ' bytes)');
+        }
+
+        return contentOffset + contentLength;
+    }
+
+    function detectKeyType(bytes) {
+        var hex = bytesToHex(bytes);
+        if (hex.includes('06 09 2a 86 48 86 f7 0d 01 01 01')) return 'RSA';
+        if (hex.includes('06 07 2a 86 48 ce 3d 02 01')) return 'EC';
+        if (hex.includes('06 03 2b 65 70')) return 'Ed25519';
+        return 'Unknown';
+    }
+
+    function getKeySize(bytes, keyType) {
+        if (keyType !== 'RSA') return 'N/A';
+        for (var i = 0; i < bytes.length - 4; i++) {
+            if (bytes[i] === 0x03 && i > 10) {
+                var j = i + 1;
+                var lenInfo = parseLength(bytes, j);
+                j += lenInfo.bytesUsed;
+                if (bytes[j] === 0x00) j++;
+                if (bytes[j] === 0x30) {
+                    j++;
+                    var seqLen = parseLength(bytes, j);
+                    j += seqLen.bytesUsed;
+                    if (bytes[j] === 0x02) {
+                        j++;
+                        var modLen = parseLength(bytes, j);
+                        var bitSize = modLen.length * 8;
+                        if (bytes[j + modLen.bytesUsed] === 0x00) bitSize -= 8;
+                        if (bitSize >= 4090 && bitSize <= 4104) return '4096';
+                        if (bitSize >= 2040 && bitSize <= 2056) return '2048';
+                        if (bitSize >= 1016 && bitSize <= 1032) return '1024';
+                        if (bitSize >= 3068 && bitSize <= 3080) return '3072';
+                        return bitSize + ' bits';
+                    }
+                }
+            }
+        }
+        return 'Unknown';
+    }
+
+    function decodePublicKey() {
+        var resultsDiv = document.getElementById('pkResults');
+        var pem = document.getElementById('pemInput').value.trim();
+
+        if (!pem) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Please paste a PEM-encoded public key.</div>';
+            return;
+        }
+
+        var format = 'Unknown';
+        if (pem.includes('BEGIN PUBLIC KEY')) format = 'SPKI (SubjectPublicKeyInfo)';
+        else if (pem.includes('BEGIN RSA PUBLIC KEY')) format = 'PKCS#1 RSA Public Key';
+        else if (pem.includes('BEGIN CERTIFICATE')) format = 'X.509 Certificate';
+
+        var b64 = pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '');
+        var bytes;
+        try {
+            bytes = b64ToBytes(b64);
+        } catch (e) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Invalid Base64 encoding.</div>';
+            return;
+        }
+
+        var keyType = detectKeyType(bytes);
+        var keySize = getKeySize(bytes, keyType);
+
+        var asn1Results = [];
+        parseASN1(bytes, 0, 0, asn1Results);
+
+        var html = '<div style="margin-top: 15px;">';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">Key Summary</h3>';
+        html += '<table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; width: 160px; color: var(--text-secondary);">Format</td><td style="padding: 4px 8px;">' + format + '</td></tr>';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; color: var(--text-secondary);">Key Type</td><td style="padding: 4px 8px;">' + keyType + '</td></tr>';
+        if (keyType === 'RSA') html += '<tr><td style="padding: 4px 8px; font-weight: 600; color: var(--text-secondary);">Key Size</td><td style="padding: 4px 8px;">' + keySize + ' bits</td></tr>';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; color: var(--text-secondary);">DER Size</td><td style="padding: 4px 8px;">' + bytes.length + ' bytes</td></tr>';
+        html += '</table></div>';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">Base64 Content</h3>';
+        var truncated = b64.length > 120 ? b64.substring(0, 120) + '...' : b64;
+        html += '<div style="font-family: var(--font-mono); font-size: 0.8em; word-break: break-all; color: var(--text-secondary);">' + truncated + '</div>';
+        html += '</div>';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">DER Hex Dump (first 64 bytes)</h3>';
+        html += '<div style="font-family: var(--font-mono); font-size: 0.8em; word-break: break-all; color: var(--text-secondary);">' + bytesToHex(bytes, 64) + '</div>';
+        html += '</div>';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">ASN.1 Structure</h3>';
+        html += '<pre style="font-family: var(--font-mono); font-size: 0.8em; white-space: pre-wrap; margin: 0; color: var(--text-primary);">' + asn1Results.join('\n') + '</pre>';
+        html += '</div>';
+
+        html += '</div>';
+        resultsDiv.innerHTML = html;
+    }
+    </script>
+</body>
+</html>

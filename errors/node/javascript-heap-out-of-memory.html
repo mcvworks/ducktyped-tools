@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the default heap limit?","acceptedAnswer":{"@type":"Answer","text":"It varies by Node version and system RAM — modern Node picks a fraction of available memory, commonly landing between 2GB and 4GB on typical machines. 'node -e \"console.log(require('v8').getHeapStatistics().heap_size_limit/1e9)\"' prints yours."}},{"@type":"Question","name":"Will raising --max-old-space-size fix a leak?","acceptedAnswer":{"@type":"Answer","text":"No — it schedules the same crash later. If memory grows steadily under constant load, it is a leak: snapshot, find the growth, fix the retention. Raise the limit only when a bounded workload legitimately needs more than the default."}},{"@type":"Question","name":"My container died with exit code 137 but no heap error — same problem?","acceptedAnswer":{"@type":"Answer","text":"That is the kernel OOM-killer, not V8: total process memory exceeded the container limit before the JS heap hit its own ceiling. Same investigation tools, but the fix balances container memory against max-old-space-size (container needs headroom above the heap)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"JavaScript Heap Out of Memory — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Heap Out of Memory — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Node 'JavaScript heap out of memory'. Raise --max-old-space-size correctly, stream large files, find leaks with heap snapshots, container limits.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory, javascript heap out of memory, max-old-space-size, FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed, node out of memory build">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="JavaScript Heap Out of Memory — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Node 'JavaScript heap out of memory'. Raise --max-old-space-size correctly, stream large files, find leaks with heap snapshots, container limits.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/javascript-heap-out-of-memory">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/javascript-heap-out-of-memory">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>JavaScript Heap Out of Memory</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>JavaScript Heap Out of Memory</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory' — the Node process hit V8's heap ceiling and aborted.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory</code></li><li><code>javascript heap out of memory</code></li><li><code>max-old-space-size</code></li><li><code>FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed</code></li><li><code>node out of memory build</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>V8 caps its managed heap; when garbage collection can no longer free enough space under that cap, Node aborts with this fatal error. The cap depends on Node version and available RAM (commonly ~2-4GB by default). Three genuinely different situations produce it: a legitimate big workload (large builds, huge data transforms) that needs a higher ceiling; code that buffers something enormous into memory that should be streamed; and a leak, where memory grows without bound and any ceiling only delays the crash. Raising the limit is the right fix only for the first.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Big toolchain workloads</strong> — webpack/Next.js/Angular production builds, big TypeScript projects, and test suites routinely exceed default heap on large codebases — the classic CI failure.</li>
+                <li><strong>Buffering instead of streaming</strong> — Reading multi-gigabyte files with readFile, building giant arrays/strings, or loading full query results at once — memory scales with input size until it cannot.</li>
+                <li><strong>A memory leak</strong> — Caches without eviction, listeners added per-request and never removed, closures pinning large objects — heap grows steadily across hours regardless of load.</li>
+                <li><strong>Container limits below the heap ceiling</strong> — In Docker/K8s, the kernel OOM-killer may kill the process before V8's limit is reached (exit code 137, no JS error) — the sibling failure worth distinguishing.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Raise the heap ceiling for legitimate big jobs</h3>
+            <p>NODE_OPTIONS reaches child processes too (build tools spawn workers), which plain CLI flags may miss.</p>
+            <pre><code>NODE_OPTIONS=--max-old-space-size=4096 npm run build
+# package.json variant:
+&quot;build&quot;: &quot;cross-env NODE_OPTIONS=--max-old-space-size=4096 next build&quot;</code></pre>
+            <h3>2. Stream what you currently buffer</h3>
+            <p>Process large inputs incrementally so memory is bounded by chunk size, not file size.</p>
+            <pre><code>const fs = require('fs');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: fs.createReadStream('huge.ndjson'),
+});
+for await (const line of rl) {
+  handle(JSON.parse(line));   // constant memory
+}</code></pre>
+            <h3>3. Diagnose a leak before raising anything</h3>
+            <p>Two heap snapshots some minutes apart, compared in Chrome DevTools, show what is accumulating and what retains it.</p>
+            <pre><code>node --inspect server.js
+# Chrome -&gt; chrome://inspect -&gt; take Heap Snapshot twice -&gt; 'Comparison' view
+# quick trend check without DevTools:
+node -e 'setInterval(()=&gt;console.log(process.memoryUsage().heapUsed/1e6|0,&quot;MB&quot;),5000)'</code></pre>
+            <h3>4. Align container memory with the heap limit</h3>
+            <p>Give the container headroom above max-old-space-size (V8 uses memory outside the JS heap too — buffers, code, stacks).</p>
+            <pre><code># heap 4GB -&gt; container ~5GB
+docker run -m 5g -e NODE_OPTIONS=--max-old-space-size=4096 myapp</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the default heap limit?</h3>
+            <p>It varies by Node version and system RAM — modern Node picks a fraction of available memory, commonly landing between 2GB and 4GB on typical machines. 'node -e "console.log(require('v8').getHeapStatistics().heap_size_limit/1e9)"' prints yours.</p>
+            <h3>Will raising --max-old-space-size fix a leak?</h3>
+            <p>No — it schedules the same crash later. If memory grows steadily under constant load, it is a leak: snapshot, find the growth, fix the retention. Raise the limit only when a bounded workload legitimately needs more than the default.</p>
+            <h3>My container died with exit code 137 but no heap error — same problem?</h3>
+            <p>That is the kernel OOM-killer, not V8: total process memory exceeded the container limit before the JS heap hit its own ceiling. Same investigation tools, but the fix balances container memory against max-old-space-size (container needs headroom above the heap).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/maximum-call-stack-size-exceeded">Maximum Call Stack Size Exceeded</a> — the stack counterpart of memory exhaustion.</li>
+                <li><a href="/errors/node/node-gyp-build-failed">node-gyp Build Failed</a> — other build-time failures.</li>
+                <li><a href="/errors/database/redis-oom-command-not-allowed">Redis OOM</a> — memory ceilings in the data layer.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect large JSON without custom scripts</span>
+                </a>
+        <a href="/timestamp-converter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Timestamp Converter</span>
+                    <span class="recommended-tool-desc">Correlate crash times across logs</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 405 Method Not Allowed mean?","acceptedAnswer":{"@type":"Answer","text":"A 405 Method Not Allowed error means the server knows the HTTP method you used, but that specific method is not permitted for the requested URL. For example, sending a DELETE request to an endpoint that only accepts GET and POST."}},{"@type":"Question","name":"What is the difference between 405 and 501?","acceptedAnswer":{"@type":"Answer","text":"A 405 Method Not Allowed means the server understands the method but the specific resource does not support it — and should respond with an Allow header listing what methods are accepted. A 501 Not Implemented means the server does not support the method at all, for any resource."}},{"@type":"Question","name":"How do I fix a 405 Method Not Allowed error?","acceptedAnswer":{"@type":"Answer","text":"Check the Allow header in the 405 response to see which methods are accepted. Use one of those methods. If you are the server owner, add a handler for the required method or review your routing configuration."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"405 Method Not Allowed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 405 Method Not Allowed","step":[{"@type":"HowToStep","position":1,"name":"Check the Allow Header","text":"The 405 response should include: Allow: GET, POST (or similar). Use one of the listed methods for your request."},{"@type":"HowToStep","position":2,"name":"Verify Your HTTP Method","text":"Confirm you are using the correct method for the operation:"},{"@type":"HowToStep","position":3,"name":"Add the Missing Route Handler (Server Owners)","text":"If you control the API, add a handler for the required method:"},{"@type":"HowToStep","position":4,"name":"Check WAF Rules","text":"If your application accepts these methods but still returns 405, check whether a WAF or security middleware is blocking the method at the proxy layer."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>405 Method Not Allowed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 405 Method Not Allowed error means and how to fix it. Covers HTTP method restrictions, Allow headers, and REST API routing.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 405, 405 Method Not Allowed, 405 error, Method not allowed, 405 POST not allowed, 405 nginx">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="405 Method Not Allowed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 405 Method Not Allowed errors by checking the Allow header and using the correct HTTP method for the endpoint.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/405-method-not-allowed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/405-method-not-allowed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>405 Method Not Allowed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>405 Method Not Allowed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 405 error means the HTTP method you used is known to the server but not permitted for the requested resource. Check the <code>Allow</code> response header to see what methods are accepted.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 405</code></li><li><code>405 Method Not Allowed</code></li><li><code>405 error</code></li><li><code>Method not allowed</code></li><li><code>405 POST not allowed</code></li><li><code>405 nginx</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 405 is returned when a server knows an HTTP method (GET, POST, PUT, DELETE, PATCH, etc.) but has explicitly not allowed it for the endpoint you requested. The server must include an <code>Allow</code> header listing the permitted methods.</p>
+            <p>For example: sending a <code>DELETE /articles/123</code> to a read-only API that only supports <code>GET</code> and <code>POST</code> would return 405.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Submitting a form with the wrong method</strong> — HTML forms default to GET; some forms need POST.</li>
+                <li><strong>Using the wrong HTTP verb in an API call</strong> — using POST when PUT is required, or vice versa.</li>
+                <li><strong>Read-only endpoint</strong> — attempting to write to a GET-only resource.</li>
+                <li><strong>Missing route handler</strong> — your application has a route defined for GET but not for POST on the same URL.</li>
+                <li><strong>Firewall or WAF blocking the method</strong> — some WAFs block DELETE, PUT, or PATCH at the network layer.</li>
+                <li><strong>Static file server</strong> — a static file server only supports GET and HEAD; sending POST returns 405.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the Allow Header</h3>
+            <p>The 405 response should include: <code>Allow: GET, POST</code> (or similar). Use one of the listed methods for your request.</p>
+
+            <h3>2. Verify Your HTTP Method</h3>
+            <p>Confirm you are using the correct method for the operation:</p>
+            <ul>
+                <li><strong>GET</strong> — retrieve data</li>
+                <li><strong>POST</strong> — create a new resource</li>
+                <li><strong>PUT</strong> — replace a resource entirely</li>
+                <li><strong>PATCH</strong> — partially update a resource</li>
+                <li><strong>DELETE</strong> — remove a resource</li>
+            </ul>
+
+            <h3>3. Add the Missing Route Handler (Server Owners)</h3>
+            <p>If you control the API, add a handler for the required method:</p>
+            <pre><code># Express.js
+app.put('/resource/:id', handler);   // add PUT handler
+app.delete('/resource/:id', handler); // add DELETE handler</code></pre>
+
+            <h3>4. Check WAF Rules</h3>
+            <p>If your application accepts these methods but still returns 405, check whether a WAF or security middleware is blocking the method at the proxy layer.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>405 vs. 403 — what's the difference?</h3>
+            <p><a href="/errors/http/403-forbidden">403 Forbidden</a> means the server refuses to serve the resource regardless of method. 405 is more specific — the resource exists and is accessible, but not via the method you used. You can try a different method for 405.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/501-not-implemented">501 Not Implemented</a> — server doesn't support the method globally.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — access denied entirely.</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — malformed request.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

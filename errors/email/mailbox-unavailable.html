@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does Mailbox Unavailable mean in email?","acceptedAnswer":{"@type":"Answer","text":"Mailbox Unavailable means the recipient's email account cannot receive messages. This can be temporary (mailbox locked, over quota, server maintenance) or permanent (account deleted, suspended, or doesn't exist). The specific SMTP code — 450 for temporary, 550 for permanent — indicates which type."}},{"@type":"Question","name":"How do I know if a mailbox is permanently or temporarily unavailable?","acceptedAnswer":{"@type":"Answer","text":"Check the SMTP response code in the bounce message. A 4xx code (450, 451, 452) means temporary — delivery will be retried. A 5xx code (550, 551, 552, 553) means permanent — the message will not be delivered and the sender receives a non-delivery report."}},{"@type":"Question","name":"What can I do if a mailbox is unavailable?","acceptedAnswer":{"@type":"Answer","text":"For temporary unavailability, wait — delivery will retry automatically. For permanent unavailability, verify the address is correct and contact the recipient through another channel. If it is your mailbox, check with your mail server administrator."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"Mailbox Unavailable — Email Delivery Errors Explained"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailbox Unavailable — Email Delivery Errors Explained — duckTyped</title>
+    <meta name="description" content="Learn what Mailbox Unavailable means for email delivery. Covers temporary vs permanent mailbox errors, SMTP codes, and how to diagnose delivery failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Mailbox unavailable, 550 Mailbox unavailable, User unknown, No such user, Recipient rejected">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Mailbox Unavailable — Email Delivery Errors Explained">
+    <meta property="og:description" content="Understand Mailbox Unavailable errors in email, distinguish temporary from permanent failures, and troubleshoot delivery issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/mailbox-unavailable">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/mailbox-unavailable">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>Mailbox Unavailable</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Mailbox Unavailable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Mailbox Unavailable means the recipient's email account cannot receive messages right now — either temporarily or permanently. The SMTP response code tells you which.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Mailbox unavailable</code></li><li><code>550 Mailbox unavailable</code></li><li><code>User unknown</code></li><li><code>No such user</code></li><li><code>Recipient rejected</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>The phrase "mailbox unavailable" appears in several SMTP error responses. The exact meaning depends on the response code:</p>
+            <ul>
+                <li><strong>4xx (temporary)</strong> — the mailbox exists but cannot receive messages right now. Delivery will be retried. Examples: <a href="/errors/email/smtp-450">450</a>, <a href="/errors/email/smtp-451">451</a>.</li>
+                <li><strong>5xx (permanent)</strong> — the mailbox cannot receive messages and the error is not expected to resolve. The message bounces immediately. Examples: <a href="/errors/email/smtp-550">550</a>, 551, 552.</li>
+            </ul>
+
+            <h2>Temporary Mailbox Unavailability (4xx)</h2>
+            <h3>Causes</h3>
+            <ul>
+                <li>Mailbox is locked by an active session</li>
+                <li>Mailbox is temporarily over quota</li>
+                <li>Mail server is under maintenance</li>
+                <li>Greylisting (first-time sender temporarily deferred)</li>
+                <li>Server rate-limiting inbound connections</li>
+            </ul>
+            <h3>Resolution</h3>
+            <p>Wait for the sending server's automatic retry. Most 4xx errors resolve within hours. If the problem persists over multiple days, contact the recipient.</p>
+
+            <h2>Permanent Mailbox Unavailability (5xx)</h2>
+            <h3>Causes</h3>
+            <ul>
+                <li>Mailbox does not exist (address was never created or has been deleted)</li>
+                <li>Account has been suspended or deactivated</li>
+                <li>Recipient's domain has no mail server</li>
+                <li>Mailbox permanently over quota (some servers return permanent failure)</li>
+                <li>Sender blocked by the recipient</li>
+            </ul>
+            <h3>Resolution</h3>
+            <p>A 5xx bounce means the message will not be delivered. Contact the recipient through another channel to get a valid email address.</p>
+
+            <h2>How to Diagnose Mailbox Unavailability</h2>
+
+            <h3>1. Read the Bounce Message</h3>
+            <p>Non-delivery reports (NDRs) include the full SMTP response code and often a human-readable explanation. The code indicates whether it is temporary (4xx) or permanent (5xx).</p>
+
+            <h3>2. Check MX Records</h3>
+            <p>Verify the domain has active MX records using the <a href="/dns-lookup/">DNS Lookup tool</a>. Missing MX records mean no mail server is configured for the domain.</p>
+
+            <h3>3. Test SMTP Connectivity</h3>
+            <p>Use the <a href="/smtp-checker/">SMTP Checker</a> to test whether the destination mail server is online and accepting connections.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test mail server availability.</li>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — check MX records.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> — trace email delivery path.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can an email address be valid but the mailbox still unavailable?</h3>
+            <p>Yes. An email address can be syntactically valid and have valid MX records, but the account may have been deleted, suspended, or have the mailbox consistently full. Validity checking can only tell you so much — actual delivery attempts reveal the true status.</p>
+
+            <h3>How do I remove bounced addresses from my mailing list?</h3>
+            <p>For permanent (5xx) bounces, remove the address immediately. For temporary (4xx) bounces, do not remove — wait for delivery to succeed or fail after the retry period. Most email marketing platforms handle this automatically with bounce management.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-450">SMTP 450</a> — mailbox temporarily unavailable.</li>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — mailbox permanently unavailable.</li>
+                <li><a href="/errors/email/smtp-452">SMTP 452</a> — server storage full.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554</a> — transaction failed.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses and MX records</span>
+                </a>
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity</span>
+                </a>
+        <a href="/blacklist-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Blacklist Checker</span>
+                    <span class="recommended-tool-desc">Check IP and domain against blacklists</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Check SMTP Server</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Expect: 100-continue mechanism?","acceptedAnswer":{"@type":"Answer","text":"It allows a client to check if the server will accept a request before sending a large body. The client sends headers with Expect: 100-continue, waits for a 100 response, then sends the body. This avoids wasting bandwidth on rejected requests."}},{"@type":"Question","name":"Why does curl add Expect: 100-continue automatically?","acceptedAnswer":{"@type":"Answer","text":"curl adds this header for POST requests larger than 1024 bytes as an optimization. If the server would reject the request (e.g., 401), the client avoids sending the large body unnecessarily."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"417 Expectation Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 417 Expectation Failed","step":[{"@type":"HowToStep","position":1,"name":"Remove the Expect header","text":"Explicitly remove the Expect header from your request. In curl, use an empty Expect header to prevent the automatic 100-continue behavior."},{"@type":"HowToStep","position":2,"name":"Configure your HTTP library","text":"Most HTTP libraries allow you to disable the automatic Expect: 100-continue behavior. Check your library's documentation for the relevant setting."},{"@type":"HowToStep","position":3,"name":"Enable 100-continue support on the server","text":"If you control the server, ensure it properly handles the Expect: 100-continue header by sending a 100 Continue response before the client sends the body."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>417 Expectation Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 417 Expectation Failed errors. Learn about the Expect header, 100-continue mechanism, and how to resolve expectation failures in HTTP requests.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 417, 417 Expectation Failed, 417 error, Expect header failed, Expect: 100-continue failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="417 Expectation Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 417 Expectation Failed errors. Learn about the Expect header, 100-continue mechanism, and how to resolve expectation failures in HTTP requests.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/417-expectation-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/417-expectation-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>417 Expectation Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>417 Expectation Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server cannot meet the requirements of the Expect header</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 417</code></li><li><code>417 Expectation Failed</code></li><li><code>417 error</code></li><li><code>Expect header failed</code></li><li><code>Expect: 100-continue failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 417 Expectation Failed response indicates that the server cannot meet the expectation specified in the Expect header of the request. The most common Expect header value is '100-continue', which asks the server to confirm it will accept the request body before the client sends it. Some servers and proxies do not support this mechanism and respond with 417.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server does not support Expect: 100-continue</strong> — The server or an intermediary proxy does not implement the 100-continue mechanism, and rejects the Expect header outright with a 417 response.</li>
+                <li><strong>HTTP library auto-adding Expect header</strong> — Some HTTP libraries (like libcurl) automatically add 'Expect: 100-continue' for POST requests with large bodies. Servers that do not support this respond with 417.</li>
+                <li><strong>Proxy or load balancer interference</strong> — An intermediary proxy or load balancer strips or rejects the Expect header, preventing the 100-continue negotiation from completing.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Remove the Expect header</h3>
+            <p>Explicitly remove the Expect header from your request. In curl, use an empty Expect header to prevent the automatic 100-continue behavior.</p>
+            <pre><code># Disable Expect header in curl
+curl -X POST -H 'Expect:' -d @large-file.json https://api.example.com/upload</code></pre>
+            <h3>2. Configure your HTTP library</h3>
+            <p>Most HTTP libraries allow you to disable the automatic Expect: 100-continue behavior. Check your library's documentation for the relevant setting.</p>
+            <h3>3. Enable 100-continue support on the server</h3>
+            <p>If you control the server, ensure it properly handles the Expect: 100-continue header by sending a 100 Continue response before the client sends the body.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the Expect: 100-continue mechanism?</h3>
+            <p>It allows a client to check if the server will accept a request before sending a large body. The client sends headers with Expect: 100-continue, waits for a 100 response, then sends the body. This avoids wasting bandwidth on rejected requests.</p>
+            <h3>Why does curl add Expect: 100-continue automatically?</h3>
+            <p>curl adds this header for POST requests larger than 1024 bytes as an optimization. If the server would reject the request (e.g., 401), the client avoids sending the large body unnecessarily.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/413-payload-too-large">413 Payload Too Large</a> — Request body exceeds server limits</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Invalid response from upstream server</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

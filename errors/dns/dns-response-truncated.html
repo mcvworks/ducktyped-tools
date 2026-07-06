@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I know a response was truncated?","acceptedAnswer":{"@type":"Answer","text":"dig prints ';; Truncated, retrying in TCP mode' and the response header shows the tc flag. If the TCP retry succeeds you will just see a normal (larger) answer; if TCP is blocked you will see the truncation message followed by a timeout."}},{"@type":"Question","name":"Is it safe to assume DNS only needs UDP?","acceptedAnswer":{"@type":"Answer","text":"No — that is the misconception that causes this error. RFC 7766 makes TCP support mandatory for DNS. Zone transfers always used TCP, and any response over the UDP size limit requires it."}},{"@type":"Question","name":"What is a good EDNS buffer size?","acceptedAnswer":{"@type":"Answer","text":"1232 bytes is the community-agreed default (from DNS Flag Day 2020) — large enough for most answers, small enough to avoid IP fragmentation on typical paths. Servers and resolvers negotiating larger sizes invite fragment drops."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS Response Truncated — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Response Truncated — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix truncated DNS responses ('reply truncated', TC flag, 'communications error to ... timed out'). Covers TCP port 53 blocks and EDNS buffer sizes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS response truncated, ;; Truncated, retrying in TCP mode, TC flag DNS, reply truncated, DNS UDP truncation, EDNS buffer size">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS Response Truncated — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix truncated DNS responses ('reply truncated', TC flag, 'communications error to ... timed out'). Covers TCP port 53 blocks and EDNS buffer sizes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-response-truncated">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-response-truncated">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS Response Truncated</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS Response Truncated</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A DNS answer was too large for UDP and was cut short (TC flag set) — and the fallback to TCP failed, so clients see incomplete or missing records.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS response truncated</code></li><li><code>;; Truncated, retrying in TCP mode</code></li><li><code>TC flag DNS</code></li><li><code>reply truncated</code></li><li><code>DNS UDP truncation</code></li><li><code>EDNS buffer size</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Classic DNS runs over UDP with limited message sizes. When an answer does not fit — big TXT record sets, many A records, DNSSEC signatures — the server sets the TC (truncated) flag, telling the client to retry over TCP port 53. That retry is the fragile part: many firewalls still block TCP 53 under the outdated belief that DNS only needs UDP. The visible symptoms are dig printing ';; Truncated, retrying in TCP mode' followed by a timeout, applications seeing partial record sets, and domains with large responses (often DNSSEC-signed or heavily SPF-decorated) failing while small ones work.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>TCP port 53 is blocked</strong> — The truncated UDP reply is only step one of the protocol; the real answer comes over TCP. A firewall dropping TCP 53 turns every large response into a hard failure.</li>
+                <li><strong>EDNS buffer size mismatch or stripped EDNS</strong> — EDNS lets clients accept larger UDP responses (commonly 1232 bytes now). Middleboxes that strip EDNS force servers back to the 512-byte classic limit, truncating answers that would otherwise fit.</li>
+                <li><strong>Oversized record sets</strong> — Domains accumulate huge TXT collections (SPF includes, verification tokens) or long CNAME chains. Each addition pushes more responses past UDP limits.</li>
+                <li><strong>Fragmented UDP being dropped</strong> — Large UDP responses fragment at the IP layer, and many networks drop fragments. The client sees a timeout rather than a truncation — the modern recommendation is to keep UDP answers under ~1400 bytes and rely on TCP beyond that.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm truncation and test TCP explicitly</h3>
+            <p>Watch for the TC flag, then force TCP. If UDP truncates and TCP times out, a firewall is blocking TCP 53 — that is the fix target.</p>
+            <pre><code>dig example.com TXT            # look for ';; Truncated'
+dig example.com TXT +tcp       # force TCP
+dig example.com TXT +bufsize=1232   # modern EDNS size</code></pre>
+            <h3>2. Open TCP port 53 through the firewall</h3>
+            <p>Allow outbound (and for servers, inbound) TCP 53 the same as UDP 53. DNS has required TCP support since the original specification — blocking it breaks large responses and zone transfers.</p>
+            <pre><code># example (iptables, server side):
+sudo iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+sudo iptables -A INPUT -p udp --dport 53 -j ACCEPT</code></pre>
+            <h3>3. Shrink oversized record sets</h3>
+            <p>Flatten SPF includes (each include is a lookup and adds size), delete stale verification TXT records, and split services across subdomains so no single name carries every record.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I know a response was truncated?</h3>
+            <p>dig prints ';; Truncated, retrying in TCP mode' and the response header shows the tc flag. If the TCP retry succeeds you will just see a normal (larger) answer; if TCP is blocked you will see the truncation message followed by a timeout.</p>
+            <h3>Is it safe to assume DNS only needs UDP?</h3>
+            <p>No — that is the misconception that causes this error. RFC 7766 makes TCP support mandatory for DNS. Zone transfers always used TCP, and any response over the UDP size limit requires it.</p>
+            <h3>What is a good EDNS buffer size?</h3>
+            <p>1232 bytes is the community-agreed default (from DNS Flag Day 2020) — large enough for most answers, small enough to avoid IP fragmentation on typical paths. Servers and resolvers negotiating larger sizes invite fragment drops.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-query-timeout">DNS Query Timeout</a> — what blocked TCP retries look like.</li>
+                <li><a href="/errors/dns/formerr">DNS FORMERR</a> — EDNS-related query failures.</li>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — resolver-side failures on large signed zones.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Inspect record sets and their size</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check TCP port 53 reachability on a server</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

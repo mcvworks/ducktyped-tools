@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 418 a real HTTP status code?","acceptedAnswer":{"@type":"Answer","text":"It was defined as a joke in RFC 2324 (April 1, 1998) for the Hyper Text Coffee Pot Control Protocol. It is not part of the official HTTP specification but has been widely implemented as an easter egg."}},{"@type":"Question","name":"Do real websites return 418?","acceptedAnswer":{"@type":"Answer","text":"Yes. Google returns 418 at google.com/teapot. Many frameworks include 418 support. Some servers use it humorously or as a non-standard rejection code for bots."}},{"@type":"Question","name":"Should I use 418 in my API?","acceptedAnswer":{"@type":"Answer","text":"No. For production APIs, use standard HTTP status codes. Using 418 can confuse monitoring tools and clients. Use 403 or 429 for blocking or rate limiting instead."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"418 I'm a Teapot — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 418 I'm a Teapot","step":[{"@type":"HowToStep","position":1,"name":"Check if the URL is correct","text":"Verify you are not hitting a joke endpoint. Some servers have /coffee, /teapot, or similar paths that intentionally return 418."},{"@type":"HowToStep","position":2,"name":"Contact the server operator","text":"If a legitimate API is returning 418, the server operator may be using it as a custom error code. Check the API documentation or contact support."},{"@type":"HowToStep","position":3,"name":"Review your request pattern","text":"If you suspect the server is using 418 to block your requests, review your request rate and user-agent string. Ensure you are not being flagged as a bot."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>418 I'm a Teapot — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn about HTTP 418 I'm a Teapot, the famous joke status code from RFC 2324. Understand its history, when servers use it, and what to do if you encounter it.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 418, 418 I&#39;m a Teapot, 418 error, I&#39;m a teapot, HTCPCP, RFC 2324, Teapot status code">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="418 I'm a Teapot — Causes &amp; Fixes">
+    <meta property="og:description" content="Learn about HTTP 418 I'm a Teapot, the famous joke status code from RFC 2324. Understand its history, when servers use it, and what to do if you encounter it.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/418-im-a-teapot">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/418-im-a-teapot">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>418 I'm a Teapot</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>418 I'm a Teapot</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server refuses to brew coffee because it is a teapot</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 418</code></li><li><code>418 I&#39;m a Teapot</code></li><li><code>418 error</code></li><li><code>I&#39;m a teapot</code></li><li><code>HTCPCP</code></li><li><code>RFC 2324</code></li><li><code>Teapot status code</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 418 I'm a Teapot response is an April Fools' joke defined in RFC 2324 (Hyper Text Coffee Pot Control Protocol). It indicates that the server refuses to brew coffee because it is, permanently, a teapot. While not a real HTTP status code, it has been implemented by many servers and frameworks as an easter egg and is sometimes used to silently reject unwanted requests like bots or scrapers.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Easter egg response</strong> — The server has implemented the 418 status code as a joke or easter egg, often triggered by specific endpoints like /coffee or /brew.</li>
+                <li><strong>Bot or scraper rejection</strong> — Some servers use 418 as a non-standard way to reject automated requests, bots, or scrapers without using a standard error code that might trigger retry logic.</li>
+                <li><strong>Rate limiting or abuse prevention</strong> — The server is using 418 as an unconventional rate limiting response to indicate that the client should stop making requests.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check if the URL is correct</h3>
+            <p>Verify you are not hitting a joke endpoint. Some servers have /coffee, /teapot, or similar paths that intentionally return 418.</p>
+            <h3>2. Contact the server operator</h3>
+            <p>If a legitimate API is returning 418, the server operator may be using it as a custom error code. Check the API documentation or contact support.</p>
+            <h3>3. Review your request pattern</h3>
+            <p>If you suspect the server is using 418 to block your requests, review your request rate and user-agent string. Ensure you are not being flagged as a bot.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 418 a real HTTP status code?</h3>
+            <p>It was defined as a joke in RFC 2324 (April 1, 1998) for the Hyper Text Coffee Pot Control Protocol. It is not part of the official HTTP specification but has been widely implemented as an easter egg.</p>
+            <h3>Do real websites return 418?</h3>
+            <p>Yes. Google returns 418 at google.com/teapot. Many frameworks include 418 support. Some servers use it humorously or as a non-standard rejection code for bots.</p>
+            <h3>Should I use 418 in my API?</h3>
+            <p>No. For production APIs, use standard HTTP status codes. Using 418 can confuse monitoring tools and clients. Use 403 or 429 for blocking or rate limiting instead.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — Server refuses to authorize the request</li>
+                <li><a href="/errors/http/429-too-many-requests">429 Too Many Requests</a> — Rate limit exceeded</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

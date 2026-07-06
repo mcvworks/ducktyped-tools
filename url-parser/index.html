@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"URL Parser","url":"https://ducktyped.xyz/url-parser/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Parse URLs into their components: protocol, host, port, path, query parameters, and fragment.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a URL parser?","acceptedAnswer":{"@type":"Answer","text":"A URL parser breaks down a URL into its component parts: protocol, hostname, port, pathname, query parameters, and fragment hash. This helps debug routing issues and understand URL structure."}},{"@type":"Question","name":"What are the parts of a URL?","acceptedAnswer":{"@type":"Answer","text":"A URL consists of: protocol (https://), hostname (example.com), port (:8080), pathname (/path/to/page), query string (?key=value), and fragment (#section). Each serves a different purpose."}},{"@type":"Question","name":"Is this URL parser free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. All parsing happens in your browser with no data sent to any server."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Parser — Break Down and Analyze URLs — duckTyped</title>
+    <meta name="description" content="Parse URLs into their components: protocol, host, port, path, query parameters, and fragment. Free URL analysis tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="URL Parser — duckTyped">
+    <meta property="og:description" content="Parse URLs into protocol, host, port, path, query, and fragment components.">
+    <meta property="og:url" content="https://ducktyped.xyz/url-parser/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/url-parser.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="URL Parser — duckTyped">
+    <meta name="twitter:description" content="Parse URLs into their individual components.">
+    <link rel="canonical" href="https://ducktyped.xyz/url-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>URL Parser</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Break down any URL into its individual components — protocol, hostname, port, path, query string, parameters, and fragment.</p><div class="example-box"><strong>Example uses:</strong><p>Debugging API endpoints, understanding complex URLs with many parameters, extracting specific URL parts for code.</p></div>
+            <a href="/learn/url-parser/" class="learn-more-link">Learn URL anatomy and encoding rules</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>URL Parser</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a URL to break it down into components.</p>
+            <div class="input-group"><label>URL:</label><input type="text" id="urlInput" value="https://example.com:8080/path/to/page?key=value&name=test#section" onkeypress="if(event.key==='Enter') parseURL()"></div>
+            <button onclick="parseURL()">Parse URL</button>
+            <div id="urlResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/url-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Encoder</a>
+            <a href="/query-string-parser/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Query String Parser</a>
+            <a href="/redirect-checker/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Redirect Checker</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace the full redirect chain for any URL, showing each hop and status code</span>
+                </a>
+                <a href="/link-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Link Checker</span>
+                    <span class="recommended-tool-desc">Check a webpage for broken links, dead URLs, and HTTP error responses</span>
+                </a>
+                <a href="/robots-analyzer/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Robots.txt Analyzer</span>
+                    <span class="recommended-tool-desc">Fetch and analyze a site's robots.txt file to understand crawl rules and…</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/url-parser/">URL Parser — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function parseURL() {
+        var input = document.getElementById('urlInput').value.trim(), r = document.getElementById('urlResult');
+        if (!input) { r.innerHTML = ''; return; }
+        try {
+            var u = new URL(input);
+            var fields = [['Protocol', u.protocol],['Hostname', u.hostname],['Port', u.port || '(default)'],['Pathname', u.pathname],['Search', u.search || '(none)'],['Hash', u.hash || '(none)'],['Origin', u.origin],['Username', u.username || '(none)'],['Password', u.password || '(none)']];
+            var html = '<div style="margin-top:15px;">';
+            fields.forEach(function(f, idx) {
+                html += '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border-color);align-items:center;"><span style="font-weight:600;color:var(--primary-color);min-width:120px;">'+escapeHtml(f[0])+'</span><span style="color:var(--text-primary);word-break:break-all;text-align:right;">'+escapeHtml(f[1])+'</span><button data-copy-val="'+idx+'" style="padding:4px 10px;font-size:0.8em;margin-left:8px;min-width:auto;">Copy</button></div>';
+            });
+            window._urlFields = fields;
+            if (u.searchParams && u.search) {
+                html += '<div style="margin-top:15px;padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><h4 style="color:var(--primary-color);margin-bottom:8px;">Query Parameters</h4>';
+                html += '<table style="width:100%;border-collapse:collapse;"><tr style="border-bottom:2px solid var(--border-color);"><th style="text-align:left;padding:6px;color:var(--primary-color);">Key</th><th style="text-align:left;padding:6px;color:var(--primary-color);">Value</th></tr>';
+                u.searchParams.forEach(function(v, k) { html += '<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;color:var(--text-primary);font-weight:600;">'+escapeHtml(k)+'</td><td style="padding:6px;color:var(--text-secondary);">'+escapeHtml(v)+'</td></tr>'; });
+                html += '</table></div>';
+            }
+            html += '</div>';
+            r.innerHTML = html;
+            r.querySelectorAll('[data-copy-val]').forEach(function(btn) {
+                btn.addEventListener('click', function() { navigator.clipboard.writeText(window._urlFields[parseInt(this.getAttribute('data-copy-val'))][1]); });
+            });
+        } catch(e) { r.innerHTML = '<p style="color:#ef4444;margin-top:12px;">Invalid URL: ' + escapeHtml(e.message) + '</p>'; }
+    }
+    parseURL();
+    </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Developer Tools — DNS, SSL, Email & More — duckTyped</title>
+<meta name="description" content="55+ free developer and IT tools: DNS checker, SSL validator, JSON formatter, email diagnostics, port scanner, and more. No sign-up. No tracking. Works instantly.">
+<meta name="author" content="duckTyped">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Developer Tools — DNS, SSL, Email & More — duckTyped">
+<meta property="og:description" content="55+ free developer tools: DNS checker, SSL validator, JSON formatter, email diagnostics, and more. No sign-up. No tracking.">
+<meta property="og:url" content="https://ducktyped.xyz/">
+<meta property="og:site_name" content="duckTyped">
+<meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Developer Tools — DNS, SSL, Email & More — duckTyped">
+<meta name="twitter:description" content="55+ free developer tools. DNS, SSL, JSON, email diagnostics, and more. No sign-up, no tracking.">
+<link rel="canonical" href="https://ducktyped.xyz/">
+<link rel="icon" type="image/png" href="dtlogo_lg.svg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"duckTyped","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"55+ free developer and IT tools including DNS checker, SSL certificate validator, JSON formatter, email diagnostics, password generator, WHOIS lookup, port scanner, and more. No sign-up required.","browserRequirements":"Requires JavaScript","softwareVersion":"3.0","author":{"@type":"Organization","name":"duckTyped"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg-0:#0F1114;--bg-1:#12161C;--panel:rgba(21,26,34,.70);--panel-solid:#151A22;--border:#232A35;--text-0:#E9EEF5;--text-1:#B8C0CC;--muted:#8892A0;--brand-yellow:#F2C200;--brand-teal:#48E0C7;--brand-orange:#FA6216;--radius-xl:20px;--radius-lg:16px;--radius-md:12px;--font-display:'Orbitron',monospace;--font-body:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);color:var(--text-0);background:var(--bg-0);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(1200px 800px at 30% 15%,rgba(255,255,255,.06),transparent 55%),radial-gradient(1000px 700px at 70% 60%,rgba(72,224,199,.04),transparent 60%),linear-gradient(180deg,#0F1114,#0B0D10)}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.container{width:100%;max-width:1160px;margin:0 auto;padding:0 24px}
+.unified-nav{position:sticky;top:0;z-index:100;padding:14px 24px}
+.unified-nav-inner{display:flex;align-items:center;gap:8px;background:rgba(21,26,34,.65);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--border);border-radius:var(--radius-xl);padding:10px 20px;max-width:900px;margin:0 auto}
+.unified-nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-0);margin-right:auto}
+.unified-nav-brand img{height:32px;width:auto}
+.unified-nav-brand-text{font-family:var(--font-display);font-weight:700;font-size:1rem;letter-spacing:1.5px}
+.unified-nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+.unified-nav-links a{font-weight:500;font-size:.85rem;color:var(--text-1);text-decoration:none;padding:7px 14px;border-radius:var(--radius-md);letter-spacing:.4px;transition:color .2s,background .2s}
+.unified-nav-links a:hover{color:var(--text-0);background:rgba(255,255,255,.06)}
+.unified-nav-links a.active{color:var(--brand-yellow);background:rgba(242,194,0,.08)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:600;font-size:.9rem;letter-spacing:.3px;padding:11px 26px;border-radius:var(--radius-md);cursor:pointer;text-decoration:none;border:none;white-space:nowrap;transition:transform .2s,box-shadow .25s,background .2s,border-color .2s}
+.btn-primary{background:var(--brand-yellow);color:#111318;border:1px solid rgba(255,255,255,.10);box-shadow:0 10px 30px rgba(242,194,0,.18)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(242,194,0,.26);background:#FFD020}
+.btn-ghost{background:transparent;color:var(--text-0);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);transform:translateY(-2px)}
+.btn-sm{padding:8px 18px;font-size:.82rem}
+.unified-nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;margin-left:4px}
+.unified-nav-toggle span{display:block;width:20px;height:2px;background:var(--text-0);margin:4px 0;border-radius:2px;transition:transform .25s,opacity .25s}
+.hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:80px 24px 60px;overflow:hidden}
+.hero-bg-glow{position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:900px;height:600px;pointer-events:none;z-index:0;background:radial-gradient(circle at 40% 45%,rgba(242,194,0,.06) 0%,transparent 50%),radial-gradient(circle at 65% 55%,rgba(72,224,199,.04) 0%,transparent 45%)}
+.showcase{position:relative;z-index:1;width:100%;max-width:640px;background:var(--panel-solid);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);margin-bottom:0}
+.showcase-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.showcase-tool-name{font-family:var(--font-display);font-size:.75rem;letter-spacing:1.5px;color:var(--brand-yellow);text-transform:uppercase}
+.showcase-dots{display:flex;gap:6px}
+.showcase-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .3s;cursor:pointer}
+.showcase-dot.active{background:var(--brand-yellow)}
+.showcase-body{padding:24px;min-height:200px;font-family:'Fira Code','SF Mono','Cascadia Code',monospace;font-size:.85rem;position:relative}
+.showcase-slide{display:none;animation:fadeSlide .4s ease}
+.showcase-slide.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.demo-label{font-family:var(--font-body);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.demo-before{color:var(--muted);margin-bottom:12px;padding:12px;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.04);text-align:left;font-size:.8rem;line-height:1.6;white-space:pre-wrap;overflow:hidden}
+.demo-arrow{text-align:center;color:var(--brand-teal);font-size:1.2rem;margin:10px 0}
+.demo-after{color:var(--text-0);padding:12px;background:rgba(242,194,0,.04);border-radius:8px;border:1px solid rgba(242,194,0,.1);text-align:left;font-size:.8rem;line-height:1.6;white-space:pre-wrap;overflow:hidden}
+.demo-result{color:var(--brand-teal)}
+.demo-value{color:var(--brand-yellow)}
+.hero-wordmark{position:relative;z-index:1;font-family:var(--font-display);font-weight:700;font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:2px;color:var(--text-0);margin-bottom:16px}
+.hero-wordmark .cursor{display:inline-block;color:var(--brand-teal);animation:blink 1s step-end infinite;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-headline{position:relative;z-index:1;font-weight:500;font-size:clamp(1.1rem,2.4vw,1.5rem);color:var(--text-1);margin-bottom:14px;max-width:520px;line-height:1.5}
+.hero-headline .accent{color:var(--brand-yellow);font-weight:700}
+.hero-sub{position:relative;z-index:1;font-size:.92rem;color:var(--muted);margin-bottom:36px;max-width:460px}
+.hero-ctas{position:relative;z-index:1;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
+.stats-bar{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;padding:32px 0 0;position:relative;z-index:1}
+.stat{text-align:center}
+.stat-number{font-family:var(--font-display);font-weight:700;font-size:1.8rem;color:var(--brand-yellow);letter-spacing:1px}
+.stat-label{font-size:.78rem;color:var(--muted);letter-spacing:.5px;margin-top:4px}
+.categories{padding:40px 0 80px}
+.categories-title{text-align:center;font-weight:600;font-size:clamp(1.4rem,3vw,2rem);color:var(--text-0);margin-bottom:16px}
+.categories-sub{text-align:center;color:var(--muted);font-size:.92rem;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:800px;margin:0 auto}
+.cat-pill{display:flex;align-items:center;gap:10px;padding:16px 20px;background:var(--panel-solid);border:1px solid var(--border);border-radius:var(--radius-md);text-decoration:none;color:var(--text-1);font-weight:500;font-size:.88rem;transition:all .2s}
+.cat-pill:hover{border-color:rgba(242,194,0,.25);color:var(--text-0);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.cat-pill .cat-emoji{font-size:1.2em}
+.cat-pill .cat-count{margin-left:auto;font-size:.72rem;color:var(--muted);font-family:var(--font-display);letter-spacing:1px}
+.footer{border-top:1px solid var(--border);padding:36px 0;text-align:center}
+.footer-brand{font-family:var(--font-display);font-weight:600;font-size:.8rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:14px;list-style:none}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.82rem;transition:color .2s}
+.footer-links a:hover{color:var(--text-0)}
+.footer-copy{font-size:.75rem;color:rgba(136,146,160,.5)}
+.fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .6s ease forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}
+@media(max-width:640px){.unified-nav-inner{padding:10px 14px}.unified-nav-brand-text{display:none}.unified-nav-links{display:none}.unified-nav-toggle{display:block}.unified-nav-links.open{display:flex;position:fixed;top:0;right:0;bottom:0;width:240px;background:#151A22;border-left:1px solid var(--border);flex-direction:column;padding:70px 20px 40px;gap:4px;z-index:200;animation:slideIn .3s ease}.unified-mobile-overlay{display:none}.unified-mobile-overlay.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}}
+@media(max-width:768px){.hero{padding:60px 16px 40px}.showcase{max-width:100%}.showcase-body{padding:16px;min-height:170px}.stats-bar{gap:24px}.cat-grid{grid-template-columns:repeat(2,1fr)}}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.discovery{padding:0 0 80px}
+.discovery-header{text-align:center;margin-bottom:36px}
+.discovery-label{font-family:var(--font-display);font-size:.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.discovery-title{font-weight:600;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--text-0)}
+.disc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.disc-card{display:block;background:var(--panel-solid);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px 22px;text-decoration:none;transition:all .2s}
+.disc-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.disc-card--tool:hover{border-color:rgba(242,194,0,.3)}
+.disc-card-name{font-weight:600;font-size:.95rem;color:var(--text-0);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.disc-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+/* Nav search (injected by site-search.js) */
+.nav-search-wrap{position:relative;display:flex;align-items:center;margin-left:4px}
+.nav-search-icon-btn{display:none;background:none;border:none;cursor:pointer;color:var(--text-1);padding:6px;border-radius:10px;transition:color .2s,background .2s;line-height:0}
+.nav-search-icon-btn:hover{color:var(--brand-yellow);background:rgba(242,194,0,.08)}
+.nav-search-input{background:var(--bg-1);border:1px solid var(--border);border-radius:10px;color:var(--text-0);font-family:var(--font-body);font-size:.82rem;padding:6px 12px;width:180px;transition:width .25s ease,border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none}
+.nav-search-input::placeholder{color:var(--muted);font-size:.82rem}
+.nav-search-input:focus{width:240px;border-color:rgba(242,194,0,.4);box-shadow:0 0 0 3px rgba(242,194,0,.08)}
+.nav-search-input::-webkit-search-cancel-button{-webkit-appearance:none}
+.nav-search-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:380px;max-height:480px;overflow-y:auto;background:var(--panel-solid);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.4);z-index:2000;animation:navSearchFadeIn .15s ease}
+@keyframes navSearchFadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.nav-search-item{display:flex;align-items:flex-start;gap:8px;padding:8px 14px;text-decoration:none;color:var(--text-0);border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer}
+.nav-search-item:last-child{border-bottom:none}
+.nav-search-item-body{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.nav-search-item:hover,.nav-search-item--active{background:rgba(242,194,0,.06);outline:none}
+.nav-search-badge{font-family:var(--font-display);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:6px;white-space:nowrap;margin-top:2px;flex-shrink:0}
+.nav-search-badge--tool{background:rgba(242,194,0,.12);color:var(--brand-yellow)}
+.nav-search-badge--learn{background:rgba(72,224,199,.10);color:var(--brand-teal)}
+.nav-search-badge--error{background:rgba(250,98,22,.10);color:var(--brand-orange)}
+.nav-search-badge--category{background:rgba(160,120,255,.12);color:#a078ff}
+.nav-search-item-title{font-size:.86rem;font-weight:600;color:var(--text-0);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-search-item-desc{font-size:.75rem;color:var(--text-1);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-search-empty{padding:20px 14px;font-size:.85rem;color:var(--muted);text-align:center}
+.nav-search-empty-icon{font-size:1.5em;margin-bottom:6px;opacity:.5}
+.nav-search-empty-hint{font-size:.75rem;margin-top:4px;opacity:.7}
+.nav-search-group{border-bottom:1px solid var(--border)}
+.nav-search-group:last-child{border-bottom:none}
+.nav-search-group-label{padding:6px 14px 3px;font-family:var(--font-display);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:rgba(255,255,255,.02)}
+.nav-search-hl{background:rgba(242,194,0,.25);color:inherit;border-radius:2px;padding:0 1px}
+.nav-search-footer{padding:6px 14px;font-size:.7rem;color:var(--muted);text-align:center;border-top:1px solid var(--border)}
+@media(max-width:640px){.nav-search-icon-btn{display:flex;align-items:center;justify-content:center}.nav-search-input{display:none;width:0}.nav-search-wrap--open .nav-search-icon-btn{color:var(--brand-yellow)}.nav-search-wrap--open .nav-search-input{display:block;position:fixed;top:14px;left:14px;right:14px;width:auto;z-index:1200;border-radius:12px;font-size:1rem;padding:10px 14px;border-color:rgba(242,194,0,.4);box-shadow:0 12px 40px rgba(0,0,0,.4)}.nav-search-wrap--open .nav-search-dropdown{position:fixed;top:64px;left:14px;right:14px;width:auto;z-index:1201}}
+</style>
+</head>
+<body>
+<nav class="unified-nav"><div class="unified-nav-inner">
+  <a href="/" class="unified-nav-brand"><img src="dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a>
+  <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+  <ul class="unified-nav-links" id="navLinks">
+    <li><a href="/utility/">Utility</a></li>
+    <li><a href="/learn/">Learn</a></li>
+    <li><a href="/errors/">Troubleshoot</a></li>
+  </ul>
+  <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</div></nav>
+<section class="hero">
+  <div class="hero-bg-glow"></div>
+  <h1 class="hero-wordmark fade-up">duckTyped<span class="cursor">_</span></h1>
+  <p class="hero-headline fade-up delay-1">Developer tools that <span class="accent">just work.</span></p>
+  <p class="hero-sub">DNS, SSL, JSON, email diagnostics, and more — <span data-dt-count="tools">55</span> free tools that run in your browser. <strong>No accounts. No cookies. No data stored.</strong></p>
+  <div class="hero-ctas">
+    <a href="/utility/" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg> <span>Browse <span data-dt-count="tools">55</span>+ Tools</span></a>
+    <a href="/errors/" class="btn btn-ghost">Troubleshoot an Error</a>
+  </div>
+  <p class="hero-sub" style="font-size: 0.88em; margin-top: 14px;">Not sure where to start? <a href="/dns-lookup/" style="color: var(--brand-yellow); text-decoration: none;">Try the DNS Lookup &rarr;</a></p>
+  <div class="showcase fade-up delay-2">
+    <div class="showcase-header">
+      <span class="showcase-tool-name" id="showcaseToolName">JSON Formatter</span>
+      <div class="showcase-dots">
+        <span class="showcase-dot active" data-idx="0"></span>
+        <span class="showcase-dot" data-idx="1"></span>
+        <span class="showcase-dot" data-idx="2"></span>
+      </div>
+    </div>
+    <div class="showcase-body">
+      <div class="showcase-slide active" data-slide="0">
+        <div class="demo-label">Input</div>
+        <div class="demo-before">{"name":"duckTyped","tools":57,"tracking":false}</div>
+        <div class="demo-arrow">&darr;</div>
+        <div class="demo-label">Formatted</div>
+        <div class="demo-after">{
+  <span class="demo-value">"name"</span>: "duckTyped",
+  <span class="demo-value">"tools"</span>: 57,
+  <span class="demo-value">"tracking"</span>: <span class="demo-result">false</span>
+}</div>
+      </div>
+      <div class="showcase-slide" data-slide="1">
+        <div class="demo-label">Query</div>
+        <div class="demo-before">$ dig example.com ANY</div>
+        <div class="demo-arrow">&darr;</div>
+        <div class="demo-label">Results</div>
+        <div class="demo-after"><span class="demo-result">A</span>      93.184.216.34        <span class="demo-value">TTL 3600</span>
+<span class="demo-result">MX</span>     mail.example.com     <span class="demo-value">pri 10</span>
+<span class="demo-result">TXT</span>    v=spf1 include:_spf.google.com
+<span class="demo-result">NS</span>     ns1.example.com      <span class="demo-value">TTL 86400</span></div>
+      </div>
+      <div class="showcase-slide" data-slide="2">
+        <div class="demo-label">Settings</div>
+        <div class="demo-before">Length: 24  |  Symbols: yes  |  Numbers: yes</div>
+        <div class="demo-arrow">&darr;</div>
+        <div class="demo-label">Generated</div>
+        <div class="demo-after"><span class="demo-value" style="font-size:1.1rem;letter-spacing:1px">k9$Vm#pL2x@Nq8!wR4&amp;jT6*f</span>
+
+Entropy:  <span class="demo-result">148.7 bits</span>
+Strength: <span class="demo-result">Excellent</span>
+Crack time: <span class="demo-result">&gt; 10,000 centuries</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="categories"><div class="container">
+  <h2 class="categories-title">Browse by category</h2>
+  <p class="categories-sub">Or search across everything from the dashboard.</p>
+  <div class="cat-grid">
+    <a href="/tools/network-tools/" class="cat-pill"><span class="cat-emoji">🌐</span> Network <span class="cat-count" data-dt-cat="network"></span></a>
+    <a href="/tools/security-tools/" class="cat-pill"><span class="cat-emoji">🔒</span> Security <span class="cat-count" data-dt-cat="security"></span></a>
+    <a href="/tools/email-tools/" class="cat-pill"><span class="cat-emoji">📧</span> Email <span class="cat-count" data-dt-cat="email"></span></a>
+    <a href="/tools/dev-tools/" class="cat-pill"><span class="cat-emoji">🔗</span> URL / Web <span class="cat-count" data-dt-cat="url"></span></a>
+    <a href="/tools/dev-tools/" class="cat-pill"><span class="cat-emoji">📱</span> QR Codes <span class="cat-count" data-dt-cat="qr"></span></a>
+    <a href="/tools/dev-tools/" class="cat-pill"><span class="cat-emoji">🛠️</span> Dev Tools <span class="cat-count" data-dt-cat="dev"></span></a>
+    <a href="/tools/network-tools/" class="cat-pill"><span class="cat-emoji">🔍</span> Lookup <span class="cat-count" data-dt-cat="lookup"></span></a>
+  </div>
+</div></section>
+<section class="discovery"><div class="container">
+  <div class="discovery-header">
+    <div class="discovery-label">Popular Tools</div>
+    <h2 class="discovery-title">Most-used utilities</h2>
+  </div>
+  <div class="disc-grid">
+    <a href="/json-formatter/" class="disc-card disc-card--tool">
+      <div class="disc-card-name">JSON Formatter</div>
+      <div class="disc-card-desc">Validate, format, and prettify JSON data instantly in the browser.</div>
+    </a>
+    <a href="/base64-encoder/" class="disc-card disc-card--tool">
+      <div class="disc-card-name">Base64 Encoder</div>
+      <div class="disc-card-desc">Encode and decode Base64 strings and files without leaving your browser.</div>
+    </a>
+    <a href="/dns-lookup/" class="disc-card disc-card--tool">
+      <div class="disc-card-name">DNS Record Checker</div>
+      <div class="disc-card-desc">Query A, MX, TXT, NS, CNAME, and more for any domain instantly.</div>
+    </a>
+    <a href="/regex-tester/" class="disc-card disc-card--tool">
+      <div class="disc-card-name">Regex Tester</div>
+      <div class="disc-card-desc">Build, test, and debug regular expressions with live match highlighting.</div>
+    </a>
+  </div>
+</div></section>
+<footer class="footer"><div class="container">
+  <div class="footer-brand">DUCKTYPED</div>
+  <ul class="footer-links">
+    <li><a href="/utility/">Tools</a></li>
+    <li><a href="/learn/">Learn</a></li>
+    <li><a href="/errors/">Troubleshoot</a></li>
+    <li><a href="/utility/#dnsChecker">DNS</a></li>
+    <li><a href="/utility/#sslChecker">SSL</a></li>
+    <li><a href="/utility/#passwordGen">Passwords</a></li>
+    <li><a href="/feedback/">Suggest &amp; Feedback</a></li>
+  </ul>
+  <p class="footer-copy">&copy; <span class="footer-year"></span> duckTyped. All rights reserved.</p>
+  <p class="footer-badge">
+    <a href="https://fazier.com/launches/ducktyped.xyz" target="_blank" rel="noopener">
+      <img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&amp;theme=dark" width="120" height="34" loading="lazy" alt="Featured on Fazier" />
+    </a>
+  </p>
+</div></footer>
+<script>
+const navToggle=document.getElementById('navToggle'),navLinks=document.getElementById('navLinks'),overlay=document.getElementById('mobileOverlay');
+navToggle.addEventListener('click',()=>{navLinks.classList.toggle('open');overlay.classList.toggle('open')});
+overlay.addEventListener('click',()=>{navLinks.classList.remove('open');overlay.classList.remove('open')});
+</script>
+<script defer src="/utility/standalone-init.js"></script>
+<script>
+(function(){
+  var slides=document.querySelectorAll('.showcase-slide'),
+      dots=document.querySelectorAll('.showcase-dot'),
+      toolName=document.getElementById('showcaseToolName'),
+      names=['JSON Formatter','DNS Lookup','Password Generator'];
+  function goTo(idx){
+    slides.forEach(function(s){s.classList.remove('active')});
+    dots.forEach(function(d){d.classList.remove('active')});
+    slides[idx].classList.add('active');
+    dots[idx].classList.add('active');
+    toolName.textContent=names[idx];
+  }
+  dots.forEach(function(d){
+    d.addEventListener('click',function(){goTo(parseInt(d.dataset.idx))});
+  });
+})();
+</script>
+</body>
+</html>

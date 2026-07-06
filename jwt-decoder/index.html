@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Decoder","url":"https://ducktyped.xyz/jwt-decoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode JSON Web Tokens (JWT) to inspect header, payload, claims, and expiration. Runs entirely in your browser. Free JWT decoder tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a JWT?","acceptedAnswer":{"@type":"Answer","text":"A JSON Web Token (JWT) is a compact, URL-safe token format used for securely transmitting claims between parties. It consists of three Base64-encoded parts: header, payload, and signature."}},{"@type":"Question","name":"Can this tool verify JWT signatures?","acceptedAnswer":{"@type":"Answer","text":"This tool decodes and displays JWT contents (header and payload). It shows the algorithm used and expiration time, but signature verification requires the signing key or public key."}},{"@type":"Question","name":"Is it safe to paste my JWT here?","acceptedAnswer":{"@type":"Answer","text":"Yes. All JWT decoding happens entirely in your browser. No data is sent to any server. However, never share JWTs publicly as they may contain sensitive claims."}},{"@type":"Question","name":"What is the difference between JWT decoding and verification?","acceptedAnswer":{"@type":"Answer","text":"Decoding simply reads the Base64-encoded header and payload — anyone can do this. Verification checks the signature against a secret or public key to confirm the token has not been tampered with."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Decoder — Decode JSON Web Tokens Online — duckTyped</title>
+    <meta name="description" content="Decode JSON Web Tokens (JWT) to inspect header, payload, claims, and expiration. Runs entirely in your browser. Free JWT decoder tool.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JWT Decoder — Decode JSON Web Tokens Online — duckTyped">
+    <meta property="og:description" content="Decode JSON Web Tokens (JWT) to inspect header, payload, claims, and expiration. Runs entirely in your browser. Free JWT decoder tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/jwt-decoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/jwt-decoder.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JWT Decoder — Decode JSON Web Tokens Online — duckTyped">
+    <meta name="twitter:description" content="Decode JSON Web Tokens (JWT) to inspect header, payload, claims, and expiration. Runs entirely in your browser. Free JWT decoder tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/jwt-decoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <!-- SEO Content -->
+        <div class="standalone-hero">
+            <h1>JWT Decoder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Decode JSON Web Tokens to inspect the header algorithm, payload claims, expiration status, and signature. Everything runs locally in your browser — your tokens are never sent to a server.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Debugging authentication issues by inspecting JWT claims, checking token expiration times, verifying the algorithm used for signing, or examining custom claims in API tokens.</p></div>
+            <a href="/learn/jwt-decoder/" class="learn-more-link">Learn how JWT tokens work</a>
+        </div>
+
+        <!-- Tool -->
+        <div class="standalone-tool-wrap">
+            <div class="tool-card standalone-card" id="jwtDecoder">
+                <h2>JWT Decoder</h2>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Decode JSON Web Tokens to inspect header, payload, and claims. Check expiration status and issued-at time. Runs entirely in your browser.
+                </p>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <button class="try-example-btn" onclick="document.getElementById('jwtInput').value='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkphbmUgRGV2ZWxvcGVyIiwiaWF0IjoxNzA5ODYwMDAwLCJleHAiOjE3NDE0ODI0MDAsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiamFuZUBleGFtcGxlLmNvbSJ9.SFLKJ23fsDKJhf89sdKJHF98sdkjf23SDFKJhsdf32';decodeJWT()">Try an example JWT</button>
+                </div>
+                <div class="input-group">
+                    <label>JWT Token:</label>
+                    <textarea id="jwtInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="min-height: 100px; font-family: var(--font-mono); font-size: 0.85em; word-break: break-all;"></textarea>
+                    <span class="tool-input-hint">A JWT has 3 parts separated by dots: <code>header.payload.signature</code></span>
+                </div>
+                <button onclick="decodeJWT()">Decode JWT</button>
+                <div id="jwtResults"></div>
+                <details class="tool-quick-ref">
+                    <summary>Common JWT Claims</summary>
+                    <div class="tool-quick-ref-body">
+                        <table>
+                            <tr><th>Claim</th><th>Meaning</th></tr>
+                            <tr><td><code>sub</code></td><td>Subject (user ID)</td></tr>
+                            <tr><td><code>iss</code></td><td>Issuer (who created the token)</td></tr>
+                            <tr><td><code>aud</code></td><td>Audience (intended recipient)</td></tr>
+                            <tr><td><code>exp</code></td><td>Expiration time (Unix timestamp)</td></tr>
+                            <tr><td><code>iat</code></td><td>Issued at (Unix timestamp)</td></tr>
+                            <tr><td><code>nbf</code></td><td>Not before (valid after this time)</td></tr>
+                            <tr><td><code>jti</code></td><td>JWT ID (unique identifier)</td></tr>
+                        </table>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/jwt-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JWT Generator</span>
+                    <span class="recommended-tool-desc">Generate JSON Web Tokens (JWT) with custom claims and signing</span>
+                </a>
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/jwt-decoder/">JSON Web Tokens (JWT) Explained</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/nginx/upstream-sent-too-big-header">Nginx Upstream Sent Too Big Header</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta">
+            <p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-encoding.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-dev.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

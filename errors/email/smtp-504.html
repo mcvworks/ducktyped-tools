@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is SMTP 504 different from SMTP 502?","acceptedAnswer":{"@type":"Answer","text":"SMTP 502 means the entire command is not implemented. SMTP 504 means the command is implemented but a specific parameter variant is not. For example, AUTH is available (not 502) but AUTH GSSAPI is not (504)."}},{"@type":"Question","name":"Can I determine which parameters a server supports?","acceptedAnswer":{"@type":"Answer","text":"Yes. Send an EHLO command and examine the response. Each extension line indicates a supported capability and its parameters. For AUTH, the supported mechanisms are listed after 'AUTH' in the EHLO response."}},{"@type":"Question","name":"Will retrying the same command with the same parameter work later?","acceptedAnswer":{"@type":"Answer","text":"No. SMTP 504 is a permanent error. The parameter is not implemented and will not be accepted on retry. You must use a different, supported parameter."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 504 — Command Parameter Not Implemented — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 504 — Command Parameter Not Implemented","step":[{"@type":"HowToStep","position":1,"name":"Use a supported AUTH mechanism","text":"Check which authentication mechanisms the server advertises and use one of those."},{"@type":"HowToStep","position":2,"name":"Remove unsupported MAIL FROM parameters","text":"If the MAIL FROM command includes extension parameters, remove them and use the basic form to see if the command succeeds."},{"@type":"HowToStep","position":3,"name":"Check server capabilities before using extensions","text":"Only use ESMTP extension parameters that the server explicitly advertises in its EHLO response. Do not assume any extensions are available."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 504 — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 504 command parameter not implemented errors. Learn why SMTP servers reject specific command parameters and how to use supported alternatives.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 504, 504 Command parameter not implemented, 504 Unrecognized authentication type">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 504 — Command Parameter Not Implemented — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 504 command parameter not implemented errors. Learn why SMTP servers reject specific command parameters and how to use supported alternatives.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-504">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-504">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 504 — Command Parameter Not Implemented</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 504 — Command Parameter Not Implemented</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP command parameter is not implemented on this server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 504</code></li><li><code>504 Command parameter not implemented</code></li><li><code>504 Unrecognized authentication type</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 504 is a permanent error indicating that the server supports the SMTP command but does not implement the specific parameter or argument used with it. The command itself is valid and implemented, but the particular option or variant requested is not available. This commonly occurs with unsupported AUTH mechanisms, unrecognized MAIL FROM parameters, or SIZE declarations that exceed server limits.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Unsupported AUTH mechanism</strong> — The client requested an authentication mechanism (such as GSSAPI, DIGEST-MD5, or EXTERNAL) that the server does not implement. The server supports AUTH but not the specific mechanism requested.</li>
+                <li><strong>Unsupported MAIL FROM extension parameter</strong> — The client included an ESMTP extension parameter in the MAIL FROM command (such as BODY=BINARYMIME or AUTH=) that the server does not support.</li>
+                <li><strong>Unrecognized EHLO parameter format</strong> — The hostname or address literal provided with EHLO uses a format the server does not support, such as an IPv6 address literal on a server that only handles IPv4.</li>
+                <li><strong>SIZE parameter exceeds server maximum</strong> — The SIZE parameter in the MAIL FROM command declares a message size larger than what the server is configured to accept.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Use a supported AUTH mechanism</h3>
+            <p>Check which authentication mechanisms the server advertises and use one of those.</p>
+            <pre><code># Check supported AUTH mechanisms from EHLO response
+# Server responds:
+# 250-AUTH LOGIN PLAIN XOAUTH2
+
+# Use a supported mechanism
+AUTH LOGIN
+AUTH PLAIN</code></pre>
+            <h3>2. Remove unsupported MAIL FROM parameters</h3>
+            <p>If the MAIL FROM command includes extension parameters, remove them and use the basic form to see if the command succeeds.</p>
+            <pre><code># Basic MAIL FROM (always supported)
+MAIL FROM:&lt;sender@example.com&gt;
+
+# Extended form (may not be supported)
+MAIL FROM:&lt;sender@example.com&gt; BODY=8BITMIME SIZE=1048576</code></pre>
+            <h3>3. Check server capabilities before using extensions</h3>
+            <p>Only use ESMTP extension parameters that the server explicitly advertises in its EHLO response. Do not assume any extensions are available.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is SMTP 504 different from SMTP 502?</h3>
+            <p>SMTP 502 means the entire command is not implemented. SMTP 504 means the command is implemented but a specific parameter variant is not. For example, AUTH is available (not 502) but AUTH GSSAPI is not (504).</p>
+            <h3>Can I determine which parameters a server supports?</h3>
+            <p>Yes. Send an EHLO command and examine the response. Each extension line indicates a supported capability and its parameters. For AUTH, the supported mechanisms are listed after 'AUTH' in the EHLO response.</p>
+            <h3>Will retrying the same command with the same parameter work later?</h3>
+            <p>No. SMTP 504 is a permanent error. The parameter is not implemented and will not be accepted on retry. You must use a different, supported parameter.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-502">SMTP 502</a> — Command not implemented</li>
+                <li><a href="/errors/email/smtp-535">SMTP 535</a> — Authentication failed</li>
+                <li><a href="/errors/email/smtp-500">SMTP 500</a> — Command syntax error</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server capabilities and extensions</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

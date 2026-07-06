@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"The browser shows a plain 'File not found.' — same thing?","acceptedAnswer":{"@type":"Answer","text":"Yes — that text is PHP-FPM's stderr for an unknown primary script, passed through Apache with a 404. AH01071 in Apache's error log is the server-side twin of that message."}},{"@type":"Question","name":"Why is SetHandler recommended over ProxyPassMatch?","acceptedAnswer":{"@type":"Answer","text":"ProxyPassMatch bypasses Apache's normal filesystem mapping and forces you to encode the docroot in the pattern — a second copy of the truth that rots. SetHandler runs after normal URL→file translation, so whatever docroot the vhost uses is automatically correct, per vhost, including aliases."}},{"@type":"Question","name":"Does this differ from nginx's 'Primary script unknown'?","acceptedAnswer":{"@type":"Answer","text":"Same PHP-FPM message, different translation layer: nginx builds SCRIPT_FILENAME from fastcgi_param; Apache from the handler/proxy config. The diagnosis is shared (does the file exist where PHP-FPM looks?), the fix lives in each server's own config."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM) — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM) — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH01071 'Primary script unknown' with PHP-FPM. SetHandler proxy:fcgi paths, docroot mismatches, and chroot/container filesystem splits.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH01071: Got error &#39;Primary script unknown&#39;, ah01071, apache php-fpm file not found, primary script unknown apache">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM) — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH01071 'Primary script unknown' with PHP-FPM. SetHandler proxy:fcgi paths, docroot mismatches, and chroot/container filesystem splits.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/primary-script-unknown-php-fpm">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/primary-script-unknown-php-fpm">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM)</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'AH01071: Got error \'Primary script unknown\'' — Apache proxied a request to PHP-FPM, which could not find the script. Browsers show 'File not found.'</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH01071: Got error &#39;Primary script unknown&#39;</code></li><li><code>ah01071</code></li><li><code>apache php-fpm file not found</code></li><li><code>primary script unknown apache</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>With the modern Apache+PHP setup (mod_proxy_fcgi to PHP-FPM), Apache translates the request into a filesystem path and asks PHP-FPM to execute it. AH01071 wraps PHP-FPM's answer: no such script from where PHP-FPM stands. As with the nginx twin of this error, the mismatch is almost always in path translation — the SetHandler/ProxyPassMatch expression builds a path that is wrong, or PHP-FPM sees a different filesystem (chroot, container) than Apache does.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>ProxyPassMatch built the wrong path</strong> — Old-style ProxyPassMatch rules embed the docroot literally; after a docroot change or on a second vhost, the hardcoded path no longer matches reality.</li>
+                <li><strong>PHP-FPM sees a different filesystem</strong> — PHP-FPM in a container or chroot does not share Apache's paths — the path Apache sends does not exist inside PHP-FPM's world.</li>
+                <li><strong>The script genuinely missing</strong> — Deploy didn't copy index.php, or the request hits a path where no PHP file exists and the handler still forwarded it.</li>
+                <li><strong>Pool user cannot read the script</strong> — PHP-FPM's pool user lacks read permission on the file or traverse permission on its directories — reported identically to absence.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Prefer SetHandler over ProxyPassMatch</h3>
+            <p>SetHandler forwards the request with Apache's own path resolution — no hardcoded docroot to go stale, works across vhosts.</p>
+            <pre><code>&lt;FilesMatch \.php$&gt;
+    SetHandler &quot;proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost&quot;
+&lt;/FilesMatch&gt;
+# TCP variant:
+# SetHandler &quot;proxy:fcgi://127.0.0.1:9000&quot;
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+            <h3>2. Verify the file exists as PHP-FPM sees it</h3>
+            <p>Check from the PHP-FPM side — its container, chroot, or pool user.</p>
+            <pre><code># same host:
+sudo -u www-data ls -la /var/www/site/public/index.php
+# php-fpm container:
+docker compose exec php ls -la /var/www/site/public/index.php</code></pre>
+            <h3>3. Align paths across containers</h3>
+            <p>Mount the code at the identical path in both containers so the translated path is valid in both worlds.</p>
+            <pre><code># docker-compose.yml
+services:
+  apache:
+    volumes: ['./src:/var/www/html']
+  php:
+    volumes: ['./src:/var/www/html']</code></pre>
+            <h3>4. Watch the request PHP-FPM receives</h3>
+            <p>Turn on the PHP-FPM access log briefly to see the script path arriving — the mismatch becomes obvious.</p>
+            <pre><code>; pool config
+access.log = /var/log/php-fpm/access.log
+access.format = &quot;%R - %u %t \&quot;%m %r\&quot; %s script=%f&quot;
+sudo systemctl restart php8.3-fpm</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>The browser shows a plain 'File not found.' — same thing?</h3>
+            <p>Yes — that text is PHP-FPM's stderr for an unknown primary script, passed through Apache with a 404. AH01071 in Apache's error log is the server-side twin of that message.</p>
+            <h3>Why is SetHandler recommended over ProxyPassMatch?</h3>
+            <p>ProxyPassMatch bypasses Apache's normal filesystem mapping and forces you to encode the docroot in the pattern — a second copy of the truth that rots. SetHandler runs after normal URL→file translation, so whatever docroot the vhost uses is automatically correct, per vhost, including aliases.</p>
+            <h3>Does this differ from nginx's 'Primary script unknown'?</h3>
+            <p>Same PHP-FPM message, different translation layer: nginx builds SCRIPT_FILENAME from fastcgi_param; Apache from the handler/proxy config. The diagnosis is shared (does the file exist where PHP-FPM looks?), the fix lives in each server's own config.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/primary-script-unknown">Nginx Primary Script Unknown</a> — the nginx twin.</li>
+                <li><a href="/errors/apache/ah00898-error-reading-from-remote-server">AH00898 Proxy Read Error</a> — other mod_proxy backend failures.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — the status clients see.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test .php endpoints</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Check endpoint health</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

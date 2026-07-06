@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Will my email be delivered eventually?","acceptedAnswer":{"@type":"Answer","text":"In most cases, yes. The sending server will retry delivery automatically. Most mail servers retry for up to 4-5 days before giving up and returning a permanent bounce."}},{"@type":"Question","name":"How is SMTP 455 different from SMTP 452?","acceptedAnswer":{"@type":"Answer","text":"SMTP 452 specifically indicates insufficient storage on the server. SMTP 455 is a more general 'unable to accommodate' error that can cover resource issues, policy failures, and TLS problems."}},{"@type":"Question","name":"Should I contact the recipient's mail administrator?","acceptedAnswer":{"@type":"Answer","text":"Only if the error persists for more than a few hours. Transient errors usually resolve on their own. If delivery fails after multiple retries over 24 hours, contacting the administrator may be warranted."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 455 — Server Unable to Accommodate — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 455 — Server Unable to Accommodate","step":[{"@type":"HowToStep","position":1,"name":"Retry delivery later","text":"SMTP 455 is a temporary error. Most mail servers automatically retry delivery using exponential backoff. Wait and check whether the message is delivered after the retry interval."},{"@type":"HowToStep","position":2,"name":"Check TLS configuration","text":"If the error is related to TLS, verify that your sending server supports the TLS versions and cipher suites required by the receiving server."},{"@type":"HowToStep","position":3,"name":"Monitor server resources","text":"If you manage the receiving server, check disk space, memory usage, and mail queue size. Clear the queue of stuck messages and free disk space if needed."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 455 — Server Unable to Accommodate — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 455 server unable to accommodate errors. Learn what causes temporary SMTP failures, when to retry, and how to resolve mail delivery issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 455, 455 Server unable to accommodate, 455 Temporary authentication failure">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 455 — Server Unable to Accommodate — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 455 server unable to accommodate errors. Learn what causes temporary SMTP failures, when to retry, and how to resolve mail delivery issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-455">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-455">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 455 — Server Unable to Accommodate</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 455 — Server Unable to Accommodate</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP server temporarily unable to accommodate the request</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 455</code></li><li><code>455 Server unable to accommodate</code></li><li><code>455 Temporary authentication failure</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 455 is a temporary failure response indicating that the mail server cannot process the request at this time but may be able to in the future. The enhanced status code 4.7.5 specifically relates to cryptographic or policy failures. This is a transient error, meaning the sending server should retry delivery after a delay. The server may be experiencing resource constraints, temporary policy restrictions, or configuration issues that prevent it from handling the current request.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server resource exhaustion</strong> — The mail server has temporarily run out of resources such as disk space, memory, or available processing threads, and cannot accept additional messages until resources are freed.</li>
+                <li><strong>TLS negotiation failure</strong> — The server requires TLS encryption for the connection but the TLS handshake failed due to certificate issues, cipher suite incompatibility, or TLS version mismatch.</li>
+                <li><strong>Rate limiting applied</strong> — The sending server or IP address has exceeded the receiving server's rate limits for incoming connections or messages, triggering a temporary rejection.</li>
+                <li><strong>Backend mail store unavailable</strong> — The mail server's backend storage system (such as a database or maildir filesystem) is temporarily unavailable, preventing the server from accepting new messages.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Retry delivery later</h3>
+            <p>SMTP 455 is a temporary error. Most mail servers automatically retry delivery using exponential backoff. Wait and check whether the message is delivered after the retry interval.</p>
+            <h3>2. Check TLS configuration</h3>
+            <p>If the error is related to TLS, verify that your sending server supports the TLS versions and cipher suites required by the receiving server.</p>
+            <pre><code># Test TLS connection to mail server
+openssl s_client -connect mail.example.com:25 -starttls smtp
+
+# Check supported TLS versions
+openssl s_client -connect mail.example.com:25 -starttls smtp -tls1_2</code></pre>
+            <h3>3. Monitor server resources</h3>
+            <p>If you manage the receiving server, check disk space, memory usage, and mail queue size. Clear the queue of stuck messages and free disk space if needed.</p>
+            <pre><code># Check disk space
+df -h
+
+# Check mail queue (Postfix)
+postqueue -p
+
+# Flush stuck messages
+postqueue -f</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Will my email be delivered eventually?</h3>
+            <p>In most cases, yes. The sending server will retry delivery automatically. Most mail servers retry for up to 4-5 days before giving up and returning a permanent bounce.</p>
+            <h3>How is SMTP 455 different from SMTP 452?</h3>
+            <p>SMTP 452 specifically indicates insufficient storage on the server. SMTP 455 is a more general 'unable to accommodate' error that can cover resource issues, policy failures, and TLS problems.</p>
+            <h3>Should I contact the recipient's mail administrator?</h3>
+            <p>Only if the error persists for more than a few hours. Transient errors usually resolve on their own. If delivery fails after multiple retries over 24 hours, contacting the administrator may be warranted.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-452">SMTP 452</a> — Insufficient storage on the server</li>
+                <li><a href="/errors/email/smtp-451">SMTP 451</a> — Local error in processing</li>
+                <li><a href="/errors/email/smtp-421">SMTP 421</a> — Service not available, closing connection</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP connections and server responses</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

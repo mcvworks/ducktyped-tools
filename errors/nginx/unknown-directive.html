@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"The directive is spelled correctly — why is it still unknown?","acceptedAnswer":{"@type":"Answer","text":"Then the module implementing it is missing from your build or not loaded. Compare 'nginx -V' output against the module the directive belongs to (the nginx docs name it at the top of each directive's page), and add the package plus a load_module line if it is dynamic."}},{"@type":"Question","name":"What is the difference between 'unknown directive' and 'directive is not allowed here'?","acceptedAnswer":{"@type":"Answer","text":"'Unknown' means nginx has never heard of the word — spelling or missing module. 'Not allowed here' means the directive exists but sits in the wrong context (e.g. server-only directive inside http). The second one is fixed by moving the line, not by installing anything."}},{"@type":"Question","name":"Is it safe to reload if nginx -t fails?","acceptedAnswer":{"@type":"Answer","text":"A reload with a broken config is rejected and the old config keeps running — nginx protects you there. A full restart, however, leaves you DOWN with nothing running. Habit worth keeping: nginx -t before every reload, and never restart when a reload will do."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Unknown Directive — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Unknown Directive — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'nginx: [emerg] unknown directive'. Covers typos, missing dynamic modules (load_module), Apache directives in nginx configs, and nginx -t workflow.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="nginx: [emerg] unknown directive, nginx unknown directive, nginx -t unknown directive, unknown directive &quot;stream&quot;, nginx directive is not allowed here">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Unknown Directive — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'nginx: [emerg] unknown directive'. Covers typos, missing dynamic modules (load_module), Apache directives in nginx configs, and nginx -t workflow.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/unknown-directive">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/unknown-directive">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Unknown Directive</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Unknown Directive</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The config-test error 'nginx: [emerg] unknown directive' — a directive is misspelled, belongs to a module that is not loaded, or is not an nginx directive at all.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>nginx: [emerg] unknown directive</code></li><li><code>nginx unknown directive</code></li><li><code>nginx -t unknown directive</code></li><li><code>unknown directive &quot;stream&quot;</code></li><li><code>nginx directive is not allowed here</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>While parsing the configuration, nginx met a word it does not recognize as a directive, and refused to start or reload. Three families of cause: the directive is misspelled; the directive is real but implemented by a module this nginx build does not have loaded (common with stream, headers-more, brotli); or the line was copied from Apache or another server and simply is not nginx syntax. The error message includes the file and line number — start there.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Typo or wrong directive name</strong> — proxy_passs, server_names, fastcgi_passs — one letter is enough. The message quotes the exact token nginx could not resolve.</li>
+                <li><strong>Module not compiled in or not loaded</strong> — Directives like 'stream', 'more_set_headers' (headers-more), 'brotli' or 'rtmp' need their module present. Dynamic modules also need an explicit load_module line before use.</li>
+                <li><strong>Apache (or other server) syntax pasted in</strong> — RewriteRule, AllowOverride, Header set — Apache directives have nginx equivalents but are not valid as-is. Tutorials mixing servers cause this regularly.</li>
+                <li><strong>Directive in a config for a different nginx flavor</strong> — OpenResty/Tengine-specific directives (content_by_lua_block and friends) fail on stock nginx builds that lack those modules.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Test the config and read the exact location</h3>
+            <p>nginx -t prints the file and line of the unknown directive. Fix or remove that line, then test again before reloading.</p>
+            <pre><code>sudo nginx -t
+# nginx: [emerg] unknown directive &quot;more_set_headers&quot; in /etc/nginx/conf.d/site.conf:12</code></pre>
+            <h3>2. Check whether the directive needs a module</h3>
+            <p>See what your build includes, and install + load the module if it is missing.</p>
+            <pre><code>nginx -V 2&gt;&amp;1 | tr ' ' '\n' | grep module
+# Debian/Ubuntu example for headers-more:
+sudo apt install libnginx-mod-http-headers-more-filter
+# then ensure it is loaded (usually automatic via /etc/nginx/modules-enabled):
+# load_module modules/ngx_http_headers_more_filter_module.so;</code></pre>
+            <h3>3. Translate foreign syntax to nginx</h3>
+            <p>Replace Apache-isms with the nginx equivalent instead of pasting them: RewriteRule becomes rewrite/return, Header set becomes add_header, and .htaccess logic moves into the server block.</p>
+            <h3>4. Mind the context for block directives</h3>
+            <p>'stream {}' must sit at the top level of nginx.conf (not inside http {}), and it requires the stream module. A right directive in the wrong file can also surface as unknown when the including context does not support it.</p>
+            <pre><code># /etc/nginx/nginx.conf
+load_module modules/ngx_stream_module.so;
+stream {
+    # TCP/UDP proxying here — NOT inside http {}
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>The directive is spelled correctly — why is it still unknown?</h3>
+            <p>Then the module implementing it is missing from your build or not loaded. Compare 'nginx -V' output against the module the directive belongs to (the nginx docs name it at the top of each directive's page), and add the package plus a load_module line if it is dynamic.</p>
+            <h3>What is the difference between 'unknown directive' and 'directive is not allowed here'?</h3>
+            <p>'Unknown' means nginx has never heard of the word — spelling or missing module. 'Not allowed here' means the directive exists but sits in the wrong context (e.g. server-only directive inside http). The second one is fixed by moving the line, not by installing anything.</p>
+            <h3>Is it safe to reload if nginx -t fails?</h3>
+            <p>A reload with a broken config is rejected and the old config keeps running — nginx protects you there. A full restart, however, leaves you DOWN with nothing running. Habit worth keeping: nginx -t before every reload, and never restart when a reload will do.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/conflicting-server-name">Conflicting Server Name</a> — another config-load problem.</li>
+                <li><a href="/errors/nginx/cannot-load-certificate">Cannot Load Certificate</a> — [emerg] failures around TLS files.</li>
+                <li><a href="/errors/nginx/directory-index-forbidden">Directory Index Forbidden</a> — config-level 403s.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test endpoints after config changes</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers Checker</span>
+                    <span class="recommended-tool-desc">Verify add_header directives work</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

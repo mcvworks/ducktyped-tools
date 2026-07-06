@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSR Decoder","url":"https://ducktyped.xyz/csr-decoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode and inspect PEM-encoded Certificate Signing Requests (CSR). View subject, key info, and extensions.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a CSR?","acceptedAnswer":{"@type":"Answer","text":"A Certificate Signing Request (CSR) is a block of encoded text containing information about your organization and domain, sent to a Certificate Authority (CA) to apply for an SSL/TLS certificate."}},{"@type":"Question","name":"What information does a CSR contain?","acceptedAnswer":{"@type":"Answer","text":"A CSR contains the domain name (Common Name), organization details, country, key size, and the public key. The private key is never included in the CSR."}},{"@type":"Question","name":"How do I decode a CSR?","acceptedAnswer":{"@type":"Answer","text":"Paste your CSR (including the BEGIN/END markers) into the decoder above. The tool parses the ASN.1 structure and displays all fields in a readable format."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSR Decoder — Decode Certificate Signing Requests — duckTyped</title>
+    <meta name="description" content="Decode and inspect PEM-encoded Certificate Signing Requests (CSR). View subject, key info, and extensions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CSR Decoder — Decode Certificate Signing Requests — duckTyped">
+    <meta property="og:description" content="Decode and inspect PEM-encoded Certificate Signing Requests (CSR). View subject, key info, and extensions.">
+    <meta property="og:url" content="https://ducktyped.xyz/csr-decoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/csr-decoder.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CSR Decoder — Decode Certificate Signing Requests — duckTyped">
+    <meta name="twitter:description" content="Decode and inspect PEM-encoded Certificate Signing Requests (CSR). View subject, key info, and extensions.">
+    <link rel="canonical" href="https://ducktyped.xyz/csr-decoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <!-- SEO Content -->
+        <div class="standalone-hero">
+            <h1>CSR Decoder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Decode PEM-encoded Certificate Signing Requests (CSR) to view the subject details, public key information, and requested extensions. All processing happens locally in your browser.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Verifying CSR contents before submitting to a CA, checking that the correct domain and organization details are in a CSR, inspecting key algorithm and size, or learning about CSR structure.</p></div>
+            <a href="/learn/csr-decoder/" class="learn-more-link">Learn what a CSR contains and how to generate one</a>
+        </div>
+
+        <!-- Tool -->
+        <div class="standalone-tool-wrap">
+            <div class="tool-card standalone-card" id="csrDecoder">
+                <h2>CSR Decoder</h2>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Paste a PEM-encoded Certificate Signing Request to decode subject fields, public key info, and signature algorithm. Everything runs locally.
+                </p>
+
+                <div class="input-group">
+                    <label>CSR (PEM format):</label>
+                    <textarea id="csrInput" placeholder="-----BEGIN CERTIFICATE REQUEST-----&#10;MIICYjCCAUoCAQAwHTELMAkGA1UE...&#10;-----END CERTIFICATE REQUEST-----" style="min-height: 160px; font-family: var(--font-mono); font-size: 0.82em;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <button onclick="loadExampleCSR()" class="preset-btn blue" style="font-size: 0.8em; padding: 4px 10px;">Load Example</button>
+                </div>
+
+                <button onclick="decodeCSR()">Decode CSR</button>
+                <div id="csrResults"></div>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <div class="standalone-tool-wrap" style="margin-top: 20px;">
+            <div class="tool-card standalone-card">
+                <h3 style="margin-bottom: 12px;">Related Tools</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/ssl-checker/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">SSL Checker</a>
+                    <a href="/public-key-decoder/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Public Key Decoder</a>
+                    <a href="/security-headers/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Security Headers</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check SSL/TLS certificate validity, expiry date, and certificate chain for…</span>
+                </a>
+                <a href="/password-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Password Generator</span>
+                    <span class="recommended-tool-desc">Generate cryptographically secure random passwords with customizable length…</span>
+                </a>
+                <a href="/breach-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Breach Checker</span>
+                    <span class="recommended-tool-desc">Check if an email address has appeared in known data breaches</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/csr-decoder/">CSR Decoder — Learn Guide</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/nginx/cannot-load-certificate">Nginx Cannot Load Certificate</a>, <a href="/errors/apache/ah02565-certificate-key-mismatch">Apache AH02565 — Certificate and Private Key Do Not Match</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta">
+            <p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var EXAMPLE_CSR = "-----BEGIN CERTIFICATE REQUEST-----\nMIICqzCCAZMCAQAwZjELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWEx\nFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xEjAQBgNVBAoMCUFjbWUgSW5jMRYwFAYD\nVQQDDA1hY21lLmV4YW1wbGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQC7o4qne60TB3pOYaBy3FI6sLnNMaCdtBul2Ey+0sLFAD/GNzL1hyVT3kzJVBzq\nTE4RMCPGNgCRgMHEAHZ5UBl8xaB6tg1LovMUdm9jYaGLFWCClYeK3DLSmPDT8GR\noFGViCYM3qEA5MrXqfokFMaOFMEMNwFq1I26TiHSRWMAF3ZgwikfzPHPL9ETPbfh\nlD0PIJT8sBPxECYkTaFP8xfz0TAjBwwFrGmo2HFxP2e/VJqK8x4GZN7YwEL4Ohv\nHTp8Zsd2FKie2iKBzxncaRLS4VHHriQq6DXS12max8E2JoTV0a7V1giXyPbJy/lw\nIeRVheX5KSHR+CDJQRp5AgMBAAGgADANBgkqhkiG9w0BAQsFAAOCAQEAUwqwZ0xS\nkBPwN24DP+poIz7k5BLuPF7EfdVMPLX1T1XUzwFxqKY/F1wOi9RqBGq3MKiLSoOg\nvFx2EMuT2VMTp5D3nOK4rmCVm0vR9Ci6tzDYq+NC2xFxrWCEyEjIq80ZsqGMfj4I\njCGQY0f2Rn+K5gNj/FSHO/vjv1JdB1MIEoaW/OMqflbi3pz2j7dks4LslVROz6fS\nviCMV3MhvG1H9beEBNbEzMY/IWVsb/eOig5kj8xMIHHPYWyGHbCLFhmfTpDOnyBJ\nf5mJ4BxGBJDqnpLExjMjd6ERVYBJNBh4cL+nHE0iDVPJl/nPqTkvE4Oi3VlhKbki\nVnhIp85R3r8RZQ==\n-----END CERTIFICATE REQUEST-----";
+
+    function loadExampleCSR() {
+        document.getElementById('csrInput').value = EXAMPLE_CSR;
+    }
+
+    function b64ToBytes(b64) {
+        var binary = atob(b64);
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return bytes;
+    }
+
+    function bytesToHex(bytes, limit) {
+        var hex = [];
+        var max = limit ? Math.min(bytes.length, limit) : bytes.length;
+        for (var i = 0; i < max; i++) hex.push(bytes[i].toString(16).padStart(2, '0'));
+        return hex.join(' ');
+    }
+
+    var SUBJECT_OIDS = {
+        '2.5.4.3': 'CN (Common Name)',
+        '2.5.4.10': 'O (Organization)',
+        '2.5.4.11': 'OU (Organizational Unit)',
+        '2.5.4.6': 'C (Country)',
+        '2.5.4.7': 'L (Locality)',
+        '2.5.4.8': 'ST (State/Province)'
+    };
+
+    var ALGO_OIDS = {
+        '1.2.840.113549.1.1.1': 'RSA',
+        '1.2.840.113549.1.1.5': 'SHA-1 with RSA',
+        '1.2.840.113549.1.1.11': 'SHA-256 with RSA',
+        '1.2.840.113549.1.1.12': 'SHA-384 with RSA',
+        '1.2.840.113549.1.1.13': 'SHA-512 with RSA',
+        '1.2.840.10045.2.1': 'EC',
+        '1.2.840.10045.4.3.2': 'ECDSA with SHA-256'
+    };
+
+    function parseOID(bytes, offset, length) {
+        var oid = [];
+        var first = bytes[offset];
+        oid.push(Math.floor(first / 40));
+        oid.push(first % 40);
+        var value = 0;
+        for (var i = 1; i < length; i++) {
+            value = (value << 7) | (bytes[offset + i] & 0x7F);
+            if ((bytes[offset + i] & 0x80) === 0) {
+                oid.push(value);
+                value = 0;
+            }
+        }
+        return oid.join('.');
+    }
+
+    function parseLength(bytes, offset) {
+        var b = bytes[offset];
+        if (b < 0x80) return { length: b, bytesUsed: 1 };
+        var numBytes = b & 0x7F;
+        var length = 0;
+        for (var i = 0; i < numBytes; i++) {
+            length = (length << 8) | bytes[offset + 1 + i];
+        }
+        return { length: length, bytesUsed: 1 + numBytes };
+    }
+
+    function readString(bytes, offset, length) {
+        var str = '';
+        for (var i = 0; i < length; i++) str += String.fromCharCode(bytes[offset + i]);
+        return str;
+    }
+
+    function parseSubjectFields(bytes, offset, endOffset) {
+        var fields = [];
+        var pos = offset;
+        while (pos < endOffset) {
+            if (bytes[pos] !== 0x31) { pos++; continue; }
+            var setLen = parseLength(bytes, pos + 1);
+            var setEnd = pos + 1 + setLen.bytesUsed + setLen.length;
+            var seqPos = pos + 1 + setLen.bytesUsed;
+            if (bytes[seqPos] === 0x30) {
+                var seqLen = parseLength(bytes, seqPos + 1);
+                var innerPos = seqPos + 1 + seqLen.bytesUsed;
+                if (bytes[innerPos] === 0x06) {
+                    var oidLen = parseLength(bytes, innerPos + 1);
+                    var oidStr = parseOID(bytes, innerPos + 1 + oidLen.bytesUsed, oidLen.length);
+                    var valPos = innerPos + 1 + oidLen.bytesUsed + oidLen.length;
+                    var valTag = bytes[valPos];
+                    var valLen = parseLength(bytes, valPos + 1);
+                    var valStr = readString(bytes, valPos + 1 + valLen.bytesUsed, valLen.length);
+                    var fieldName = SUBJECT_OIDS[oidStr] || oidStr;
+                    fields.push({ name: fieldName, value: valStr });
+                }
+            }
+            pos = setEnd;
+        }
+        return fields;
+    }
+
+    function findKeyInfo(bytes) {
+        var algo = 'Unknown';
+        var keySize = 'Unknown';
+        for (var i = 0; i < bytes.length - 10; i++) {
+            if (bytes[i] === 0x06 && bytes[i+1] === 0x09 &&
+                bytes[i+2] === 0x2a && bytes[i+3] === 0x86 && bytes[i+4] === 0x48 &&
+                bytes[i+5] === 0x86 && bytes[i+6] === 0xf7 && bytes[i+7] === 0x0d &&
+                bytes[i+8] === 0x01 && bytes[i+9] === 0x01 && bytes[i+10] === 0x01) {
+                algo = 'RSA';
+                for (var j = i + 11; j < bytes.length - 2; j++) {
+                    if (bytes[j] === 0x03) {
+                        var bsLen = parseLength(bytes, j + 1);
+                        var bsStart = j + 1 + bsLen.bytesUsed;
+                        if (bytes[bsStart] === 0x00 && bytes[bsStart + 1] === 0x30) {
+                            var seqPos = bsStart + 1;
+                            var seqLenInfo = parseLength(bytes, seqPos + 1);
+                            var intPos = seqPos + 1 + seqLenInfo.bytesUsed;
+                            if (bytes[intPos] === 0x02) {
+                                var modLen = parseLength(bytes, intPos + 1);
+                                var bitSize = modLen.length * 8;
+                                if (bytes[intPos + 1 + modLen.bytesUsed] === 0x00) bitSize -= 8;
+                                if (bitSize >= 4090 && bitSize <= 4104) keySize = '4096';
+                                else if (bitSize >= 2040 && bitSize <= 2056) keySize = '2048';
+                                else if (bitSize >= 1016 && bitSize <= 1032) keySize = '1024';
+                                else if (bitSize >= 3068 && bitSize <= 3080) keySize = '3072';
+                                else keySize = bitSize;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (algo === 'Unknown') {
+            for (var i = 0; i < bytes.length - 8; i++) {
+                if (bytes[i] === 0x06 && bytes[i+1] === 0x07 &&
+                    bytes[i+2] === 0x2a && bytes[i+3] === 0x86 && bytes[i+4] === 0x48 &&
+                    bytes[i+5] === 0xce && bytes[i+6] === 0x3d && bytes[i+7] === 0x02 && bytes[i+8] === 0x01) {
+                    algo = 'EC';
+                    keySize = '256';
+                    break;
+                }
+            }
+        }
+        return { algorithm: algo, keySize: keySize };
+    }
+
+    function findSigAlgo(bytes) {
+        var lastSigAlgo = 'Unknown';
+        for (var i = 0; i < bytes.length - 2; i++) {
+            if (bytes[i] === 0x06) {
+                var oidLen = parseLength(bytes, i + 1);
+                if (i + 1 + oidLen.bytesUsed + oidLen.length <= bytes.length) {
+                    var oidStr = parseOID(bytes, i + 1 + oidLen.bytesUsed, oidLen.length);
+                    if (oidStr === '1.2.840.113549.1.1.11') lastSigAlgo = 'SHA-256 with RSA';
+                    else if (oidStr === '1.2.840.113549.1.1.5') lastSigAlgo = 'SHA-1 with RSA';
+                    else if (oidStr === '1.2.840.113549.1.1.12') lastSigAlgo = 'SHA-384 with RSA';
+                    else if (oidStr === '1.2.840.113549.1.1.13') lastSigAlgo = 'SHA-512 with RSA';
+                    else if (oidStr === '1.2.840.10045.4.3.2') lastSigAlgo = 'ECDSA with SHA-256';
+                }
+            }
+        }
+        return lastSigAlgo;
+    }
+
+    function decodeCSR() {
+        var resultsDiv = document.getElementById('csrResults');
+        var pem = document.getElementById('csrInput').value.trim();
+
+        if (!pem) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Please paste a PEM-encoded CSR.</div>';
+            return;
+        }
+
+        if (!pem.includes('BEGIN CERTIFICATE REQUEST') && !pem.includes('BEGIN NEW CERTIFICATE REQUEST')) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Input does not appear to be a valid PEM-encoded CSR. Expected -----BEGIN CERTIFICATE REQUEST-----</div>';
+            return;
+        }
+
+        var b64 = pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '');
+        var bytes;
+        try {
+            bytes = b64ToBytes(b64);
+        } catch (e) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Invalid Base64 encoding.</div>';
+            return;
+        }
+
+        if (bytes[0] !== 0x30) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Invalid ASN.1 structure (expected SEQUENCE).</div>';
+            return;
+        }
+
+        var topLen = parseLength(bytes, 1);
+        var certReqInfoStart = 1 + topLen.bytesUsed;
+
+        if (bytes[certReqInfoStart] !== 0x30) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Cannot parse CertificationRequestInfo.</div>';
+            return;
+        }
+
+        var criLen = parseLength(bytes, certReqInfoStart + 1);
+        var pos = certReqInfoStart + 1 + criLen.bytesUsed;
+
+        var version = 0;
+        if (bytes[pos] === 0x02) {
+            var verLen = parseLength(bytes, pos + 1);
+            version = bytes[pos + 1 + verLen.bytesUsed];
+            pos = pos + 1 + verLen.bytesUsed + verLen.length;
+        }
+
+        var subjectFields = [];
+        if (bytes[pos] === 0x30) {
+            var subjLen = parseLength(bytes, pos + 1);
+            var subjEnd = pos + 1 + subjLen.bytesUsed + subjLen.length;
+            subjectFields = parseSubjectFields(bytes, pos + 1 + subjLen.bytesUsed, subjEnd);
+            pos = subjEnd;
+        }
+
+        var keyInfo = findKeyInfo(bytes);
+        var sigAlgo = findSigAlgo(bytes);
+
+        var html = '<div style="margin-top: 15px;">';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">Subject</h3>';
+        html += '<table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">';
+        if (subjectFields.length === 0) {
+            html += '<tr><td style="padding: 4px 8px; color: var(--text-secondary);">No subject fields found</td></tr>';
+        } else {
+            for (var i = 0; i < subjectFields.length; i++) {
+                html += '<tr><td style="padding: 4px 8px; font-weight: 600; width: 200px; color: var(--text-secondary);">' + subjectFields[i].name + '</td><td style="padding: 4px 8px;">' + subjectFields[i].value + '</td></tr>';
+            }
+        }
+        html += '</table></div>';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">Public Key Information</h3>';
+        html += '<table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; width: 200px; color: var(--text-secondary);">Algorithm</td><td style="padding: 4px 8px;">' + keyInfo.algorithm + '</td></tr>';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; color: var(--text-secondary);">Key Size</td><td style="padding: 4px 8px;">' + keyInfo.keySize + ' bits</td></tr>';
+        html += '</table></div>';
+
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-bottom: 12px;">';
+        html += '<h3 style="margin: 0 0 10px 0; font-size: 1em;">Signature</h3>';
+        html += '<table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; width: 200px; color: var(--text-secondary);">Signature Algorithm</td><td style="padding: 4px 8px;">' + sigAlgo + '</td></tr>';
+        html += '<tr><td style="padding: 4px 8px; font-weight: 600; color: var(--text-secondary);">Version</td><td style="padding: 4px 8px;">v' + (version + 1) + ' (' + version + ')</td></tr>';
+        html += '</table></div>';
+
+        html += '<details style="margin-top: 8px;">';
+        html += '<summary style="cursor: pointer; font-weight: 600; color: var(--primary-color); font-size: 0.9em;">View Raw ASN.1 Hex</summary>';
+        html += '<div style="background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; margin-top: 8px;">';
+        html += '<pre style="font-family: var(--font-mono); font-size: 0.75em; word-break: break-all; white-space: pre-wrap; margin: 0; color: var(--text-secondary);">' + bytesToHex(bytes) + '</pre>';
+        html += '</div></details>';
+
+        html += '</div>';
+        resultsDiv.innerHTML = html;
+    }
+    </script>
+</body>
+</html>

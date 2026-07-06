@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does DNS_PROBE_FINISHED_NO_INTERNET mean?","acceptedAnswer":{"@type":"Answer","text":"DNS_PROBE_FINISHED_NO_INTERNET means Chrome's DNS probe determined that your device has no internet connectivity. Unlike NXDOMAIN (which means a specific domain doesn't exist), this error means no DNS queries can succeed because the device is offline or cannot reach the internet."}},{"@type":"Question","name":"What is the difference between DNS_PROBE_FINISHED_NO_INTERNET and ERR_INTERNET_DISCONNECTED?","acceptedAnswer":{"@type":"Answer","text":"Both indicate no internet connectivity, but they come from different detection mechanisms. ERR_INTERNET_DISCONNECTED is detected before the DNS probe runs. DNS_PROBE_FINISHED_NO_INTERNET is determined after Chrome ran its DNS diagnostic and confirmed that no internet connection exists."}},{"@type":"Question","name":"How do I fix DNS_PROBE_FINISHED_NO_INTERNET?","acceptedAnswer":{"@type":"Answer","text":"Check your network connection: verify Wi-Fi or ethernet is connected, restart your router and modem, flush your DNS cache, and check if a VPN or firewall is blocking all traffic. If other devices on the same network have internet, the issue is specific to your device."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_FINISHED_NO_INTERNET — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_FINISHED_NO_INTERNET","step":[{"@type":"HowToStep","position":1,"name":"Check Network Connection","text":"Verify your device is connected to a network (check the Wi-Fi icon or ethernet status). Disconnect and reconnect to refresh the connection."},{"@type":"HowToStep","position":2,"name":"Restart Router and Modem","text":"Power cycle both devices. Unplug the modem first, wait 30 seconds, plug it back in, wait for it to connect, then power on the router."},{"@type":"HowToStep","position":3,"name":"Test with Another Device","text":"Check if other devices on the same network have internet access. If they do, the issue is specific to your device. If none do, the problem is with the router or ISP."},{"@type":"HowToStep","position":4,"name":"Check VPN","text":"If using a VPN with a kill switch, the VPN may have disconnected. Try disabling the VPN entirely to restore internet access."},{"@type":"HowToStep","position":5,"name":"Authenticate Captive Portal","text":"On public or hotel Wi-Fi, open a browser and navigate to any HTTP site (not HTTPS). The portal login page should appear. Complete authentication before retrying."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_FINISHED_NO_INTERNET — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what DNS_PROBE_FINISHED_NO_INTERNET means and how to fix it. Covers network connectivity issues, router reboots, and DNS configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_FINISHED_NO_INTERNET, No internet DNS error, DNS probe no internet, This site can&#39;t be reached no internet">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_FINISHED_NO_INTERNET — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_FINISHED_NO_INTERNET by restoring your internet connection and troubleshooting network settings.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-finished-no-internet">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-finished-no-internet">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_FINISHED_NO_INTERNET</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_FINISHED_NO_INTERNET</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means Chrome's DNS diagnostic confirmed that your device has no internet connection. All DNS queries are failing because you are offline or your internet access is blocked.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_FINISHED_NO_INTERNET</code></li><li><code>No internet DNS error</code></li><li><code>DNS probe no internet</code></li><li><code>This site can&#39;t be reached no internet</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>After a DNS lookup fails, Chrome runs a diagnostic probe to determine the root cause. <strong>DNS_PROBE_FINISHED_NO_INTERNET</strong> is the result when Chrome concludes that the problem is not a specific domain or DNS server issue — the device simply has no internet connectivity at all.</p>
+            <p>This is distinct from <a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> (a specific domain does not exist) and <a href="/errors/dns/dns-probe-finished-bad-config">DNS_PROBE_FINISHED_BAD_CONFIG</a> (DNS misconfiguration). NO_INTERNET is the most fundamental error: nothing can be reached.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No Wi-Fi or ethernet connection</strong> — the device is not connected to any network.</li>
+                <li><strong>Router or modem offline</strong> — the network is connected but has no upstream internet access.</li>
+                <li><strong>ISP outage</strong> — your internet service provider is experiencing a disruption.</li>
+                <li><strong>VPN kill switch</strong> — a VPN's kill switch is blocking all traffic because the VPN connection dropped.</li>
+                <li><strong>Firewall blocking all outbound traffic</strong> — overly restrictive firewall rules.</li>
+                <li><strong>Unauthenticated captive portal</strong> — on hotel or public Wi-Fi, you need to log in through a portal page.</li>
+                <li><strong>Network adapter disabled</strong> — the Wi-Fi or ethernet adapter has been turned off.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check Network Connection</h3>
+            <p>Verify your device is connected to a network (check the Wi-Fi icon or ethernet status). Disconnect and reconnect to refresh the connection.</p>
+
+            <h3>2. Restart Router and Modem</h3>
+            <p>Power cycle both devices. Unplug the modem first, wait 30 seconds, plug it back in, wait for it to connect, then power on the router.</p>
+
+            <h3>3. Test with Another Device</h3>
+            <p>Check if other devices on the same network have internet access. If they do, the issue is specific to your device. If none do, the problem is with the router or ISP.</p>
+
+            <h3>4. Flush DNS Cache</h3>
+            <ul>
+                <li><strong>Windows:</strong> <code>ipconfig /flushdns</code></li>
+                <li><strong>macOS:</strong> <code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+            </ul>
+
+            <h3>5. Check VPN</h3>
+            <p>If using a VPN with a kill switch, the VPN may have disconnected. Try disabling the VPN entirely to restore internet access.</p>
+
+            <h3>6. Reset Network Settings (Windows)</h3>
+            <pre><code>netsh int ip reset
+netsh winsock reset
+ipconfig /release
+ipconfig /renew</code></pre>
+
+            <h3>7. Authenticate Captive Portal</h3>
+            <p>On public or hotel Wi-Fi, open a browser and navigate to any HTTP site (not HTTPS). The portal login page should appear. Complete authentication before retrying.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is DNS_PROBE_FINISHED_NO_INTERNET the same as being offline?</h3>
+            <p>Essentially yes. Chrome's probe determined that DNS queries cannot succeed because there is no internet connectivity — either your device is offline, the network has no internet access, or all traffic is being blocked.</p>
+
+            <h3>Why does this happen after waking from sleep?</h3>
+            <p>Some network adapters briefly lose connectivity when a computer wakes from sleep. Waiting a few seconds or manually reconnecting to Wi-Fi usually resolves it.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_internet_disconnected">ERR_INTERNET_DISCONNECTED</a> — no internet connection (browser error).</li>
+                <li><a href="/errors/dns/dns-probe-started">DNS_PROBE_STARTED</a> — diagnostic in progress.</li>
+                <li><a href="/errors/dns/dns-probe-finished-bad-config">DNS_PROBE_FINISHED_BAD_CONFIG</a> — DNS misconfiguration.</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolution failed.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Lookup</span>
+                    <span class="recommended-tool-desc">Identify your ISP and current IP details</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

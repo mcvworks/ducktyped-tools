@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does errno 1 actually mean?","acceptedAnswer":{"@type":"Answer","text":"Just 'the script exited with status 1' — the generic failure code. It carries no information about why; only the script's own output does. errno 137 is more specific: the process was killed (usually OOM), and 130 means interrupted by Ctrl-C."}},{"@type":"Question","name":"Why does 'npm run build' fail in CI but work locally?","acceptedAnswer":{"@type":"Answer","text":"Environment drift: CI installs with production flags (missing devDependencies the build needs), runs a different Node major, or lacks env vars your local .env provides. Reproduce locally with 'rm -rf node_modules && NODE_ENV=production npm ci && npm run build' — it usually fails the same way."}},{"@type":"Question","name":"Does clearing the npm cache fix ELIFECYCLE?","acceptedAnswer":{"@type":"Answer","text":"Almost never — cache corruption is rare and produces integrity errors, not lifecycle ones. Reserve 'npm cache clean --force' for when npm explicitly reports cache problems, and spend the time reading the script's real error instead."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"npm ERR! code ELIFECYCLE — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! code ELIFECYCLE — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! ELIFECYCLE errno 1. Read the real error above npm's block, run the script directly, env differences in CI, and node version mismatches.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! code ELIFECYCLE, npm ERR! errno 1, elifecycle npm, npm run build exit code 1, npm ERR! Exit status 1">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! code ELIFECYCLE — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! ELIFECYCLE errno 1. Read the real error above npm's block, run the script directly, env differences in CI, and node version mismatches.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/npm-err-elifecycle">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/npm-err-elifecycle">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>npm ERR! code ELIFECYCLE</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! code ELIFECYCLE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The npm failure 'npm ERR! code ELIFECYCLE, npm ERR! errno 1' — the package.json script npm ran exited with a non-zero code. npm is the messenger, not the culprit.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! code ELIFECYCLE</code></li><li><code>npm ERR! errno 1</code></li><li><code>elifecycle npm</code></li><li><code>npm run build exit code 1</code></li><li><code>npm ERR! Exit status 1</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ELIFECYCLE means a lifecycle script — npm start, npm test, npm run build, or a postinstall hook — exited with a failure code, and npm is reporting that fact. The actual problem is printed by your script, above npm's ERR! wall. Treating the npm block as the error is the classic mistake; the debugging move is always to scroll up (or run the underlying command directly) and read what the tool inside the script said.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The script's own command failed</strong> — Tests failed, the bundler errored, the server crashed at boot — any non-zero exit from the command becomes ELIFECYCLE in npm's wrapper.</li>
+                <li><strong>Environment differences in CI</strong> — Missing environment variables, devDependencies omitted by NODE_ENV=production installs, or a different Node version than local — the script fails only where the environment differs.</li>
+                <li><strong>postinstall hooks failing</strong> — A dependency's postinstall (often node-gyp compiling, or a download step blocked by a proxy) fails, surfacing as ELIFECYCLE during npm install.</li>
+                <li><strong>Port or resource conflicts at startup</strong> — npm start dying instantly with EADDRINUSE or a missing config file — the script never got going.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Run the underlying command directly</h3>
+            <p>Bypassing npm's wrapper gives you the tool's plain output and often a better exit message.</p>
+            <pre><code>grep -A2 '&quot;scripts&quot;' package.json
+# if &quot;build&quot;: &quot;webpack --mode production&quot;:
+npx webpack --mode production</code></pre>
+            <h3>2. Read above the npm ERR! block</h3>
+            <p>The real stack trace/compiler error is printed by the failing tool just before npm's summary. In CI logs, search upward from 'ELIFECYCLE' to the first non-npm error line.</p>
+            <h3>3. Align the environment with local</h3>
+            <p>Check the three usual suspects: Node version, env vars, devDependencies presence.</p>
+            <pre><code>node --version            # match with &quot;engines&quot; / local
+npm ci                     # NOT --omit=dev if the build needs devDeps
+printenv | sort | head     # compare required vars against .env.example</code></pre>
+            <h3>4. For install-time failures, identify the hook</h3>
+            <p>See which package's postinstall died, then fix its real requirement (usually a build toolchain).</p>
+            <pre><code>npm install --foreground-scripts   # stream hook output live
+npm install --ignore-scripts       # confirm the tree installs without hooks</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does errno 1 actually mean?</h3>
+            <p>Just 'the script exited with status 1' — the generic failure code. It carries no information about why; only the script's own output does. errno 137 is more specific: the process was killed (usually OOM), and 130 means interrupted by Ctrl-C.</p>
+            <h3>Why does 'npm run build' fail in CI but work locally?</h3>
+            <p>Environment drift: CI installs with production flags (missing devDependencies the build needs), runs a different Node major, or lacks env vars your local .env provides. Reproduce locally with 'rm -rf node_modules && NODE_ENV=production npm ci && npm run build' — it usually fails the same way.</p>
+            <h3>Does clearing the npm cache fix ELIFECYCLE?</h3>
+            <p>Almost never — cache corruption is rare and produces integrity errors, not lifecycle ones. Reserve 'npm cache clean --force' for when npm explicitly reports cache problems, and spend the time reading the script's real error instead.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/node-gyp-build-failed">node-gyp Build Failed</a> — the most common postinstall failure.</li>
+                <li><a href="/errors/node/eaddrinuse-address-already-in-use">EADDRINUSE</a> — npm start dying on port conflicts.</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERESOLVE</a> — install-time dependency conflicts.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect package.json scripts</span>
+                </a>
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Compare environment files</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Base32 Encoding Explained","description":"Learn how Base32 encoding works, how it differs from Base64, the RFC 4648 standard and base32hex variant, and why TOTP/2FA secrets and DNS labels rely on it.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/base32-encoder/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Base32 Encoder"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Base32 encoding?","acceptedAnswer":{"@type":"Answer","text":"Base32 is a binary-to-text encoding defined in RFC 4648 that represents arbitrary bytes using 32 characters: the uppercase letters A-Z and the digits 2-7. Each character carries 5 bits of data, and output is padded with = signs to a multiple of 8 characters."}},{"@type":"Question","name":"What is the difference between Base32 and Base64?","acceptedAnswer":{"@type":"Answer","text":"Base64 packs 6 bits per character using a 64-character alphabet that mixes upper and lower case, so it is case-sensitive and about 33% larger than the input. Base32 packs 5 bits per character, is case-insensitive, avoids ambiguous characters like 0, 1, and 8, and produces output about 60% larger than the input."}},{"@type":"Question","name":"Why do TOTP and 2FA secrets use Base32?","acceptedAnswer":{"@type":"Answer","text":"TOTP shared secrets are random bytes that must sometimes be typed by hand. Base32 survives case changes, avoids characters that look alike (0 vs O, 1 vs l), and contains no symbols, which makes manual entry and QR-code fallback codes far less error-prone than Base64 would be."}},{"@type":"Question","name":"What is the base32hex variant?","acceptedAnswer":{"@type":"Answer","text":"base32hex, also defined in RFC 4648, uses the alphabet 0-9 followed by A-V instead of A-Z and 2-7. Its key property is that encoded strings sort in the same order as the raw bytes they represent, which is why DNSSEC NSEC3 records use it. Standard Base32 and base32hex are not interchangeable."}},{"@type":"Question","name":"When should I choose Base32 over Base64?","acceptedAnswer":{"@type":"Answer","text":"Choose Base32 when data passes through case-insensitive systems (DNS names, file systems, license keys) or must be read aloud or typed by humans. Choose Base64 when size matters and the channel preserves case, such as HTTP headers, JSON payloads, and data URIs."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base32 Encoding Explained — Alphabet, Padding &amp; TOTP — duckTyped</title>
+    <meta name="description" content="How Base32 encoding works: the RFC 4648 alphabet, padding, case-insensitivity, the base32hex variant, and why TOTP/2FA secrets and DNS rely on it.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Base32 Encoding Explained — Alphabet, Padding &amp; TOTP — duckTyped">
+    <meta property="og:description" content="How Base32 works, how it differs from Base64, the RFC 4648 standard, and why TOTP/2FA secrets use it.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/base32-encoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Base32 Encoding Explained — Alphabet, Padding &amp; TOTP — duckTyped">
+    <meta name="twitter:description" content="How Base32 works, how it differs from Base64, and why 2FA secrets use it.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/base32-encoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Base32 Encoder</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Base32 Encoding Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand how Base32 represents binary data with just 32 characters, how it differs from Base64, what RFC 4648 specifies, and why TOTP/2FA secrets and DNS-based systems depend on it.</p>
+
+            <h2>What Is Base32?</h2>
+            <p><strong>Base32</strong> is a binary-to-text encoding that represents arbitrary bytes using only 32 ASCII characters: the uppercase letters <code>A&ndash;Z</code> and the digits <code>2&ndash;7</code>. Because 32 = 2<sup>5</sup>, each output character carries exactly <strong>5 bits</strong> of the original data.</p>
+            <p>The encoder works on the raw bit stream. It concatenates the input bytes into one long sequence of bits, slices that sequence into 5-bit groups, and maps each group (a number from 0 to 31) to a character in the alphabet. Index 0 is <code>A</code>, index 25 is <code>Z</code>, index 26 is <code>2</code>, and index 31 is <code>7</code>. If the final group has fewer than 5 bits, it is padded with zero bits, and the encoded output is then padded with <code>=</code> characters until its length is a multiple of 8.</p>
+            <p>Why such a restricted alphabet? Because it deliberately excludes everything that causes trouble in the real world: lowercase letters (so case changes are harmless), the digits <code>0</code>, <code>1</code>, and <code>8</code> (easily confused with <code>O</code>, <code>I</code>/<code>l</code>, and <code>B</code>), and all punctuation. The result is an encoding that survives case-folding systems, handwriting, and being read out loud over the phone.</p>
+
+            <h2>Base32 vs Base64</h2>
+            <p><a href="/learn/base64-encoder/">Base64</a> is the better-known sibling. It uses 64 characters (<code>A&ndash;Z</code>, <code>a&ndash;z</code>, <code>0&ndash;9</code>, <code>+</code>, <code>/</code>), so each character carries 6 bits instead of 5. Here is the same string in both encodings:</p>
+            <pre><code>Input:   Hello, World!          (13 bytes)
+Base64:  SGVsbG8sIFdvcmxkIQ==   (20 chars, case-sensitive)
+Base32:  JBSWY3DPFQQFO33SNRSCC=== (24 chars, case-insensitive)</code></pre>
+            <p>The practical differences come down to three things:</p>
+            <ul>
+                <li><strong>Alphabet.</strong> Base64 mixes upper and lower case and includes the symbols <code>+</code> and <code>/</code> (or <code>-</code> and <code>_</code> in the URL-safe variant). Base32 uses uppercase letters and six digits only &mdash; no symbols, no lowercase, no look-alike characters.</li>
+                <li><strong>Size.</strong> Base64 inflates data by roughly 33% (4 output chars per 3 input bytes). Base32 inflates it by 60% (8 output chars per 5 input bytes). If raw size is the only concern, Base64 wins.</li>
+                <li><strong>Case-insensitivity.</strong> This is Base32's killer feature. <code>JBSWY3DP</code> and <code>jbswy3dp</code> decode to the same bytes &mdash; decoders simply uppercase the input first. Base64 has no such tolerance: <code>SGVsbG8=</code> and <code>sgvsbg8=</code> are entirely different values, and a single case-folding proxy, file system, or careless copy-paste corrupts the data permanently.</li>
+            </ul>
+            <p><strong>Padding</strong> works the same way in both: <code>=</code> characters fill the output to a block boundary (4 characters for Base64, 8 for Base32). Base32 needs more of it &mdash; the valid pad lengths are 0, 1, 3, 4, or 6 <code>=</code> signs. Many real-world systems (TOTP secrets in particular) drop the padding entirely, and most decoders accept unpadded input, but strict RFC 4648 decoders do not, which is a common source of "invalid input" errors.</p>
+
+            <h2>RFC 4648 and the base32hex Variant</h2>
+            <p>Both Base32 and Base64 are formally specified in <strong>RFC 4648</strong> ("The Base16, Base32, and Base64 Data Encodings"). The RFC actually defines <em>two</em> 32-character encodings:</p>
+            <ul>
+                <li><strong>base32</strong> &mdash; the standard alphabet <code>A&ndash;Z</code>, <code>2&ndash;7</code> described above.</li>
+                <li><strong>base32hex</strong> &mdash; an "extended hex" alphabet: <code>0&ndash;9</code> followed by <code>A&ndash;V</code>.</li>
+            </ul>
+            <p>The two are <strong>not interchangeable</strong> &mdash; the same bytes produce completely different strings:</p>
+            <pre><code>Input:      foobar
+base32:     MZXW6YTBOI======
+base32hex:  CPNMUOJ1E8======
+Base64:     Zm9vYmFy</code></pre>
+            <p>Why does base32hex exist? Because it preserves <strong>sort order</strong>. In base32hex, the character that represents value 0 (<code>0</code>) sorts before the character for value 1 (<code>1</code>), and so on through <code>V</code> for 31. That means encoded strings compare in exactly the same order as the raw bytes they encode. Standard base32 does not have this property (its <code>2</code>, representing value 26, sorts <em>before</em> <code>A</code>, representing value 0). DNSSEC's NSEC3 records use base32hex precisely because DNS needs hashed names in canonical sorted order.</p>
+            <p>If a decode produces garbage even though the string "looks like Base32," check whether the source system used the hex variant &mdash; or a third-party alphabet such as Crockford Base32, a popular non-RFC variant used for human-readable IDs (ULIDs) that excludes <code>I</code>, <code>L</code>, <code>O</code>, and <code>U</code>.</p>
+
+            <h2>Why TOTP and 2FA Secrets Use Base32</h2>
+            <p>If you have ever set up two-factor authentication manually, the secret key you typed into your authenticator app &mdash; something like <code>JBSW Y3DP EHPK 3PXP</code> &mdash; was Base32. The <code>otpauth://</code> URI embedded in the QR code carries the same value:</p>
+            <pre><code>otpauth://totp/Example:alice@example.com?secret=JBSWY3DPEHPK3PXP&amp;issuer=Example</code></pre>
+            <p>The TOTP shared secret is raw random bytes used as an HMAC key, and it has to survive the most hostile transport channel of all: <strong>a human</strong>. Base32 is ideal for that job because:</p>
+            <ul>
+                <li>Mistyping case is impossible &mdash; the alphabet has no lowercase letters, and decoders accept either case anyway.</li>
+                <li>There are no ambiguous glyphs. A user squinting at a tiny phone screen never has to decide between <code>0</code> and <code>O</code> or <code>1</code> and <code>l</code>.</li>
+                <li>The output is plain alphanumeric text, so it can be grouped in blocks of four, printed on recovery sheets, and read aloud to support staff without escaping issues.</li>
+            </ul>
+            <p>Note the convention: authenticator secrets are almost always shown <strong>without padding</strong>, and most TOTP libraries also ignore spaces and case when decoding. If you are implementing TOTP yourself, decode leniently (strip whitespace, uppercase, re-add or ignore padding) before handing the bytes to HMAC-SHA1.</p>
+
+            <h2>DNS-Safe Encoding and Other Case-Insensitive Systems</h2>
+            <p>DNS is the textbook case for Base32. Hostnames are <strong>case-insensitive by specification</strong>, and resolvers may legally change case in transit (some randomize it as a security measure, known as 0x20 encoding). Encoding binary data into a DNS label with Base64 would silently corrupt it; Base32 is immune. That is why you see it in:</p>
+            <ul>
+                <li><strong>DNSSEC NSEC3</strong> &mdash; hashed owner names encoded with base32hex, as described above.</li>
+                <li><strong>Tor onion services</strong> &mdash; v3 <code>.onion</code> addresses are 56 Base32 characters encoding the service's public key.</li>
+                <li><strong>DNS tunneling and verification records</strong> &mdash; any scheme that smuggles binary data through hostnames.</li>
+            </ul>
+            <p>The same logic applies to other case-mangling environments: Windows and macOS file systems are case-insensitive by default, so cache file names derived from binary hashes are safer in Base32. License keys, gift-card codes, and ticket numbers use Base32 (often the Crockford variant) for the same human-friendly reasons as TOTP secrets.</p>
+            <p><strong>So when should you choose which?</strong> A simple rule: if the value will only ever travel between machines through case-preserving channels (JSON bodies, HTTP headers, databases), use Base64 and save the bytes. If the value will pass through DNS, a file name, or a human &mdash; eyes, voice, or keyboard &mdash; use Base32.</p>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/base32-encoder/">Base32 Encoder / Decoder</a> converts in both directions:</p>
+            <ol>
+                <li><strong>Type or paste plain text</strong> into the Plain Text field and click <strong>Encode</strong> to produce padded RFC 4648 Base32.</li>
+                <li><strong>Paste a Base32 string</strong> into the encoded field and click <strong>Decode</strong> &mdash; the tool uppercases input and ignores trailing padding, so unpadded or lowercase secrets decode fine.</li>
+                <li><strong>Copy the result</strong> with the copy button. Invalid characters are reported with an error rather than silently skipped.</li>
+            </ol>
+            <p>Everything runs client-side in your browser; nothing you paste is ever sent to a server, so it is safe to inspect real configuration values.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Base32 Encoder:</p>
+            <ul>
+                <li><a href="/base64-encoder/">Base64 Encoder</a> &mdash; encode and decode the denser, case-sensitive counterpart.</li>
+                <li><a href="/hmac-generator/">HMAC Generator</a> &mdash; TOTP codes are HMAC outputs keyed by the decoded Base32 secret.</li>
+                <li><a href="/hash-generator/">Hash Generator</a> &mdash; produce the binary digests that often get Base32-encoded for file names and DNS labels.</li>
+                <li><a href="/url-encoder/">URL Encoder</a> &mdash; percent-encode values like <code>otpauth://</code> URIs for use in links.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/base64-encoder/">Base64 Encoding guide</a>, <a href="/learn/hash-generator/">Hashing guide</a>, <a href="/learn/url-encoder/">URL Encoding guide</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/base32-encoder/" class="cta-btn-primary">Try Base32 Encoder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

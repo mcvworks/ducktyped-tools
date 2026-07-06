@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HTTP Headers Cheat Sheet","description":"Quick reference for HTTP headers: request, response, security, caching, CORS, authentication, and content negotiation headers with format and examples for each.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/http-headers-cheat-sheet/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"HTTP Headers Cheat Sheet"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between request and response headers?","acceptedAnswer":{"@type":"Answer","text":"Request headers are sent by the client to describe the request and the client itself (Accept, Authorization, User-Agent, Host). Response headers are sent by the server to describe the response and the server (Content-Type, Cache-Control, Set-Cookie, Location). Some headers, like Cache-Control, appear in both directions with different meanings."}},{"@type":"Question","name":"What is the difference between no-cache and no-store?","acceptedAnswer":{"@type":"Answer","text":"Cache-Control: no-cache allows caching but requires revalidation with the origin server before each reuse. Cache-Control: no-store forbids storing the response anywhere at all. Use no-store for sensitive data; use no-cache when you want freshness checks but still benefit from conditional requests."}},{"@type":"Question","name":"Which security headers should every website send?","acceptedAnswer":{"@type":"Answer","text":"At minimum: Strict-Transport-Security (force HTTPS), Content-Security-Policy (control resource loading and block XSS), X-Content-Type-Options: nosniff (stop MIME sniffing), X-Frame-Options or CSP frame-ancestors (block clickjacking), and Referrer-Policy (limit referrer leakage). Permissions-Policy is recommended to disable unused browser features."}},{"@type":"Question","name":"How do ETag and Last-Modified work?","acceptedAnswer":{"@type":"Answer","text":"The server sends ETag (an opaque version identifier) and/or Last-Modified with a response. On the next request the client echoes them back via If-None-Match / If-Modified-Since. If the resource is unchanged, the server replies 304 Not Modified with no body, saving bandwidth. ETag comparison is more precise than the one-second granularity of Last-Modified."}},{"@type":"Question","name":"What triggers a CORS preflight request?","acceptedAnswer":{"@type":"Answer","text":"A preflight (OPTIONS) request is sent when a cross-origin request is not 'simple': methods other than GET, HEAD, or POST; custom headers; or a Content-Type other than application/x-www-form-urlencoded, multipart/form-data, or text/plain. The server must answer with Access-Control-Allow-Methods and Access-Control-Allow-Headers for the real request to proceed."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Headers Cheat Sheet — Request, Response, Security — duckTyped</title>
+    <meta name="description" content="HTTP headers cheat sheet: request, response, security, caching, CORS, and authentication headers with format and examples. Quick reference for developers.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP headers cheat sheet, HTTP headers list, request headers, response headers, security headers, CORS headers, Cache-Control, ETag, Authorization header, Content-Type">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HTTP Headers Cheat Sheet — Request, Response, Security — duckTyped">
+    <meta property="og:description" content="All common HTTP headers explained: request, response, security, caching, CORS, and authentication with examples.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/http-headers-cheat-sheet/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTTP Headers Cheat Sheet — duckTyped">
+    <meta name="twitter:description" content="Quick reference for HTTP request, response, security, caching, and CORS headers with examples.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/http-headers-cheat-sheet/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>HTTP Headers Cheat Sheet</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>HTTP Headers Cheat Sheet</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Quick reference for every HTTP header you'll meet in practice — request, response, security, caching, CORS, authentication, and content negotiation. Each entry shows direction, format, and a real example.</p>
+
+            <p>Inspect live headers by sending requests with the <a href="/http-request-builder/">HTTP Request Builder</a>, audit your security headers with the <a href="/security-headers/">Security Headers checker</a>, and look up response codes in the <a href="/learn/http-status-codes/">HTTP Status Codes guide</a>.</p>
+
+            <h2>Request Headers</h2>
+            <p>Sent by the client (browser, curl, API consumer) to describe the request.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Header</th><th>Example</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Host</strong></td><td><code>Host: example.com</code></td><td>Target hostname (and optional port). Required in HTTP/1.1; lets one IP serve many sites.</td></tr>
+                        <tr><td><strong>Accept</strong></td><td><code>Accept: text/html, application/json;q=0.9</code></td><td>Media types the client can process, with quality weights.</td></tr>
+                        <tr><td><strong>Authorization</strong></td><td><code>Authorization: Bearer eyJhbGciOi...</code></td><td>Credentials for the request (see Authentication section).</td></tr>
+                        <tr><td><strong>Cache-Control</strong></td><td><code>Cache-Control: no-cache</code></td><td>Caching directives from the client (e.g., force revalidation).</td></tr>
+                        <tr><td><strong>Cookie</strong></td><td><code>Cookie: session=abc123; theme=dark</code></td><td>Cookies previously set by the server, sent back on each request.</td></tr>
+                        <tr><td><strong>User-Agent</strong></td><td><code>User-Agent: Mozilla/5.0 (X11; Linux x86_64) ...</code></td><td>Identifies the client software.</td></tr>
+                        <tr><td><strong>Referer</strong></td><td><code>Referer: https://example.com/page</code></td><td>URL of the page that triggered the request. (Yes, the misspelling is in the spec.)</td></tr>
+                        <tr><td><strong>Origin</strong></td><td><code>Origin: https://app.example.com</code></td><td>Scheme + host + port of the requesting context; basis of CORS checks.</td></tr>
+                        <tr><td><strong>Content-Type</strong></td><td><code>Content-Type: application/json</code></td><td>Media type of the request body (POST/PUT/PATCH).</td></tr>
+                        <tr><td><strong>Content-Length</strong></td><td><code>Content-Length: 348</code></td><td>Size of the request body in bytes.</td></tr>
+                        <tr><td><strong>If-None-Match</strong></td><td><code>If-None-Match: "33a64df5"</code></td><td>Conditional request: only send the body if the ETag changed.</td></tr>
+                        <tr><td><strong>If-Modified-Since</strong></td><td><code>If-Modified-Since: Tue, 09 Jun 2026 14:00:00 GMT</code></td><td>Conditional request based on modification date.</td></tr>
+                        <tr><td><strong>Range</strong></td><td><code>Range: bytes=0-1023</code></td><td>Request part of a resource (resumable downloads, video seeking).</td></tr>
+                        <tr><td><strong>Connection</strong></td><td><code>Connection: keep-alive</code></td><td>Connection handling for the current hop (HTTP/1.1 only).</td></tr>
+                        <tr><td><strong>Upgrade</strong></td><td><code>Upgrade: websocket</code></td><td>Request a protocol switch (WebSocket handshake).</td></tr>
+                        <tr><td><strong>Expect</strong></td><td><code>Expect: 100-continue</code></td><td>Wait for server approval before sending a large body.</td></tr>
+                        <tr><td><strong>X-Forwarded-For</strong></td><td><code>X-Forwarded-For: 203.0.113.5, 70.41.3.18</code></td><td>Original client IP(s) added by proxies. Standardized replacement: <code>Forwarded</code>.</td></tr>
+                        <tr><td><strong>X-Forwarded-Proto</strong></td><td><code>X-Forwarded-Proto: https</code></td><td>Original scheme before a TLS-terminating proxy.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Response Headers</h2>
+            <p>Sent by the server to describe the response and control client behavior.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Header</th><th>Example</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Content-Type</strong></td><td><code>Content-Type: text/html; charset=utf-8</code></td><td>Media type and charset of the body.</td></tr>
+                        <tr><td><strong>Content-Length</strong></td><td><code>Content-Length: 5120</code></td><td>Body size in bytes (absent when chunked).</td></tr>
+                        <tr><td><strong>Content-Encoding</strong></td><td><code>Content-Encoding: br</code></td><td>Compression applied to the body (gzip, br, zstd, deflate).</td></tr>
+                        <tr><td><strong>Content-Disposition</strong></td><td><code>Content-Disposition: attachment; filename="report.pdf"</code></td><td>Display inline or force a download with a filename.</td></tr>
+                        <tr><td><strong>Location</strong></td><td><code>Location: https://example.com/new-path</code></td><td>Redirect target (3xx) or created resource URL (201). Trace chains with the <a href="/redirect-checker/">Redirect Checker</a>.</td></tr>
+                        <tr><td><strong>Set-Cookie</strong></td><td><code>Set-Cookie: session=abc; Path=/; HttpOnly; Secure; SameSite=Lax</code></td><td>Store a cookie on the client. One header per cookie.</td></tr>
+                        <tr><td><strong>Cache-Control</strong></td><td><code>Cache-Control: public, max-age=86400</code></td><td>Primary caching policy (see caching section).</td></tr>
+                        <tr><td><strong>ETag</strong></td><td><code>ETag: "33a64df5"</code></td><td>Opaque version identifier for conditional requests.</td></tr>
+                        <tr><td><strong>Last-Modified</strong></td><td><code>Last-Modified: Tue, 09 Jun 2026 14:00:00 GMT</code></td><td>When the resource last changed.</td></tr>
+                        <tr><td><strong>Vary</strong></td><td><code>Vary: Accept-Encoding, Origin</code></td><td>Request headers that affect the response — keys the cache entry.</td></tr>
+                        <tr><td><strong>Server</strong></td><td><code>Server: nginx</code></td><td>Server software. Keep it vague; version numbers help attackers.</td></tr>
+                        <tr><td><strong>Date</strong></td><td><code>Date: Thu, 11 Jun 2026 09:00:00 GMT</code></td><td>When the response was generated.</td></tr>
+                        <tr><td><strong>Allow</strong></td><td><code>Allow: GET, HEAD, POST</code></td><td>Methods supported by the resource (sent with 405).</td></tr>
+                        <tr><td><strong>Retry-After</strong></td><td><code>Retry-After: 120</code></td><td>Seconds (or date) to wait before retrying (429, 503).</td></tr>
+                        <tr><td><strong>WWW-Authenticate</strong></td><td><code>WWW-Authenticate: Basic realm="admin"</code></td><td>Challenge sent with 401 stating the required auth scheme.</td></tr>
+                        <tr><td><strong>Accept-Ranges</strong></td><td><code>Accept-Ranges: bytes</code></td><td>Server supports range requests.</td></tr>
+                        <tr><td><strong>Transfer-Encoding</strong></td><td><code>Transfer-Encoding: chunked</code></td><td>Body sent in chunks of unknown total length (HTTP/1.1).</td></tr>
+                        <tr><td><strong>Alt-Svc</strong></td><td><code>Alt-Svc: h3=":443"; ma=86400</code></td><td>Advertises HTTP/3 (QUIC) availability.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Security Headers</h2>
+            <p>Response headers that harden the browser. Audit any site's security headers with the <a href="/security-headers/">Security Headers checker</a>; for full explanations see the <a href="/learn/security-headers/">Security Headers guide</a>.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Header</th><th>Recommended Value</th><th>Protects Against</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Strict-Transport-Security</strong></td><td><code>max-age=31536000; includeSubDomains</code></td><td>Protocol downgrade, SSL stripping — forces HTTPS</td></tr>
+                        <tr><td><strong>Content-Security-Policy</strong></td><td><code>default-src 'self'</code> (tighten per site)</td><td>XSS, injection, unwanted resource loads</td></tr>
+                        <tr><td><strong>X-Content-Type-Options</strong></td><td><code>nosniff</code></td><td>MIME-type sniffing attacks</td></tr>
+                        <tr><td><strong>X-Frame-Options</strong></td><td><code>DENY</code> or <code>SAMEORIGIN</code></td><td>Clickjacking (superseded by CSP <code>frame-ancestors</code>)</td></tr>
+                        <tr><td><strong>Referrer-Policy</strong></td><td><code>strict-origin-when-cross-origin</code></td><td>Leaking URLs to third parties</td></tr>
+                        <tr><td><strong>Permissions-Policy</strong></td><td><code>camera=(), microphone=(), geolocation=()</code></td><td>Unwanted use of browser features</td></tr>
+                        <tr><td><strong>Cross-Origin-Opener-Policy</strong></td><td><code>same-origin</code></td><td>Cross-window attacks (Spectre-class)</td></tr>
+                        <tr><td><strong>Cross-Origin-Resource-Policy</strong></td><td><code>same-origin</code></td><td>Cross-origin inclusion of your resources</td></tr>
+                        <tr><td><strong>Cross-Origin-Embedder-Policy</strong></td><td><code>require-corp</code></td><td>Required (with COOP) for SharedArrayBuffer isolation</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Content-Security-Policy Quick Syntax</h3>
+            <pre><code>Content-Security-Policy:
+  default-src 'self';
+  script-src 'self' https://cdn.example.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: https:;
+  connect-src 'self' https://api.example.com;
+  frame-ancestors 'none';
+  upgrade-insecure-requests</code></pre>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Directive</th><th>Controls</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>default-src</code></td><td>Fallback for all fetch directives</td></tr>
+                        <tr><td><code>script-src</code> / <code>style-src</code></td><td>Where JS / CSS may load from</td></tr>
+                        <tr><td><code>img-src</code> / <code>font-src</code> / <code>media-src</code></td><td>Images, fonts, audio/video sources</td></tr>
+                        <tr><td><code>connect-src</code></td><td>fetch/XHR/WebSocket targets</td></tr>
+                        <tr><td><code>frame-ancestors</code></td><td>Who may embed this page (replaces X-Frame-Options)</td></tr>
+                        <tr><td><code>form-action</code></td><td>Where forms may submit</td></tr>
+                        <tr><td><code>report-to</code></td><td>Endpoint for violation reports</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Tip:</strong> roll out with <code>Content-Security-Policy-Report-Only</code> first — violations are reported but not blocked.</p>
+
+            <h2>Caching Headers Deep-Dive</h2>
+
+            <h3>Cache-Control Directives</h3>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Directive</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>max-age=3600</code></td><td>Fresh for N seconds from the time of the response</td></tr>
+                        <tr><td><code>s-maxage=86400</code></td><td>Like max-age, but only for shared caches (CDNs, proxies)</td></tr>
+                        <tr><td><code>public</code></td><td>Any cache may store it, even when authenticated</td></tr>
+                        <tr><td><code>private</code></td><td>Only the browser may store it — never CDNs/proxies</td></tr>
+                        <tr><td><code>no-cache</code></td><td>May store, but must revalidate with the origin before reuse</td></tr>
+                        <tr><td><code>no-store</code></td><td>Never store anywhere — use for sensitive data</td></tr>
+                        <tr><td><code>must-revalidate</code></td><td>Once stale, must revalidate — never serve stale</td></tr>
+                        <tr><td><code>immutable</code></td><td>Will never change during max-age — skip revalidation on reload</td></tr>
+                        <tr><td><code>stale-while-revalidate=60</code></td><td>Serve stale for N seconds while refreshing in the background</td></tr>
+                        <tr><td><code>stale-if-error=600</code></td><td>Serve stale for N seconds if the origin errors</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Common Caching Recipes</h3>
+            <pre><code># Fingerprinted static assets (app.4f3a2b.js) — cache forever
+Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages — always revalidate
+Cache-Control: no-cache
+
+# API responses — short browser cache, longer CDN cache
+Cache-Control: private, max-age=0, s-maxage=60, stale-while-revalidate=30
+
+# Sensitive data (banking, PII) — never store
+Cache-Control: no-store
+
+# Legacy compatibility trio
+Cache-Control: no-store
+Pragma: no-cache
+Expires: 0</code></pre>
+
+            <h3>Validators: ETag and Last-Modified</h3>
+            <pre><code># First response
+HTTP/1.1 200 OK
+ETag: "33a64df5"
+Last-Modified: Tue, 09 Jun 2026 14:00:00 GMT
+
+# Next request — client revalidates
+GET /style.css HTTP/1.1
+If-None-Match: "33a64df5"
+If-Modified-Since: Tue, 09 Jun 2026 14:00:00 GMT
+
+# Unchanged — no body sent
+HTTP/1.1 304 Not Modified</code></pre>
+            <p>ETag wins over Last-Modified when both are present: it has no one-second granularity limit and survives content-identical regenerations. See the <a href="/errors/http/304-not-modified">304 Not Modified guide</a> for troubleshooting.</p>
+
+            <h3>Vary</h3>
+            <p><code>Vary</code> tells caches which request headers produce different responses. <code>Vary: Accept-Encoding</code> keeps gzip and brotli copies separate; <code>Vary: Origin</code> is essential when CORS responses are cached. <code>Vary: *</code> effectively disables caching.</p>
+
+            <h2>CORS Headers</h2>
+            <p>Cross-Origin Resource Sharing controls which web origins may read responses from your server.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Header</th><th>Direction</th><th>Example</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Origin</strong></td><td>Request</td><td><code>Origin: https://app.example.com</code></td><td>Requesting origin — sent automatically by the browser</td></tr>
+                        <tr><td><strong>Access-Control-Allow-Origin</strong></td><td>Response</td><td><code>https://app.example.com</code> or <code>*</code></td><td>Origins allowed to read the response. <code>*</code> cannot be combined with credentials.</td></tr>
+                        <tr><td><strong>Access-Control-Allow-Methods</strong></td><td>Response (preflight)</td><td><code>GET, POST, PUT, DELETE</code></td><td>Methods allowed for the actual request</td></tr>
+                        <tr><td><strong>Access-Control-Allow-Headers</strong></td><td>Response (preflight)</td><td><code>Content-Type, Authorization</code></td><td>Request headers the client may send</td></tr>
+                        <tr><td><strong>Access-Control-Allow-Credentials</strong></td><td>Response</td><td><code>true</code></td><td>Allow cookies/auth on cross-origin requests; requires an explicit (non-<code>*</code>) origin</td></tr>
+                        <tr><td><strong>Access-Control-Expose-Headers</strong></td><td>Response</td><td><code>X-Request-Id, ETag</code></td><td>Extra response headers JavaScript may read</td></tr>
+                        <tr><td><strong>Access-Control-Max-Age</strong></td><td>Response (preflight)</td><td><code>86400</code></td><td>Seconds to cache the preflight result</td></tr>
+                        <tr><td><strong>Access-Control-Request-Method</strong></td><td>Request (preflight)</td><td><code>PUT</code></td><td>Method the actual request intends to use</td></tr>
+                        <tr><td><strong>Access-Control-Request-Headers</strong></td><td>Request (preflight)</td><td><code>content-type</code></td><td>Headers the actual request intends to send</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Preflight Example</h3>
+            <pre><code># Browser sends preflight before a cross-origin PUT with JSON
+OPTIONS /api/items/42 HTTP/1.1
+Host: api.example.com
+Origin: https://app.example.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: content-type, authorization
+
+# Server approves
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Max-Age: 86400</code></pre>
+            <p>Reproduce CORS behavior by crafting requests with the <a href="/http-request-builder/">HTTP Request Builder</a>.</p>
+
+            <h2>Authentication Headers</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scheme</th><th>Format</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Basic</strong></td><td><code>Authorization: Basic base64(user:pass)</code></td><td>Credentials are only encoded, not encrypted — HTTPS mandatory</td></tr>
+                        <tr><td><strong>Bearer</strong></td><td><code>Authorization: Bearer &lt;token&gt;</code></td><td>OAuth 2.0 / JWT tokens; the standard for APIs</td></tr>
+                        <tr><td><strong>Digest</strong></td><td><code>Authorization: Digest username="...", nonce="...", response="..."</code></td><td>Challenge-response hashing; largely legacy</td></tr>
+                        <tr><td><strong>API key (custom)</strong></td><td><code>X-API-Key: &lt;key&gt;</code></td><td>Non-standard but extremely common</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code># 401 challenge → authenticated retry
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm="api", error="invalid_token"
+
+GET /api/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+
+# Proxy variant (407)
+Proxy-Authenticate: Basic realm="proxy"
+Proxy-Authorization: Basic dXNlcjpwYXNz</code></pre>
+            <p>Getting 401 or 403 unexpectedly? See the <a href="/errors/http/401-unauthorized">401 Unauthorized</a> and <a href="/errors/http/403-forbidden">403 Forbidden</a> guides.</p>
+
+            <h2>Content Negotiation</h2>
+            <p>The client states preferences; the server picks the best representation and echoes the decision in <code>Vary</code>.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Request Header</th><th>Example</th><th>Negotiates</th><th>Server Responds With</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Accept</strong></td><td><code>application/json, text/html;q=0.8</code></td><td>Media type</td><td><code>Content-Type</code></td></tr>
+                        <tr><td><strong>Accept-Language</strong></td><td><code>en-US, en;q=0.9, de;q=0.5</code></td><td>Language</td><td><code>Content-Language</code></td></tr>
+                        <tr><td><strong>Accept-Encoding</strong></td><td><code>br, gzip;q=0.9, zstd</code></td><td>Compression</td><td><code>Content-Encoding</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Quality values (<code>q=</code>) range 0–1 and express preference order; omitted q means 1.0. A server that cannot satisfy <code>Accept</code> may return <a href="/errors/http/406-not-acceptable">406 Not Acceptable</a>.</p>
+
+            <h2>Troubleshooting Quick Reference</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Symptom</th><th>Headers to Check</th><th>Tool / Guide</th></tr></thead>
+                    <tbody>
+                        <tr><td>Stale content after deploy</td><td><code>Cache-Control</code>, <code>ETag</code>, <code>Vary</code></td><td><a href="/http-request-builder/">HTTP Request Builder</a></td></tr>
+                        <tr><td>CORS error in console</td><td><code>Access-Control-Allow-Origin</code>, <code>-Methods</code>, <code>-Headers</code></td><td><a href="/http-request-builder/">HTTP Request Builder</a></td></tr>
+                        <tr><td>Redirect loop</td><td><code>Location</code>, <code>X-Forwarded-Proto</code></td><td><a href="/redirect-checker/">Redirect Checker</a></td></tr>
+                        <tr><td>Cookies not set/sent</td><td><code>Set-Cookie</code> (Secure, SameSite, Domain, Path)</td><td><a href="/http-request-builder/">HTTP Request Builder</a></td></tr>
+                        <tr><td>Missing security headers</td><td>HSTS, CSP, <code>X-Content-Type-Options</code>, etc.</td><td><a href="/security-headers/">Security Headers checker</a></td></tr>
+                        <tr><td>401 / 403 responses</td><td><code>Authorization</code>, <code>WWW-Authenticate</code></td><td><a href="/errors/http/401-unauthorized">401 guide</a>, <a href="/errors/http/403-forbidden">403 guide</a></td></tr>
+                        <tr><td>429 rate limiting</td><td><code>Retry-After</code>, rate-limit headers</td><td><a href="/errors/http/429-too-many-requests">429 guide</a></td></tr>
+                        <tr><td>Slow responses</td><td><code>Content-Encoding</code>, <code>Cache-Control</code>, <code>Alt-Svc</code></td><td><a href="/learn/http-latency/">HTTP latency guide</a></td></tr>
+                        <tr><td>431 header size errors</td><td>Oversized <code>Cookie</code> headers</td><td><a href="/errors/http/431-request-header-fields-too-large">431 guide</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Are HTTP header names case-sensitive?</h3>
+            <p>No — header names are case-insensitive per the spec. HTTP/2 and HTTP/3 transmit them in lowercase. Header <em>values</em>, however, may be case-sensitive depending on the header (ETag values are, for example).</p>
+
+            <h3>Is there a size limit on headers?</h3>
+            <p>The spec sets no limit, but servers do: Nginx defaults to 8 KB per header line, Apache to 8 KB, Node.js to 16 KB total. Exceeding the limit yields <a href="/errors/http/431-request-header-fields-too-large">431 Request Header Fields Too Large</a> or a generic 400. Bloated cookies are the usual culprit.</p>
+
+            <h3>What do the X- prefixed headers mean?</h3>
+            <p>The <code>X-</code> prefix marked experimental/custom headers. RFC 6648 deprecated the convention in 2012, but established names (<code>X-Forwarded-For</code>, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>) persist for compatibility. New standards drop the prefix — e.g., <code>Forwarded</code> replaces <code>X-Forwarded-For</code>.</p>
+
+            <h3>What's the difference between Set-Cookie SameSite values?</h3>
+            <p><code>SameSite=Strict</code> never sends the cookie on cross-site requests. <code>Lax</code> (the modern default) sends it on top-level navigations only (clicking a link), blocking CSRF-prone cross-site POSTs. <code>None</code> sends it everywhere but requires <code>Secure</code>.</p>
+
+            <h3>Do headers behave differently in HTTP/2 and HTTP/3?</h3>
+            <p>Semantics are identical, but headers are compressed (HPACK in HTTP/2, QPACK in HTTP/3), names are lowercase, and connection-specific headers (<code>Connection</code>, <code>Keep-Alive</code>, <code>Transfer-Encoding</code>, <code>Upgrade</code>) are forbidden. The status line becomes the <code>:status</code> pseudo-header.</p>
+
+            <h2>Related Resources</h2>
+            <ul>
+                <li><a href="/http-request-builder/">HTTP Request Builder</a> — craft requests and inspect response headers live</li>
+                <li><a href="/security-headers/">Security Headers</a> — audit any site's security header configuration</li>
+                <li><a href="/redirect-checker/">Redirect Checker</a> — trace Location header redirect chains</li>
+                <li><a href="/learn/http-status-codes/">HTTP Status Codes guide</a> — every status code explained</li>
+                <li><a href="/learn/security-headers/">Security Headers explained</a> — deep dive into each security header</li>
+                <li><a href="/learn/http-latency/">HTTP Latency guide</a> — diagnosing slow responses</li>
+                <li><a href="/errors/http/">HTTP error troubleshooting</a> — guides for every status code error</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-tls-cheat-sheet/">SSL/TLS cheat sheet</a>, <a href="/learn/dns-cheat-sheet/">DNS records cheat sheet</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

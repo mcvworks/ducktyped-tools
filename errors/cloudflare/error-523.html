@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is 523 different from 522?","acceptedAnswer":{"@type":"Answer","text":"522: a route existed, packets were sent, nobody answered (drop/overload). 523: no usable route to the address at all — the failure is in addressing/routing, almost always the DNS record's content. 523 practically shouts 'check the IP in the dashboard'."}},{"@type":"Question","name":"Which IP am I supposed to put in Cloudflare DNS?","acceptedAnswer":{"@type":"Answer","text":"The server's public IP — the one 'curl ifconfig.me' prints from the origin. Hosting panels often show both an internal and a public address; the internal one (usually 10.x or 192.168.x) is what causes 523s when pasted by mistake."}},{"@type":"Question","name":"Can this be caused by my server being off?","acceptedAnswer":{"@type":"Answer","text":"A powered-off server usually yields 521/522 (its IP still routes to the host's network). 523 needs the route itself to be gone — released IPs, withdrawn ranges, or unroutable addresses. That said, cloud teardown often releases the IP too, so post-decommission both patterns appear."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 523 — Origin Is Unreachable — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 523 — Origin Is Unreachable — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 523 'Origin is unreachable'. Private/wrong IPs in Cloudflare DNS, servers that changed address, and routing failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 523, origin is unreachable, error 523, http 523">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 523 — Origin Is Unreachable — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 523 'Origin is unreachable'. Private/wrong IPs in Cloudflare DNS, servers that changed address, and routing failures.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-523">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-523">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 523 — Origin Is Unreachable</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 523 — Origin Is Unreachable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare has no network route to the origin at all — typically because the DNS record points at a private, wrong, or no-longer-routed IP address.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 523</code></li><li><code>origin is unreachable</code></li><li><code>error 523</code></li><li><code>http 523</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 523 happens before timeouts and refusals even apply: Cloudflare cannot route packets toward the origin address at all. The dominant cause is an origin IP in Cloudflare DNS that is not publicly routable — a private address (192.168.x.x, 10.x.x.x) copied from an internal panel, a typo, or the address of a server that was decommissioned and whose IP was withdrawn. Where 522 is 'no answer', 523 is 'nowhere to send the question'.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Private or invalid IP in the DNS record</strong> — A LAN address from the hosting panel (the server's internal interface) pasted into Cloudflare DNS — routable inside the datacenter, meaningless from Cloudflare's edge.</li>
+                <li><strong>The origin's IP no longer exists</strong> — Server destroyed or resized to a new address, elastic IP released, or the provider re-announced ranges — the record points into the void.</li>
+                <li><strong>Routing/BGP problems at the host</strong> — The origin's network temporarily withdrawn or unreachable from parts of the internet — usually provider-side and visible in their status pages.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the record for a private address</h3>
+            <p>In the Cloudflare DNS dashboard, look at the A/AAAA content. Anything in 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 (or fc00::/7) can never work — replace it with the server's public IP.</p>
+            <pre><code># on the origin, the public address is:
+curl -s ifconfig.me
+curl -s -4 icanhazip.com</code></pre>
+            <h3>2. Confirm the public IP is reachable and yours</h3>
+            <p>From an outside machine, verify basic reachability and that the machine answering is really your server.</p>
+            <pre><code>ping -c3 ORIGIN_IP
+nc -zv ORIGIN_IP 443
+curl -vk https://ORIGIN_IP/ -H 'Host: example.com' -o /dev/null | head</code></pre>
+            <h3>3. After migrations, update every record</h3>
+            <p>Multiple records (root, www, api, mail-adjacent A records) can point at the old machine; sweep them all in the dashboard after a server move.</p>
+            <h3>4. Escalate provider-side routing with evidence</h3>
+            <p>If the IP is public, correct, and reachable from some networks but not others, gather traceroutes and open a ticket with the host.</p>
+            <pre><code>traceroute ORIGIN_IP
+mtr -rw ORIGIN_IP   # if installed</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is 523 different from 522?</h3>
+            <p>522: a route existed, packets were sent, nobody answered (drop/overload). 523: no usable route to the address at all — the failure is in addressing/routing, almost always the DNS record's content. 523 practically shouts 'check the IP in the dashboard'.</p>
+            <h3>Which IP am I supposed to put in Cloudflare DNS?</h3>
+            <p>The server's public IP — the one 'curl ifconfig.me' prints from the origin. Hosting panels often show both an internal and a public address; the internal one (usually 10.x or 192.168.x) is what causes 523s when pasted by mistake.</p>
+            <h3>Can this be caused by my server being off?</h3>
+            <p>A powered-off server usually yields 521/522 (its IP still routes to the host's network). 523 needs the route itself to be gone — released IPs, withdrawn ranges, or unroutable addresses. That said, cloud teardown often releases the IP too, so post-decommission both patterns appear.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-522">Cloudflare Error 522</a> — route exists, no answer.</li>
+                <li><a href="/errors/cloudflare/error-1016">Cloudflare Error 1016</a> — origin DNS itself failing to resolve.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — names that do not resolve at all.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Inspect the domain's public records</span>
+                </a>
+        <a href="/traceroute/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Traceroute</span>
+                    <span class="recommended-tool-desc">Check the network path to an IP</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

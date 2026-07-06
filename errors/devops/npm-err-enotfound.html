@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I check my current npm registry?","acceptedAnswer":{"@type":"Answer","text":"Run 'npm config get registry'. The default is https://registry.npmjs.org/. If it shows a different URL, that may be the source of the problem."}},{"@type":"Question","name":"Can I install packages offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can use 'npm cache' for previously downloaded packages, or tools like Verdaccio to run a local npm registry. You can also use 'npm pack' to create tarballs for offline installation."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"npm ERR! code ENOTFOUND — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix npm ERR! code ENOTFOUND","step":[{"@type":"HowToStep","position":1,"name":"Check internet connectivity","text":"Verify that you can reach the npm registry from your machine."},{"@type":"HowToStep","position":2,"name":"Reset registry to default","text":"Ensure npm is configured to use the official registry."},{"@type":"HowToStep","position":3,"name":"Configure proxy settings","text":"If behind a corporate proxy, configure npm to use it."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! code ENOTFOUND — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! ENOTFOUND registry error. Learn why npm cannot connect to the registry and how to fix DNS, proxy, and network configuration issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! ENOTFOUND, getaddrinfo ENOTFOUND registry.npmjs.org, npm ERR! network, npm DNS error, npm cannot reach registry">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! code ENOTFOUND — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! ENOTFOUND registry error. Learn why npm cannot connect to the registry and how to fix DNS, proxy, and network configuration issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/npm-err-enotfound">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/npm-err-enotfound">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>npm ERR! code ENOTFOUND</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! code ENOTFOUND</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">npm cannot reach the registry</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! ENOTFOUND</code></li><li><code>getaddrinfo ENOTFOUND registry.npmjs.org</code></li><li><code>npm ERR! network</code></li><li><code>npm DNS error</code></li><li><code>npm cannot reach registry</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ENOTFOUND means npm cannot resolve the hostname of the package registry (typically registry.npmjs.org) via DNS. This prevents npm from downloading packages. The issue is usually related to network connectivity, DNS configuration, or proxy settings rather than a problem with npm itself.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No internet connection</strong> — The machine has no active internet connection or the connection is unstable, preventing DNS resolution and registry access.</li>
+                <li><strong>DNS resolution failure</strong> — The DNS server cannot resolve registry.npmjs.org. This can happen with misconfigured DNS settings, DNS server outages, or network restrictions.</li>
+                <li><strong>Corporate proxy not configured</strong> — The machine is behind a corporate proxy that requires specific configuration in npm. Without proxy settings, npm cannot reach the external registry.</li>
+                <li><strong>Incorrect registry URL configured</strong> — The npm registry URL has been changed in .npmrc to an incorrect or unreachable URL.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check internet connectivity</h3>
+            <p>Verify that you can reach the npm registry from your machine.</p>
+            <pre><code>ping registry.npmjs.org
+curl -I https://registry.npmjs.org/</code></pre>
+            <h3>2. Reset registry to default</h3>
+            <p>Ensure npm is configured to use the official registry.</p>
+            <pre><code>npm config set registry https://registry.npmjs.org/
+npm config get registry</code></pre>
+            <h3>3. Configure proxy settings</h3>
+            <p>If behind a corporate proxy, configure npm to use it.</p>
+            <pre><code>npm config set proxy http://proxy.company.com:8080
+npm config set https-proxy http://proxy.company.com:8080</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I check my current npm registry?</h3>
+            <p>Run 'npm config get registry'. The default is https://registry.npmjs.org/. If it shows a different URL, that may be the source of the problem.</p>
+            <h3>Can I install packages offline?</h3>
+            <p>Yes. You can use 'npm cache' for previously downloaded packages, or tools like Verdaccio to run a local npm registry. You can also use 'npm pack' to create tarballs for offline installation.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/devops/npm-err-econnreset">npm ERR! ECONNRESET</a> — npm connection reset</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — DNS resolution failure</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

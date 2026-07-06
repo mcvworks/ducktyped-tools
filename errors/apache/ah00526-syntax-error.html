@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Apache is down and won't start — same workflow?","acceptedAnswer":{"@type":"Answer","text":"Yes: configtest first, since a config error is the most common reason a previously working Apache refuses to start after edits. If configtest passes and it still fails, move to 'journalctl -xeu apache2' — the failure is then ports (AH00072), certificates (AH02565), or resources (AH00023), each with their own guide."}},{"@type":"Question","name":"The error names line 34 but line 34 looks fine — why?","acceptedAnswer":{"@type":"Answer","text":"Parsing failed at line 34; the mistake may be earlier — typically an unclosed quote or block that made everything after it part of the previous construct. Scan upward from the named line, or use the tag-count trick to find mismatched blocks."}},{"@type":"Question","name":"Can I validate a config change without touching the running server?","acceptedAnswer":{"@type":"Answer","text":"configtest itself does not disturb the running server — it parses the on-disk config and reports. That is why the 'configtest && reload' idiom is safe to script: reload only fires when parsing succeeded."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00526 — Syntax Error in Configuration — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00526 — Syntax Error in Configuration — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00526 syntax errors. apachectl configtest workflow, common causes (unclosed blocks, missing files, bad paths), and safe reload habits.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00526: Syntax error on line, ah00526, apachectl configtest syntax error, apache syntax error won&#39;t start">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00526 — Syntax Error in Configuration — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00526 syntax errors. apachectl configtest workflow, common causes (unclosed blocks, missing files, bad paths), and safe reload habits.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00526-syntax-error">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00526-syntax-error">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00526 — Syntax Error in Configuration</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00526 — Syntax Error in Configuration</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The configtest/startup failure 'AH00526: Syntax error on line N of file' — Apache cannot parse the configuration and refuses to start or reload until it is fixed.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00526: Syntax error on line</code></li><li><code>ah00526</code></li><li><code>apachectl configtest syntax error</code></li><li><code>apache syntax error won&#39;t start</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>AH00526 is Apache's parse-failure header: it names the file and line where reading the configuration stopped, followed by a second line describing the actual problem — an unclosed VirtualHost block, a file referenced by Include or SSLCertificateFile that does not exist, an invalid argument, or a directive that needs a missing module. The named line is where parsing failed, which for unclosed blocks can be the end of the file rather than where the mistake began.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Unclosed or mismatched block directives</strong> — A VirtualHost, Directory, or IfModule block without its closing tag — the reported line is often the file's end, the real error higher up.</li>
+                <li><strong>Referenced file missing</strong> — SSLCertificateFile, Include/IncludeOptional targets, or an ErrorLog directory that does not exist — the second message line says which path failed.</li>
+                <li><strong>Invalid arguments to a directive</strong> — Wrong number of arguments, a typo in an option name, or quotes broken across lines.</li>
+                <li><strong>Directive requiring an unloaded module</strong> — Overlaps 'Invalid command' territory: SSLEngine without mod_ssl, ProxyPass without mod_proxy — enabling the module resolves it.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Always run configtest and read BOTH lines</h3>
+            <p>The AH00526 line locates, the following line explains. Fix, re-test, repeat until Syntax OK.</p>
+            <pre><code>sudo apachectl configtest
+# AH00526: Syntax error on line 34 of /etc/apache2/sites-enabled/example.conf:
+# SSLCertificateFile: file '/etc/ssl/certs/missing.pem' does not exist or is empty</code></pre>
+            <h3>2. Hunt unclosed blocks when the line number is unhelpful</h3>
+            <p>Count opening and closing tags per file; mismatched counts point at the broken block type.</p>
+            <pre><code>f=/etc/apache2/sites-enabled/example.conf
+for t in VirtualHost Directory IfModule Location FilesMatch; do
+  printf '%s open=%s close=%s\n' $t $(grep -ci &quot;&lt;$t&quot; $f) $(grep -ci &quot;&lt;/$t&gt;&quot; $f)
+done</code></pre>
+            <h3>3. Check which files are actually included</h3>
+            <p>See the full include tree to find where a broken file enters the config.</p>
+            <pre><code>sudo apache2ctl -t -D DUMP_INCLUDES</code></pre>
+            <h3>4. Reload, never restart, after edits</h3>
+            <p>A failed reload leaves the old config serving; a failed restart leaves nothing running. Combine with configtest in one command so bad configs never even attempt.</p>
+            <pre><code>sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Apache is down and won't start — same workflow?</h3>
+            <p>Yes: configtest first, since a config error is the most common reason a previously working Apache refuses to start after edits. If configtest passes and it still fails, move to 'journalctl -xeu apache2' — the failure is then ports (AH00072), certificates (AH02565), or resources (AH00023), each with their own guide.</p>
+            <h3>The error names line 34 but line 34 looks fine — why?</h3>
+            <p>Parsing failed at line 34; the mistake may be earlier — typically an unclosed quote or block that made everything after it part of the previous construct. Scan upward from the named line, or use the tag-count trick to find mismatched blocks.</p>
+            <h3>Can I validate a config change without touching the running server?</h3>
+            <p>configtest itself does not disturb the running server — it parses the on-disk config and reports. That is why the 'configtest && reload' idiom is safe to script: reload only fires when parsing succeeded.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/apache/invalid-command-rewriteengine">Invalid Command 'RewriteEngine'</a> — missing-module parse errors.</li>
+                <li><a href="/errors/apache/ah02565-certificate-key-mismatch">AH02565 Cert/Key Mismatch</a> — TLS file errors at startup.</li>
+                <li><a href="/errors/nginx/unknown-directive">Nginx Unknown Directive</a> — the nginx equivalent.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Confirm the site after reload</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Spot-check endpoints</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

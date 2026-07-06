@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between a role and a user in PostgreSQL?","acceptedAnswer":{"@type":"Answer","text":"They are the same object: a user is simply a role with the LOGIN attribute. CREATE USER is shorthand for CREATE ROLE ... LOGIN. Groups are roles without LOGIN that other roles are granted membership in."}},{"@type":"Question","name":"Why does plain 'psql' try my OS username?","acceptedAnswer":{"@type":"Answer","text":"psql's defaults come from the environment: role = your OS user, database = same as the role. It makes local peer authentication seamless when matching roles exist — and produces this error when they do not. Set PGUSER/PGDATABASE or use -U/-d to override."}},{"@type":"Question","name":"The role exists in \\du but still 'does not exist' — how?","acceptedAnswer":{"@type":"Answer","text":"Either you are connecting to a different cluster (check the port — 5432 vs 5433 after version upgrades), or the role was created with quotes and mixed case, making \"MyUser\" and myuser different names. Re-create unquoted lowercase roles to avoid the trap."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"PostgreSQL Role Does Not Exist — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Role Does Not Exist — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'FATAL: role does not exist' in PostgreSQL. Why psql uses your OS username, how to create roles, and the Homebrew 'role postgres' quirk.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="FATAL: role does not exist, role &quot;postgres&quot; does not exist, psql: error: FATAL: role, createuser postgres, 28000 postgres">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PostgreSQL Role Does Not Exist — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'FATAL: role does not exist' in PostgreSQL. Why psql uses your OS username, how to create roles, and the Homebrew 'role postgres' quirk.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/postgres-role-does-not-exist">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/postgres-role-does-not-exist">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>PostgreSQL Role Does Not Exist</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>PostgreSQL Role Does Not Exist</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">PostgreSQL error 28000 — 'FATAL: role "username" does not exist'. The role you tried to connect as has never been created on this cluster.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>FATAL: role does not exist</code></li><li><code>role &quot;postgres&quot; does not exist</code></li><li><code>psql: error: FATAL: role</code></li><li><code>createuser postgres</code></li><li><code>28000 postgres</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>PostgreSQL authenticates against roles (users) stored in the cluster. This error means the role name your client sent does not exist there. The classic trigger: running plain 'psql' makes PostgreSQL assume a role named after your operating-system user — which usually does not exist as a database role. The second classic: Homebrew's PostgreSQL creates a superuser named after your macOS account, not 'postgres', so tools expecting the traditional postgres role fail.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>psql defaulted to your OS username</strong> — Without -U, psql connects as the current OS user. 'FATAL: role "alice" does not exist' just means nobody created a database role called alice.</li>
+                <li><strong>The role genuinely was never created</strong> — New cluster, fresh install, or an application configured with a role name that no migration or setup script ever created.</li>
+                <li><strong>No 'postgres' role on Homebrew installs</strong> — Homebrew initializes the cluster with your macOS username as the superuser. Anything hard-coded to connect as 'postgres' hits this error.</li>
+                <li><strong>Wrong cluster or case-sensitivity confusion</strong> — The role exists on the other cluster (different port), or was created quoted with capitals ("MyUser") and is now case-sensitive.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Connect as a role that exists</h3>
+            <p>Specify the superuser explicitly, or become the postgres OS user for peer auth.</p>
+            <pre><code>psql -U postgres -d postgres
+# or on Linux with peer auth:
+sudo -u postgres psql</code></pre>
+            <h3>2. Create the missing role</h3>
+            <p>Create the role with login rights (and only the privileges it needs).</p>
+            <pre><code>CREATE ROLE appuser WITH LOGIN PASSWORD 'secret';
+GRANT ALL PRIVILEGES ON DATABASE appdb TO appuser;
+-- or from the shell:
+-- createuser --interactive appuser</code></pre>
+            <h3>3. On Homebrew, create the traditional postgres role</h3>
+            <p>Add a postgres superuser so tools with conventional defaults work.</p>
+            <pre><code>createuser -s postgres
+# runs as your mac user, which is already a superuser</code></pre>
+            <h3>4. List existing roles to see what is really there</h3>
+            <p>Check role names (and their exact case) before assuming.</p>
+            <pre><code>psql -U postgres -c '\du'
+-- or:
+SELECT rolname FROM pg_roles ORDER BY 1;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between a role and a user in PostgreSQL?</h3>
+            <p>They are the same object: a user is simply a role with the LOGIN attribute. CREATE USER is shorthand for CREATE ROLE ... LOGIN. Groups are roles without LOGIN that other roles are granted membership in.</p>
+            <h3>Why does plain 'psql' try my OS username?</h3>
+            <p>psql's defaults come from the environment: role = your OS user, database = same as the role. It makes local peer authentication seamless when matching roles exist — and produces this error when they do not. Set PGUSER/PGDATABASE or use -U/-d to override.</p>
+            <h3>The role exists in \du but still 'does not exist' — how?</h3>
+            <p>Either you are connecting to a different cluster (check the port — 5432 vs 5433 after version upgrades), or the role was created with quotes and mixed case, making "MyUser" and myuser different names. Re-create unquoted lowercase roles to avoid the trap.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/postgres-database-does-not-exist">PostgreSQL Database Does Not Exist</a> — the database-level twin of this error.</li>
+                <li><a href="/errors/database/postgres-password-authentication-failed">PostgreSQL Password Authentication Failed</a> — the role exists but the password fails.</li>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — failures before authentication.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check which PostgreSQL port answers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

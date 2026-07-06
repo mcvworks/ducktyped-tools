@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Public Keys, PEM and DER Explained","description":"Learn how PEM and DER encodings work, what the BEGIN/END armor means, how public keys differ from certificates and CSRs, and how to read decoded key fields with OpenSSL.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/public-key-decoder/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Public Key Decoder"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between PEM and DER?","acceptedAnswer":{"@type":"Answer","text":"DER is the raw binary encoding of a key or certificate's ASN.1 structure. PEM is the same DER bytes encoded in Base64 and wrapped between -----BEGIN----- and -----END----- header lines so the data survives copy-paste, email, and text editors. They contain identical information in different containers."}},{"@type":"Question","name":"What does -----BEGIN PUBLIC KEY----- mean?","acceptedAnswer":{"@type":"Answer","text":"The BEGIN/END lines are called PEM armor. The label between the dashes identifies what the Base64 block contains: PUBLIC KEY means a SubjectPublicKeyInfo structure, RSA PUBLIC KEY means a legacy PKCS#1 key, CERTIFICATE means an X.509 certificate, and CERTIFICATE REQUEST means a CSR."}},{"@type":"Question","name":"Is a public key the same as a certificate?","acceptedAnswer":{"@type":"Answer","text":"No. A public key is just the raw cryptographic material. A certificate wraps a public key together with an identity (subject), an issuer, validity dates, and a CA signature that binds them together. A CSR is the unsigned request a server sends to a CA to obtain a certificate."}},{"@type":"Question","name":"How do I inspect a public key with OpenSSL?","acceptedAnswer":{"@type":"Answer","text":"Run openssl pkey -pubin -text -noout -in key.pem to print the algorithm, key size, modulus or curve point of any public key. For RSA keys openssl rsa -pubin -text -noout works, and for certificates use openssl x509 -text -noout."}},{"@type":"Question","name":"Is RSA 2048 still secure, and how does it compare to EC P-256?","acceptedAnswer":{"@type":"Answer","text":"RSA 2048 provides roughly 112 bits of security and remains acceptable for most TLS use through the late 2020s, while RSA 3072 or 4096 is preferred for long-lived keys. EC P-256 provides about 128 bits of security with far smaller keys and faster handshakes, which is why most modern TLS deployments use ECDSA P-256."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Keys, PEM &amp; DER Explained — Decode Key Fields — duckTyped</title>
+    <meta name="description" content="How PEM and DER encodings work, what BEGIN/END armor means, public keys vs certificates vs CSRs, and how to read algorithm, key size, and fingerprints.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Public Keys, PEM &amp; DER Explained — Decode Key Fields — duckTyped">
+    <meta property="og:description" content="How PEM and DER encodings work, what BEGIN/END armor means, public keys vs certificates vs CSRs, and reading decoded key fields.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/public-key-decoder/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Public Keys, PEM &amp; DER Explained — Decode Key Fields — duckTyped">
+    <meta name="twitter:description" content="PEM vs DER, BEGIN/END armor, public keys vs certificates vs CSRs, and OpenSSL inspection commands.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/public-key-decoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Public Key Decoder</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Public Keys, PEM and DER Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand what is actually inside a PEM file: how DER and PEM encodings relate, what the BEGIN/END armor labels mean, how public keys differ from certificates and CSRs, and how to read the decoded fields that matter.</p>
+
+            <h2>PEM vs DER: Two Encodings, One Structure</h2>
+            <p>Every key, certificate, and certificate signing request in the X.509 ecosystem is defined as an <strong>ASN.1</strong> data structure -- a nested tree of sequences, integers, and object identifiers. That structure has to be serialized to bytes somehow, and there are two standard ways to do it:</p>
+            <ul>
+                <li><strong>DER (Distinguished Encoding Rules)</strong> -- the raw binary serialization. Compact and unambiguous, but it cannot be pasted into a terminal, an email, or a YAML file without being corrupted.</li>
+                <li><strong>PEM (Privacy-Enhanced Mail)</strong> -- the same DER bytes encoded in Base64, wrapped at 64 characters per line, and bracketed by header and footer lines. PEM is just a text-safe container for DER.</li>
+            </ul>
+            <p>This is the single most important fact about these formats: <strong>a PEM file contains exactly the same information as the corresponding DER file</strong>. Strip the header and footer, Base64-decode the middle, and you have DER. A typical PEM public key looks like this:</p>
+            <pre><code>-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2adMrdG7aUfZH57aeKFFM01dPnkE
+C4EGVcjCARIbF8oolIr0zfxuEk2NXIV+B1BjCJSXmDuZLkVmrmnKPvWP2Q==
+-----END PUBLIC KEY-----</code></pre>
+            <p>The <code>-----BEGIN ...-----</code> and <code>-----END ...-----</code> lines are called <strong>PEM armor</strong>. The label between the dashes tells you (and your tooling) what the Base64 payload contains. Common labels:</p>
+            <ul>
+                <li><strong><code>PUBLIC KEY</code></strong> -- a <em>SubjectPublicKeyInfo</em> (SPKI) structure: an algorithm identifier plus the key material. This is the modern, algorithm-agnostic format.</li>
+                <li><strong><code>RSA PUBLIC KEY</code></strong> -- a legacy PKCS#1 structure containing only the RSA modulus and exponent, with no algorithm wrapper.</li>
+                <li><strong><code>CERTIFICATE</code></strong> -- a full X.509 certificate.</li>
+                <li><strong><code>CERTIFICATE REQUEST</code></strong> -- a PKCS#10 CSR.</li>
+                <li><strong><code>PRIVATE KEY</code> / <code>EC PRIVATE KEY</code> / <code>RSA PRIVATE KEY</code></strong> -- private key material. Never paste these into anything you do not control.</li>
+            </ul>
+            <p>Because the armor is plain text, you can concatenate multiple PEM blocks in one file -- which is exactly how certificate chain files (<code>fullchain.pem</code>) work.</p>
+
+            <h2>Public Keys vs Certificates vs CSRs</h2>
+            <p>These three artifacts are constantly confused because they all travel as PEM blocks and all contain a public key. They serve very different purposes:</p>
+            <ul>
+                <li><strong>Public key</strong> -- raw cryptographic material: an RSA modulus and exponent, or an elliptic curve point. It says nothing about <em>who</em> owns it. Anyone can generate one in milliseconds.</li>
+                <li><strong>Certificate</strong> -- a public key <em>plus identity</em>: a subject (such as <code>CN=example.com</code>), an issuer, validity dates, extensions like Subject Alternative Names, and a digital signature from a certificate authority binding all of it together. The CA signature is what lets a browser trust that the key really belongs to that domain.</li>
+                <li><strong>CSR (Certificate Signing Request)</strong> -- the in-between artifact. You generate a key pair, embed the public key and your requested subject details into a CSR, self-sign it with your private key to prove possession, and send it to a CA. The CA verifies your control of the domain and returns a signed certificate. CSRs are covered in depth in our <a href="/learn/csr-decoder/">CSR Decoder guide</a>.</li>
+            </ul>
+            <p>The lifecycle is: <strong>key pair → CSR → certificate</strong>. The public key inside all three is byte-for-byte identical, which is also how you verify that a certificate matches a key: compare the hashes of their public keys. Where the certificate fits into an actual connection is covered in our <a href="/learn/ssl-tls-handshake/">SSL/TLS handshake guide</a>.</p>
+
+            <h2>Reading the Decoded Fields</h2>
+            <p>When you decode a public key, a handful of fields tell you almost everything you need to know:</p>
+            <ul>
+                <li><strong>Algorithm</strong> -- identified by an OID (object identifier) in the ASN.1 structure. <code>1.2.840.113549.1.1.1</code> means RSA, <code>1.2.840.10045.2.1</code> means an EC public key, and <code>1.3.101.112</code> means Ed25519.</li>
+                <li><strong>Key size</strong> -- for RSA, the bit length of the modulus (2048, 3072, 4096). For EC keys, size is implied by the curve.</li>
+                <li><strong>Curve</strong> -- EC keys carry a second OID naming the curve: <code>1.2.840.10045.3.1.7</code> is P-256 (also called prime256v1 or secp256r1), <code>1.3.132.0.34</code> is P-384, and <code>1.3.132.0.35</code> is P-521.</li>
+                <li><strong>Exponent</strong> -- RSA keys almost always use the public exponent 65537 (<code>0x010001</code>). Anything unusual here is a red flag.</li>
+                <li><strong>Fingerprint</strong> -- a hash (usually SHA-256) of the DER bytes. Fingerprints give you a short, comparable identifier for a key: if two fingerprints match, the keys are identical. This is the standard way to confirm a certificate, CSR, and private key all belong together, and it is what SSH shows you on first connection.</li>
+            </ul>
+            <p>A decoded RSA SPKI structure looks like this -- an outer sequence holding an algorithm identifier and a bit string containing the actual key:</p>
+            <pre><code>SEQUENCE
+  SEQUENCE
+    OBJECT IDENTIFIER  1.2.840.113549.1.1.1 (rsaEncryption)
+    NULL
+  BIT STRING
+    SEQUENCE
+      INTEGER (257 bytes)   &lt;- 2048-bit modulus
+      INTEGER 65537         &lt;- public exponent</code></pre>
+
+            <h2>Inspecting Keys with OpenSSL</h2>
+            <p>OpenSSL is the reference tool for working with these formats. The commands you will use most often:</p>
+            <pre><code># Inspect any public key (RSA, EC, Ed25519)
+openssl pkey -pubin -text -noout -in pubkey.pem
+
+# RSA-specific: print modulus, exponent, key size
+openssl rsa -pubin -text -noout -in pubkey.pem
+
+# EC-specific: print curve name and point
+openssl ec -pubin -text -noout -in pubkey.pem
+
+# Inspect a certificate or CSR
+openssl x509 -text -noout -in cert.pem
+openssl req -text -noout -in request.csr</code></pre>
+            <p>Converting between PEM and DER is a single flag:</p>
+            <pre><code># PEM to DER
+openssl pkey -pubin -in pubkey.pem -outform DER -out pubkey.der
+
+# DER to PEM
+openssl pkey -pubin -inform DER -in pubkey.der -out pubkey.pem</code></pre>
+            <p>And to verify that a certificate, CSR, and private key all share the same public key, hash the SPKI of each and compare:</p>
+            <pre><code>openssl x509 -in cert.pem  -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256
+openssl req  -in req.csr   -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256
+openssl pkey -in priv.key  -pubout         | openssl pkey -pubin -outform DER | openssl dgst -sha256</code></pre>
+            <p>Three identical digests means the three files belong to the same key pair -- the fastest way to rule out a mismatched key when a server refuses to start or a CA rejects your request.</p>
+
+            <h2>When Key Size Matters</h2>
+            <p>Key size determines how expensive a brute-force or factoring attack would be, but the numbers are not directly comparable across algorithms:</p>
+            <ul>
+                <li><strong>RSA 2048</strong> -- roughly 112 bits of security. Still the most widely deployed size and acceptable for typical TLS certificates (which rotate every 90 days to a year), but standards bodies recommend moving beyond it for keys that must stay secure long-term.</li>
+                <li><strong>RSA 3072 / 4096</strong> -- roughly 128 / ~140+ bits of security. Appropriate for long-lived keys such as root CAs, code signing, and document signing. The cost is slower handshakes and signatures -- RSA operations scale poorly with key size.</li>
+                <li><strong>EC P-256</strong> -- about 128 bits of security from a 256-bit key. Equivalent strength to RSA 3072 at a fraction of the size and CPU cost, which is why most modern TLS deployments use ECDSA P-256. P-384 steps up to 192-bit security.</li>
+                <li><strong>RSA 1024</strong> -- considered breakable by well-resourced attackers. If a decoder reports a 1024-bit key anywhere in production, replace it immediately.</li>
+            </ul>
+            <p>Practical guidance: for web TLS, prefer EC P-256 (or P-384) unless you must support very old clients; if you stay on RSA, use 2048 as the floor and 3072+ for anything long-lived. Bigger is not automatically better -- RSA 4096 roughly quadruples handshake CPU versus 2048 for a security margin most sites do not need.</p>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/public-key-decoder/">Public Key Decoder</a> performs this inspection in your browser:</p>
+            <ol>
+                <li><strong>Paste a PEM block</strong> -- an SPKI public key (<code>BEGIN PUBLIC KEY</code>), a PKCS#1 RSA key, or even a full certificate. Example RSA and EC keys are one click away.</li>
+                <li><strong>Click Decode</strong> to parse the Base64 payload as DER.</li>
+                <li><strong>Read the results</strong> -- the detected format, key type (RSA, EC, or Ed25519), RSA key size, DER byte length, a hex dump, and the full ASN.1 structure with known OIDs labeled (including curves like P-256, P-384, and P-521).</li>
+            </ol>
+            <p>Everything runs client-side; the key is <strong>never sent to a server</strong>. Public keys are safe to share by definition, but the same caution as always applies: do not paste private keys into any web page.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Public Key Decoder:</p>
+            <ul>
+                <li><a href="/csr-decoder/">CSR Decoder</a> -- decode a certificate signing request to verify its subject, SANs, and embedded public key before submitting it to a CA.</li>
+                <li><a href="/ssl-checker/">SSL Checker</a> -- inspect the certificate a live server actually presents, including its public key, chain, and expiry.</li>
+                <li><a href="/hash-generator/">Hash Generator</a> -- compute SHA-256 and other digests, the same primitives used for key fingerprints.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/csr-decoder/">CSR Decoder guide</a>, <a href="/learn/ssl-tls-handshake/">SSL/TLS Handshake guide</a>, <a href="/learn/ssl-checker/">SSL Checker guide</a>, <a href="/learn/hash-generator/">Hash Generator guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate chain invalid</a> -- often caused by serving the wrong PEM blocks or an incomplete chain file.</li>
+                <li><a href="/errors/devops/permission-denied-publickey">Permission denied (publickey)</a> -- SSH key authentication failures, usually a key mismatch on the server.</li>
+                <li><a href="/errors/ssl/">All SSL/TLS Errors</a> -- browse all SSL-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/public-key-decoder/" class="cta-btn-primary">Try Public Key Decoder</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

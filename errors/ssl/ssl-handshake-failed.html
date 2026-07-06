@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SSL Handshake Failed mean?","acceptedAnswer":{"@type":"Answer","text":"SSL Handshake Failed means the browser and server could not complete the TLS negotiation process. During the handshake, they exchange cryptographic information to establish a secure connection. Failure means they could not agree on a protocol version, cipher suite, or the certificate could not be validated."}},{"@type":"Question","name":"What causes an SSL handshake failure?","acceptedAnswer":{"@type":"Answer","text":"Common causes include TLS version incompatibility, unsupported or deprecated cipher suites, an invalid or expired SSL certificate, a certificate chain with a missing intermediate certificate, and incorrect system time on the client device."}},{"@type":"Question","name":"How do I fix SSL handshake failed?","acceptedAnswer":{"@type":"Answer","text":"Check that your server supports TLS 1.2 and 1.3, that your certificate chain is complete and valid, that your system clock is correct, and that no intermediate certificate is missing. Use the SSL Checker tool to inspect the full certificate chain and TLS configuration."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Handshake Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SSL Handshake Failed","step":[{"@type":"HowToStep","position":1,"name":"Check Your SSL Certificate","text":"Use the SSL Checker to inspect the certificate chain, expiry, hostname coverage, and TLS configuration. A common issue is a missing intermediate certificate — the server must send the full chain from leaf to root."},{"@type":"HowToStep","position":2,"name":"Verify System Clock","text":"Ensure your device's time and timezone are correct. Certificate validity checks are time-sensitive — an incorrect system clock causes valid certificates to appear expired or not yet valid."},{"@type":"HowToStep","position":3,"name":"Update TLS Configuration (Server Owners)","text":"Ensure your server supports TLS 1.2 and TLS 1.3. Disable SSLv3, TLS 1.0, and TLS 1.1. Use a modern cipher suite list. Restart your web server after changes."},{"@type":"HowToStep","position":4,"name":"Install the Full Certificate Chain","text":"Configure your web server to send intermediate certificates, not just the leaf certificate. Let's Encrypt certificates require the chain file to be configured."},{"@type":"HowToStep","position":5,"name":"Check Firewall and Security Software","text":"Disable antivirus SSL scanning temporarily to test if it is interfering with the TLS handshake."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Handshake Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what SSL Handshake Failed means and how to fix it. Covers TLS negotiation, cipher suites, certificate chain issues, and system time problems.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL handshake failed, TLS handshake failed, SSL handshake error, Handshake failure, SSL_ERROR_HANDSHAKE_FAILURE_ALERT, tlsv1 alert handshake failure">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Handshake Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SSL Handshake Failed errors by diagnosing TLS version issues, certificate chain problems, and cipher suite mismatches.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-handshake-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-handshake-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Handshake Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Handshake Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSL Handshake Failed means the browser and server could not complete TLS negotiation. No secure connection was established, so the browser blocks the page.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL handshake failed</code></li><li><code>TLS handshake failed</code></li><li><code>SSL handshake error</code></li><li><code>Handshake failure</code></li><li><code>SSL_ERROR_HANDSHAKE_FAILURE_ALERT</code></li><li><code>tlsv1 alert handshake failure</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Handshake Fails</h2>
+                <div class="dt-diagram" data-diagram="ssl" data-error="handshake"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Every HTTPS connection begins with a TLS handshake — a sequence of messages where the client and server exchange cryptographic parameters, verify the server's certificate, and agree on an encryption method. If any step fails, the handshake fails and no data is exchanged.</p>
+            <p>Common browser messages for handshake failures include <a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a>, <a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</a>, and <code>SSL_ERROR_HANDSHAKE_FAILURE_ALERT</code> in Firefox.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>TLS version incompatibility</strong> — client and server do not share a supported TLS version.</li>
+                <li><strong>No shared cipher suite</strong> — the client and server have no cipher in common.</li>
+                <li><strong>Invalid or expired certificate</strong> — the server's certificate has expired, is self-signed, or has an invalid chain.</li>
+                <li><strong>Missing intermediate certificate</strong> — server not sending the full certificate chain (root → intermediate → leaf).</li>
+                <li><strong>Incorrect system time</strong> — if the client's clock is wrong, certificate validity dates will appear incorrect.</li>
+                <li><strong>Certificate hostname mismatch</strong> — the certificate does not cover the hostname being accessed.</li>
+                <li><strong>SNI not supported</strong> — very old clients or servers that do not support Server Name Indication.</li>
+                <li><strong>Firewall or antivirus SSL inspection</strong> — security software interfering with the handshake.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check Your SSL Certificate</h3>
+            <p>Use the <a href="/ssl-checker/">SSL Checker</a> to inspect the certificate chain, expiry, hostname coverage, and TLS configuration. A common issue is a missing intermediate certificate — the server must send the full chain from leaf to root.</p>
+
+            <h3>2. Verify System Clock</h3>
+            <p>Ensure your device's time and timezone are correct. Certificate validity checks are time-sensitive — an incorrect system clock causes valid certificates to appear expired or not yet valid.</p>
+
+            <h3>3. Update TLS Configuration (Server Owners)</h3>
+            <p>Ensure your server supports TLS 1.2 and TLS 1.3. Disable SSLv3, TLS 1.0, and TLS 1.1. Use a modern cipher suite list. Restart your web server after changes.</p>
+
+            <h3>4. Install the Full Certificate Chain</h3>
+            <p>Configure your web server to send intermediate certificates, not just the leaf certificate. Let's Encrypt certificates require the chain file to be configured.</p>
+
+            <h3>5. Check Firewall and Security Software</h3>
+            <p>Disable antivirus SSL scanning temporarily to test if it is interfering with the TLS handshake.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — inspect certificate chain, expiry, and TLS configuration.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does SSL Handshake Failed affect all browsers equally?</h3>
+            <p>Different browsers have different TLS policies. Chrome and Firefox have stricter minimum requirements than some other clients. An older browser may succeed where Chrome fails if the server only supports older TLS versions.</p>
+
+            <h3>Can I be affected by SSL handshake failures without going to a problematic site?</h3>
+            <p>Yes. Any HTTPS request — including those made by apps, OS update services, or background browser requests — can fail with a handshake error if the server does not meet modern TLS requirements.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> — SSL protocol error.</li>
+                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</a> — TLS version or cipher mismatch.</li>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — certificate past its validity date.</li>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — untrusted certificate authority.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

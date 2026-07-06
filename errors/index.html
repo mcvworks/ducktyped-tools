@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshoot Internet &amp; Developer Errors — duckTyped</title>
+    <meta name="description" content="Fix browser, HTTP, DNS, email, and SSL errors with step-by-step guides. Covers DNS_PROBE_FINISHED_NXDOMAIN, 502 Bad Gateway, SMTP 550, and more.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Troubleshoot Internet &amp; Developer Errors — duckTyped">
+    <meta property="og:description" content="Fix common browser, HTTP, DNS, email, and SSL errors with step-by-step guides and free diagnostic tools.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Troubleshoot Internet &amp; Developer Errors — duckTyped">
+    <meta name="twitter:description" content="Fix common browser, HTTP, DNS, email, and SSL errors with step-by-step guides.">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        .error-search-wrap {
+            max-width: 560px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        .error-search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .error-search-input:focus {
+            border-color: var(--primary-color);
+        }
+        .error-search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        .error-search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+        .error-search-results {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--card-solid);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            z-index: 50;
+            box-shadow: var(--shadow-lg);
+        }
+        .error-search-results.visible {
+            display: block;
+        }
+        .error-search-result-item {
+            display: block;
+            padding: 12px 18px;
+            text-decoration: none;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s;
+        }
+        .error-search-result-item:last-child {
+            border-bottom: none;
+        }
+        .error-search-result-item:hover {
+            background: var(--hover-background);
+        }
+        .error-search-result-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+            color: var(--primary-color);
+        }
+        .error-search-result-desc {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+        .error-search-no-results {
+            padding: 16px 18px;
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+            text-align: center;
+        }
+        .error-category-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .error-category-tab {
+            padding: 8px 18px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .error-category-tab:hover,
+        .error-category-tab.active {
+            background: var(--primary-dim);
+            border-color: var(--primary-border);
+            color: var(--primary-color);
+        }
+        .errors-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: var(--font-display);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .errors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .error-card {
+            display: block;
+            text-decoration: none;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .error-card:hover {
+            border-color: var(--primary-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .error-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .badge-browser { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-http    { background: rgba(242,194,0,0.1);  color: #F2C200; }
+        .badge-email   { background: rgba(250,98,22,0.1);  color: #FA6216; }
+        .badge-ssl     { background: rgba(255,107,107,0.1);color: #ff6b6b; }
+        .badge-dns     { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-devops  { background: rgba(130,87,229,0.1); color: #8257E5; }
+        .badge-database{ background: rgba(56,189,248,0.1); color: #38BDF8; }
+        .badge-nginx   { background: rgba(74,222,128,0.1); color: #4ADE80; }
+        .badge-apache  { background: rgba(232,121,249,0.1); color: #E879F9; }
+        .badge-node    { background: rgba(129,140,248,0.1); color: #818CF8; }
+        .badge-python  { background: rgba(34,211,238,0.1); color: #22D3EE; }
+        .badge-cloudflare { background: rgba(251,146,60,0.1); color: #FB923C; }
+        .error-card-title {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .error-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        .hub-tools-section {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            margin-bottom: 32px;
+        }
+        .hub-tools-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .hub-tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hub-tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--primary-dim);
+            border: 1px solid var(--primary-border);
+            border-radius: 999px;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .hub-tool-link:hover { filter: brightness(1.1); }
+    </style>
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="standalone-hero">
+            <h1>Troubleshoot Errors</h1>
+            <p class="standalone-intro">Step-by-step guides for common browser, HTTP, DNS, email, and SSL errors. Find the error you're seeing and get it fixed fast.</p>
+        </div>
+
+        <!-- Search -->
+        <div class="error-search-wrap">
+            <svg class="error-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="errorSearchInput" class="error-search-input" placeholder="Search errors — e.g. DNS, 502, SMTP..." autocomplete="off" aria-label="Search errors">
+            <div id="errorSearchResults" class="error-search-results" role="listbox"></div>
+        </div>
+
+        <!-- Category tabs -->
+        <div class="error-category-tabs">
+            <a href="/errors/browser/" class="error-category-tab">Browser Errors</a>
+            <a href="/errors/http/" class="error-category-tab">HTTP Errors</a>
+            <a href="/errors/dns/" class="error-category-tab">DNS Errors</a>
+            <a href="/errors/email/" class="error-category-tab">Email Errors</a>
+            <a href="/errors/ssl/" class="error-category-tab">SSL Errors</a>
+            <a href="/errors/devops/" class="error-category-tab">DevOps Errors</a>
+            <a href="/errors/database/" class="error-category-tab">Database Errors</a>
+            <a href="/errors/nginx/" class="error-category-tab">Nginx Errors</a>
+            <a href="/errors/apache/" class="error-category-tab">Apache Errors</a>
+            <a href="/errors/node/" class="error-category-tab">Node.js Errors</a>
+            <a href="/errors/python/" class="error-category-tab">Python Errors</a>
+            <a href="/errors/cloudflare/" class="error-category-tab">Cloudflare Errors</a>
+        </div>
+
+        <!-- Popular Errors (dynamically ranked by view count) -->
+        <div id="popular">
+            <div class="errors-section-title">Popular Errors</div>
+            <div class="errors-grid" id="popularErrorsGrid"></div>
+        </div>
+
+        <!-- Browser Errors -->
+        <div id="browser">
+            <div class="errors-section-title">Browser Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/browser/dns_probe_finished_nxdomain" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">DNS_PROBE_FINISHED_NXDOMAIN</div>
+                    <div class="error-card-desc">Domain could not be resolved. The DNS lookup returned no results for this address.</div>
+                </a>
+                <a href="/errors/browser/err_connection_reset" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_CONNECTION_RESET</div>
+                    <div class="error-card-desc">The connection was reset while loading the page. Often a network or firewall issue.</div>
+                </a>
+                <a href="/errors/browser/err_connection_refused" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_CONNECTION_REFUSED</div>
+                    <div class="error-card-desc">The server actively refused the connection. The port may be closed or the service down.</div>
+                </a>
+                <a href="/errors/browser/err_too_many_redirects" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_TOO_MANY_REDIRECTS</div>
+                    <div class="error-card-desc">The page entered an infinite redirect loop and could not load.</div>
+                </a>
+                <a href="/errors/browser/err_name_not_resolved" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_NAME_NOT_RESOLVED</div>
+                    <div class="error-card-desc">The browser could not resolve the domain name. DNS lookup returned no usable result.</div>
+                </a>
+                <a href="/errors/browser/err_internet_disconnected" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_INTERNET_DISCONNECTED</div>
+                    <div class="error-card-desc">Your device has no internet connection. Check your network adapter and router.</div>
+                </a>
+                <a href="/errors/browser/err_timed_out" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_TIMED_OUT</div>
+                    <div class="error-card-desc">The browser waited too long for the server to respond and gave up.</div>
+                </a>
+                <a href="/errors/browser/err_network_changed" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_NETWORK_CHANGED</div>
+                    <div class="error-card-desc">The network configuration changed while a page was loading, interrupting the connection.</div>
+                </a>
+                <a href="/errors/browser/err_cache_miss" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_CACHE_MISS</div>
+                    <div class="error-card-desc">The page requires form data to be resubmitted but the browser cache is missing it.</div>
+                </a>
+                <a href="/errors/browser/err_blocked_by_client" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_BLOCKED_BY_CLIENT</div>
+                    <div class="error-card-desc">A browser extension blocked the request before it reached the server.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- HTTP Errors -->
+        <div id="http">
+            <div class="errors-section-title">HTTP Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/http/404-not-found" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">404 Not Found</div>
+                    <div class="error-card-desc">The requested page or resource does not exist on the server.</div>
+                </a>
+                <a href="/errors/http/502-bad-gateway" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">502 Bad Gateway</div>
+                    <div class="error-card-desc">A proxy or gateway received an invalid response from the upstream server.</div>
+                </a>
+                <a href="/errors/http/503-service-unavailable" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">503 Service Unavailable</div>
+                    <div class="error-card-desc">The server is temporarily unable to handle requests — usually maintenance or overload.</div>
+                </a>
+                <a href="/errors/http/400-bad-request" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">400 Bad Request</div>
+                    <div class="error-card-desc">The server could not process the request due to malformed syntax or invalid parameters.</div>
+                </a>
+                <a href="/errors/http/401-unauthorized" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">401 Unauthorized</div>
+                    <div class="error-card-desc">Authentication is required and the request did not provide valid credentials.</div>
+                </a>
+                <a href="/errors/http/403-forbidden" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">403 Forbidden</div>
+                    <div class="error-card-desc">The server refuses to authorize access to the requested resource.</div>
+                </a>
+                <a href="/errors/http/405-method-not-allowed" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">405 Method Not Allowed</div>
+                    <div class="error-card-desc">The HTTP method used is not allowed for the requested resource.</div>
+                </a>
+                <a href="/errors/http/408-request-timeout" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">408 Request Timeout</div>
+                    <div class="error-card-desc">The server closed the connection because the client took too long to send the request.</div>
+                </a>
+                <a href="/errors/http/409-conflict" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">409 Conflict</div>
+                    <div class="error-card-desc">The request conflicts with the current state of the resource on the server.</div>
+                </a>
+                <a href="/errors/http/410-gone" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">410 Gone</div>
+                    <div class="error-card-desc">The requested resource has been permanently removed from the server.</div>
+                </a>
+                <a href="/errors/http/415-unsupported-media-type" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">415 Unsupported Media Type</div>
+                    <div class="error-card-desc">The server refuses to accept the request because the Content-Type is not supported.</div>
+                </a>
+                <a href="/errors/http/422-unprocessable-entity" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">422 Unprocessable Entity</div>
+                    <div class="error-card-desc">The request syntax is valid but the content fails semantic validation.</div>
+                </a>
+                <a href="/errors/http/429-too-many-requests" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">429 Too Many Requests</div>
+                    <div class="error-card-desc">The client has sent too many requests in a short period and hit the server's rate limit.</div>
+                </a>
+                <a href="/errors/http/500-internal-server-error" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">500 Internal Server Error</div>
+                    <div class="error-card-desc">The server encountered an unexpected error while processing the request.</div>
+                </a>
+                <a href="/errors/http/501-not-implemented" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">501 Not Implemented</div>
+                    <div class="error-card-desc">The server does not support the HTTP method used in the request.</div>
+                </a>
+                <a href="/errors/http/504-gateway-timeout" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">504 Gateway Timeout</div>
+                    <div class="error-card-desc">The gateway timed out waiting for an upstream server to respond.</div>
+                </a>
+                <a href="/errors/http/507-insufficient-storage" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">507 Insufficient Storage</div>
+                    <div class="error-card-desc">The server cannot store the data needed to complete the request.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- DNS Errors -->
+        <div id="dns">
+            <div class="errors-section-title">DNS Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/dns/dns-server-not-responding" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS Server Not Responding</div>
+                    <div class="error-card-desc">The configured DNS server is offline or not responding to queries.</div>
+                </a>
+                <a href="/errors/dns/dns-lookup-failed" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS Lookup Failed</div>
+                    <div class="error-card-desc">The DNS query returned no usable result for the domain you requested.</div>
+                </a>
+                <a href="/errors/dns/dns-probe-started" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS_PROBE_STARTED</div>
+                    <div class="error-card-desc">Chrome is running its DNS diagnostic probe after a failed lookup attempt.</div>
+                </a>
+                <a href="/errors/dns/dns-probe-finished-bad-config" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS_PROBE_FINISHED_BAD_CONFIG</div>
+                    <div class="error-card-desc">Chrome detected a DNS misconfiguration on your device or local network.</div>
+                </a>
+                <a href="/errors/dns/dns-probe-finished-no-internet" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS_PROBE_FINISHED_NO_INTERNET</div>
+                    <div class="error-card-desc">Chrome's DNS probe confirmed there is no internet connection available.</div>
+                </a>
+                <a href="/errors/dns/servfail" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">DNS SERVFAIL</div>
+                    <div class="error-card-desc">The DNS server returned a server failure response code, often due to DNSSEC issues.</div>
+                </a>
+                <a href="/errors/dns/nxdomain" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">NXDOMAIN</div>
+                    <div class="error-card-desc">The DNS server confirmed the queried domain does not exist.</div>
+                </a>
+                <a href="/errors/dns/temporary-failure-in-name-resolution" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">Temporary failure in name resolution</div>
+                    <div class="error-card-desc">Linux cannot resolve hostnames — resolv.conf, systemd-resolved, or WSL2 issues.</div>
+                </a>
+                <a href="/errors/dns/getaddrinfo-enotfound" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">getaddrinfo ENOTFOUND</div>
+                    <div class="error-card-desc">Node.js could not resolve a hostname — typos, unset env vars, or Docker names.</div>
+                </a>
+                <a href="/errors/dns/getaddrinfo-eai-again" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">getaddrinfo EAI_AGAIN</div>
+                    <div class="error-card-desc">Temporary DNS lookup failure, common inside Docker builds and CI.</div>
+                </a>
+                <a href="/errors/dns/could-not-resolve-host" class="error-card">
+                    <span class="error-card-badge badge-dns">DNS</span>
+                    <div class="error-card-title">Could not resolve host</div>
+                    <div class="error-card-desc">curl (exit code 6), git, and wget cannot resolve a hostname.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Email Errors -->
+        <div id="email">
+            <div class="errors-section-title">Email Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/email/smtp-550" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 550 — Mailbox Unavailable</div>
+                    <div class="error-card-desc">The recipient address was rejected. The mailbox may not exist or has been blocked.</div>
+                </a>
+                <a href="/errors/email/smtp-554" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 554 — Transaction Failed</div>
+                    <div class="error-card-desc">The mail server refused the entire transaction, often due to spam filtering or policy.</div>
+                </a>
+                <a href="/errors/email/smtp-421" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 421 — Service Temporarily Unavailable</div>
+                    <div class="error-card-desc">The receiving mail server closed the connection temporarily. Delivery will be retried.</div>
+                </a>
+                <a href="/errors/email/smtp-450" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 450 — Mailbox Temporarily Unavailable</div>
+                    <div class="error-card-desc">The recipient mailbox is temporarily unavailable. Often caused by greylisting.</div>
+                </a>
+                <a href="/errors/email/smtp-451" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 451 — Local Processing Error</div>
+                    <div class="error-card-desc">The mail server encountered a local error processing the message.</div>
+                </a>
+                <a href="/errors/email/smtp-452" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 452 — Insufficient System Storage</div>
+                    <div class="error-card-desc">The receiving mail server does not have enough disk space to accept the message.</div>
+                </a>
+                <a href="/errors/email/smtp-521" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 521 — Server Does Not Accept Mail</div>
+                    <div class="error-card-desc">The receiving server is configured to never accept incoming email.</div>
+                </a>
+                <a href="/errors/email/smtp-535" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 535 — Authentication Failed</div>
+                    <div class="error-card-desc">SMTP authentication failed — the username or password was rejected by the mail server.</div>
+                </a>
+                <a href="/errors/email/smtp-553" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">SMTP 553 — Mailbox Name Not Allowed</div>
+                    <div class="error-card-desc">The email address is invalid or violates the server's naming or relay policy.</div>
+                </a>
+                <a href="/errors/email/mailbox-unavailable" class="error-card">
+                    <span class="error-card-badge badge-email">Email</span>
+                    <div class="error-card-title">Mailbox Unavailable</div>
+                    <div class="error-card-desc">The recipient's email account cannot receive messages — may be full, disabled, or non-existent.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- SSL Errors -->
+        <div id="ssl">
+            <div class="errors-section-title">SSL / TLS Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/ssl/err_ssl_protocol_error" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">ERR_SSL_PROTOCOL_ERROR</div>
+                    <div class="error-card-desc">The SSL handshake failed due to a protocol version mismatch or misconfigured certificate.</div>
+                </a>
+                <a href="/errors/ssl/ssl-handshake-failed" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">SSL Handshake Failed</div>
+                    <div class="error-card-desc">The browser and server could not complete TLS negotiation to establish a secure connection.</div>
+                </a>
+                <a href="/errors/ssl/ssl-certificate-expired" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">SSL Certificate Expired</div>
+                    <div class="error-card-desc">The site's SSL certificate has passed its validity end date and must be renewed.</div>
+                </a>
+                <a href="/errors/ssl/ssl-certificate-revoked" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">SSL Certificate Revoked</div>
+                    <div class="error-card-desc">The certificate authority revoked this certificate before its expiry date.</div>
+                </a>
+                <a href="/errors/ssl/ssl-certificate-invalid" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">SSL Certificate Invalid</div>
+                    <div class="error-card-desc">The SSL certificate failed browser validation for one or more reasons.</div>
+                </a>
+                <a href="/errors/ssl/net-err-cert-date-invalid" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">NET::ERR_CERT_DATE_INVALID</div>
+                    <div class="error-card-desc">The certificate's validity dates do not match the current date — often a clock skew issue.</div>
+                </a>
+                <a href="/errors/ssl/net-err-cert-authority-invalid" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">NET::ERR_CERT_AUTHORITY_INVALID</div>
+                    <div class="error-card-desc">The certificate was issued by a Certificate Authority the browser does not trust.</div>
+                </a>
+                <a href="/errors/ssl/net-err-cert-weak-signature-algorithm" class="error-card">
+                    <span class="error-card-badge badge-ssl">SSL</span>
+                    <div class="error-card-title">NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</div>
+                    <div class="error-card-desc">The certificate uses a deprecated weak signature algorithm such as SHA-1.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- DevOps Errors -->
+        <div id="devops">
+            <div class="errors-section-title">DevOps Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/devops/docker-daemon-not-running" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Daemon Not Running</div>
+                    <div class="error-card-desc">Cannot connect to the Docker daemon. The service may not be started.</div>
+                </a>
+                <a href="/errors/devops/git-repository-not-found" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">fatal: repository not found</div>
+                    <div class="error-card-desc">Git cannot find the remote repository. Check the URL and your access permissions.</div>
+                </a>
+                <a href="/errors/devops/npm-err-eresolve" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code ERESOLVE</div>
+                    <div class="error-card-desc">npm dependency resolution conflict between peer dependencies.</div>
+                </a>
+                <a href="/errors/devops/kubernetes-crashloopbackoff" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Kubernetes CrashLoopBackOff</div>
+                    <div class="error-card-desc">Pod is crashing repeatedly and Kubernetes is backing off restarts.</div>
+                </a>
+                <a href="/errors/devops/permission-denied-publickey" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Permission Denied (publickey)</div>
+                    <div class="error-card-desc">SSH authentication failed using public key. Check your SSH key configuration.</div>
+                </a>
+                <a href="/errors/devops/git-merge-conflict" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Git Merge Conflict</div>
+                    <div class="error-card-desc">Conflicting changes prevent automatic merge. Manual resolution required.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Database Errors -->
+        <div id="database">
+            <div class="errors-section-title">Database Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/database/mysql-access-denied" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">MySQL Access Denied for User</div>
+                    <div class="error-card-desc">MySQL authentication failed for the specified user.</div>
+                </a>
+                <a href="/errors/database/postgresql-connection-refused" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">PostgreSQL Connection Refused</div>
+                    <div class="error-card-desc">PostgreSQL server refused the connection. The service may not be running.</div>
+                </a>
+                <a href="/errors/database/database-connection-timeout" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">Database Connection Timeout</div>
+                    <div class="error-card-desc">Database connection attempt timed out. Check network and firewall settings.</div>
+                </a>
+                <a href="/errors/database/database-too-many-connections" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">Too Many Database Connections</div>
+                    <div class="error-card-desc">Database connection limit has been reached. Consider connection pooling.</div>
+                </a>
+                <a href="/errors/database/redis-connection-refused" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">Redis Connection Refused</div>
+                    <div class="error-card-desc">Redis server refused the connection. Check if Redis is running.</div>
+                </a>
+                <a href="/errors/database/sqlite-database-locked" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">SQLite Database is Locked</div>
+                    <div class="error-card-desc">SQLite database file is locked by another process.</div>
+                </a>
+                <a href="/errors/database/mysql-server-has-gone-away" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">MySQL Server Has Gone Away</div>
+                    <div class="error-card-desc">Error 2006 — idle timeouts, oversized packets, or a restarted server.</div>
+                </a>
+                <a href="/errors/database/mysql-cant-connect-through-socket" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">Can't Connect Through Socket</div>
+                    <div class="error-card-desc">MySQL error 2002 — mysqld.sock missing, stopped server, or Docker setups.</div>
+                </a>
+                <a href="/errors/database/postgres-password-authentication-failed" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">PostgreSQL Password Authentication Failed</div>
+                    <div class="error-card-desc">FATAL 28P01 — wrong passwords, pg_hba.conf rules, and scram vs md5.</div>
+                </a>
+                <a href="/errors/database/redis-noauth-authentication-required" class="error-card">
+                    <span class="error-card-badge badge-database">Database</span>
+                    <div class="error-card-title">Redis NOAUTH Authentication Required</div>
+                    <div class="error-card-desc">Redis requires a password — AUTH commands and redis:// URL formats.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Nginx Errors -->
+        <div id="nginx">
+            <div class="errors-section-title">Nginx Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/nginx/connection-refused-while-connecting-to-upstream" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">Connection Refused (Upstream)</div>
+                    <div class="error-card-desc">connect() failed (111) — dead backends, wrong proxy_pass ports, Docker localhost traps.</div>
+                </a>
+                <a href="/errors/nginx/upstream-timed-out" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">Upstream Timed Out</div>
+                    <div class="error-card-desc">upstream timed out (110) — slow backends and proxy_read_timeout tuning.</div>
+                </a>
+                <a href="/errors/nginx/address-already-in-use" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">Address Already in Use</div>
+                    <div class="error-card-desc">bind() to 0.0.0.0:80 failed (98) — port conflicts and stale masters.</div>
+                </a>
+                <a href="/errors/nginx/primary-script-unknown" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">Primary Script Unknown</div>
+                    <div class="error-card-desc">PHP-FPM "File not found." — SCRIPT_FILENAME and Docker volume mismatches.</div>
+                </a>
+                <a href="/errors/nginx/cannot-load-certificate" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">Cannot Load Certificate</div>
+                    <div class="error-card-desc">[emerg] cert failures — paths, PEM formats, and key values mismatch.</div>
+                </a>
+                <a href="/errors/nginx/no-live-upstreams" class="error-card">
+                    <span class="error-card-badge badge-nginx">Nginx</span>
+                    <div class="error-card-title">No Live Upstreams</div>
+                    <div class="error-card-desc">Every backend marked failed — max_fails, fail_timeout, and recovery.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Apache Errors -->
+        <div id="apache">
+            <div class="errors-section-title">Apache Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/apache/ah00558-could-not-reliably-determine-fqdn" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">AH00558 — Could Not Determine FQDN</div>
+                    <div class="error-card-desc">The famous ServerName warning on every restart, silenced in one line.</div>
+                </a>
+                <a href="/errors/apache/invalid-command-rewriteengine" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">Invalid Command 'RewriteEngine'</div>
+                    <div class="error-card-desc">mod_rewrite not enabled — .htaccess 500s and a2enmod fixes.</div>
+                </a>
+                <a href="/errors/apache/ah01630-client-denied-by-server-configuration" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">AH01630 — Client Denied</div>
+                    <div class="error-card-desc">403s from Require rules and the Apache 2.2 → 2.4 authz migration.</div>
+                </a>
+                <a href="/errors/apache/ah00898-error-reading-from-remote-server" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">AH00898 — Proxy Read Error</div>
+                    <div class="error-card-desc">mod_proxy 502s — backend timeouts and keep-alive races.</div>
+                </a>
+                <a href="/errors/apache/ah00526-syntax-error" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">AH00526 — Syntax Error</div>
+                    <div class="error-card-desc">configtest workflow for unclosed blocks, missing files, bad directives.</div>
+                </a>
+                <a href="/errors/apache/threaded-mpm-php-not-threadsafe" class="error-card">
+                    <span class="error-card-badge badge-apache">Apache</span>
+                    <div class="error-card-title">Threaded MPM vs PHP Module</div>
+                    <div class="error-card-desc">mod_php demands prefork — or switch to mpm_event + PHP-FPM.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Node.js Errors -->
+        <div id="node">
+            <div class="errors-section-title">Node.js Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/node/cannot-find-module" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">Cannot Find Module</div>
+                    <div class="error-card-desc">MODULE_NOT_FOUND — missing installs, case-sensitive paths, phantom deps.</div>
+                </a>
+                <a href="/errors/node/javascript-heap-out-of-memory" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">JavaScript Heap Out of Memory</div>
+                    <div class="error-card-desc">Reached heap limit — max-old-space-size, streaming, and leak hunting.</div>
+                </a>
+                <a href="/errors/node/eaddrinuse-address-already-in-use" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">EADDRINUSE</div>
+                    <div class="error-card-desc">listen EADDRINUSE :::3000 — orphaned processes and graceful shutdown.</div>
+                </a>
+                <a href="/errors/node/cannot-use-import-statement-outside-a-module" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">Cannot Use Import Statement</div>
+                    <div class="error-card-desc">ESM syntax in CommonJS mode — type:module, .mjs, Jest transforms.</div>
+                </a>
+                <a href="/errors/node/digital-envelope-routines-unsupported" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">error:0308010C — Digital Envelope</div>
+                    <div class="error-card-desc">OpenSSL 3 vs webpack 4 — the Node 17+ build breaker.</div>
+                </a>
+                <a href="/errors/node/node-gyp-build-failed" class="error-card">
+                    <span class="error-card-badge badge-node">Node.js</span>
+                    <div class="error-card-title">node-gyp Build Failed</div>
+                    <div class="error-card-desc">gyp ERR! — toolchains, Python, and native-addon rebuilds.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Python Errors -->
+        <div id="python">
+            <div class="errors-section-title">Python Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/python/externally-managed-environment" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">externally-managed-environment</div>
+                    <div class="error-card-desc">PEP 668 pip refusal — venv and pipx the right way.</div>
+                </a>
+                <a href="/errors/python/attempted-relative-import" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">Attempted Relative Import</div>
+                    <div class="error-card-desc">No known parent package — python -m and package layout.</div>
+                </a>
+                <a href="/errors/python/certificate-verify-failed" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">CERTIFICATE_VERIFY_FAILED</div>
+                    <div class="error-card-desc">macOS Install Certificates, corporate CAs — not verify=False.</div>
+                </a>
+                <a href="/errors/python/unicodedecodeerror" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">UnicodeDecodeError</div>
+                    <div class="error-card-desc">'utf-8' codec can't decode byte — encodings done right.</div>
+                </a>
+                <a href="/errors/python/attributeerror-nonetype" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">AttributeError: NoneType</div>
+                    <div class="error-card-desc">Tracing None to its source instead of patching the crash line.</div>
+                </a>
+                <a href="/errors/python/command-python-not-found" class="error-card">
+                    <span class="error-card-badge badge-python">Python</span>
+                    <div class="error-card-title">python: command not found</div>
+                    <div class="error-card-desc">python vs python3, Windows Store aliases, and PATH.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Cloudflare Errors -->
+        <div id="cloudflare">
+            <div class="errors-section-title">Cloudflare Errors</div>
+            <div class="errors-grid">
+                <a href="/errors/cloudflare/error-522" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Error 522 — Connection Timed Out</div>
+                    <div class="error-card-desc">Firewalls silently dropping Cloudflare IPs, overload, stale origin IPs.</div>
+                </a>
+                <a href="/errors/cloudflare/error-521" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Error 521 — Web Server Is Down</div>
+                    <div class="error-card-desc">Origin refusing connections — server down or blocking CF ranges.</div>
+                </a>
+                <a href="/errors/cloudflare/error-524" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Error 524 — A Timeout Occurred</div>
+                    <div class="error-card-desc">Origin exceeded the 100-second response window.</div>
+                </a>
+                <a href="/errors/cloudflare/error-525" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Error 525 — SSL Handshake Failed</div>
+                    <div class="error-card-desc">Full mode without working TLS on the origin — Origin CA fixes.</div>
+                </a>
+                <a href="/errors/cloudflare/error-1020" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Error 1020 — Access Denied</div>
+                    <div class="error-card-desc">WAF/firewall rule matches — tracing the rule by Ray ID.</div>
+                </a>
+                <a href="/errors/cloudflare/redirect-loop" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Redirect Loop (Flexible SSL)</div>
+                    <div class="error-card-desc">ERR_TOO_MANY_REDIRECTS — the http/https ping-pong, ended for good.</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Related tools -->
+        <div class="hub-tools-section">
+            <div class="hub-tools-title">Related Tools</div>
+            <div class="hub-tools-list">
+                <a href="/http-request-builder/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    HTTP Request Builder
+                </a>
+                <a href="/dns-lookup/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    DNS Lookup
+                </a>
+                <a href="/http-latency/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    HTTP Latency
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta">
+            <p>Use duckTyped's free tools to diagnose issues directly from your browser.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script>
+    (function(){
+        var input = document.getElementById('errorSearchInput');
+        var resultsEl = document.getElementById('errorSearchResults');
+        var errors = null;
+
+        function loadErrors(cb) {
+            if (errors) { cb(); return; }
+            fetch('/errors/errors.json').then(function(r){ return r.json(); }).then(function(data){
+                errors = data;
+                cb();
+            }).catch(function(){ errors = {}; cb(); });
+        }
+
+        function scoreEntry(e, q) {
+            var s = 0;
+            var title = e.title.toLowerCase();
+            var cat = e.category.toLowerCase();
+            var desc = e.description.toLowerCase();
+            if (title === q) s += 20;
+            else if (title.includes(q)) s += 10;
+            if (cat === q) s += 15;
+            else if (cat.includes(q)) s += 6;
+            if (desc.includes(q)) s += 3;
+            (e.keywords || []).forEach(function(k) {
+                var kl = k.toLowerCase();
+                if (kl === q) s += 12;
+                else if (kl.includes(q)) s += 5;
+                else if (q.includes(kl) && kl.length > 2) s += 2;
+            });
+            return s;
+        }
+
+        function renderResults(query) {
+            var q = (query || '').trim().toLowerCase();
+            if (q.length < 1) {
+                resultsEl.innerHTML = '';
+                resultsEl.classList.remove('visible');
+                return;
+            }
+            var scored = Object.values(errors).map(function(e) {
+                return { entry: e, score: scoreEntry(e, q) };
+            }).filter(function(x) { return x.score > 0; });
+            scored.sort(function(a, b) { return b.score - a.score; });
+            var matches = scored.slice(0, 8).map(function(x) { return x.entry; });
+            if (matches.length === 0) {
+                resultsEl.innerHTML = '<div class="error-search-no-results">No errors matched your search.</div>';
+            } else {
+                resultsEl.innerHTML = matches.map(function(e) {
+                    return '<a href="' + e.url + '" class="error-search-result-item"><div class="error-search-result-title">' + e.title + '</div><div class="error-search-result-desc">' + e.description + '</div></a>';
+                }).join('');
+            }
+            resultsEl.classList.add('visible');
+        }
+
+        input.addEventListener('input', function(){
+            var q = input.value.trim();
+            loadErrors(function(){ renderResults(q); });
+        });
+
+        input.addEventListener('focus', function(){
+            if (input.value.trim().length >= 2) resultsEl.classList.add('visible');
+        });
+
+        document.addEventListener('click', function(e){
+            if (!e.target.closest('.error-search-wrap')) {
+                resultsEl.classList.remove('visible');
+            }
+        });
+    })();
+    </script>
+
+    <script>
+    // Popular Errors — dynamically ranked by localStorage view counts
+    (function() {
+        var DEFAULTS = [
+            { href: '/errors/browser/dns_probe_finished_nxdomain', badge: 'Browser', badgeClass: 'badge-browser', title: 'DNS_PROBE_FINISHED_NXDOMAIN', desc: 'Domain could not be resolved. The DNS lookup returned no results for this address.' },
+            { href: '/errors/browser/err_connection_reset', badge: 'Browser', badgeClass: 'badge-browser', title: 'ERR_CONNECTION_RESET', desc: 'The connection was reset while loading the page. Often a network or firewall issue.' },
+            { href: '/errors/http/502-bad-gateway', badge: 'HTTP', badgeClass: 'badge-http', title: '502 Bad Gateway', desc: 'A proxy or gateway received an invalid response from the upstream server.' },
+            { href: '/errors/email/smtp-550', badge: 'Email', badgeClass: 'badge-email', title: 'SMTP 550 — Mailbox Unavailable', desc: 'The recipient address was rejected. The mailbox may not exist or has been blocked.' },
+            { href: '/errors/ssl/err_ssl_protocol_error', badge: 'SSL', badgeClass: 'badge-ssl', title: 'ERR_SSL_PROTOCOL_ERROR', desc: 'The SSL handshake failed due to a protocol version mismatch or misconfigured certificate.' }
+        ];
+
+        function hrefToSlug(href) {
+            return href.replace(/^\/+/, '').replace(/\/+$/, '').replace(/\//g, '--');
+        }
+
+        function getCategoryBadge(href) {
+            var map = { browser: ['Browser','badge-browser'], http: ['HTTP','badge-http'], dns: ['DNS','badge-dns'], email: ['Email','badge-email'], ssl: ['SSL','badge-ssl'], devops: ['DevOps','badge-devops'], database: ['Database','badge-database'] };
+            var parts = href.replace(/^\/errors\//, '').split('/');
+            var cat = parts[0] || '';
+            return map[cat] || ['Error','badge-browser'];
+        }
+
+        function render() {
+            var grid = document.getElementById('popularErrorsGrid');
+            if (!grid) return;
+
+            var views = {};
+            try { views = JSON.parse(localStorage.getItem('dt_error_views') || '{}'); } catch(e) {}
+
+            // Build metadata from all error cards in category sections (not popular)
+            var allCards = document.querySelectorAll('#browser .error-card, #http .error-card, #dns .error-card, #email .error-card, #ssl .error-card, #devops .error-card, #database .error-card, #nginx .error-card, #apache .error-card, #node .error-card, #python .error-card, #cloudflare .error-card');
+            var cardMeta = {};
+            for (var i = 0; i < allCards.length; i++) {
+                var a = allCards[i];
+                var href = a.getAttribute('href');
+                if (!href) continue;
+                var slug = hrefToSlug(href);
+                if (cardMeta[slug]) continue;
+                var titleEl = a.querySelector('.error-card-title');
+                var descEl = a.querySelector('.error-card-desc');
+                var badgeEl = a.querySelector('.error-card-badge');
+                cardMeta[slug] = {
+                    href: href,
+                    title: titleEl ? titleEl.textContent : '',
+                    desc: descEl ? descEl.textContent : '',
+                    badge: badgeEl ? badgeEl.textContent : '',
+                    badgeClass: badgeEl ? badgeEl.className.replace('error-card-badge ', '') : ''
+                };
+            }
+
+            // Rank by views
+            var ranked = Object.keys(views)
+                .filter(function(slug) { return cardMeta[slug]; })
+                .map(function(slug) { return { slug: slug, count: views[slug], meta: cardMeta[slug] }; })
+                .sort(function(a, b) { return b.count - a.count; })
+                .slice(0, 5);
+
+            // If not enough data, use defaults
+            var items;
+            if (ranked.length < 3) {
+                items = DEFAULTS;
+            } else {
+                items = ranked.map(function(r) { return r.meta; });
+                // Pad with defaults if needed
+                if (items.length < 5) {
+                    var seen = {};
+                    items.forEach(function(i) { seen[hrefToSlug(i.href)] = true; });
+                    for (var j = 0; j < DEFAULTS.length && items.length < 5; j++) {
+                        if (!seen[hrefToSlug(DEFAULTS[j].href)]) items.push(DEFAULTS[j]);
+                    }
+                }
+            }
+
+            grid.innerHTML = '';
+            items.forEach(function(item) {
+                var badge = item.badgeClass || getCategoryBadge(item.href)[1];
+                var badgeLabel = item.badge || getCategoryBadge(item.href)[0];
+                var card = document.createElement('a');
+                card.href = item.href;
+                card.className = 'error-card';
+                card.innerHTML = '<span class="error-card-badge ' + badge + '">' + badgeLabel + '</span>' +
+                    '<div class="error-card-title">' + item.title + '</div>' +
+                    '<div class="error-card-desc">' + item.desc + '</div>';
+                grid.appendChild(card);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', render);
+        } else {
+            render();
+        }
+    })();
+    </script>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

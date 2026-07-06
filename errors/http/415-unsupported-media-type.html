@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 415 Unsupported Media Type mean?","acceptedAnswer":{"@type":"Answer","text":"A 415 Unsupported Media Type error means the server refuses to accept the request because the Content-Type of the request body is not supported. For example, sending XML to an API that only accepts JSON, or sending a JPEG to an endpoint that only accepts PNG."}},{"@type":"Question","name":"How do I fix a 415 Unsupported Media Type error?","acceptedAnswer":{"@type":"Answer","text":"Set the correct Content-Type header in your request. For JSON APIs, include 'Content-Type: application/json'. Check the API documentation to find which media types the endpoint accepts, and ensure your request body matches that format."}},{"@type":"Question","name":"Can 415 be caused by a charset mismatch?","acceptedAnswer":{"@type":"Answer","text":"Yes. Some servers require a specific charset parameter in the Content-Type header, such as 'Content-Type: application/json; charset=UTF-8'. Sending 'application/json' without the charset may cause a 415 on strict servers."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"415 Unsupported Media Type — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 415 Unsupported Media Type","step":[{"@type":"HowToStep","position":1,"name":"Set the Correct Content-Type Header","text":"For JSON APIs:"},{"@type":"HowToStep","position":2,"name":"Check the API Documentation","text":"Review the endpoint's documentation to confirm which media types it accepts. Look for an Accept or Consumes specification."},{"@type":"HowToStep","position":3,"name":"Verify Your Request Body Matches the Content-Type","text":"If you declare application/json, ensure the body is valid JSON. If you declare application/x-www-form-urlencoded, ensure the body is URL-encoded key-value pairs."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>415 Unsupported Media Type — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 415 Unsupported Media Type error means and how to fix it. Covers Content-Type headers, JSON vs XML, and API media type requirements.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 415, 415 Unsupported Media Type, 415 error, Content-Type not supported, Wrong Content-Type header">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="415 Unsupported Media Type — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 415 Unsupported Media Type errors by setting the correct Content-Type header for your API requests.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/415-unsupported-media-type">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/415-unsupported-media-type">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>415 Unsupported Media Type</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>415 Unsupported Media Type</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 415 error means the server refuses to accept the request because the <code>Content-Type</code> header indicates a format the endpoint does not support.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 415</code></li><li><code>415 Unsupported Media Type</code></li><li><code>415 error</code></li><li><code>Content-Type not supported</code></li><li><code>Wrong Content-Type header</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 415 indicates a content negotiation failure on the request body. The server checks your request's <code>Content-Type</code> header before processing the body, and if the format is not in its list of accepted types, it rejects the request without even reading the body.</p>
+            <p>This is the server saying: "I don't know how to handle this format." It is the request-body counterpart of <code>406 Not Acceptable</code>, which applies to the response format.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing Content-Type header</strong> — sending a body without declaring its format.</li>
+                <li><strong>Wrong Content-Type</strong> — sending JSON but declaring <code>text/plain</code>, or sending form data with <code>application/json</code>.</li>
+                <li><strong>XML to a JSON-only API</strong> — the API accepts only JSON but the request uses XML.</li>
+                <li><strong>Form data format mismatch</strong> — using <code>multipart/form-data</code> when the endpoint requires <code>application/x-www-form-urlencoded</code>.</li>
+                <li><strong>Unsupported file type in upload</strong> — uploading an MP4 to an endpoint that only accepts images.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Set the Correct Content-Type Header</h3>
+            <p>For JSON APIs:</p>
+            <pre><code>Content-Type: application/json</code></pre>
+            <p>For HTML form submissions:</p>
+            <pre><code>Content-Type: application/x-www-form-urlencoded</code></pre>
+            <p>For file uploads:</p>
+            <pre><code>Content-Type: multipart/form-data</code></pre>
+
+            <h3>2. Check the API Documentation</h3>
+            <p>Review the endpoint's documentation to confirm which media types it accepts. Look for an <code>Accept</code> or <code>Consumes</code> specification.</p>
+
+            <h3>3. Verify Your Request Body Matches the Content-Type</h3>
+            <p>If you declare <code>application/json</code>, ensure the body is valid JSON. If you declare <code>application/x-www-form-urlencoded</code>, ensure the body is URL-encoded key-value pairs.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does 415 affect GET requests?</h3>
+            <p>Rarely. GET requests typically have no body, so Content-Type is irrelevant. 415 almost exclusively affects POST, PUT, and PATCH requests that include a body.</p>
+
+            <h3>Can a proxy cause 415?</h3>
+            <p>Yes. Some proxies modify or strip Content-Type headers in ways that cause the endpoint to reject the request. If the 415 error is inconsistent, inspect the request headers at the server using access logs.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — malformed request syntax.</li>
+                <li><a href="/errors/http/422-unprocessable-entity">422 Unprocessable Entity</a> — semantic validation failure.</li>
+                <li><a href="/errors/http/405-method-not-allowed">405 Method Not Allowed</a> — wrong HTTP method.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

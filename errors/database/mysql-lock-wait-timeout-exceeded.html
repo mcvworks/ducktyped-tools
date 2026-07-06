@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is this different from a deadlock (error 1213)?","acceptedAnswer":{"@type":"Answer","text":"A deadlock is two transactions each waiting for the other — InnoDB detects the cycle instantly and rolls one back. Error 1205 is one-directional waiting that simply exceeded the timeout. Deadlocks need lock-ordering fixes; 1205 needs the long lock-holder found and shortened."}},{"@type":"Question","name":"Does 'try restarting transaction' mean a retry will work?","acceptedAnswer":{"@type":"Answer","text":"Only if the blocking transaction finished in the meantime. Retrying against the same stuck blocker fails identically. Automatic retries are still good practice — but pair them with monitoring for long-running transactions."}},{"@type":"Question","name":"How do I see transactions idle with open locks?","acceptedAnswer":{"@type":"Answer","text":"Query information_schema.innodb_trx and compare trx_started with now — transactions running for minutes with trx_query NULL are idle-but-open and are usually the culprits. In MySQL 8 you can also check performance_schema.events_transactions_current."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"MySQL Lock Wait Timeout Exceeded — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Lock Wait Timeout Exceeded — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix MySQL error 1205 'Lock wait timeout exceeded; try restarting transaction'. Find the blocking transaction, kill it, and prevent recurrence.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Lock wait timeout exceeded; try restarting transaction, MySQL error 1205, ERROR 1205 (HY000), innodb lock wait timeout, SQLSTATE[HY000]: General error: 1205">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL Lock Wait Timeout Exceeded — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix MySQL error 1205 'Lock wait timeout exceeded; try restarting transaction'. Find the blocking transaction, kill it, and prevent recurrence.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mysql-lock-wait-timeout-exceeded">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mysql-lock-wait-timeout-exceeded">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>MySQL Lock Wait Timeout Exceeded</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MySQL Lock Wait Timeout Exceeded</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">MySQL error 1205 — a transaction waited longer than innodb_lock_wait_timeout for row locks held by another transaction and gave up.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Lock wait timeout exceeded; try restarting transaction</code></li><li><code>MySQL error 1205</code></li><li><code>ERROR 1205 (HY000)</code></li><li><code>innodb lock wait timeout</code></li><li><code>SQLSTATE[HY000]: General error: 1205</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>InnoDB locks rows that a transaction writes (and rows it reads with SELECT ... FOR UPDATE). If another transaction needs those rows, it waits — up to innodb_lock_wait_timeout seconds (default 50) — then fails with error 1205. Unlike a deadlock (error 1213), which InnoDB detects and resolves instantly, a lock wait timeout means someone was simply holding locks for a long time: an uncommitted transaction, a huge UPDATE, or a session that crashed without rolling back.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>An uncommitted transaction is holding locks</strong> — Code that opens a transaction and never commits (missing COMMIT, an exception path that skips cleanup, a developer's forgotten console session) holds its row locks until the connection dies.</li>
+                <li><strong>Long-running write transactions</strong> — A bulk UPDATE or DELETE touching millions of rows holds locks on all of them for the duration. Everything needing those rows queues behind it.</li>
+                <li><strong>Missing indexes widen the lock footprint</strong> — An UPDATE whose WHERE clause has no usable index locks far more rows than it modifies (InnoDB locks the rows it scans), turning a small change into a table-wide blockade.</li>
+                <li><strong>Metadata locks from DDL</strong> — ALTER TABLE waits for open transactions to finish, and while it waits, every new query on that table queues behind the ALTER — a pileup that surfaces as lock timeouts.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Find and kill the blocking transaction</h3>
+            <p>Identify which transaction holds the locks and how long it has been running, then kill its connection if it is abandoned.</p>
+            <pre><code>-- MySQL 8+: who blocks whom
+SELECT waiting.trx_mysql_thread_id AS waiting_thread,
+       blocking.trx_mysql_thread_id AS blocking_thread,
+       blocking.trx_started, blocking.trx_query
+FROM performance_schema.data_lock_waits w
+JOIN information_schema.innodb_trx waiting ON waiting.trx_id = w.REQUESTING_ENGINE_TRANSACTION_ID
+JOIN information_schema.innodb_trx blocking ON blocking.trx_id = w.BLOCKING_ENGINE_TRANSACTION_ID;
+
+KILL &lt;blocking_thread&gt;;</code></pre>
+            <h3>2. Keep transactions short</h3>
+            <p>Commit as soon as the logical unit of work is done, never hold a transaction across user interaction or external API calls, and batch big writes into chunks (e.g. 10k rows per transaction).</p>
+            <h3>3. Index the columns used to select rows for writes</h3>
+            <p>Ensure UPDATE/DELETE WHERE clauses hit an index so InnoDB locks only the target rows.</p>
+            <pre><code>EXPLAIN UPDATE orders SET status='x' WHERE customer_id=42;
+-- 'type: ALL' means full scan -&gt; add an index:
+ALTER TABLE orders ADD INDEX idx_customer (customer_id);</code></pre>
+            <h3>4. Tune the timeout only as a mitigation</h3>
+            <p>Raising innodb_lock_wait_timeout makes waiters more patient; lowering it fails fast. Neither fixes the blocker — use it alongside, not instead of, the fixes above.</p>
+            <pre><code>SHOW VARIABLES LIKE 'innodb_lock_wait_timeout';
+SET SESSION innodb_lock_wait_timeout = 120;   -- per-session</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is this different from a deadlock (error 1213)?</h3>
+            <p>A deadlock is two transactions each waiting for the other — InnoDB detects the cycle instantly and rolls one back. Error 1205 is one-directional waiting that simply exceeded the timeout. Deadlocks need lock-ordering fixes; 1205 needs the long lock-holder found and shortened.</p>
+            <h3>Does 'try restarting transaction' mean a retry will work?</h3>
+            <p>Only if the blocking transaction finished in the meantime. Retrying against the same stuck blocker fails identically. Automatic retries are still good practice — but pair them with monitoring for long-running transactions.</p>
+            <h3>How do I see transactions idle with open locks?</h3>
+            <p>Query information_schema.innodb_trx and compare trx_started with now — transactions running for minutes with trx_query NULL are idle-but-open and are usually the culprits. In MySQL 8 you can also check performance_schema.events_transactions_current.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-deadlock-detected">Database Deadlock Detected</a> — circular lock conflicts (error 1213).</li>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — network-level connection timeouts.</li>
+                <li><a href="/errors/database/database-too-many-connections">Too Many Connections</a> — piled-up sessions from lock queues.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Watch app latency during lock pileups</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Base32 Encoder / Decoder","url":"https://ducktyped.xyz/base32-encoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Encode text to Base32 or decode Base32 strings back to text. Free browser-based Base32 tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Base32 encoding?","acceptedAnswer":{"@type":"Answer","text":"Base32 encodes binary data using 32 ASCII characters (A-Z and 2-7). It is less space-efficient than Base64 but uses only uppercase letters and digits, making it suitable for case-insensitive systems and human-readable codes."}},{"@type":"Question","name":"Where is Base32 used?","acceptedAnswer":{"@type":"Answer","text":"Base32 is commonly used in TOTP/HOTP two-factor authentication secret keys, Tor onion addresses, file system naming, and other systems where case-insensitive encoding is needed."}},{"@type":"Question","name":"What is the difference between Base32 and Base64?","acceptedAnswer":{"@type":"Answer","text":"Base32 uses 32 characters (A-Z, 2-7) and is case-insensitive, while Base64 uses 64 characters and is case-sensitive. Base32 output is about 20% longer than Base64 but safer for case-insensitive contexts."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base32 Encoder / Decoder — Encode and Decode Base32 — duckTyped</title>
+    <meta name="description" content="Encode text to Base32 or decode Base32 strings back to text. Free browser-based Base32 tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Base32 Encoder / Decoder — duckTyped">
+    <meta property="og:description" content="Encode text to Base32 or decode Base32 strings back to text.">
+    <meta property="og:url" content="https://ducktyped.xyz/base32-encoder/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/base32-encoder.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Base32 Encoder / Decoder — duckTyped">
+    <meta name="twitter:description" content="Encode text to Base32 or decode Base32 strings back to text.">
+    <link rel="canonical" href="https://ducktyped.xyz/base32-encoder/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Base32 Encoder / Decoder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Encode any text to Base32 format or decode Base32 strings back to plain text. All processing happens client-side.</p><div class="example-box"><strong>Example uses:</strong><p>Working with TOTP/2FA secret keys, encoding binary data for text-safe transport, decoding Base32-encoded configuration values.</p></div>
+            <a href="/learn/base32-encoder/" class="learn-more-link">Learn about Base32 encoding and where it is used</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Base32 Encoder / Decoder</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter plain text to encode, or Base32 text to decode.</p>
+            <div class="input-group"><label>Plain Text:</label><textarea id="plainInput" rows="4" placeholder="Hello, World!" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div style="display:flex;gap:10px;margin-bottom:15px;">
+                <button onclick="encodeB32()">Encode &rarr;</button>
+                <button onclick="decodeB32()">&larr; Decode</button>
+            </div>
+            <div class="input-group"><label>Base32 Encoded:</label><textarea id="b32Input" rows="4" placeholder="JBSWY3DPEBLW64TMMQ======" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('b32Input').value)" style="margin-top:8px;">Copy Base32</button>
+            <div id="b32Error"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/base64-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Base64 Encoder</a>
+            <a href="/url-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Encoder</a>
+            <a href="/hash-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Hash Generator</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/base32-encoder/">Base32 Encoder / Decoder — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    function encodeB32() {
+        var str = document.getElementById('plainInput').value;
+        var bytes = new TextEncoder().encode(str), bits = '', result = '';
+        for (var i = 0; i < bytes.length; i++) bits += bytes[i].toString(2).padStart(8, '0');
+        while (bits.length % 5 !== 0) bits += '0';
+        for (var i = 0; i < bits.length; i += 5) result += B32[parseInt(bits.substr(i, 5), 2)];
+        while (result.length % 8 !== 0) result += '=';
+        document.getElementById('b32Input').value = result;
+        document.getElementById('b32Error').innerHTML = '';
+    }
+    function decodeB32() {
+        try {
+            var str = document.getElementById('b32Input').value.replace(/=+$/, '').toUpperCase(), bits = '';
+            for (var i = 0; i < str.length; i++) { var idx = B32.indexOf(str[i]); if (idx === -1) throw new Error('Invalid character: ' + str[i]); bits += idx.toString(2).padStart(5, '0'); }
+            var bytes = [];
+            for (var i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.substr(i, 8), 2));
+            document.getElementById('plainInput').value = new TextDecoder().decode(new Uint8Array(bytes));
+            document.getElementById('b32Error').innerHTML = '';
+        } catch(e) { document.getElementById('b32Error').innerHTML = '<p style="color:#ef4444;margin-top:10px;">Error: ' + escapeHtml(e.message) + '</p>'; }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 504 Gateway Timeout mean?","acceptedAnswer":{"@type":"Answer","text":"A 504 Gateway Timeout means a server acting as a gateway or proxy did not receive a timely response from an upstream server. The gateway is working, but the backend server it is trying to reach is too slow or unresponsive."}},{"@type":"Question","name":"What is the difference between 502 and 504?","acceptedAnswer":{"@type":"Answer","text":"A 502 Bad Gateway means the gateway received an invalid or malformed response from the upstream server. A 504 Gateway Timeout means the gateway received no response at all within the timeout window — the upstream server is too slow or unresponsive."}},{"@type":"Question","name":"How do I fix a 504 Gateway Timeout?","acceptedAnswer":{"@type":"Answer","text":"As a visitor, try refreshing after a short wait. As a server owner, check that your application server is running and responding within the gateway's timeout window. Increase timeout settings if the application legitimately needs more processing time, and investigate slow database queries or external API calls."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"504 Gateway Timeout — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>504 Gateway Timeout — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 504 Gateway Timeout error means and how to fix it. Covers nginx, Cloudflare, load balancers, PHP-FPM, and upstream server configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 504, 504 Gateway Timeout, Error 504, 504 error, Gateway timeout, 504 Gateway Time-out nginx, 504 Cloudflare timeout, upstream timed out">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="504 Gateway Timeout — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 504 Gateway Timeout errors by troubleshooting upstream server response times and proxy timeout configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/504-gateway-timeout">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/504-gateway-timeout">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>504 Gateway Timeout</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>504 Gateway Timeout</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 504 error means the gateway or proxy waited for an upstream server response but the upstream was too slow or did not respond at all.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 504</code></li><li><code>504 Gateway Timeout</code></li><li><code>Error 504</code></li><li><code>504 error</code></li><li><code>Gateway timeout</code></li><li><code>504 Gateway Time-out nginx</code></li><li><code>504 Cloudflare timeout</code></li><li><code>upstream timed out</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Failure Happens</h2>
+                <div class="dt-diagram" data-diagram="http" data-error="504"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 504 occurs in a multi-server architecture where a gateway (nginx, Cloudflare, AWS ALB, a load balancer) forwards your request to a backend server (Node.js, PHP-FPM, Django, Rails). If the backend does not respond within the gateway's configured timeout, the gateway gives up and returns 504 to the browser.</p>
+            <p>The gateway itself is working — 504 specifically tells you the upstream server is the problem.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Application server overloaded</strong> — PHP-FPM, Gunicorn, or Node.js worker pool is saturated.</li>
+                <li><strong>Slow database query</strong> — a long-running database query holding up the response.</li>
+                <li><strong>External API call blocking</strong> — application waiting for a slow or unresponsive third-party API.</li>
+                <li><strong>Application server crashed</strong> — PHP-FPM or a Node.js process died and is not accepting connections.</li>
+                <li><strong>Timeout mismatch</strong> — gateway timeout shorter than the time the application legitimately needs.</li>
+                <li><strong>Network issue between gateway and backend</strong> — internal network congestion or misconfigured firewall.</li>
+                <li><strong>Memory exhaustion</strong> — server running out of RAM and thrashing.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+            <p>Refresh the page after a short wait. If the problem persists, contact the site owner — this cannot be fixed from the client side.</p>
+
+            <h3>For Server Owners</h3>
+
+            <h4>1. Check Application Server Status</h4>
+            <p>Verify your backend process is running:</p>
+            <pre><code>systemctl status php8.2-fpm
+systemctl status gunicorn
+pm2 status</code></pre>
+
+            <h4>2. Check Application Logs</h4>
+            <p>Look for errors, slow queries, or out-of-memory messages in your application logs.</p>
+
+            <h4>3. Increase Gateway Timeout</h4>
+            <p>In nginx, increase the proxy timeout if your application legitimately needs more time:</p>
+            <pre><code>proxy_read_timeout 120s;
+proxy_connect_timeout 30s;
+proxy_send_timeout 30s;</code></pre>
+            <p>For PHP-FPM, also check <code>request_terminate_timeout</code> in your pool configuration.</p>
+
+            <h4>4. Optimize Slow Database Queries</h4>
+            <p>Add database query logging to identify slow queries. Add indexes, optimize joins, or add caching for expensive queries.</p>
+
+            <h4>5. Scale Application Workers</h4>
+            <p>If your worker pool is consistently saturated, increase the number of PHP-FPM children, Gunicorn workers, or Node.js instances.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>504 vs. 502 — how do I tell which is the problem?</h3>
+            <p>504 means the upstream server is too slow (no response within timeout). <a href="/errors/http/502-bad-gateway">502</a> means the upstream server responded but the response was invalid or malformed. If your backend is completely down, you typically see 502. If it is running but very slow, you see 504.</p>
+
+            <h3>Why does Cloudflare show a 504 with its own page?</h3>
+            <p>Cloudflare acts as a reverse proxy. When Cloudflare forwards your request to your origin server and gets no response within its timeout window, it shows its own 504 page. The fix is on your origin server, not Cloudflare.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — invalid response from upstream.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server temporarily unable to handle requests.</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — generic server crash.</li>
+                <li><a href="/errors/browser/err_timed_out">ERR_TIMED_OUT</a> — browser-side timeout waiting for the server.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Test Server Response</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

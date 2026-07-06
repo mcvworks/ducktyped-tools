@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Env File Parser","url":"https://ducktyped.xyz/env-file-parser/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Parse .env files into key-value pairs, validate syntax, and convert between formats.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a .env file?","acceptedAnswer":{"@type":"Answer","text":"A .env file stores environment variables as key-value pairs (KEY=value) used to configure applications. It keeps sensitive configuration like API keys, database URLs, and feature flags separate from code."}},{"@type":"Question","name":"What does this env file parser do?","acceptedAnswer":{"@type":"Answer","text":"It parses .env file content and displays all variables in a structured table, highlighting syntax issues, duplicate keys, and empty values. It helps debug configuration problems."}},{"@type":"Question","name":"Is it safe to paste my .env file here?","acceptedAnswer":{"@type":"Answer","text":"Yes, all parsing happens in your browser. No data is sent to any server. However, be cautious with .env files containing production secrets — even client-side tools should be used carefully with sensitive data."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Env File Parser — Parse and Validate .env Files — duckTyped</title>
+    <meta name="description" content="Parse .env files into key-value pairs, validate syntax, and convert between formats. Free .env file tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Env File Parser — duckTyped">
+    <meta property="og:description" content="Parse .env files into key-value pairs, validate syntax, and convert to JSON.">
+    <meta property="og:url" content="https://ducktyped.xyz/env-file-parser/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/env-file-parser.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Env File Parser — duckTyped">
+    <meta name="twitter:description" content="Parse and validate .env files, convert to JSON.">
+    <link rel="canonical" href="https://ducktyped.xyz/env-file-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Env File Parser</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Parse .env files into a structured view of key-value pairs, validate syntax, detect issues, and convert between .env and JSON formats.</p><div class="example-box"><strong>Example uses:</strong><p>Reviewing environment variables before deployment, converting .env files to JSON, validating .env file syntax.</p></div>
+            <a href="/learn/env-file-parser/" class="learn-more-link">Learn .env syntax, quoting, and precedence rules</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Env File Parser</h2>
+            <div class="input-group"><label>.env Content:</label><textarea id="envInput" rows="10" placeholder='DATABASE_URL=postgres://localhost:5432/mydb&#10;API_KEY="sk-12345"&#10;DEBUG=true&#10;# This is a comment' style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button onclick="parseEnv()">Parse</button>
+                <button onclick="toJSON()">Convert to JSON</button>
+            </div>
+            <div id="envResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/json-formatter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JSON Formatter</a>
+            <a href="/docker-compose-validator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Docker Compose Validator</a>
+            <a href="/base64-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Base64 Encoder</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/env-file-parser/">Env File Parser — Learn Guide</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/database/sqlite-readonly-database">SQLite Attempt to Write a Readonly Database</a>, <a href="/errors/database/sqlite-no-such-table">SQLite No Such Table</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function doParse() {
+        var input = document.getElementById('envInput').value, lines = input.split('\n'), parsed = {}, warnings = [], keys = [];
+        lines.forEach(function(line, i) {
+            line = line.trim();
+            if (!line || line.startsWith('#')) return;
+            var eq = line.indexOf('=');
+            if (eq === -1) { warnings.push('Line '+(i+1)+': Missing = sign'); return; }
+            var key = line.substring(0, eq).trim(), val = line.substring(eq+1).trim();
+            if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) val = val.slice(1,-1);
+            if (keys.indexOf(key) > -1) warnings.push('Line '+(i+1)+': Duplicate key "'+key+'"');
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) warnings.push('Line '+(i+1)+': Unusual key name "'+key+'"');
+            if (!val) warnings.push('Line '+(i+1)+': Empty value for "'+key+'"');
+            parsed[key] = val; keys.push(key);
+        });
+        return {parsed:parsed, warnings:warnings, keys:keys};
+    }
+    function parseEnv() {
+        var r = doParse(), html = '';
+        if (r.warnings.length) {
+            html += '<div style="margin-top:12px;padding:12px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;margin-bottom:12px;">';
+            r.warnings.forEach(function(w) { html += '<p style="color:#ef4444;margin:4px 0;font-size:0.9em;">&#9888; '+escapeHtml(w)+'</p>'; });
+            html += '</div>';
+        }
+        html += '<table style="width:100%;border-collapse:collapse;margin-top:12px;"><tr style="border-bottom:2px solid var(--border-color);"><th style="text-align:left;padding:8px;color:var(--primary-color);">Key</th><th style="text-align:left;padding:8px;color:var(--primary-color);">Value</th></tr>';
+        r.keys.forEach(function(k) { if(r.parsed[k]!==undefined) html += '<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:8px;color:var(--text-primary);font-weight:600;font-family:monospace;">'+escapeHtml(k)+'</td><td style="padding:8px;color:var(--text-secondary);font-family:monospace;word-break:break-all;">'+escapeHtml(r.parsed[k])+'</td></tr>'; });
+        html += '</table><p style="color:var(--text-secondary);margin-top:8px;font-size:0.9em;">'+Object.keys(r.parsed).length+' variable(s) parsed.</p>';
+        document.getElementById('envResult').innerHTML = html;
+    }
+    function toJSON() {
+        var r = doParse();
+        var json = JSON.stringify(r.parsed, null, 2);
+        var envR = document.getElementById('envResult');
+        envR.innerHTML = '<div style="margin-top:12px;"><pre id="envJsonPre" style="padding:15px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);overflow-x:auto;font-size:0.9em;"></pre><button id="envJsonCopy" style="margin-top:8px;">Copy JSON</button></div>';
+        document.getElementById('envJsonPre').textContent = json;
+        document.getElementById('envJsonCopy').addEventListener('click', function() { navigator.clipboard.writeText(json); });
+    }
+    </script>
+</body>
+</html>

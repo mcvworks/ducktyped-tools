@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UUID Generator","url":"https://ducktyped.xyz/uuid-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Generate random UUIDs (v4) and validate existing UUIDs. Free browser-based UUID generator tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a UUID?","acceptedAnswer":{"@type":"Answer","text":"A UUID (Universally Unique Identifier) is a 128-bit identifier formatted as 32 hex digits in 5 groups (e.g., 550e8400-e29b-41d4-a716-446655440000). It is designed to be unique without a central authority."}},{"@type":"Question","name":"What UUID version should I use?","acceptedAnswer":{"@type":"Answer","text":"UUID v4 (random) is the most common choice for general use. UUID v7 (time-ordered) is recommended for database primary keys as it provides better index performance. UUID v1 (time-based) includes your MAC address and is less common."}},{"@type":"Question","name":"Are UUIDs truly unique?","acceptedAnswer":{"@type":"Answer","text":"For practical purposes, yes. UUID v4 generates 122 random bits, giving 5.3 x 10^36 possible values. The probability of collision is astronomically low — you would need to generate 1 billion UUIDs per second for 85 years for a 50% chance of one collision."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator — Generate and Validate UUIDs — duckTyped</title>
+    <meta name="description" content="Generate random UUIDs (v4) and validate existing UUIDs. Free browser-based UUID generator tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="UUID Generator — Generate and Validate UUIDs — duckTyped">
+    <meta property="og:description" content="Generate random UUIDs (v4) and validate existing UUIDs. Free browser-based UUID generator tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/uuid-generator/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/uuid-generator.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="UUID Generator — duckTyped">
+    <meta name="twitter:description" content="Generate random UUIDs (v4) and validate existing UUIDs. Free browser-based UUID generator tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/uuid-generator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>UUID Generator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Generate cryptographically random UUIDs (v4) instantly or validate existing UUIDs. All generation happens client-side in your browser.</p><div class="example-box"><strong>Example uses:</strong><p>Creating unique identifiers for database records, generating API keys, testing systems that require UUID inputs, or validating UUID format compliance.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="uuidGen"><h2>UUID Generator</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Generate random UUID v4 values or validate existing UUIDs to check format and version.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <button onclick="generateSingleUUID()">Generate UUID</button>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button onclick="generateBulkUUIDs()">Generate Bulk</button>
+                    <input type="number" id="bulkCount" value="5" min="1" max="100" style="width: 60px; padding: 8px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; text-align: center;">
+                </div>
+            </div>
+            <div id="uuidOutput" style="display: none; margin-bottom: 20px; padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="color: var(--primary-color);">Generated UUIDs:</strong>
+                    <button onclick="copyUUIDs()" style="padding: 6px 14px; font-size: 0.85em;">Copy All</button>
+                </div>
+                <pre id="uuidList" style="margin: 0; white-space: pre-wrap; word-break: break-all; font-size: 0.95em; color: var(--text-primary); line-height: 1.8;"></pre>
+            </div>
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 20px 0;">
+            <h3 style="margin-bottom: 10px;">Validate UUID</h3>
+            <div class="input-group"><label>UUID to Validate:</label><input type="text" id="validateInput" placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000" onkeypress="if(event.key==='Enter') validateUUID()"></div>
+            <button onclick="validateUUID()">Validate</button>
+            <div id="validateResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/hash-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Hash Generator</a>
+            <a href="/password-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Password Generator</a>
+            <a href="/base64-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Base64 Encoder</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function generateUUIDv4() {
+        if (crypto.randomUUID) return crypto.randomUUID();
+        var b = new Uint8Array(16); crypto.getRandomValues(b);
+        b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+        var h = []; for (var i = 0; i < 16; i++) h.push(b[i].toString(16).padStart(2, '0'));
+        return h[0]+h[1]+h[2]+h[3]+'-'+h[4]+h[5]+'-'+h[6]+h[7]+'-'+h[8]+h[9]+'-'+h[10]+h[11]+h[12]+h[13]+h[14]+h[15];
+    }
+    function generateSingleUUID() {
+        document.getElementById('uuidOutput').style.display = 'block';
+        document.getElementById('uuidList').textContent = generateUUIDv4();
+    }
+    function generateBulkUUIDs() {
+        var c = Math.min(100, Math.max(1, parseInt(document.getElementById('bulkCount').value) || 5));
+        var u = []; for (var i = 0; i < c; i++) u.push(generateUUIDv4());
+        document.getElementById('uuidOutput').style.display = 'block';
+        document.getElementById('uuidList').textContent = u.join('\n');
+    }
+    function copyUUIDs() {
+        navigator.clipboard.writeText(document.getElementById('uuidList').textContent);
+    }
+    function validateUUID() {
+        var v = document.getElementById('validateInput').value.trim(), r = document.getElementById('validateResult');
+        if (!v) { r.innerHTML = '<p style="color:var(--text-secondary);margin-top:10px;">Enter a UUID to validate.</p>'; return; }
+        var valid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+        if (valid) {
+            r.innerHTML = '<div style="margin-top:12px;padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><p style="color:#22c55e;font-weight:600;margin-bottom:6px;">Valid UUID</p><p style="color:var(--text-secondary);margin:0;">Version: <strong style="color:var(--text-primary);">v'+v.charAt(14)+'</strong></p></div>';
+        } else {
+            r.innerHTML = '<div style="margin-top:12px;padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><p style="color:#ef4444;font-weight:600;margin:0;">Invalid UUID format</p></div>';
+        }
+    }
+    </script>
+</body>
+</html>

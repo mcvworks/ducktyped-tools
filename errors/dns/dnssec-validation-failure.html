@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the domain work on some networks but not others?","acceptedAnswer":{"@type":"Answer","text":"Only validating resolvers enforce DNSSEC. Cloudflare, Google, and Quad9 validate and return SERVFAIL for a broken chain; many ISP resolvers do not validate and hand out the records anyway. Inconsistent resolution across networks is the classic DNSSEC-failure signature."}},{"@type":"Question","name":"How long until fixes take effect?","acceptedAnswer":{"@type":"Answer","text":"Resolvers cache DS and DNSKEY records for their TTLs (often 1–24 hours). After correcting the records, expect residual failures until caches expire — flushing Cloudflare and Google's public caches via their purge pages speeds this up."}},{"@type":"Question","name":"Is it safer to just turn DNSSEC off?","acceptedAnswer":{"@type":"Answer","text":"Removing the DS record does make the outage stop, and an unsigned zone is still fully functional. You lose protection against DNS spoofing, so the better long-term fix is a provider that automates signing and rollovers rather than leaving DNSSEC off permanently."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNSSEC Validation Failure — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNSSEC Validation Failure — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNSSEC validation failures (SERVFAIL on 1.1.1.1/8.8.8.8, 'broken trust chain'). Covers expired RRSIGs, DS mismatches, and safe unsigning.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNSSEC validation failure, broken trust chain, SERVFAIL DNSSEC, delv: resolution failed, DNSSEC bogus, DS record mismatch">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNSSEC Validation Failure — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNSSEC validation failures (SERVFAIL on 1.1.1.1/8.8.8.8, 'broken trust chain'). Covers expired RRSIGs, DS mismatches, and safe unsigning.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dnssec-validation-failure">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dnssec-validation-failure">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNSSEC Validation Failure</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNSSEC Validation Failure</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A domain fails to resolve on validating resolvers because its DNSSEC chain of trust is broken — typically expired signatures or a stale DS record.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNSSEC validation failure</code></li><li><code>broken trust chain</code></li><li><code>SERVFAIL DNSSEC</code></li><li><code>delv: resolution failed</code></li><li><code>DNSSEC bogus</code></li><li><code>DS record mismatch</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNSSEC adds cryptographic signatures to DNS records. When a validating resolver (Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9) finds signatures that are expired, missing, or do not match the DS record published at the parent zone, it deliberately refuses to return the answer — you get SERVFAIL, and delv reports 'broken trust chain'. The domain seems randomly down: it fails on validating resolvers while still resolving on non-validating ones. The break is almost always on the domain owner's side, introduced by a nameserver migration, an expired signing key, or a leftover DS record.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Expired RRSIG signatures</strong> — Signatures carry validity windows. If automatic re-signing broke (signing daemon down, cron failure), signatures expire and every validating resolver starts rejecting the zone at once.</li>
+                <li><strong>DS record does not match the DNSKEY</strong> — After migrating to a new DNS provider, the old DS record at the registrar still points at the previous provider's keys. The new zone's keys fail validation against the stale DS.</li>
+                <li><strong>Zone moved to a provider without DNSSEC, DS left behind</strong> — If DNSSEC was not re-enabled after a migration but the DS record was never removed, validators expect signatures that no longer exist — a guaranteed validation failure.</li>
+                <li><strong>Botched key rollover</strong> — Rotating KSK/ZSK keys without following the proper timing (publishing new keys before use, waiting out TTLs) leaves a window where cached DS or DNSKEY records do not match.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm DNSSEC is the cause</h3>
+            <p>Query with checking disabled (+cd). If +cd returns records while a normal query gets SERVFAIL, validation is definitively the problem.</p>
+            <pre><code>dig example.com               # SERVFAIL
+dig example.com +cd           # works -&gt; DNSSEC failure
+delv example.com A            # shows 'broken trust chain' detail</code></pre>
+            <h3>2. Locate the break in the chain</h3>
+            <p>DNSViz (dnsviz.net) visualizes the full chain and pinpoints the exact failure — expired signature, missing DNSKEY, or DS mismatch. Compare the DS at the parent with the live DNSKEY.</p>
+            <pre><code>dig DS example.com @a.gtld-servers.net   # what the parent publishes
+dig DNSKEY example.com +dnssec            # what the zone serves</code></pre>
+            <h3>3. Re-sign the zone or update the DS record</h3>
+            <p>If signatures expired, fix the signing pipeline and re-sign. If keys changed, generate the new DS from the current KSK and replace the old DS at your registrar.</p>
+            <h3>4. Remove the DS record if the zone is unsigned</h3>
+            <p>If the new DNS provider does not sign the zone, delete the DS record at the registrar. Validation failures stop once the old DS expires from resolver caches (up to the DS TTL).</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does the domain work on some networks but not others?</h3>
+            <p>Only validating resolvers enforce DNSSEC. Cloudflare, Google, and Quad9 validate and return SERVFAIL for a broken chain; many ISP resolvers do not validate and hand out the records anyway. Inconsistent resolution across networks is the classic DNSSEC-failure signature.</p>
+            <h3>How long until fixes take effect?</h3>
+            <p>Resolvers cache DS and DNSKEY records for their TTLs (often 1–24 hours). After correcting the records, expect residual failures until caches expire — flushing Cloudflare and Google's public caches via their purge pages speeds this up.</p>
+            <h3>Is it safer to just turn DNSSEC off?</h3>
+            <p>Removing the DS record does make the outage stop, and an unsigned zone is still fully functional. You lose protection against DNS spoofing, so the better long-term fix is a provider that automates signing and rollovers rather than leaving DNSSEC off permanently.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — the response code validating resolvers return.</li>
+                <li><a href="/errors/dns/formerr">DNS FORMERR</a> — malformed-query failures, sometimes EDNS-related.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — definitive nonexistence, a different failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check the domain's records and response codes</span>
+                </a>
+        <a href="/dns-propagation/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Propagation Checker</span>
+                    <span class="recommended-tool-desc">Compare validating vs non-validating resolvers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

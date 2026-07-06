@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SMTP Server Checker","url":"https://ducktyped.xyz/smtp-checker/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Test SMTP server connectivity and check mail server banners on common ports. Verify mail server configuration. Free SMTP testing tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an SMTP checker?","acceptedAnswer":{"@type":"Answer","text":"An SMTP checker tests connectivity to a mail server by connecting on port 25/587/465 and performing an SMTP handshake. It verifies the server is reachable, responds correctly, and supports TLS encryption."}},{"@type":"Question","name":"What SMTP ports should I check?","acceptedAnswer":{"@type":"Answer","text":"Port 25 is for server-to-server mail transfer, port 587 is for authenticated mail submission (recommended for sending), and port 465 is for SMTPS (SMTP over implicit TLS)."}},{"@type":"Question","name":"Why is my SMTP connection failing?","acceptedAnswer":{"@type":"Answer","text":"Common causes include firewall blocking port 25/587, incorrect server hostname, expired TLS certificates, authentication failures, or the mail server being down. Check your ISP — many block port 25."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP Server Checker — Test Mail Server Connectivity — duckTyped</title>
+    <meta name="description" content="Test SMTP server connectivity and check mail server banners on common ports. Verify mail server configuration. Free SMTP testing tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="SMTP Server Checker — Test Mail Server Connectivity — duckTyped">
+    <meta property="og:description" content="Test SMTP server connectivity and check mail server banners on common ports. Verify mail server configuration. Free SMTP testing tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/smtp-checker/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/smtp-checker.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="SMTP Server Checker — Test Mail Server Connectivity — duckTyped">
+    <meta name="twitter:description" content="Test SMTP server connectivity and check mail server banners on common ports. Verify mail server configuration. Free SMTP testing tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/smtp-checker/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>SMTP Server Checker</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Look up a domain's MX records and test whether its mail server accepts connections on the submission ports (465, 587). Port 25 can't be tested from our server — hosting providers block it to prevent spam — so we tell you that instead of showing a false negative.</p><div class="example-box"><strong>Example uses:</strong><p>Verifying a new mail server is reachable, troubleshooting email delivery failures, checking if an ISP is blocking port 25, or validating MX record changes.</p></div>
+            <a href="/learn/smtp-checker/" class="learn-more-link">Learn about SMTP and mail server testing</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="smtpChecker"><h2>SMTP Server Checker</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Test SMTP server connectivity and verify email server configuration. Check if your mail server accepts connections on common SMTP ports.</p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                <button class="try-example-btn" onclick="document.getElementById('smtpHost').value='gmail.com';checkSMTP()">Try: gmail.com</button>
+                <button class="try-example-btn" onclick="document.getElementById('smtpHost').value='outlook.com';checkSMTP()">Try: outlook.com</button>
+            </div>
+            <div class="input-group"><label>Mail Server (MX Record or Domain):</label><input type="text" id="smtpHost" placeholder="mail.example.com or example.com" aria-label="Mail Server (MX Record or Domain):" onkeypress="if(event.key==='Enter') checkSMTP()">
+                <span class="tool-input-hint">Enter a domain (e.g. gmail.com) or specific MX host (e.g. alt1.gmail-smtp-in.l.google.com)</span>
+            </div>
+            <button onclick="checkSMTP()">Check SMTP Server</button>
+            <div id="smtpResults"></div>
+            <details class="tool-quick-ref">
+                <summary>SMTP Ports Explained</summary>
+                <div class="tool-quick-ref-body">
+                    <table>
+                        <tr><th>Port</th><th>Protocol</th><th>Purpose</th></tr>
+                        <tr><td><code>25</code></td><td>SMTP</td><td>Server-to-server mail relay (often blocked by ISPs)</td></tr>
+                        <tr><td><code>465</code></td><td>SMTPS</td><td>SMTP over implicit TLS (legacy but widely used)</td></tr>
+                        <tr><td><code>587</code></td><td>Submission</td><td>Client-to-server mail submission with STARTTLS</td></tr>
+                    </table>
+                    <p style="margin-top: 10px; font-size: 0.92em;">Most modern email clients use port <strong>587</strong> for sending. Port <strong>25</strong> is mainly for server-to-server relay.</p>
+                </div>
+            </details>
+        </div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Address Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses for RFC compliance and check MX records for…</span>
+                </a>
+                <a href="/email-header-analyzer/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Header Analyzer</span>
+                    <span class="recommended-tool-desc">Analyze raw email headers to trace delivery path, diagnose spam, and check…</span>
+                </a>
+                <a href="/blacklist-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Blacklist / RBL Checker</span>
+                    <span class="recommended-tool-desc">Check if a domain or IP address appears on email blacklists and DNS blocklists</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/smtp-checker/">How SMTP Works</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/email/relay-access-denied">Relay Access Denied</a>, <a href="/errors/email/message-rejected">Message Rejected</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-network.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

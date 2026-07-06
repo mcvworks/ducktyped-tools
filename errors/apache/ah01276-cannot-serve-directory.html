@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is AH01276 different from AH01630?","acceptedAnswer":{"@type":"Answer","text":"AH01276 is 'directory has no index and listing is off' — a content/routing problem. AH01630 is 'authorization rules denied the client' — an access-control problem. Both reach the browser as 403, which is why the error log line, not the status code, is what you diagnose from."}},{"@type":"Question","name":"Should I just add Options +Indexes?","acceptedAnswer":{"@type":"Answer","text":"Only for directories meant to be browsed. Auto-listings expose every filename — stray backups and dumps included. For app directories the correct fix is the index file or the front-controller rewrite, not a listing."}},{"@type":"Question","name":"Why do crawlers keep triggering this on /wp-content/uploads/?","acceptedAnswer":{"@type":"Answer","text":"Bots probe common directories for listings. AH01276 there means the protection works. If the noise bothers you, return 404 for bare directory hits or add empty index.html files — both quiet the log without exposing anything."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH01276 — Cannot Serve Directory — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH01276 — Cannot Serve Directory — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH01276 'Cannot serve directory'. DirectoryIndex configuration, missing index files, Options Indexes, and front-controller rewrites.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH01276: Cannot serve directory, No matching DirectoryIndex, server-generated directory index forbidden by Options directive, ah01276">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH01276 — Cannot Serve Directory — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH01276 'Cannot serve directory'. DirectoryIndex configuration, missing index files, Options Indexes, and front-controller rewrites.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah01276-cannot-serve-directory">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah01276-cannot-serve-directory">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH01276 — Cannot Serve Directory</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH01276 — Cannot Serve Directory</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'AH01276: Cannot serve directory ...: No matching DirectoryIndex ... found, and server-generated directory index forbidden by Options directive' — visitors see 403.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH01276: Cannot serve directory</code></li><li><code>No matching DirectoryIndex</code></li><li><code>server-generated directory index forbidden by Options directive</code></li><li><code>ah01276</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A request resolved to a directory; Apache tried every filename in DirectoryIndex (index.html by default), found none, and — because Options does not include Indexes — refused to generate a listing. Result: 403 with AH01276 in the log. It is Apache's version of nginx's 'directory index forbidden': either the expected index file is missing/misnamed, the DocumentRoot points at the wrong tree, or the app needed rewrite rules routing directory URLs to a front controller.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No index file where DirectoryIndex looks</strong> — Empty docroot after a deploy, or the entry point named differently (app.html, index.php) than what DirectoryIndex lists.</li>
+                <li><strong>DocumentRoot pointing at the wrong directory</strong> — One level above the real public folder (repo root instead of public/), so the index exists but not where Apache is looking.</li>
+                <li><strong>Missing rewrite to a front controller</strong> — Frameworks route everything through index.php via mod_rewrite; with rewriting disabled (module off or AllowOverride None), directory URLs hit the filesystem instead.</li>
+                <li><strong>Directory listing intentionally disabled</strong> — Options -Indexes is the safe default; requests to file-less directories (crawlers probing /images/, /uploads/) log AH01276 as designed.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Compare disk vs configuration</h3>
+            <p>Check what is actually in the directory and what DirectoryIndex expects.</p>
+            <pre><code>ls -la /var/www/site/
+grep -rn 'DirectoryIndex\|DocumentRoot' /etc/apache2/sites-enabled/ /etc/apache2/mods-enabled/dir.conf</code></pre>
+            <h3>2. Fix DocumentRoot or DirectoryIndex</h3>
+            <p>Point DocumentRoot at the public directory and list the real entry file first.</p>
+            <pre><code>&lt;VirtualHost *:80&gt;
+    DocumentRoot /var/www/site/public
+    DirectoryIndex index.php index.html
+    ...
+&lt;/VirtualHost&gt;
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+            <h3>3. Enable the app's rewrite path</h3>
+            <p>For framework apps, ensure mod_rewrite is on and .htaccess is honored (or move the rules into the vhost).</p>
+            <pre><code>sudo a2enmod rewrite
+# vhost:
+&lt;Directory /var/www/site/public&gt;
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;
+sudo systemctl reload apache2</code></pre>
+            <h3>4. Enable listings only where they belong</h3>
+            <p>For genuine file-share directories, allow Indexes narrowly.</p>
+            <pre><code>&lt;Directory /var/www/site/public/downloads&gt;
+    Options +Indexes
+&lt;/Directory&gt;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is AH01276 different from AH01630?</h3>
+            <p>AH01276 is 'directory has no index and listing is off' — a content/routing problem. AH01630 is 'authorization rules denied the client' — an access-control problem. Both reach the browser as 403, which is why the error log line, not the status code, is what you diagnose from.</p>
+            <h3>Should I just add Options +Indexes?</h3>
+            <p>Only for directories meant to be browsed. Auto-listings expose every filename — stray backups and dumps included. For app directories the correct fix is the index file or the front-controller rewrite, not a listing.</p>
+            <h3>Why do crawlers keep triggering this on /wp-content/uploads/?</h3>
+            <p>Bots probe common directories for listings. AH01276 there means the protection works. If the noise bothers you, return 404 for bare directory hits or add empty index.html files — both quiet the log without exposing anything.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/directory-index-forbidden">Nginx Directory Index Forbidden</a> — the nginx twin.</li>
+                <li><a href="/errors/apache/ah01630-client-denied-by-server-configuration">AH01630 Client Denied</a> — the authorization 403.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — the client-facing status.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test directory URLs</span>
+                </a>
+        <a href="/link-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Broken Link Checker</span>
+                    <span class="recommended-tool-desc">Find dead-end URLs sitewide</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

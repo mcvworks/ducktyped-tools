@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn — Technical Guides for Every Tool — duckTyped</title>
+    <meta name="description" content="In-depth technical guides and reference articles. DNS propagation, email authentication (SPF, DKIM, DMARC), SSL/TLS handshakes, HTTP errors, and tool-specific guides.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Learn — Technical Guides for Every Tool — duckTyped">
+    <meta property="og:description" content="Learn how to use duckTyped tools with in-depth guides. DNS records, SSL certificates, JSON formatting, JWT tokens, Base64 encoding, and more.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Learn — Technical Guides for Every Tool — duckTyped">
+    <meta name="twitter:description" content="Learn how to use duckTyped tools with in-depth guides.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="standalone-hero">
+            <h1>Learn</h1>
+            <p class="standalone-intro">In-depth guides for every tool on duckTyped. Understand the technology behind each tool, learn how to use it effectively, and see real-world examples.</p>
+        </div>
+
+        <!-- Network Tools -->
+        <div class="learn-category-section">
+            <h2>🌐 Network</h2>
+            <div class="learn-grid">
+                <a href="/learn/dns-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>DNS Record Checker</h3>
+                    <p>Understand DNS record types — A, AAAA, MX, TXT, CNAME, NS, SOA, CAA — and how to troubleshoot domain configuration.</p>
+                </a>
+                <a href="/learn/ssl-checker/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>SSL Certificate Checker</h3>
+                    <p>Learn about SSL/TLS certificates, certificate chains, expiry monitoring, and how to diagnose HTTPS issues.</p>
+                </a>
+                <a href="/learn/whois-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>WHOIS Lookup</h3>
+                    <p>Domain registration details, registrars, and expiry dates.</p>
+                </a>
+                <a href="/learn/port-scanner/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Port Scanner</h3>
+                    <p>TCP ports, common services, and firewall diagnostics.</p>
+                </a>
+                <a href="/learn/http-latency/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>HTTP Latency Checker</h3>
+                    <p>Measuring response times and diagnosing slow connections.</p>
+                </a>
+                <a href="/learn/isp-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>ISP Lookup</h3>
+                    <p>IP geolocation, ASN data, and ISP identification.</p>
+                </a>
+                <a href="/learn/traceroute/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Traceroute</h3>
+                    <p>Network path tracing, hop analysis, and latency diagnosis.</p>
+                </a>
+                <a href="/learn/reverse-dns/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Reverse DNS</h3>
+                    <p>PTR records, IP-to-hostname resolution, and verification.</p>
+                </a>
+                <a href="/learn/subnet-calculator/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Subnet Calculator</h3>
+                    <p>CIDR notation, network ranges, and IP address planning.</p>
+                </a>
+                <a href="/learn/mac-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>MAC Address Lookup</h3>
+                    <p>OUI databases, vendor identification, and hardware addresses.</p>
+                </a>
+                <a href="/learn/device-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Device Lookup</h3>
+                    <p>IMEI numbers, Apple serials, Dell service tags, TAC codes, and Luhn validation.</p>
+                </a>
+                <a href="/learn/website-not-loading/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Website Not Loading?</h3>
+                    <p>Step-by-step diagnosis of DNS, SSL, server reachability, HTTP errors, and routing issues.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Security Tools -->
+        <div class="learn-category-section">
+            <h2>🔒 Security</h2>
+            <div class="learn-grid">
+                <a href="/learn/password-generator/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Password Generator</h3>
+                    <p>Cryptographic randomness, password strength, and best practices.</p>
+                </a>
+                <a href="/learn/csr-decoder/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>CSR Decoder</h3>
+                    <p>What a Certificate Signing Request contains, generating one with OpenSSL, and verifying fields before submission.</p>
+                </a>
+                <a href="/learn/public-key-decoder/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Public Key Decoder</h3>
+                    <p>PEM vs DER, public keys vs certificates vs CSRs, and reading decoded key fields.</p>
+                </a>
+                <a href="/learn/encrypted-note/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Secure Note Sender</h3>
+                    <p>AES-GCM encryption, PBKDF2 key derivation, and secure messaging.</p>
+                </a>
+                <a href="/learn/breach-checker/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Password Breach Checker</h3>
+                    <p>Have I Been Pwned, k-anonymity, and credential exposure.</p>
+                </a>
+                <a href="/learn/security-headers/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Security Headers</h3>
+                    <p>CSP, HSTS, X-Frame-Options, and HTTP security best practices.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Email Tools -->
+        <div class="learn-category-section">
+            <h2>📧 Email</h2>
+            <div class="learn-grid">
+                <a href="/learn/email-validator/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Validator</h3>
+                    <p>Email syntax, MX verification, and disposable email detection.</p>
+                </a>
+                <a href="/learn/email-header-analyzer/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Header Analyzer</h3>
+                    <p>SPF, DKIM, DMARC, email routing hops, and authentication.</p>
+                </a>
+                <a href="/learn/smtp-checker/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>SMTP Checker</h3>
+                    <p>SMTP connections, mail server testing, and relay diagnostics.</p>
+                </a>
+                <a href="/learn/blacklist-checker/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Blacklist Checker</h3>
+                    <p>RBLs, DNSBLs, IP reputation, and delisting procedures.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- URL / Web Tools -->
+        <div class="learn-category-section">
+            <h2>🔗 Web / URL</h2>
+            <div class="learn-grid">
+                <a href="/learn/url-safety/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>URL Safety Checker</h3>
+                    <p>Phishing detection, suspicious patterns, and link analysis.</p>
+                </a>
+                <a href="/learn/redirect-checker/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>Redirect Checker</h3>
+                    <p>301/302 redirects, redirect chains, and SEO implications.</p>
+                </a>
+                <a href="/learn/link-checker/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>Broken Link Checker</h3>
+                    <p>HTTP status codes, dead links, and site maintenance.</p>
+                </a>
+                <a href="/learn/metadata-extractor/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>URL Metadata Extractor</h3>
+                    <p>Open Graph tags, Twitter Cards, and SEO metadata.</p>
+                </a>
+                <a href="/learn/tech-detector/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>Tech Stack Detector</h3>
+                    <p>Identifying frameworks, CMS platforms, and server technology.</p>
+                </a>
+                <a href="/learn/robots-analyzer/" class="learn-card">
+                    <span class="category-badge">URL</span>
+                    <h3>Robots.txt Analyzer</h3>
+                    <p>Crawl directives, sitemaps, and search engine optimization.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- QR Tools -->
+        <div class="learn-category-section">
+            <h2>📱 QR</h2>
+            <div class="learn-grid">
+                <a href="/learn/qr-generator/" class="learn-card">
+                    <span class="category-badge">QR</span>
+                    <h3>QR Code Generator</h3>
+                    <p>QR encoding, data formats, WiFi/vCard payloads, and customization.</p>
+                </a>
+                <a href="/learn/qr-scanner/" class="learn-card">
+                    <span class="category-badge">QR</span>
+                    <h3>QR Code Scanner</h3>
+                    <p>Camera-based scanning, image upload decoding, and supported formats.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Dev Tools -->
+        <div class="learn-category-section">
+            <h2>🛠️ Dev Tools</h2>
+            <div class="learn-grid">
+                <a href="/learn/base64-encoder/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Base64 Encode/Decode</h3>
+                    <p>What Base64 is, how the encoding works, Unicode handling, and practical use cases like data URIs and API payloads.</p>
+                </a>
+                <a href="/learn/json-formatter/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>JSON Formatter / Validator</h3>
+                    <p>JSON syntax rules, common validation errors, formatting vs minifying, and tips for working with JSON data.</p>
+                </a>
+                <a href="/learn/jwt-decoder/" class="learn-card">
+                    <span class="category-badge">Dev / Security</span>
+                    <h3>JWT Decoder</h3>
+                    <p>JSON Web Token structure, standard claims, expiration handling, and security considerations for token-based auth.</p>
+                </a>
+                <a href="/learn/jwt-generator/" class="learn-card">
+                    <span class="category-badge">Dev / Security</span>
+                    <h3>JWT Generator</h3>
+                    <p>JWT structure, signing algorithms (HS256, RS256, ES256), standard claims, and expiration strategy for token-based auth.</p>
+                </a>
+                <a href="/learn/webhook-tester/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Webhook Tester</h3>
+                    <p>How webhooks work, testing payloads, HMAC signature verification for Stripe/GitHub/Shopify, and retry patterns.</p>
+                </a>
+                <a href="/learn/stripe-webhook-signature-verification/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Stripe Webhook Signature Verification</h3>
+                    <p>The Stripe-Signature header, raw-body verification, constructEvent vs manual HMAC, and fixing "No signatures found matching the expected signature".</p>
+                </a>
+                <a href="/learn/github-webhook-signature-verification/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>GitHub Webhook Signature Verification</h3>
+                    <p>The X-Hub-Signature-256 header, HMAC-SHA256 verification in Node and Python, SHA-256 vs legacy SHA-1, and fixing signature mismatches.</p>
+                </a>
+                <a href="/learn/cron-parser/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Cron Expression Parser</h3>
+                    <p>Cron syntax field by field, 5 vs 6-field formats, @daily shortcuts, and timezone gotchas.</p>
+                </a>
+                <a href="/learn/hmac-generator/" class="learn-card">
+                    <span class="category-badge">Dev / Security</span>
+                    <h3>HMAC Generator</h3>
+                    <p>HMAC vs plain hashing, algorithm choice, and use cases like API request signing and webhook verification.</p>
+                </a>
+                <a href="/learn/base32-encoder/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Base32 Encoder</h3>
+                    <p>Base32 vs Base64, RFC 4648, TOTP secrets, and DNS-safe encoding.</p>
+                </a>
+                <a href="/learn/url-parser/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>URL Parser</h3>
+                    <p>URL anatomy, percent-encoding rules, query-string gotchas, and common parsing bugs.</p>
+                </a>
+                <a href="/learn/env-file-parser/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>.env File Parser</h3>
+                    <p>.env syntax, quoting and escaping, parser differences, precedence rules, and secret hygiene.</p>
+                </a>
+                <a href="/learn/http-request-builder/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>HTTP Request Builder</h3>
+                    <p>Anatomy of an HTTP request: methods, headers, body encodings, and curl debugging recipes.</p>
+                </a>
+                <a href="/learn/docker-compose-validator/" class="learn-card">
+                    <span class="category-badge">Dev / DevOps</span>
+                    <h3>Docker Compose Validator</h3>
+                    <p>Compose file structure, schema versions, common validation errors, and YAML gotchas.</p>
+                </a>
+                <a href="/learn/url-encoder/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>URL Encode/Decode</h3>
+                    <p>Percent-encoding, reserved characters, and URI components.</p>
+                </a>
+                <a href="/learn/regex-tester/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Regex Tester</h3>
+                    <p>Regular expression syntax, flags, capture groups, and common patterns.</p>
+                </a>
+                <a href="/learn/regex-cheat-sheet/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Regex Cheat Sheet</h3>
+                    <p>Character classes, quantifiers, anchors, groups, lookaround, flags, and common patterns.</p>
+                </a>
+                <a href="/learn/hash-generator/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Hash Generator</h3>
+                    <p>Cryptographic hash functions, SHA family, and integrity verification.</p>
+                </a>
+                <a href="/learn/timestamp-converter/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Unix Timestamp Converter</h3>
+                    <p>Epoch time, date formatting, timezone handling, and time arithmetic.</p>
+                </a>
+                <a href="/learn/color-converter/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Color Converter</h3>
+                    <p>Color models (HEX, RGB, HSL), conversion math, and CSS color values.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Concepts: DNS -->
+        <div class="learn-category-section">
+            <h2>📚 DNS Concepts</h2>
+            <div class="learn-grid">
+                <a href="/learn/dns-propagation/" class="learn-card">
+                    <span class="category-badge">DNS</span>
+                    <h3>What Is DNS Propagation?</h3>
+                    <p>Why DNS changes take time to spread globally, how TTL affects propagation, and how to minimize delays.</p>
+                </a>
+                <a href="/learn/dns-probe-finished-nxdomain/" class="learn-card">
+                    <span class="category-badge">DNS</span>
+                    <h3>What Causes DNS_PROBE_FINISHED_NXDOMAIN?</h3>
+                    <p>What NXDOMAIN means, why domains fail to resolve, and how to diagnose the root cause.</p>
+                </a>
+                <a href="/learn/dns-cheat-sheet/" class="learn-card">
+                    <span class="category-badge">DNS</span>
+                    <h3>DNS Records Cheat Sheet</h3>
+                    <p>Quick reference for A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, SRV, and PTR record syntax.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Concepts: Email Authentication -->
+        <div class="learn-category-section">
+            <h2>📚 Email Authentication</h2>
+            <div class="learn-grid">
+                <a href="/learn/email-authentication/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>How Email Authentication Works</h3>
+                    <p>How SPF, DKIM, and DMARC work together to prevent email spoofing and improve deliverability.</p>
+                </a>
+                <a href="/learn/what-is-spf/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>What Is SPF?</h3>
+                    <p>Sender Policy Framework syntax, mechanisms, the 10-lookup limit, and common configuration mistakes.</p>
+                </a>
+                <a href="/learn/what-is-dkim/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>What Is DKIM?</h3>
+                    <p>DomainKeys Identified Mail signatures, selectors, DNS key records, and verification process.</p>
+                </a>
+                <a href="/learn/what-is-dmarc/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>What Is DMARC?</h3>
+                    <p>Domain alignment, policy levels (none/quarantine/reject), aggregate reports, and phased deployment.</p>
+                </a>
+                <a href="/learn/email-auth-cheat-sheet/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Authentication Cheat Sheet</h3>
+                    <p>SPF, DKIM, and DMARC tags, mechanisms, policies, and copy-paste record examples.</p>
+                </a>
+                <a href="/learn/email-not-delivering/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Not Delivering?</h3>
+                    <p>Step-by-step diagnosis: MX records, SPF, DKIM, DMARC, blacklists, and SMTP errors.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Concepts: HTTP -->
+        <div class="learn-category-section">
+            <h2>📚 HTTP Concepts</h2>
+            <div class="learn-grid">
+                <a href="/learn/http-502-bad-gateway/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>What Is HTTP 502 Bad Gateway?</h3>
+                    <p>How reverse proxies and load balancers cause 502 errors, common causes, and how to diagnose them.</p>
+                </a>
+                <a href="/learn/http-headers-cheat-sheet/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>HTTP Headers Cheat Sheet</h3>
+                    <p>Request, response, security, caching, and CORS headers with examples and copy-paste recipes.</p>
+                </a>
+                <a href="/learn/http-429-too-many-requests/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>What Causes HTTP 429 Too Many Requests?</h3>
+                    <p>Rate limiting algorithms, the Retry-After header, exponential backoff, and API best practices.</p>
+                </a>
+                <a href="/learn/http-status-codes/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>HTTP Status Code Reference</h3>
+                    <p>Every 1xx, 2xx, 3xx, 4xx, and 5xx code explained with common causes and fixes.</p>
+                </a>
+                <a href="/learn/301-vs-302-vs-307-vs-308/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>301 vs 302 vs 307 vs 308 — Redirects</h3>
+                    <p>HTTP redirect status codes: permanent vs temporary, method preservation, SEO implications, and common mistakes.</p>
+                </a>
+                <a href="/learn/get-vs-post-vs-put-vs-delete/" class="learn-card">
+                    <span class="category-badge">HTTP</span>
+                    <h3>GET vs POST vs PUT vs PATCH vs DELETE</h3>
+                    <p>HTTP methods comparison: safe, idempotent, cacheable. API design best practices and common mistakes.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Network Reference -->
+        <div class="learn-category-section">
+            <h2>🌐 Network Reference</h2>
+            <div class="learn-grid">
+                <a href="/learn/common-ports/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Common Ports Reference</h3>
+                    <p>Well-known network ports (FTP, SSH, SMTP, DNS, HTTP, HTTPS, MySQL, PostgreSQL, Redis, MongoDB). Port ranges and firewall rules.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Concepts: SSL/TLS -->
+        <div class="learn-category-section">
+            <h2>📚 SSL/TLS Concepts</h2>
+            <div class="learn-grid">
+                <a href="/learn/ssl-tls-handshake/" class="learn-card">
+                    <span class="category-badge">SSL/TLS</span>
+                    <h3>How SSL/TLS Handshakes Work</h3>
+                    <p>Step-by-step TLS 1.2 and 1.3 handshake flows, cipher suites, forward secrecy, and 0-RTT resumption.</p>
+                </a>
+                <a href="/learn/ssl-tls-cheat-sheet/" class="learn-card">
+                    <span class="category-badge">SSL/TLS</span>
+                    <h3>SSL/TLS Cheat Sheet</h3>
+                    <p>Handshake steps, cipher suite notation, certificate types, PEM/DER formats, and an OpenSSL command reference.</p>
+                </a>
+                <a href="/learn/err-ssl-protocol-error/" class="learn-card">
+                    <span class="category-badge">SSL/TLS</span>
+                    <h3>What Causes ERR_SSL_PROTOCOL_ERROR?</h3>
+                    <p>TLS handshake failures, protocol mismatches, certificate issues, and client vs server-side diagnosis.</p>
+                </a>
+                <a href="/learn/ssl-certificate-expired/" class="learn-card">
+                    <span class="category-badge">SSL/TLS</span>
+                    <h3>SSL Certificate Expired: How to Fix It</h3>
+                    <p>Renew, reinstall, and verify an expired certificate, plus auto-renewal to prevent recurrence.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Other -->
+        <div class="learn-category-section">
+            <h2>📝 Other</h2>
+            <div class="learn-grid">
+                <a href="/learn/plain-notes/" class="learn-card">
+                    <span class="category-badge">Utility</span>
+                    <h3>Plain Notes</h3>
+                    <p>Local browser storage, auto-save, and ephemeral note-taking.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta">
+            <p>Browse the guides above to learn about each tool in detail.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

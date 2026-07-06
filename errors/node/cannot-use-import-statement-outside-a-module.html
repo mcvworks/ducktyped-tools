@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What exactly do .mjs and .cjs mean?","acceptedAnswer":{"@type":"Answer","text":"Explicit per-file mode markers that override the package.json 'type' field: .mjs is always parsed as an ES module, .cjs always as CommonJS. They are the escape hatch for mixing — an ESM project can keep one legacy .cjs config file, and a CJS project can have one .mjs script."}},{"@type":"Question","name":"I switched to \"type\": \"module\" and now require is not defined — why?","acceptedAnswer":{"@type":"Answer","text":"The flip side: ESM files have no require, module, __dirname, or __filename. Convert requires to imports, and rebuild __dirname via 'import.meta.url' with fileURLToPath. Config files that must stay CJS (some tools) get renamed to .cjs."}},{"@type":"Question","name":"Why does Jest hit this when my app runs fine?","acceptedAnswer":{"@type":"Answer","text":"Your app runs as ESM natively; Jest executes tests in a CommonJS runtime and transforms your code — but skips node_modules by default. An ESM-only dependency then reaches the CJS runtime raw. transformIgnorePatterns (or Jest's experimental ESM mode) closes the gap."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Cannot Use Import Statement Outside a Module — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannot Use Import Statement Outside a Module — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'SyntaxError: Cannot use import statement outside a module'. type:module vs .mjs, TypeScript runners, Jest transforms, and script type=module.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SyntaxError: Cannot use import statement outside a module, cannot use import outside module, jest cannot use import statement, type module package.json, unexpected token import">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cannot Use Import Statement Outside a Module — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'SyntaxError: Cannot use import statement outside a module'. type:module vs .mjs, TypeScript runners, Jest transforms, and script type=module.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/cannot-use-import-statement-outside-a-module">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/cannot-use-import-statement-outside-a-module">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Cannot Use Import Statement Outside a Module</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cannot Use Import Statement Outside a Module</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash "SyntaxError: Cannot use import statement outside a module" — ES-module syntax ran in a CommonJS context, in Node, Jest, or a browser script tag.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SyntaxError: Cannot use import statement outside a module</code></li><li><code>cannot use import outside module</code></li><li><code>jest cannot use import statement</code></li><li><code>type module package.json</code></li><li><code>unexpected token import</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>JavaScript has two module systems: CommonJS (require/module.exports — Node's historical default) and ES modules (import/export). This error means import syntax was parsed by an engine currently in CommonJS mode. Node decides mode per file: .mjs is always ESM, .cjs always CJS, and .js follows the nearest package.json 'type' field — no 'type': 'module' means CJS. The same message from a browser means a script tag without type="module"; from Jest, it means untransformed ESM (often in node_modules) hit Jest's CJS runtime.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>package.json lacks "type": "module"</strong> — Your .js files use import/export, but Node treats them as CommonJS because nothing declared the package ESM.</li>
+                <li><strong>Running TypeScript source directly</strong> — node src/index.ts (or misconfigured runners) hands raw TS with import statements to a CJS parser.</li>
+                <li><strong>Jest meets untransformed ESM</strong> — Jest's default runtime is CJS; ESM-only dependencies (or your own ESM) reach it unconverted — the stack trace points into node_modules.</li>
+                <li><strong>Browser script tag without type="module"</strong> — Classic scripts cannot use import; the identical message appears in the browser console.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Declare the package as ESM (or use .mjs)</h3>
+            <p>Pick a lane per package: add the type field for whole-project ESM, or rename individual files.</p>
+            <pre><code>// package.json
+{
+  &quot;type&quot;: &quot;module&quot;
+}
+// per-file alternative: rename entry.js -&gt; entry.mjs
+// keep a legacy CJS file working inside an ESM package: rename it .cjs</code></pre>
+            <h3>2. Run TypeScript through a runner or compile first</h3>
+            <p>Use tsx (or ts-node with ESM support) in dev, and compiled output in production.</p>
+            <pre><code>npm i -D tsx
+npx tsx src/index.ts
+# production:
+npx tsc &amp;&amp; node dist/index.js</code></pre>
+            <h3>3. Let Jest transform the offending ESM dependency</h3>
+            <p>By default Jest ignores node_modules in transforms; whitelist the ESM package.</p>
+            <pre><code>// jest.config.js
+module.exports = {
+  transformIgnorePatterns: [
+    '/node_modules/(?!(ky|nanoid|other-esm-pkg)/)'
+  ],
+};</code></pre>
+            <h3>4. Fix the browser side</h3>
+            <p>Module syntax needs a module script tag.</p>
+            <pre><code>&lt;script type=&quot;module&quot; src=&quot;/js/app.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What exactly do .mjs and .cjs mean?</h3>
+            <p>Explicit per-file mode markers that override the package.json 'type' field: .mjs is always parsed as an ES module, .cjs always as CommonJS. They are the escape hatch for mixing — an ESM project can keep one legacy .cjs config file, and a CJS project can have one .mjs script.</p>
+            <h3>I switched to "type": "module" and now require is not defined — why?</h3>
+            <p>The flip side: ESM files have no require, module, __dirname, or __filename. Convert requires to imports, and rebuild __dirname via 'import.meta.url' with fileURLToPath. Config files that must stay CJS (some tools) get renamed to .cjs.</p>
+            <h3>Why does Jest hit this when my app runs fine?</h3>
+            <p>Your app runs as ESM natively; Jest executes tests in a CommonJS runtime and transforms your code — but skips node_modules by default. An ESM-only dependency then reaches the CJS runtime raw. transformIgnorePatterns (or Jest's experimental ESM mode) closes the gap.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/err-require-esm">ERR_REQUIRE_ESM</a> — the mirror error — require() hitting ESM.</li>
+                <li><a href="/errors/node/cannot-find-module">Cannot Find Module</a> — resolution failures across module systems.</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERESOLVE</a> — install-time dependency conflicts.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Validate package.json edits</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

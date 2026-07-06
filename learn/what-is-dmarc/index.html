@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is DMARC?","description":"Learn what DMARC is, how DMARC policies work, how DMARC uses SPF and DKIM alignment, and how to configure DMARC to protect your domain from email spoofing.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/what-is-dmarc/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Is DMARC?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is DMARC?","acceptedAnswer":{"@type":"Answer","text":"DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on SPF and DKIM. It allows domain owners to publish a policy specifying how receiving servers should handle emails that fail authentication checks, and provides a reporting mechanism to monitor authentication results."}},{"@type":"Question","name":"What are the DMARC policy levels?","acceptedAnswer":{"@type":"Answer","text":"DMARC has three policy levels: p=none (monitor only, no action taken on failures), p=quarantine (failed messages are sent to spam/junk), and p=reject (failed messages are rejected entirely). Organizations typically start with p=none to gather data, then progressively move to quarantine and finally reject."}},{"@type":"Question","name":"What is DMARC alignment?","acceptedAnswer":{"@type":"Answer","text":"DMARC alignment requires that the domain in the visible From header matches (aligns with) the domain authenticated by SPF or DKIM. Strict alignment requires an exact domain match, while relaxed alignment allows subdomains of the organizational domain to align. A message passes DMARC if either SPF or DKIM passes AND aligns."}},{"@type":"Question","name":"What are DMARC aggregate reports?","acceptedAnswer":{"@type":"Answer","text":"DMARC aggregate reports (rua) are XML reports sent daily by receiving mail servers. They contain statistics about authentication results for emails claiming to come from your domain, including source IP addresses, SPF/DKIM pass/fail counts, and the DMARC policy applied. These reports help you identify unauthorized senders and monitor your email authentication health."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is DMARC? — Domain Email Authentication Policy — duckTyped</title>
+    <meta name="description" content="Learn what DMARC is, how DMARC policies work, how DMARC uses SPF and DKIM alignment, and how to configure DMARC to protect your domain from email spoofing.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Is DMARC? — Domain Email Authentication Policy — duckTyped">
+    <meta property="og:description" content="Learn what DMARC is, how DMARC policies work, and how to protect your domain from spoofing.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/what-is-dmarc/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Is DMARC? — Domain Email Authentication Policy — duckTyped">
+    <meta name="twitter:description" content="Learn what DMARC is and how it protects your domain from email spoofing.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/what-is-dmarc/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Is DMARC?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Is DMARC?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on SPF and DKIM. It lets domain owners publish a policy that tells receiving servers how to handle emails that fail authentication, and provides reporting to monitor results.</p>
+
+            <h2>Why DMARC Exists</h2>
+            <p>SPF and DKIM each solve part of the email authentication problem, but they have gaps:</p>
+            <ul>
+                <li><strong>SPF</strong> authenticates the envelope sender (Return-Path) but not the From header that users see. An attacker can pass SPF by using their own Return-Path while spoofing the visible From address.</li>
+                <li><strong>DKIM</strong> proves message integrity but does not tell receiving servers what to do when verification fails. A failed DKIM check might be logged but the message could still be delivered.</li>
+                <li>Neither SPF nor DKIM alone provides <strong>feedback</strong> to the domain owner about authentication failures.</li>
+            </ul>
+            <p>DMARC closes these gaps by introducing <strong>alignment</strong> (requiring that the authenticated domain matches the visible From domain), <strong>policy</strong> (specifying how to handle failures), and <strong>reporting</strong> (sending authentication statistics back to the domain owner).</p>
+
+            <h2>How DMARC Works</h2>
+            <p>When a receiving server gets an email, it performs these DMARC-related steps:</p>
+            <ol>
+                <li><strong>Extract the From domain</strong> -- the visible From header address determines which DMARC policy to look up.</li>
+                <li><strong>Look up the DMARC record</strong> -- query <code>_dmarc.example.com</code> for a TXT record.</li>
+                <li><strong>Check SPF</strong> -- evaluate SPF and check whether the authenticated domain <strong>aligns</strong> with the From domain.</li>
+                <li><strong>Check DKIM</strong> -- evaluate DKIM and check whether the signing domain (<code>d=</code>) <strong>aligns</strong> with the From domain.</li>
+                <li><strong>Apply policy</strong> -- if neither SPF nor DKIM passes with alignment, apply the DMARC policy (none, quarantine, or reject).</li>
+                <li><strong>Send reports</strong> -- generate aggregate and/or forensic reports based on the DMARC record's reporting addresses.</li>
+            </ol>
+            <p>A message passes DMARC if <strong>either</strong> SPF or DKIM passes <strong>and</strong> aligns with the From domain. Both do not need to pass.</p>
+
+            <h2>DMARC Record Syntax</h2>
+            <p>A DMARC record is a DNS TXT record published at <code>_dmarc.yourdomain.com</code>:</p>
+            <pre><code>_dmarc.example.com  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc@example.com; ruf=mailto:forensics@example.com; adkim=r; aspf=r; pct=100"</code></pre>
+
+            <h3>Key Tags</h3>
+            <ul>
+                <li><code>v=DMARC1</code> -- version identifier (required, must be first).</li>
+                <li><code>p=</code> -- policy for the domain (required):
+                    <ul>
+                        <li><code>none</code> -- monitor only. No action is taken on failures. Use this to gather data before enforcing.</li>
+                        <li><code>quarantine</code> -- failed messages should be treated as suspicious (typically sent to spam/junk).</li>
+                        <li><code>reject</code> -- failed messages should be rejected outright.</li>
+                    </ul>
+                </li>
+                <li><code>sp=</code> -- subdomain policy. If omitted, the <code>p=</code> policy applies to subdomains too.</li>
+                <li><code>rua=</code> -- address for aggregate reports (daily XML summaries). Multiple addresses can be comma-separated.</li>
+                <li><code>ruf=</code> -- address for forensic (failure) reports (per-message details). Many providers do not send these due to privacy concerns.</li>
+                <li><code>adkim=</code> -- DKIM alignment mode: <code>r</code> (relaxed, allows subdomains) or <code>s</code> (strict, exact match only).</li>
+                <li><code>aspf=</code> -- SPF alignment mode: <code>r</code> (relaxed) or <code>s</code> (strict).</li>
+                <li><code>pct=</code> -- percentage of messages to which the policy applies (default 100). Useful for gradual rollout.</li>
+            </ul>
+
+            <h2>Understanding Alignment</h2>
+            <p>Alignment is the key concept that makes DMARC effective. It ensures that the domain authenticated by SPF or DKIM matches the domain in the visible From header.</p>
+
+            <h3>SPF Alignment</h3>
+            <p>SPF authenticates the Return-Path domain. For DMARC alignment, this domain must match the From header domain. In <strong>relaxed</strong> mode, <code>bounce.example.com</code> aligns with <code>example.com</code>. In <strong>strict</strong> mode, they must be exactly the same.</p>
+
+            <h3>DKIM Alignment</h3>
+            <p>DKIM authenticates the signing domain (<code>d=</code> tag). For DMARC alignment, this must match the From header domain. In <strong>relaxed</strong> mode, <code>mail.example.com</code> aligns with <code>example.com</code>. In <strong>strict</strong> mode, they must match exactly.</p>
+
+            <h2>Implementing DMARC: A Phased Approach</h2>
+            <ol>
+                <li><strong>Start with p=none</strong> -- publish a DMARC record with <code>p=none</code> and an <code>rua</code> address. This enables monitoring without affecting email delivery.</li>
+                <li><strong>Analyze reports</strong> -- review aggregate reports to identify all legitimate sending sources and ensure SPF and DKIM are correctly configured for each.</li>
+                <li><strong>Move to p=quarantine</strong> -- once you are confident in your authentication setup, switch to <code>p=quarantine</code>. Consider using <code>pct=10</code> initially and gradually increasing.</li>
+                <li><strong>Move to p=reject</strong> -- when reports confirm minimal false positives, enforce full rejection with <code>p=reject; pct=100</code>.</li>
+            </ol>
+
+            <h2>DMARC Reports</h2>
+
+            <h3>Aggregate Reports (rua)</h3>
+            <p>Aggregate reports are XML files sent daily by receiving servers. They contain:</p>
+            <ul>
+                <li>Source IP addresses that sent email claiming your domain.</li>
+                <li>The number of messages from each source.</li>
+                <li>SPF and DKIM authentication results for each source.</li>
+                <li>The DMARC policy applied (none, quarantine, reject).</li>
+            </ul>
+            <p>These reports are essential for understanding who is sending email as your domain and whether legitimate senders are properly authenticated.</p>
+
+            <h3>Forensic Reports (ruf)</h3>
+            <p>Forensic reports provide per-message details about authentication failures, including redacted copies of the failed messages. However, many large email providers (including Gmail) do not send forensic reports due to privacy and volume concerns.</p>
+
+            <h2>Common DMARC Challenges</h2>
+
+            <h3>Email Forwarding</h3>
+            <p>When email is forwarded by an intermediate server, SPF typically fails because the forwarding server's IP is not in the original domain's SPF record. If DKIM also breaks (due to message modification), DMARC will fail. ARC (Authenticated Received Chain) is an emerging protocol designed to preserve authentication results across forwarding hops.</p>
+
+            <h3>Third-Party Senders</h3>
+            <p>Organizations often use third-party services (marketing platforms, CRM tools, transactional email services) that send email on their behalf. Each service must be configured to pass either SPF or DKIM with proper alignment. This often means adding <code>include</code> entries to SPF and configuring DKIM signing with the organization's domain.</p>
+
+            <h3>Mailing Lists</h3>
+            <p>Mailing lists frequently modify messages (adding footers, changing subjects, rewriting From addresses), which breaks both SPF and DKIM. Some mailing list software has been updated to handle DMARC by rewriting the From address. This is an ongoing challenge in the email ecosystem.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- look up DMARC TXT records at <code>_dmarc.yourdomain.com</code>.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> -- inspect DMARC authentication results in email headers.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> -- test mail server connectivity.</li>
+                <li><a href="/blacklist-checker/">Blacklist Checker</a> -- check if your domain or IP is on email blacklists.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/what-is-spf/">What is SPF</a>, <a href="/learn/what-is-dkim/">What is DKIM</a>, <a href="/learn/email-authentication/">How email authentication works</a>, <a href="/learn/email-auth-cheat-sheet/">Email auth cheat sheet</a>, <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550 Error</a> -- DMARC reject policies cause 550 rejections for unauthenticated messages.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554 Error</a> -- policy-based rejections related to DMARC enforcement.</li>
+                <li><a href="/errors/email/">All Email Errors</a> -- browse all email-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Check Your DMARC Record</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between NOTIMP and REFUSED?","acceptedAnswer":{"@type":"Answer","text":"NOTIMP means the server cannot process that type of request at all (missing capability). REFUSED means it could, but policy forbids it — for example recursion requested by an unauthorized client. Capability vs policy."}},{"@type":"Question","name":"Why does 'dig ANY' return almost nothing these days?","acceptedAnswer":{"@type":"Answer","text":"ANY responses were huge and made perfect DDoS amplification payloads. RFC 8482 lets servers answer ANY with a synthetic minimal response or NOTIMP, and all major providers do. Query individual record types instead."}},{"@type":"Question","name":"Is NOTIMP ever the client's fault?","acceptedAnswer":{"@type":"Answer","text":"Rarely — only if the client sends a genuinely exotic opcode or a malformed extension. In practice, treat NOTIMP as a signal about the server (or middlebox) capability, and route the query to a more capable resolver."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS NOTIMP — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS NOTIMP — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS NOTIMP (RCODE 4, Not Implemented) errors. Covers deprecated ANY queries, middleboxes that mangle DNS, and outdated server software.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NOTIMP, RCODE 4, Not Implemented DNS, DNS NOTIMP, query type not implemented, dig ANY NOTIMP">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS NOTIMP — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS NOTIMP (RCODE 4, Not Implemented) errors. Covers deprecated ANY queries, middleboxes that mangle DNS, and outdated server software.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/notimp">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/notimp">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS NOTIMP</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS NOTIMP</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">DNS response code 4 (Not Implemented) — the server understood the query but does not support the requested operation or query type.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NOTIMP</code></li><li><code>RCODE 4</code></li><li><code>Not Implemented DNS</code></li><li><code>DNS NOTIMP</code></li><li><code>query type not implemented</code></li><li><code>dig ANY NOTIMP</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>NOTIMP (RCODE 4) is the DNS server saying 'I do not support that kind of request'. Unlike SERVFAIL (something broke) or REFUSED (policy says no), NOTIMP is about capability. In modern networks it most often appears for ANY queries — which RFC 8482 explicitly allows servers to decline — or when a firewall, load balancer, or ancient DNS implementation sits in the path and does not implement the query type, opcode, or EDNS options the client used.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>ANY queries are deprecated</strong> — Since RFC 8482, large providers (Cloudflare was first) intentionally answer ANY queries with NOTIMP or a minimal HINFO record, because ANY was heavily abused for DDoS amplification.</li>
+                <li><strong>A middlebox is intercepting DNS</strong> — Firewalls and 'DNS inspection' features sometimes implement only plain A/AAAA lookups. Queries for newer types (HTTPS/SVCB, CAA) or with EDNS options get NOTIMP from the middlebox, not the real server.</li>
+                <li><strong>Outdated DNS server software</strong> — Very old BIND versions, consumer router resolvers, and minimal embedded DNS implementations return NOTIMP for record types or opcodes added after they were written.</li>
+                <li><strong>Dynamic updates sent to a server that does not accept them</strong> — An UPDATE opcode (RFC 2136) sent to a server with updates disabled — or to a resolver instead of an authoritative server — can be answered with NOTIMP.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Query specific record types instead of ANY</h3>
+            <p>Ask for exactly what you need — ANY was never guaranteed to return everything anyway (it only reflects what a resolver happens to have cached).</p>
+            <pre><code>dig example.com A
+dig example.com AAAA
+dig example.com MX
+dig example.com TXT</code></pre>
+            <h3>2. Identify who is actually answering</h3>
+            <p>Compare answers from your configured resolver and a public one. If the public resolver supports the query but your path returns NOTIMP, a middlebox or local resolver is the culprit.</p>
+            <pre><code>dig example.com HTTPS            # via configured resolver
+dig @1.1.1.1 example.com HTTPS   # direct to public resolver</code></pre>
+            <h3>3. Update or bypass the limited DNS implementation</h3>
+            <p>Upgrade old DNS software, or point clients at a modern resolver. For firewalls, disable DNS inspection/ALG features that rewrite queries they do not understand.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between NOTIMP and REFUSED?</h3>
+            <p>NOTIMP means the server cannot process that type of request at all (missing capability). REFUSED means it could, but policy forbids it — for example recursion requested by an unauthorized client. Capability vs policy.</p>
+            <h3>Why does 'dig ANY' return almost nothing these days?</h3>
+            <p>ANY responses were huge and made perfect DDoS amplification payloads. RFC 8482 lets servers answer ANY with a synthetic minimal response or NOTIMP, and all major providers do. Query individual record types instead.</p>
+            <h3>Is NOTIMP ever the client's fault?</h3>
+            <p>Rarely — only if the client sends a genuinely exotic opcode or a malformed extension. In practice, treat NOTIMP as a signal about the server (or middlebox) capability, and route the query to a more capable resolver.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/refused">DNS REFUSED</a> — policy-based rejection.</li>
+                <li><a href="/errors/dns/formerr">DNS FORMERR</a> — the server could not parse the query.</li>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — internal server failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query individual record types for any domain</span>
+                </a>
+        <a href="/dns-propagation/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Propagation Checker</span>
+                    <span class="recommended-tool-desc">Compare behavior across resolvers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

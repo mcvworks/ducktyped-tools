@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the purpose of precondition headers?","acceptedAnswer":{"@type":"Answer","text":"Precondition headers implement optimistic concurrency control. They prevent the 'lost update' problem where two clients read a resource, both modify it, and the second write silently overwrites the first."}},{"@type":"Question","name":"Is 412 the same as 409 Conflict?","acceptedAnswer":{"@type":"Answer","text":"No. A 412 specifically means a precondition header failed. A 409 indicates a more general conflict with the current state of the resource. Both relate to concurrent modifications but have different semantics."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"412 Precondition Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 412 Precondition Failed","step":[{"@type":"HowToStep","position":1,"name":"Fetch the latest version and retry","text":"GET the resource again to obtain the current ETag and Last-Modified values, then retry the conditional request with the updated precondition headers."},{"@type":"HowToStep","position":2,"name":"Implement optimistic concurrency in your client","text":"Build retry logic that catches 412 errors, re-fetches the resource, merges changes if possible, and resubmits with the updated precondition headers."},{"@type":"HowToStep","position":3,"name":"Remove conditional headers if not needed","text":"If you do not need optimistic concurrency control, remove the If-Match or If-Unmodified-Since headers from your request. Be aware this may cause lost updates."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>412 Precondition Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 412 Precondition Failed errors. Learn about conditional request headers like If-Match and If-Unmodified-Since and how to handle precondition failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 412, 412 Precondition Failed, 412 error, Precondition failed, If-Match failed, ETag mismatch">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="412 Precondition Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 412 Precondition Failed errors. Learn about conditional request headers like If-Match and If-Unmodified-Since and how to handle precondition failures.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/412-precondition-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/412-precondition-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>412 Precondition Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>412 Precondition Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">One or more precondition headers evaluated to false on the server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 412</code></li><li><code>412 Precondition Failed</code></li><li><code>412 error</code></li><li><code>Precondition failed</code></li><li><code>If-Match failed</code></li><li><code>ETag mismatch</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 412 Precondition Failed response indicates that one or more conditions specified in the request headers (If-Match, If-Unmodified-Since, If-None-Match) evaluated to false on the server. This mechanism prevents lost updates in concurrent editing scenarios by ensuring the resource has not been modified since the client last retrieved it. The client must fetch the latest version before retrying.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>ETag mismatch on conditional update</strong> — The client sent an If-Match header with an ETag that no longer matches the current version of the resource, indicating another client has modified it since.</li>
+                <li><strong>Resource modified since last retrieval</strong> — The If-Unmodified-Since header timestamp is earlier than the resource's last modification time, meaning the resource has changed since the client's cached copy.</li>
+                <li><strong>Concurrent editing conflict</strong> — Two clients attempted to update the same resource simultaneously. The second client's request fails because the precondition based on the original version no longer holds.</li>
+                <li><strong>Stale client cache</strong> — The client is using outdated ETags or timestamps from a stale cache entry to construct conditional requests.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Fetch the latest version and retry</h3>
+            <p>GET the resource again to obtain the current ETag and Last-Modified values, then retry the conditional request with the updated precondition headers.</p>
+            <pre><code># 1. Get current ETag
+curl -I https://api.example.com/resource/123
+# 2. Use the new ETag in your update
+curl -X PUT -H 'If-Match: &quot;new-etag-value&quot;' -d '{...}' https://api.example.com/resource/123</code></pre>
+            <h3>2. Implement optimistic concurrency in your client</h3>
+            <p>Build retry logic that catches 412 errors, re-fetches the resource, merges changes if possible, and resubmits with the updated precondition headers.</p>
+            <h3>3. Remove conditional headers if not needed</h3>
+            <p>If you do not need optimistic concurrency control, remove the If-Match or If-Unmodified-Since headers from your request. Be aware this may cause lost updates.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the purpose of precondition headers?</h3>
+            <p>Precondition headers implement optimistic concurrency control. They prevent the 'lost update' problem where two clients read a resource, both modify it, and the second write silently overwrites the first.</p>
+            <h3>Is 412 the same as 409 Conflict?</h3>
+            <p>No. A 412 specifically means a precondition header failed. A 409 indicates a more general conflict with the current state of the resource. Both relate to concurrent modifications but have different semantics.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/409-conflict">409 Conflict</a> — Request conflicts with current resource state</li>
+                <li><a href="/errors/http/428-precondition-required">428 Precondition Required</a> — Server requires conditional request headers</li>
+                <li><a href="/errors/http/304-not-modified">304 Not Modified</a> — Resource has not changed since last request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

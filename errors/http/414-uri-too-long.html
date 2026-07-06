@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the maximum URL length?","acceptedAnswer":{"@type":"Answer","text":"There is no official maximum in the HTTP specification. In practice, most browsers support URLs up to 2,048-8,192 characters. Servers like Nginx default to 8KB and Apache to 8,190 bytes."}},{"@type":"Question","name":"Can bookmarks cause 414 errors?","acceptedAnswer":{"@type":"Answer","text":"If a bookmark contains an extremely long URL with many query parameters, it could trigger a 414 error when opened. This is rare but possible with dynamically generated URLs."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"414 URI Too Long — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 414 URI Too Long","step":[{"@type":"HowToStep","position":1,"name":"Use POST instead of GET for large data","text":"Switch from GET to POST for requests that include large amounts of data. POST transmits data in the request body, which has much higher limits."},{"@type":"HowToStep","position":2,"name":"Increase server URL length limit","text":"If you control the server, increase the maximum allowed URL length. Be cautious about setting it too high, as very long URLs can be used in attacks."},{"@type":"HowToStep","position":3,"name":"Use request body or headers for data","text":"Move large data payloads from URL parameters to the request body or custom headers. For API endpoints, accept filter criteria in a POST body instead of query parameters."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>414 URI Too Long — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 414 URI Too Long (Request-URI Too Large) errors. Learn about URL length limits in browsers and servers, and how to refactor long URLs.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 414, 414 URI Too Long, 414 error, 414 Request-URI Too Large, URL too long, Query string too long">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="414 URI Too Long — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 414 URI Too Long (Request-URI Too Large) errors. Learn about URL length limits in browsers and servers, and how to refactor long URLs.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/414-uri-too-long">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/414-uri-too-long">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>414 URI Too Long</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>414 URI Too Long</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The request URL is longer than the server is willing to process</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 414</code></li><li><code>414 URI Too Long</code></li><li><code>414 error</code></li><li><code>414 Request-URI Too Large</code></li><li><code>URL too long</code></li><li><code>Query string too long</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 414 URI Too Long response indicates that the request target (URL) is longer than the server is willing to interpret. This typically occurs when query strings become excessively long, often due to form data being sent via GET instead of POST, or when applications encode large amounts of state in URL parameters. Most servers limit URLs to 8KB-16KB.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Excessive query string parameters</strong> — The URL contains too many query parameters, often from forms using GET method or applications encoding complex state in the URL.</li>
+                <li><strong>Form data sent via GET instead of POST</strong> — A form with many fields is using the GET method, which appends all form data to the URL as query parameters, easily exceeding URL length limits.</li>
+                <li><strong>Redirect loop with accumulating parameters</strong> — A redirect loop is appending parameters to the URL on each redirect, causing the URL to grow indefinitely until it exceeds server limits.</li>
+                <li><strong>Base64 data in URL</strong> — Large encoded data (such as Base64-encoded images or tokens) is included directly in the URL path or query string.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Use POST instead of GET for large data</h3>
+            <p>Switch from GET to POST for requests that include large amounts of data. POST transmits data in the request body, which has much higher limits.</p>
+            <pre><code>&lt;!-- Change form method from GET to POST --&gt;
+&lt;form method=&quot;POST&quot; action=&quot;/search&quot;&gt;
+  &lt;!-- form fields --&gt;
+&lt;/form&gt;</code></pre>
+            <h3>2. Increase server URL length limit</h3>
+            <p>If you control the server, increase the maximum allowed URL length. Be cautious about setting it too high, as very long URLs can be used in attacks.</p>
+            <pre><code># Nginx: increase to 32KB
+large_client_header_buffers 4 32k;
+
+# Apache: increase to 16KB
+LimitRequestLine 16384</code></pre>
+            <h3>3. Use request body or headers for data</h3>
+            <p>Move large data payloads from URL parameters to the request body or custom headers. For API endpoints, accept filter criteria in a POST body instead of query parameters.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the maximum URL length?</h3>
+            <p>There is no official maximum in the HTTP specification. In practice, most browsers support URLs up to 2,048-8,192 characters. Servers like Nginx default to 8KB and Apache to 8,190 bytes.</p>
+            <h3>Can bookmarks cause 414 errors?</h3>
+            <p>If a bookmark contains an extremely long URL with many query parameters, it could trigger a 414 error when opened. This is rare but possible with dynamically generated URLs.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/413-payload-too-large">413 Payload Too Large</a> — Request body exceeds server limits</li>
+                <li><a href="/errors/http/431-request-header-fields-too-large">431 Request Header Fields Too Large</a> — Request headers exceed server limits</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does Chrome wait before timing out DNS probes?","acceptedAnswer":{"@type":"Answer","text":"Chrome's DNS probe timeout is typically a few seconds. If both the original DNS query and the follow-up probe queries receive no response within this window, Chrome reports the timeout error."}},{"@type":"Question","name":"Can a slow internet connection cause DNS probe timeouts?","acceptedAnswer":{"@type":"Answer","text":"A slow connection alone usually does not cause DNS timeouts, but a connection with high packet loss can. DNS queries are small packets, so bandwidth is not the issue — reliability of packet delivery is."}},{"@type":"Question","name":"Is this different from DNS_PROBE_FINISHED_NO_INTERNET?","acceptedAnswer":{"@type":"Answer","text":"Yes. DNS_PROBE_TIMEOUT means the probe queries received no response at all. DNS_PROBE_FINISHED_NO_INTERNET means the probes completed but confirmed that there is no internet connectivity."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_TIMEOUT — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_TIMEOUT","step":[{"@type":"HowToStep","position":1,"name":"Test DNS server reachability","text":"Verify that you can reach your configured DNS server. If the DNS server is unreachable, switch to a different one."},{"@type":"HowToStep","position":2,"name":"Switch to a public DNS server","text":"Replace your current DNS server with a reliable public DNS provider. This bypasses issues with ISP DNS servers or misconfigured local DNS."},{"@type":"HowToStep","position":3,"name":"Check firewall rules","text":"Ensure your firewall allows outbound UDP and TCP traffic on port 53. Some security software or corporate firewalls may block DNS traffic, especially after a policy update."},{"@type":"HowToStep","position":4,"name":"Restart network services","text":"Restart your network adapter and DNS client service to clear any stuck states."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_TIMEOUT — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS_PROBE_TIMEOUT in Chrome. Learn why DNS probes time out and how to restore DNS resolution with clear troubleshooting steps.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_TIMEOUT, DNS timeout, DNS query timed out, DNS lookup timed out">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_TIMEOUT — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_TIMEOUT in Chrome. Learn why DNS probes time out and how to restore DNS resolution with clear troubleshooting steps.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-timeout">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-timeout">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_TIMEOUT</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_TIMEOUT</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DNS probe timed out while testing connectivity</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_TIMEOUT</code></li><li><code>DNS timeout</code></li><li><code>DNS query timed out</code></li><li><code>DNS lookup timed out</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNS_PROBE_TIMEOUT occurs when Chrome's internal DNS probe mechanism fails to receive a response within its timeout window. After detecting a DNS resolution failure, Chrome sends probe queries to verify DNS connectivity, and if these probes also time out, the browser concludes that DNS resolution is not functioning. This typically points to network-level issues blocking DNS traffic or an unresponsive DNS server.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Firewall blocking DNS traffic</strong> — A local firewall, corporate firewall, or network appliance is blocking outbound DNS queries on port 53 (UDP/TCP), preventing both the original lookup and Chrome's diagnostic probes from reaching any DNS server.</li>
+                <li><strong>DNS server is down or unreachable</strong> — The configured DNS server is offline, overloaded, or unreachable from the client network. All queries sent to it receive no response, causing timeouts.</li>
+                <li><strong>Network congestion or packet loss</strong> — Heavy network congestion or high packet loss on the path between the client and the DNS server is causing DNS queries to be dropped before they reach the server or responses to be lost in transit.</li>
+                <li><strong>ISP DNS infrastructure issues</strong> — The internet service provider's DNS infrastructure is experiencing an outage or degraded performance, affecting all customers using the default DNS servers.</li>
+                <li><strong>VPN tunnel DNS leak prevention</strong> — A VPN client is configured to prevent DNS leaks by blocking all DNS traffic outside the VPN tunnel, but the tunnel itself is down or not routing DNS correctly.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Test DNS server reachability</h3>
+            <p>Verify that you can reach your configured DNS server. If the DNS server is unreachable, switch to a different one.</p>
+            <pre><code># Test if DNS server responds
+nslookup google.com 8.8.8.8
+
+# Check current DNS configuration
+# Windows
+ipconfig /all | findstr &quot;DNS&quot;
+
+# Linux/macOS
+cat /etc/resolv.conf</code></pre>
+            <h3>2. Switch to a public DNS server</h3>
+            <p>Replace your current DNS server with a reliable public DNS provider. This bypasses issues with ISP DNS servers or misconfigured local DNS.</p>
+            <pre><code># Use Google DNS: 8.8.8.8 / 8.8.4.4
+# Or Cloudflare: 1.1.1.1 / 1.0.0.1</code></pre>
+            <h3>3. Check firewall rules</h3>
+            <p>Ensure your firewall allows outbound UDP and TCP traffic on port 53. Some security software or corporate firewalls may block DNS traffic, especially after a policy update.</p>
+            <h3>4. Restart network services</h3>
+            <p>Restart your network adapter and DNS client service to clear any stuck states.</p>
+            <pre><code># Windows
+ipconfig /release
+ipconfig /renew
+ipconfig /flushdns
+
+# Linux
+sudo systemctl restart NetworkManager
+sudo systemd-resolve --flush-caches</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How long does Chrome wait before timing out DNS probes?</h3>
+            <p>Chrome's DNS probe timeout is typically a few seconds. If both the original DNS query and the follow-up probe queries receive no response within this window, Chrome reports the timeout error.</p>
+            <h3>Can a slow internet connection cause DNS probe timeouts?</h3>
+            <p>A slow connection alone usually does not cause DNS timeouts, but a connection with high packet loss can. DNS queries are small packets, so bandwidth is not the issue — reliability of packet delivery is.</p>
+            <h3>Is this different from DNS_PROBE_FINISHED_NO_INTERNET?</h3>
+            <p>Yes. DNS_PROBE_TIMEOUT means the probe queries received no response at all. DNS_PROBE_FINISHED_NO_INTERNET means the probes completed but confirmed that there is no internet connectivity.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-probe-finished-no-internet">DNS_PROBE_FINISHED_NO_INTERNET</a> — DNS probe confirmed no internet access</li>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — DNS server is not responding to queries</li>
+                <li><a href="/errors/dns/dns-probe-started">DNS_PROBE_STARTED</a> — Chrome has initiated a DNS probe</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

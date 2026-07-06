@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Email Not Delivering? How to Diagnose and Fix It","description":"Step-by-step guide to diagnose why your emails aren't being delivered. Check MX records, SPF, DKIM, DMARC, blacklists, and SMTP issues with duckTyped's free tools.","datePublished":"2026-04-05","dateModified":"2026-04-05","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/email-not-delivering/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Email Not Delivering"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why is my email not being delivered?","acceptedAnswer":{"@type":"Answer","text":"The most common causes are missing or incorrect MX records, SPF/DKIM/DMARC authentication failures, your sending IP being blacklisted, rejected SMTP connections, or the recipient's mailbox rejecting your message (e.g., SMTP 550 or 554 errors). Start by checking MX records and SPF, then inspect the bounce message for an SMTP code."}},{"@type":"Question","name":"How do I check if my domain has valid MX records?","acceptedAnswer":{"@type":"Answer","text":"Use a DNS checker to query your domain's MX records. Each record should point to a reachable mail server and have a priority value. If no MX records exist, inbound email will fail entirely. If they point to dead servers, mail will bounce with a delivery failure."}},{"@type":"Question","name":"How do I know if my domain is blacklisted?","acceptedAnswer":{"@type":"Answer","text":"Use a blacklist checker to query your sending IP or domain against major DNSBLs (DNS-based blocklists) like Spamhaus, Barracuda, and SpamCop. If you appear on multiple lists, major mailbox providers will often reject or silently drop your mail."}},{"@type":"Question","name":"What is the difference between SPF, DKIM, and DMARC?","acceptedAnswer":{"@type":"Answer","text":"SPF lists which servers are allowed to send email for your domain. DKIM adds a cryptographic signature that proves the message was not altered in transit. DMARC tells receiving servers what to do when SPF or DKIM fails (allow, quarantine, or reject). All three are required for good deliverability to Gmail, Outlook, and Yahoo."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Not Delivering? Step-by-Step Fix Guide — duckTyped</title>
+    <meta name="description" content="Diagnose why your emails aren't being delivered. Check MX records, SPF, DKIM, DMARC, blacklists, and SMTP errors with duckTyped's free email troubleshooting tools.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Email Not Delivering? Step-by-Step Fix Guide — duckTyped">
+    <meta property="og:description" content="Diagnose why your emails aren't being delivered. Check MX records, SPF, DKIM, DMARC, blacklists, and SMTP errors.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/email-not-delivering/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Email Not Delivering? Step-by-Step Fix Guide — duckTyped">
+    <meta name="twitter:description" content="Diagnose why your emails aren't being delivered. Free troubleshooting tools and step-by-step fixes.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/email-not-delivering/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Email Not Delivering</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Email Not Delivering? A Step-by-Step Diagnostic Guide</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-04-05">April 5, 2026</time></p>
+            <p class="standalone-intro">Email delivery failures are almost always caused by one of six issues: missing MX records, broken authentication (SPF / DKIM / DMARC), blacklisted sending IPs, SMTP connection errors, content filtering, or mailbox-level rejection. This guide walks you through each check in order, with the free tools you need at every step.</p>
+
+            <h2>Start Here: What Does the Bounce Message Say?</h2>
+            <p>Before running any tools, read the bounce or non-delivery report (NDR) carefully. Almost every bounce includes an <strong>SMTP reply code</strong> that tells you exactly what went wrong. The first digit of the code is the most important:</p>
+            <ul>
+                <li><strong>4xx</strong> — temporary failure. The receiving server is telling you to retry later (greylisting, rate-limiting, server overload).</li>
+                <li><strong>5xx</strong> — permanent failure. The message will not be delivered without intervention (authentication, policy, or content problems).</li>
+            </ul>
+            <p>Common codes you'll see:</p>
+            <ul>
+                <li><a href="/errors/email/smtp-421">421</a> — Service not available, try later.</li>
+                <li><a href="/errors/email/smtp-450">450</a> — Mailbox temporarily unavailable.</li>
+                <li><a href="/errors/email/smtp-535">535</a> — Authentication failed (wrong SMTP credentials).</li>
+                <li><a href="/errors/email/smtp-550">550</a> — Mailbox unavailable or message rejected by policy.</li>
+                <li><a href="/errors/email/smtp-554">554</a> — Transaction failed, commonly due to SPF/DKIM/DMARC failure or content filtering.</li>
+            </ul>
+            <p>If you have a 5xx code, jump to the section below that matches. If you don't have a bounce at all (messages simply disappear), continue with the full diagnostic below.</p>
+
+            <h2>Step 1 — Verify Your MX Records</h2>
+            <p>If you're trying to <em>receive</em> email at a domain you own and nothing is arriving, the first thing to check is whether your <strong>MX (Mail Exchange) records</strong> are published correctly. Without valid MX records, the sending server has nowhere to deliver mail.</p>
+            <p>Use the <a href="/dns-lookup/">DNS Record Checker</a> to query MX records for your domain. You should see one or more entries like:</p>
+            <pre><code>example.com.  MX  10  mail.example.com.
+example.com.  MX  20  mail-backup.example.com.</code></pre>
+            <p>The number before the hostname is the <strong>priority</strong> — lower means preferred. If you use a hosted email provider (Google Workspace, Microsoft 365, Fastmail, etc.), the provider's setup documentation will show the exact MX records you need.</p>
+            <p>Common MX problems:</p>
+            <ul>
+                <li><strong>No MX records at all</strong> — sending servers will retry briefly, then bounce.</li>
+                <li><strong>MX points to a CNAME</strong> — violates RFC 2181 and causes unpredictable failures.</li>
+                <li><strong>MX hostname has no A/AAAA record</strong> — the mail server is unreachable.</li>
+                <li><strong>MX points to a hostname that no longer exists</strong> — common after migrating providers.</li>
+            </ul>
+
+            <h2>Step 2 — Check SPF, DKIM, and DMARC</h2>
+            <p>If you're trying to <em>send</em> email and messages are landing in spam (or being silently dropped), 80% of the time the root cause is broken <strong>email authentication</strong>. Modern mailbox providers like Gmail, Outlook, and Yahoo now require all three standards for commercial senders.</p>
+
+            <h3>SPF (Sender Policy Framework)</h3>
+            <p>SPF is a TXT record that lists which servers are allowed to send email for your domain. A typical record looks like:</p>
+            <pre><code>example.com.  TXT  "v=spf1 include:_spf.google.com include:sendgrid.net ~all"</code></pre>
+            <p>Common SPF mistakes: having more than one SPF record (only one is allowed per domain), exceeding the 10-lookup limit, or forgetting to include every service that sends on your behalf. Query your TXT records with the <a href="/dns-lookup/">DNS Checker</a> and read our <a href="/learn/what-is-spf/">SPF guide</a> for the full syntax.</p>
+
+            <h3>DKIM (DomainKeys Identified Mail)</h3>
+            <p>DKIM uses public-key cryptography to sign outgoing messages. The receiving server fetches your public key from a TXT record at <code>selector._domainkey.yourdomain.com</code> and verifies the signature. If the key is missing, malformed, or the selector is wrong, DKIM fails and your deliverability drops. See our <a href="/learn/what-is-dkim/">DKIM guide</a> for setup and troubleshooting.</p>
+
+            <h3>DMARC (Domain-based Message Authentication)</h3>
+            <p>DMARC ties SPF and DKIM together and tells receivers what to do when authentication fails. A minimal DMARC record looks like:</p>
+            <pre><code>_dmarc.example.com.  TXT  "v=DMARC1; p=none; rua=mailto:dmarc@example.com"</code></pre>
+            <p>Start with <code>p=none</code> and monitor reports before escalating to <code>p=quarantine</code> or <code>p=reject</code>. Read our <a href="/learn/what-is-dmarc/">DMARC guide</a> for the policy tags and how to read aggregate reports.</p>
+
+            <h2>Step 3 — Check if Your IP or Domain Is Blacklisted</h2>
+            <p>If MX, SPF, DKIM, and DMARC are all valid but deliverability is still poor, your sending IP or domain may be on a <strong>DNS blocklist (DNSBL)</strong>. The major providers — Spamhaus, Barracuda, SpamCop, SORBS — are consulted by almost every receiving mail server.</p>
+            <p>Use the <a href="/blacklist-checker/">Blacklist Checker</a> to query your sending IP against dozens of DNSBLs in one shot. If you're listed, each blocklist has its own delisting process — most require you to fix the underlying problem (compromised account, open relay, spam complaints) before they'll remove you.</p>
+
+            <h2>Step 4 — Test the SMTP Connection</h2>
+            <p>If your server is the one sending mail (rather than a third-party service), verify that SMTP is actually reachable and responding correctly. Use the <a href="/smtp-checker/">SMTP Checker</a> to:</p>
+            <ul>
+                <li>Confirm the mail server is listening on port 25, 465, or 587.</li>
+                <li>Validate the TLS certificate presented by the server.</li>
+                <li>See the SMTP banner and EHLO response.</li>
+                <li>Detect common misconfigurations like open relays or missing STARTTLS.</li>
+            </ul>
+            <p>If the SMTP Checker can't connect at all, the problem is firewall rules, a crashed mail daemon, or an ISP blocking outbound port 25 (common on residential connections).</p>
+
+            <h2>Step 5 — Inspect the Email Headers</h2>
+            <p>If a message was sent but ended up in spam or was rejected, open the raw headers from the recipient's mailbox and paste them into the <a href="/email-header-analyzer/">Email Header Analyzer</a>. The headers show:</p>
+            <ul>
+                <li>The full routing path (each hop the message took).</li>
+                <li>SPF, DKIM, and DMARC authentication results at each stop.</li>
+                <li>Spam filter scores (e.g., <code>X-Spam-Status</code>, <code>SpamAssassin</code>).</li>
+                <li>The exact point where the message was deferred, bounced, or flagged.</li>
+            </ul>
+            <p>Headers tell you <em>which</em> check failed, which saves hours of guesswork. See our <a href="/learn/email-header-analyzer/">Email Header Analyzer guide</a> for how to read each field.</p>
+
+            <h2>Step 6 — Validate the Recipient Address</h2>
+            <p>Sometimes the problem isn't you — it's the recipient. Use the <a href="/email-validator/">Email Validator</a> to verify that the destination address:</p>
+            <ul>
+                <li>Has valid syntax (RFC 5322).</li>
+                <li>Belongs to a domain with working MX records.</li>
+                <li>Isn't a known disposable or role-based address.</li>
+                <li>Doesn't reject connections at the SMTP level.</li>
+            </ul>
+            <p>A high bounce rate from bad recipient addresses will itself damage your sender reputation, so cleaning your list is a deliverability win on its own.</p>
+
+            <h2>Common Scenarios</h2>
+
+            <h3>"My transactional emails (password resets, receipts) aren't arriving"</h3>
+            <p>Check SPF first — most transactional senders use a third-party service (SendGrid, Mailgun, Postmark, AWS SES) that must be listed in your SPF record. Then verify DKIM is signed by the provider's selector. If both pass, check blacklists for the provider's sending IP range.</p>
+
+            <h3>"Gmail puts every message in spam"</h3>
+            <p>Gmail is strict. You need SPF <strong>and</strong> DKIM <strong>and</strong> a DMARC record (even <code>p=none</code> counts). Bulk senders (5k+ messages/day) also need a one-click unsubscribe header and a spam complaint rate under 0.3%.</p>
+
+            <h3>"Some mail gets through, some doesn't"</h3>
+            <p>Usually a reputation issue. Check blacklists, review your DMARC aggregate reports for authentication failures, and look for spikes in spam complaints. Sending from a new IP? You need to warm it up gradually over 2–4 weeks.</p>
+
+            <h3>"Inbound mail to my domain just disappears"</h3>
+            <p>Check MX records first. Then verify the mail server at the MX target is actually running and accepting connections on port 25 with the <a href="/smtp-checker/">SMTP Checker</a>. If the server is up but mail isn't landing in mailboxes, the problem is inside your mail server (routing rules, spam filter, disk full).</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — verify MX, SPF, DKIM, DMARC TXT records.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test mail server connectivity and TLS.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> — read authentication results and routing path.</li>
+                <li><a href="/blacklist-checker/">Blacklist Checker</a> — check IP and domain against DNSBLs.</li>
+                <li><a href="/email-validator/">Email Validator</a> — validate recipient addresses.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/what-is-spf/">SPF explained</a>, <a href="/learn/what-is-dkim/">DKIM explained</a>, <a href="/learn/what-is-dmarc/">DMARC explained</a>, <a href="/learn/email-header-analyzer/">Reading email headers</a>, <a href="/learn/smtp-checker/">SMTP troubleshooting</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Test your SMTP server</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

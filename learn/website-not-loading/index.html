@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Website Not Loading? Diagnostic Guide","description":"Step-by-step guide to diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues with duckTyped's free tools.","datePublished":"2026-04-05","dateModified":"2026-04-05","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/website-not-loading/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Website Not Loading"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why is my website not loading?","acceptedAnswer":{"@type":"Answer","text":"The most common causes are DNS misconfiguration, an expired or invalid SSL certificate, the origin server being down, a firewall blocking the port, a misconfigured CDN or proxy, or a 5xx HTTP error from the application itself. Work through the stack from DNS to application layer to isolate the fault."}},{"@type":"Question","name":"How do I know if it's a DNS issue?","acceptedAnswer":{"@type":"Answer","text":"If your domain returns NXDOMAIN, has no A or AAAA record, or resolves to the wrong IP, the problem is DNS. Use a DNS lookup tool to confirm the record exists and matches your server. If DNS resolves correctly but the page still won't load, the issue is below the DNS layer."}},{"@type":"Question","name":"How do I check if my server is reachable?","acceptedAnswer":{"@type":"Answer","text":"Use a port scanner to verify ports 80 (HTTP) and 443 (HTTPS) are open and accepting connections. Use traceroute to see where the network path is breaking. If the port shows as closed or filtered, the problem is a firewall, security group, or the server process being down."}},{"@type":"Question","name":"What does 502 Bad Gateway mean?","acceptedAnswer":{"@type":"Answer","text":"A 502 error means an upstream server returned an invalid response to a reverse proxy or load balancer. The site's DNS, SSL, and proxy are working, but the backend application crashed, is unreachable, or returned a malformed response. Check the origin server logs."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped</title>
+    <meta name="description" content="Diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues with duckTyped's free troubleshooting tools.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped">
+    <meta property="og:description" content="Diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/website-not-loading/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped">
+    <meta name="twitter:description" content="Step-by-step guide to diagnose and fix websites that won't load.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/website-not-loading/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Website Not Loading</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Website Not Loading? A Step-by-Step Diagnostic Guide</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-04-05">April 5, 2026</time></p>
+            <p class="standalone-intro">When a website won't load, the problem is somewhere in a stack: DNS → network routing → TCP connection → TLS handshake → HTTP response → application. This guide walks you down that stack, one layer at a time, so you can isolate exactly where things are breaking and fix it fast.</p>
+
+            <h2>First: What Is the Browser Showing You?</h2>
+            <p>The error message in the browser is your biggest clue. Each one points at a specific layer:</p>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain doesn't exist (DNS problem).</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolver couldn't find an answer.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server is reachable but actively refusing connections.</li>
+                <li><a href="/errors/browser/err_connection_timed_out">ERR_CONNECTION_TIMED_OUT</a> — server isn't responding at all (firewall or dead host).</li>
+                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_*</a> — TLS handshake failed (certificate or cipher problem).</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a>, <a href="/errors/http/503-service-unavailable">503 Service Unavailable</a>, <a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — upstream/backend failures.</li>
+            </ul>
+            <p>If the browser shows a specific error, jump to the matching layer below. If the page just spins forever, start from Step 1 and work down.</p>
+
+            <h2>Step 1 — Check DNS Resolution</h2>
+            <p>Every request starts with DNS. If the domain can't be resolved to an IP address, nothing else matters. Use the <a href="/dns-lookup/">DNS Record Checker</a> to verify:</p>
+            <ul>
+                <li>An <strong>A record</strong> exists and points to your server's IPv4 address.</li>
+                <li>If you serve IPv6, an <strong>AAAA record</strong> points to the correct IPv6 address.</li>
+                <li><strong>NS records</strong> at your registrar point to the nameservers that actually hold your zone.</li>
+                <li>If you use a CDN (Cloudflare, Fastly, CloudFront), the records point to the CDN, not your origin.</li>
+            </ul>
+            <p>If you just made a DNS change, the problem may be <strong>propagation delay</strong> — old cached records can linger for the length of the previous TTL. Read our <a href="/learn/dns-propagation/">DNS propagation guide</a> for how to speed this up.</p>
+
+            <h2>Step 2 — Test Network Reachability</h2>
+            <p>DNS resolves. Can you actually reach the server?</p>
+
+            <h3>Traceroute</h3>
+            <p>Use the <a href="/traceroute/">Traceroute tool</a> to see the path packets take from a public vantage point to your server. If the trace dies partway through (shown as <code>* * *</code>), routing is broken upstream. If it reaches your server's IP but packets get dropped there, your firewall or network is the problem.</p>
+
+            <h3>Port Scan</h3>
+            <p>Use the <a href="/port-scanner/">Port Scanner</a> to confirm that ports 80 (HTTP) and 443 (HTTPS) are open and listening. Results:</p>
+            <ul>
+                <li><strong>Open</strong> — the server is listening and accepting connections. Move to the next step.</li>
+                <li><strong>Closed</strong> — the server received the packet but nothing is listening on that port. Your web server process (nginx, Apache, Caddy, Node, etc.) is down or bound to the wrong interface.</li>
+                <li><strong>Filtered</strong> — a firewall silently dropped the packet. Check iptables, security groups (AWS, GCP, Azure), or your hosting provider's firewall.</li>
+            </ul>
+
+            <h2>Step 3 — Verify SSL/TLS Certificate</h2>
+            <p>If HTTP works but HTTPS doesn't — or the browser shows a security warning — the TLS layer is broken. Use the <a href="/ssl-checker/">SSL Certificate Checker</a> to verify:</p>
+            <ul>
+                <li>The certificate is not expired (and not yet valid).</li>
+                <li>The <strong>certificate chain</strong> is complete (missing intermediates are one of the most common causes of "works on Firefox, fails on curl" problems).</li>
+                <li>The hostname matches the certificate's Common Name or a Subject Alternative Name.</li>
+                <li>The certificate was issued by a CA the browser trusts.</li>
+                <li>The server supports a modern TLS version (1.2 or 1.3) and reasonable cipher suites.</li>
+            </ul>
+            <p>If the certificate is expired, our <a href="/learn/ssl-certificate-expired/">SSL expired fix guide</a> covers renewal. For chain errors, see our <a href="/learn/ssl-tls-handshake/">TLS handshake guide</a>.</p>
+
+            <h2>Step 4 — Check HTTP Response</h2>
+            <p>DNS is fine, the port is open, the cert is valid — but the browser shows a 4xx or 5xx error. Now the problem is above the transport layer.</p>
+            <p>Use the <a href="/http-request-builder/">HTTP Request Builder</a> to send a raw request and inspect the full response, including headers. The <a href="/http-latency/">HTTP Latency</a> tool shows response time from multiple vantage points — useful for detecting regional outages.</p>
+            <p>Common HTTP errors and where to look:</p>
+            <ul>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — application crashed. Check application logs.</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — reverse proxy (nginx, ALB, Cloudflare) got a bad response from upstream. The backend is down or misconfigured.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server is up but refusing to serve (maintenance mode, overloaded, rate-limited).</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — upstream didn't respond in time. Slow database, blocked network call, or deadlocked thread pool.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — the URL is wrong or the route isn't deployed.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — access control, WAF rule, or file permissions blocking the request.</li>
+            </ul>
+
+            <h2>Step 5 — Check Security Headers and Redirects</h2>
+            <p>If the page loads but something is broken (mixed content warnings, infinite redirects, blocked resources), inspect:</p>
+            <ul>
+                <li><a href="/security-headers/">Security Headers checker</a> — CSP, HSTS, X-Frame-Options, and other headers that can block legitimate content if misconfigured.</li>
+                <li><a href="/redirect-checker/">Redirect Checker</a> — follow every hop in a redirect chain. Loops and mixed-protocol redirects are common causes of <a href="/errors/browser/err_too_many_redirects">ERR_TOO_MANY_REDIRECTS</a>.</li>
+            </ul>
+
+            <h2>Step 6 — Is It Just You?</h2>
+            <p>Sometimes the site works fine — you just can't reach it. Before blaming the server:</p>
+            <ul>
+                <li>Try from a different network (mobile data, VPN, another office).</li>
+                <li>Flush your local DNS cache (<code>ipconfig /flushdns</code> on Windows, <code>sudo dscacheutil -flushcache</code> on macOS, <code>sudo systemd-resolve --flush-caches</code> on Linux).</li>
+                <li>Run the <a href="/dns-lookup/">DNS Record Checker</a> from our tool (which queries from a neutral vantage point) and compare to what your local resolver returns. A mismatch means cached stale records on your resolver.</li>
+                <li>Check if your ISP or workplace is blocking the domain.</li>
+            </ul>
+
+            <h2>The Full Diagnostic Checklist</h2>
+            <ol>
+                <li><strong>DNS resolves?</strong> → <a href="/dns-lookup/">DNS Checker</a></li>
+                <li><strong>Network reachable?</strong> → <a href="/traceroute/">Traceroute</a> + <a href="/port-scanner/">Port Scanner</a></li>
+                <li><strong>TLS working?</strong> → <a href="/ssl-checker/">SSL Checker</a></li>
+                <li><strong>HTTP responds correctly?</strong> → <a href="/http-request-builder/">HTTP Request Builder</a> + <a href="/http-latency/">HTTP Latency</a></li>
+                <li><strong>No redirect/header issues?</strong> → <a href="/redirect-checker/">Redirect Checker</a> + <a href="/security-headers/">Security Headers</a></li>
+                <li><strong>Not a local issue?</strong> → Test from a second network</li>
+            </ol>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — A, AAAA, NS, CNAME lookups.</li>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — certificate chain and TLS configuration.</li>
+                <li><a href="/port-scanner/">Port Scanner</a> — test port 80/443 reachability.</li>
+                <li><a href="/traceroute/">Traceroute</a> — network path diagnosis.</li>
+                <li><a href="/http-latency/">HTTP Latency</a> — multi-region response timing.</li>
+                <li><a href="/redirect-checker/">Redirect Checker</a> — follow redirect chains.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/ssl-checker/">SSL certificates</a>, <a href="/learn/ssl-tls-handshake/">TLS handshake</a>, <a href="/learn/dns-propagation/">DNS propagation</a>, <a href="/learn/http-status-codes/">HTTP status codes</a>, <a href="/learn/ssl-certificate-expired/">SSL certificate expired fix</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Start with a DNS check</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

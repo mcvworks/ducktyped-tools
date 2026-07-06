@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ENOENT mean in general?","acceptedAnswer":{"@type":"Answer","text":"It is the POSIX errno for 'no such file or directory', and npm surfaces it for any missing file — package.json here, but also missing scripts or paths inside packages. The path in the error message tells you exactly which file npm wanted."}},{"@type":"Question","name":"npm WARN saying 'no such file or directory, open .../package.json' during install of a dependency — same thing?","acceptedAnswer":{"@type":"Answer","text":"Related but different: that is a broken or partially-installed dependency missing its own package.json inside node_modules. 'rm -rf node_modules && npm ci' rebuilds the tree cleanly."}},{"@type":"Question","name":"Why do npm scripts work at the repo root in some projects without a root package.json?","acceptedAnswer":{"@type":"Answer","text":"They don't — projects where root-level npm commands work have a root package.json (often private, with workspaces). If your monorepo lacks one, either add it to define the workspaces, or run npm inside each package directory."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"npm ERR! ENOENT — Could Not Read package.json — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! ENOENT — Could Not Read package.json — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! ENOENT no such file package.json. Wrong working directory, npm init, monorepo workspaces, and Docker WORKDIR mistakes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! code ENOENT, Could not read package.json, npm ERR! enoent This is related to npm not being able to find a file, no such file or directory open package.json">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! ENOENT — Could Not Read package.json — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! ENOENT no such file package.json. Wrong working directory, npm init, monorepo workspaces, and Docker WORKDIR mistakes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/npm-enoent-package-json">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/npm-enoent-package-json">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>npm ERR! ENOENT — Could Not Read package.json</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! ENOENT — Could Not Read package.json</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The failure 'npm ERR! code ENOENT ... Could not read package.json' — npm ran in a directory that has no package.json to read.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! code ENOENT</code></li><li><code>Could not read package.json</code></li><li><code>npm ERR! enoent This is related to npm not being able to find a file</code></li><li><code>no such file or directory open package.json</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Almost every npm command starts by reading package.json from the current directory. ENOENT ('Error NO ENTry' — the POSIX code for a missing file) here means that file is not where npm ran. The bug is nearly always about location, not the file: a terminal sitting one directory too high, a CI step missing its working-directory setting, a Dockerfile whose WORKDIR does not match where files were copied, or a monorepo command aimed at the root when it needed a workspace (or vice versa).</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Wrong current directory</strong> — Running npm from the repo root when the app lives in a subfolder (or from home after opening a fresh terminal).</li>
+                <li><strong>The project was never initialized</strong> — Brand-new folder — 'npm install something' before 'npm init' has nothing to record the dependency in.</li>
+                <li><strong>CI/Docker path mismatches</strong> — A pipeline step without working-directory, or a Dockerfile that COPYs into one path and runs npm in another.</li>
+                <li><strong>Monorepo confusion</strong> — Commands meant for a workspace run at the root (or the reverse), or the workspaces config does not include the package's path.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Look before you run</h3>
+            <p>Two commands settle where you are and what is there.</p>
+            <pre><code>pwd
+ls package.json || find . -maxdepth 3 -name package.json -not -path '*/node_modules/*'
+cd path/to/app &amp;&amp; npm install</code></pre>
+            <h3>2. Initialize when starting fresh</h3>
+            <p>Create the manifest first.</p>
+            <pre><code>npm init -y
+npm install express</code></pre>
+            <h3>3. Pin working directories in CI and Docker</h3>
+            <p>Make the path explicit instead of inherited.</p>
+            <pre><code># GitHub Actions:
+- run: npm ci
+  working-directory: apps/web
+
+# Dockerfile:
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .</code></pre>
+            <h3>4. Address workspaces explicitly</h3>
+            <p>Run per-workspace commands from the root with the -w flag.</p>
+            <pre><code>npm install lodash -w apps/web
+npm run build -w packages/ui
+npm run test --workspaces</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does ENOENT mean in general?</h3>
+            <p>It is the POSIX errno for 'no such file or directory', and npm surfaces it for any missing file — package.json here, but also missing scripts or paths inside packages. The path in the error message tells you exactly which file npm wanted.</p>
+            <h3>npm WARN saying 'no such file or directory, open .../package.json' during install of a dependency — same thing?</h3>
+            <p>Related but different: that is a broken or partially-installed dependency missing its own package.json inside node_modules. 'rm -rf node_modules && npm ci' rebuilds the tree cleanly.</p>
+            <h3>Why do npm scripts work at the repo root in some projects without a root package.json?</h3>
+            <p>They don't — projects where root-level npm commands work have a root package.json (often private, with workspaces). If your monorepo lacks one, either add it to define the workspaces, or run npm inside each package directory.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/npm-err-elifecycle">npm ELIFECYCLE</a> — script failures once package.json is found.</li>
+                <li><a href="/errors/node/cannot-find-module">Cannot Find Module</a> — runtime resolution failures.</li>
+                <li><a href="/errors/devops/npm-err-eperm">npm EPERM</a> — permission errors during installs.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Validate package.json syntax</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

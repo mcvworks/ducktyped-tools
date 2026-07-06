@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 'Failed building wheel' mean?","acceptedAnswer":{"@type":"Answer","text":"It means pip tried to compile the package from source code and the build process failed. This usually indicates missing system dependencies like compilers or development headers. Install the required system packages and retry."}},{"@type":"Question","name":"Should I use pip or pip3?","acceptedAnswer":{"@type":"Answer","text":"Use 'python3 -m pip' to ensure you are using pip for the correct Python version. The 'pip' command may point to Python 2 on systems with both versions installed."}},{"@type":"Question","name":"How do I install packages offline?","acceptedAnswer":{"@type":"Answer","text":"Download wheels on a machine with internet: 'pip download package-name -d ./packages'. Then install offline: 'pip install --no-index --find-links=./packages package-name'."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"pip Install Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix pip Install Failed","step":[{"@type":"HowToStep","position":1,"name":"Install build dependencies","text":"Install the necessary system packages for building Python C extensions."},{"@type":"HowToStep","position":2,"name":"Use a virtual environment","text":"Install packages in a virtual environment to avoid permission issues and system Python conflicts."},{"@type":"HowToStep","position":3,"name":"Install binary wheels only","text":"Force pip to use only pre-built binary wheels, avoiding source compilation."},{"@type":"HowToStep","position":4,"name":"Upgrade pip and setuptools","text":"Old versions of pip and setuptools may not support modern packaging formats."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pip Install Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix pip install failures. Learn why Python pip fails to install packages and how to resolve build errors, permission issues, and version conflicts.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="pip install failed, Could not find a version that satisfies, No matching distribution found, pip install error, ERROR: Could not install packages">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="pip Install Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix pip install failures. Learn why Python pip fails to install packages and how to resolve build errors, permission issues, and version conflicts.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/pip-install-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/pip-install-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>pip Install Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>pip Install Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">pip package installation failed with error</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>pip install failed</code></li><li><code>Could not find a version that satisfies</code></li><li><code>No matching distribution found</code></li><li><code>pip install error</code></li><li><code>ERROR: Could not install packages</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>pip install can fail for many reasons including missing build dependencies, incompatible Python versions, network issues, or permission problems. The error message usually includes specific details about the failure, but the root cause is not always obvious from the output alone.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing system build dependencies</strong> — Packages with C extensions (like numpy, lxml, psycopg2) require system-level compilers and development libraries that are not installed on the machine.</li>
+                <li><strong>Incompatible Python version</strong> — The package does not support the Python version you are running. The package's metadata specifies which Python versions are compatible.</li>
+                <li><strong>No pre-built wheel available</strong> — There is no pre-built binary wheel for your platform and Python version, so pip tries to build from source and fails due to missing build tools.</li>
+                <li><strong>Permission denied</strong> — pip does not have permission to write to the installation directory, especially when installing to the system Python without sudo.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install build dependencies</h3>
+            <p>Install the necessary system packages for building Python C extensions.</p>
+            <pre><code># Ubuntu/Debian:
+sudo apt-get install build-essential python3-dev
+
+# macOS:
+xcode-select --install
+
+# For specific packages like psycopg2:
+sudo apt-get install libpq-dev</code></pre>
+            <h3>2. Use a virtual environment</h3>
+            <p>Install packages in a virtual environment to avoid permission issues and system Python conflicts.</p>
+            <pre><code>python3 -m venv myenv
+source myenv/bin/activate
+pip install package-name</code></pre>
+            <h3>3. Install binary wheels only</h3>
+            <p>Force pip to use only pre-built binary wheels, avoiding source compilation.</p>
+            <pre><code>pip install --only-binary :all: package-name</code></pre>
+            <h3>4. Upgrade pip and setuptools</h3>
+            <p>Old versions of pip and setuptools may not support modern packaging formats.</p>
+            <pre><code>python3 -m pip install --upgrade pip setuptools wheel</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does 'Failed building wheel' mean?</h3>
+            <p>It means pip tried to compile the package from source code and the build process failed. This usually indicates missing system dependencies like compilers or development headers. Install the required system packages and retry.</p>
+            <h3>Should I use pip or pip3?</h3>
+            <p>Use 'python3 -m pip' to ensure you are using pip for the correct Python version. The 'pip' command may point to Python 2 on systems with both versions installed.</p>
+            <h3>How do I install packages offline?</h3>
+            <p>Download wheels on a machine with internet: 'pip download package-name -d ./packages'. Then install offline: 'pip install --no-index --find-links=./packages package-name'.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/python-modulenotfounderror">Python ModuleNotFoundError</a> — Python cannot find the specified module</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/devops/npm-err-eacces">npm ERR! EACCES</a> — npm permission denied</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Will I lose my commits in detached HEAD?","acceptedAnswer":{"@type":"Answer","text":"Not immediately. Commits remain in Git's object database and can be found via 'git reflog' for at least 30 days. However, they are not on any branch and will eventually be garbage collected if not saved to a branch."}},{"@type":"Question","name":"Is detached HEAD always bad?","acceptedAnswer":{"@type":"Answer","text":"No. It is normal during rebase and bisect operations. It is also useful for temporarily inspecting old commits. It only becomes a problem if you make new commits without creating a branch to save them."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Git Detached HEAD State — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Git Detached HEAD State","step":[{"@type":"HowToStep","position":1,"name":"Create a branch from the current position","text":"If you have made commits in detached HEAD state and want to keep them, create a new branch at the current position."},{"@type":"HowToStep","position":2,"name":"Return to an existing branch","text":"If you have not made any commits you want to keep, simply switch back to an existing branch."},{"@type":"HowToStep","position":3,"name":"Cherry-pick commits onto a branch","text":"If you made commits in detached HEAD and already switched away, recover them using reflog and cherry-pick."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Detached HEAD State — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Git detached HEAD state. Learn what detached HEAD means, why it happens, and how to save your work and reattach to a branch safely.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Git detached HEAD, HEAD detached at, detached HEAD state, You are in detached HEAD state, git checkout detached">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Git Detached HEAD State — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Git detached HEAD state. Learn what detached HEAD means, why it happens, and how to save your work and reattach to a branch safely.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/git-detached-head">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/git-detached-head">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Git Detached HEAD State</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Git Detached HEAD State</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Git HEAD is not pointing to a branch</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Git detached HEAD</code></li><li><code>HEAD detached at</code></li><li><code>detached HEAD state</code></li><li><code>You are in detached HEAD state</code></li><li><code>git checkout detached</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A detached HEAD state means that Git's HEAD pointer is pointing directly to a specific commit instead of to a branch reference. Any new commits made in this state are not associated with any branch and can be lost if you switch to another branch without saving them.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Checked out a specific commit</strong> — Running 'git checkout &lt;commit-hash&gt;' moves HEAD to that commit directly, detaching it from any branch.</li>
+                <li><strong>Checked out a tag</strong> — Tags point to specific commits. Checking out a tag with 'git checkout v1.0' puts you in detached HEAD state because tags are not branches.</li>
+                <li><strong>Interactive rebase or bisect</strong> — Git operations like rebase and bisect temporarily put the repository into a detached HEAD state as they work through commits.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Create a branch from the current position</h3>
+            <p>If you have made commits in detached HEAD state and want to keep them, create a new branch at the current position.</p>
+            <pre><code>git checkout -b my-new-branch</code></pre>
+            <h3>2. Return to an existing branch</h3>
+            <p>If you have not made any commits you want to keep, simply switch back to an existing branch.</p>
+            <pre><code>git checkout main
+# or
+git switch main</code></pre>
+            <h3>3. Cherry-pick commits onto a branch</h3>
+            <p>If you made commits in detached HEAD and already switched away, recover them using reflog and cherry-pick.</p>
+            <pre><code>git reflog
+# Find the commit hash, then:
+git checkout main
+git cherry-pick &lt;commit-hash&gt;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Will I lose my commits in detached HEAD?</h3>
+            <p>Not immediately. Commits remain in Git's object database and can be found via 'git reflog' for at least 30 days. However, they are not on any branch and will eventually be garbage collected if not saved to a branch.</p>
+            <h3>Is detached HEAD always bad?</h3>
+            <p>No. It is normal during rebase and bisect operations. It is also useful for temporarily inspecting old commits. It only becomes a problem if you make new commits without creating a branch to save them.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/git-merge-conflict">Git Merge Conflict</a> — Conflicting changes in Git merge</li>
+                <li><a href="/errors/devops/git-repository-not-found">Repository Not Found</a> — Git cannot find the remote repository</li>
+                <li><a href="/errors/devops/git-remote-origin-already-exists">Remote Origin Already Exists</a> — Git remote origin is already configured</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Errors – Docker, Git, npm, Kubernetes Troubleshooting — duckTyped</title>
+    <meta name="description" content="Fix common DevOps errors for Docker, Git, npm, Kubernetes, Python, and Java. Step-by-step troubleshooting guides with solutions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DevOps Errors – Docker, Git, npm, Kubernetes Troubleshooting — duckTyped">
+    <meta property="og:description" content="Fix common DevOps errors for Docker, Git, npm, Kubernetes, Python, and Java. Step-by-step troubleshooting guides with solutions.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        .errors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .error-card {
+            display: block;
+            text-decoration: none;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .error-card:hover {
+            border-color: var(--primary-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .error-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .badge-devops { background: rgba(130,87,229,0.1); color: #8257E5; }
+        .badge-database { background: rgba(56,189,248,0.1); color: #38BDF8; }
+        .badge-http { background: rgba(242,194,0,0.1); color: #F2C200; }
+        .badge-nginx { background: rgba(74,222,128,0.1); color: #4ADE80; }
+        .badge-apache { background: rgba(232,121,249,0.1); color: #E879F9; }
+        .badge-node { background: rgba(129,140,248,0.1); color: #818CF8; }
+        .badge-python { background: rgba(34,211,238,0.1); color: #22D3EE; }
+        .badge-cloudflare { background: rgba(251,146,60,0.1); color: #FB923C; }
+        .badge-browser { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-dns { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-email { background: rgba(250,98,22,0.1); color: #FA6216; }
+        .badge-ssl { background: rgba(255,107,107,0.1); color: #ff6b6b; }
+        .error-card-title {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .error-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        .hub-breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+        .hub-breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .hub-breadcrumb a:hover { text-decoration: underline; }
+        .hub-tools-section {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            margin-bottom: 32px;
+        }
+        .hub-tools-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .hub-tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hub-tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--primary-dim);
+            border: 1px solid var(--primary-border);
+            border-radius: 999px;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .hub-tool-link:hover { filter: brightness(1.1); }
+        .hub-category-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .hub-category-link {
+            padding: 7px 16px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .hub-category-link:hover,
+        .hub-category-link.active {
+            background: var(--primary-dim);
+            border-color: var(--primary-border);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="hub-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> &rsaquo; DevOps Errors
+        </div>
+
+        <div class="standalone-hero">
+            <h1>DevOps Errors</h1>
+            <p class="standalone-intro">DevOps errors cover Docker, Git, npm, Kubernetes, and other development toolchain issues. Use these guides to quickly diagnose and fix common build, deploy, and configuration problems.</p>
+        </div>
+
+        <div class="hub-category-nav">
+            <a href="/errors/browser/" class="hub-category-link">Browser</a>
+            <a href="/errors/http/" class="hub-category-link">HTTP</a>
+            <a href="/errors/dns/" class="hub-category-link">DNS</a>
+            <a href="/errors/email/" class="hub-category-link">Email</a>
+            <a href="/errors/ssl/" class="hub-category-link">SSL / TLS</a>
+            <a href="/errors/devops/" class="hub-category-link active">DevOps</a>
+            <a href="/errors/database/" class="hub-category-link">Database</a>
+            <a href="/errors/nginx/" class="hub-category-link">Nginx</a>
+            <a href="/errors/apache/" class="hub-category-link">Apache</a>
+            <a href="/errors/node/" class="hub-category-link">Node.js</a>
+            <a href="/errors/python/" class="hub-category-link">Python</a>
+            <a href="/errors/cloudflare/" class="hub-category-link">Cloudflare</a>
+        </div>
+
+        <div class="errors-grid">
+                <a href="/errors/devops/docker-container-already-exists" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Container Name Already in Use</div>
+                    <div class="error-card-desc">A container with the specified name already exists</div>
+                </a>
+                <a href="/errors/devops/docker-daemon-not-running" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Daemon Not Running</div>
+                    <div class="error-card-desc">Cannot connect to the Docker daemon</div>
+                </a>
+                <a href="/errors/devops/docker-image-pull-failed" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Image Pull Failed</div>
+                    <div class="error-card-desc">Failed to pull a Docker image from the registry</div>
+                </a>
+                <a href="/errors/devops/docker-network-not-found" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Network Not Found</div>
+                    <div class="error-card-desc">Docker network does not exist</div>
+                </a>
+                <a href="/errors/devops/docker-no-space-left" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker No Space Left on Device</div>
+                    <div class="error-card-desc">Docker ran out of disk space</div>
+                </a>
+                <a href="/errors/devops/docker-port-already-allocated" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Docker Port Already Allocated</div>
+                    <div class="error-card-desc">Port is already allocated by another container or process</div>
+                </a>
+                <a href="/errors/devops/git-remote-origin-already-exists" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">fatal: remote origin already exists</div>
+                    <div class="error-card-desc">Git remote named 'origin' is already configured</div>
+                </a>
+                <a href="/errors/devops/git-repository-not-found" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">fatal: repository not found</div>
+                    <div class="error-card-desc">Git cannot find the remote repository</div>
+                </a>
+                <a href="/errors/devops/git-detached-head" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Git Detached HEAD State</div>
+                    <div class="error-card-desc">Git HEAD is not pointing to a branch</div>
+                </a>
+                <a href="/errors/devops/git-merge-conflict" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Git Merge Conflict</div>
+                    <div class="error-card-desc">Conflicting changes prevent automatic merge</div>
+                </a>
+                <a href="/errors/devops/java-classnotfoundexception" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Java ClassNotFoundException</div>
+                    <div class="error-card-desc">Java cannot find the specified class at runtime</div>
+                </a>
+                <a href="/errors/devops/kubernetes-crashloopbackoff" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Kubernetes CrashLoopBackOff</div>
+                    <div class="error-card-desc">Pod is crashing repeatedly and Kubernetes is backing off restarts</div>
+                </a>
+                <a href="/errors/devops/kubernetes-imagepullbackoff" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Kubernetes ImagePullBackOff</div>
+                    <div class="error-card-desc">Kubernetes cannot pull the container image</div>
+                </a>
+                <a href="/errors/devops/npm-err-eacces" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code EACCES</div>
+                    <div class="error-card-desc">npm permission denied error</div>
+                </a>
+                <a href="/errors/devops/npm-err-econnreset" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code ECONNRESET</div>
+                    <div class="error-card-desc">npm connection to registry was reset</div>
+                </a>
+                <a href="/errors/devops/npm-err-enotfound" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code ENOTFOUND</div>
+                    <div class="error-card-desc">npm cannot reach the registry</div>
+                </a>
+                <a href="/errors/devops/npm-err-eperm" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code EPERM</div>
+                    <div class="error-card-desc">npm permission error on file operation</div>
+                </a>
+                <a href="/errors/devops/npm-err-eresolve" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">npm ERR! code ERESOLVE</div>
+                    <div class="error-card-desc">npm dependency resolution conflict</div>
+                </a>
+                <a href="/errors/devops/permission-denied-publickey" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Permission Denied (publickey)</div>
+                    <div class="error-card-desc">SSH authentication failed using public key</div>
+                </a>
+                <a href="/errors/devops/pip-install-failed" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">pip Install Failed</div>
+                    <div class="error-card-desc">pip package installation failed with error</div>
+                </a>
+                <a href="/errors/devops/python-modulenotfounderror" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Python ModuleNotFoundError</div>
+                    <div class="error-card-desc">Python cannot find the specified module</div>
+                </a>
+                <a href="/errors/devops/yarn-integrity-check-failed" class="error-card">
+                    <span class="error-card-badge badge-devops">DevOps</span>
+                    <div class="error-card-title">Yarn Integrity Check Failed</div>
+                    <div class="error-card-desc">Yarn detected a mismatch between node_modules and yarn.lock</div>
+                </a>
+        </div>
+
+        <!-- Related tools -->
+        <div class="hub-tools-section">
+            <div class="hub-tools-title">Related Tools</div>
+            <div class="hub-tools-list">
+                <a href="/docker-compose-validator/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Compose Validator
+                </a>
+                <a href="/env-file-parser/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Env File Parser
+                </a>
+                <a href="/cron-parser/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Cron Parser
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta">
+            <p>Browse all troubleshooting guides or explore free developer tools.</p>
+            <a href="/errors/" class="cta-btn-primary">All Error Guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

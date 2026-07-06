@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Email Authentication Cheat Sheet: SPF, DKIM, DMARC","description":"Quick reference for SPF, DKIM, and DMARC syntax. All tags, mechanisms, policies, and ready-to-copy record examples for email deliverability.","datePublished":"2026-04-05","dateModified":"2026-04-05","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/email-auth-cheat-sheet/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Email Authentication Cheat Sheet"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between SPF, DKIM, and DMARC?","acceptedAnswer":{"@type":"Answer","text":"SPF declares which servers may send mail for a domain. DKIM cryptographically signs each message to prove it was not altered. DMARC ties SPF and DKIM to a policy (none, quarantine, reject) and enables aggregate reporting. All three are TXT records and all three are required for deliverability to Gmail, Outlook, and Yahoo."}},{"@type":"Question","name":"How many SPF records can a domain have?","acceptedAnswer":{"@type":"Answer","text":"A domain must have exactly one SPF record. Publishing multiple 'v=spf1' TXT records causes a permerror and breaks authentication. If you need to authorize multiple sending services, combine them into a single SPF record using include mechanisms."}},{"@type":"Question","name":"What DMARC policy should I start with?","acceptedAnswer":{"@type":"Answer","text":"Start with p=none and a rua= address so you receive aggregate reports. After 2-4 weeks of reviewing reports and fixing legitimate sources that fail, move to p=quarantine with pct=25. Gradually increase pct to 100, then to p=reject once you are confident in the data."}},{"@type":"Question","name":"What is a DKIM selector?","acceptedAnswer":{"@type":"Answer","text":"A DKIM selector is a string that identifies which public key to use for verification. The full lookup is selector._domainkey.yourdomain.com. Selectors let a single domain publish multiple DKIM keys for different services or key rotations."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Authentication Cheat Sheet — SPF, DKIM, DMARC Syntax — duckTyped</title>
+    <meta name="description" content="SPF, DKIM, and DMARC cheat sheet: all tags, mechanisms, policies, and copy-paste record examples. Quick reference for email deliverability.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SPF cheat sheet, DKIM cheat sheet, DMARC cheat sheet, email authentication, SPF syntax, DKIM selector, DMARC policy, email deliverability">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Email Authentication Cheat Sheet — SPF, DKIM, DMARC — duckTyped">
+    <meta property="og:description" content="SPF, DKIM, and DMARC cheat sheet with copy-paste record examples and all tags explained.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/email-auth-cheat-sheet/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Email Authentication Cheat Sheet — duckTyped">
+    <meta name="twitter:description" content="Quick reference for SPF, DKIM, and DMARC syntax with copy-paste examples.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/email-auth-cheat-sheet/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Email Authentication Cheat Sheet</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Email Authentication Cheat Sheet: SPF, DKIM, DMARC</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-04-05">April 5, 2026</time></p>
+            <p class="standalone-intro">Everything you need to configure SPF, DKIM, and DMARC correctly — all the tags, mechanisms, policy options, and copy-paste record examples in one place. All three records live in DNS as TXT records; verify them after publishing with the <a href="/dns-lookup/">DNS Record Checker</a>.</p>
+
+            <h2>How the Three Work Together</h2>
+            <ul>
+                <li><strong>SPF</strong> answers: "Is this server allowed to send mail for this domain?"</li>
+                <li><strong>DKIM</strong> answers: "Was this message signed by the domain, and has it been altered in transit?"</li>
+                <li><strong>DMARC</strong> answers: "What should receivers do when SPF or DKIM fails, and who gets the reports?"</li>
+            </ul>
+            <p>SPF alone is not enough — it breaks on forwarding. DKIM alone is not enough — it doesn't cover the envelope-from. DMARC glues the two together and adds reporting. Modern mailbox providers (Gmail, Outlook, Yahoo) require all three for bulk senders.</p>
+
+            <h2>SPF — Sender Policy Framework</h2>
+
+            <h3>Record Location</h3>
+            <p>TXT record at the apex (or subdomain) you send from: <code>example.com</code>. Only <strong>one</strong> SPF record per name.</p>
+
+            <h3>Basic Syntax</h3>
+            <pre><code>v=spf1 &lt;mechanisms&gt; &lt;all-qualifier&gt;</code></pre>
+
+            <h3>Mechanisms</h3>
+            <ul>
+                <li><code>ip4:192.0.2.1</code> — authorize a specific IPv4 address or CIDR range (<code>ip4:192.0.2.0/24</code>).</li>
+                <li><code>ip6:2001:db8::1</code> — authorize an IPv6 address or range.</li>
+                <li><code>a</code> — authorize the A/AAAA records of the sending domain.</li>
+                <li><code>a:mail.example.com</code> — authorize a specific hostname's A records.</li>
+                <li><code>mx</code> — authorize the domain's MX record hosts.</li>
+                <li><code>mx:example.com</code> — authorize another domain's MX hosts.</li>
+                <li><code>include:_spf.google.com</code> — delegate to another domain's SPF record (recursive).</li>
+                <li><code>exists:example.com</code> — pass if any A record exists for the given name.</li>
+                <li><code>redirect=example.com</code> — replace this SPF with another domain's SPF.</li>
+            </ul>
+
+            <h3>All Qualifiers</h3>
+            <ul>
+                <li><code>+all</code> — <strong>never use</strong>. Authorizes every server on the internet.</li>
+                <li><code>~all</code> — softfail. Receivers may accept but flag the message. Safe starting point.</li>
+                <li><code>-all</code> — hardfail. Receivers should reject. Use once you're confident.</li>
+                <li><code>?all</code> — neutral. Same as having no SPF at all. Pointless.</li>
+            </ul>
+
+            <h3>Examples</h3>
+            <pre><code># Google Workspace only
+v=spf1 include:_spf.google.com ~all
+
+# Google Workspace + SendGrid + Mailgun
+v=spf1 include:_spf.google.com include:sendgrid.net include:mailgun.org ~all
+
+# Microsoft 365 + custom server
+v=spf1 ip4:203.0.113.10 include:spf.protection.outlook.com -all
+
+# Reject all mail (parked domain)
+v=spf1 -all</code></pre>
+
+            <h3>SPF Gotchas</h3>
+            <ul>
+                <li><strong>10-lookup limit</strong> — SPF allows a maximum of 10 DNS lookups during evaluation (each <code>include</code>, <code>a</code>, <code>mx</code>, <code>exists</code>, <code>redirect</code> counts). Exceeding it causes a permerror. Use <code>ip4:</code>/<code>ip6:</code> to flatten if you hit the limit.</li>
+                <li><strong>Only one SPF record per domain</strong> — multiple records cause permerror. Merge them.</li>
+                <li><strong>SPF breaks on forwarding</strong> — messages forwarded to another address will fail SPF at the second hop. This is why DKIM exists.</li>
+                <li><strong>Max 512 characters per TXT string</strong> — split long records into multiple quoted strings that DNS concatenates.</li>
+            </ul>
+
+            <h2>DKIM — DomainKeys Identified Mail</h2>
+
+            <h3>Record Location</h3>
+            <p>TXT record at <code>&lt;selector&gt;._domainkey.example.com</code>. A selector is a short label you choose (e.g., <code>s1</code>, <code>google</code>, <code>mail</code>) that lets you rotate keys without downtime.</p>
+
+            <h3>Basic Syntax</h3>
+            <pre><code>v=DKIM1; k=rsa; p=&lt;base64 public key&gt;</code></pre>
+
+            <h3>Tags</h3>
+            <ul>
+                <li><code>v=DKIM1</code> — version (required, always DKIM1).</li>
+                <li><code>k=rsa</code> — key type. RSA is standard; some providers support <code>ed25519</code>.</li>
+                <li><code>p=&lt;base64&gt;</code> — the public key. Empty <code>p=</code> marks the key as revoked.</li>
+                <li><code>h=sha256</code> — allowed hash algorithms (optional, default is all).</li>
+                <li><code>s=email</code> — service type (optional).</li>
+                <li><code>t=y</code> — testing mode flag (recommended during initial setup).</li>
+                <li><code>t=s</code> — prevents the key being used for subdomains.</li>
+                <li><code>n=notes</code> — arbitrary notes for administrators.</li>
+            </ul>
+
+            <h3>Example</h3>
+            <pre><code># Record name: s1._domainkey.example.com
+v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7...IDAQAB</code></pre>
+
+            <h3>DKIM Gotchas</h3>
+            <ul>
+                <li><strong>2048-bit RSA keys exceed 255 characters</strong> — split into multiple quoted strings: <code>"v=DKIM1; k=rsa; " "p=MIGfMA0G..."</code></li>
+                <li><strong>Key length</strong> — 1024-bit is deprecated but still widely accepted; 2048-bit is the current standard.</li>
+                <li><strong>Selector matches the header</strong> — the <code>s=</code> tag in the message's DKIM-Signature header must match the selector in DNS.</li>
+                <li><strong>Relaxed vs simple canonicalization</strong> — set by the sender. Most senders use <code>relaxed/relaxed</code> which tolerates minor whitespace changes.</li>
+                <li><strong>Multiple selectors are fine</strong> — useful for key rotation and for authorizing multiple services.</li>
+            </ul>
+
+            <h2>DMARC — Domain-based Message Authentication</h2>
+
+            <h3>Record Location</h3>
+            <p>TXT record at <code>_dmarc.example.com</code>. Exactly <strong>one</strong> DMARC record per domain.</p>
+
+            <h3>Basic Syntax</h3>
+            <pre><code>v=DMARC1; p=&lt;policy&gt;; rua=mailto:reports@example.com</code></pre>
+
+            <h3>Required Tags</h3>
+            <ul>
+                <li><code>v=DMARC1</code> — version (required, always DMARC1, must be first).</li>
+                <li><code>p=none</code> — policy for the domain itself (required).</li>
+            </ul>
+
+            <h3>Policies</h3>
+            <ul>
+                <li><code>p=none</code> — monitor only. Receivers do not change handling based on DMARC. Start here.</li>
+                <li><code>p=quarantine</code> — failing messages should go to spam/junk.</li>
+                <li><code>p=reject</code> — failing messages should be rejected outright. Goal state.</li>
+            </ul>
+
+            <h3>Optional Tags</h3>
+            <ul>
+                <li><code>sp=none|quarantine|reject</code> — policy for subdomains (defaults to <code>p</code> value).</li>
+                <li><code>pct=25</code> — percentage of messages to apply the policy to (0–100). Useful for gradual rollout.</li>
+                <li><code>rua=mailto:aggregate@example.com</code> — aggregate (daily) reports destination.</li>
+                <li><code>ruf=mailto:forensic@example.com</code> — forensic (per-failure) reports destination. Rarely used; privacy concerns.</li>
+                <li><code>adkim=r|s</code> — DKIM alignment: relaxed (default) or strict.</li>
+                <li><code>aspf=r|s</code> — SPF alignment: relaxed (default) or strict.</li>
+                <li><code>fo=0|1|d|s</code> — forensic report options: 0 (both fail), 1 (either fails), d (DKIM fails), s (SPF fails).</li>
+                <li><code>ri=86400</code> — report interval in seconds (default 86400 = daily).</li>
+                <li><code>rf=afrf</code> — report format (only afrf is standard).</li>
+            </ul>
+
+            <h3>Examples</h3>
+            <pre><code># Monitoring only — the starting point
+v=DMARC1; p=none; rua=mailto:dmarc@example.com
+
+# Partial quarantine rollout (25%)
+v=DMARC1; p=quarantine; pct=25; rua=mailto:dmarc@example.com
+
+# Full quarantine, relaxed alignment
+v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com
+
+# Strict reject (goal state)
+v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:dmarc@example.com; ruf=mailto:forensic@example.com</code></pre>
+
+            <h3>Recommended Rollout</h3>
+            <ol>
+                <li><strong>Week 1:</strong> publish <code>p=none</code> with <code>rua</code>. Collect reports.</li>
+                <li><strong>Week 2–3:</strong> identify legitimate senders failing SPF/DKIM. Fix them (add to SPF, set up DKIM).</li>
+                <li><strong>Week 4:</strong> move to <code>p=quarantine; pct=25</code>.</li>
+                <li><strong>Week 5–6:</strong> increase <code>pct</code> to 50, then 100.</li>
+                <li><strong>Week 7+:</strong> move to <code>p=reject</code>.</li>
+            </ol>
+
+            <h3>DMARC Alignment Explained</h3>
+            <p>For DMARC to pass, at least one of SPF or DKIM must <strong>align</strong> with the From header domain:</p>
+            <ul>
+                <li><strong>SPF alignment</strong> — the Return-Path domain matches the From domain.</li>
+                <li><strong>DKIM alignment</strong> — the <code>d=</code> tag in the DKIM signature matches the From domain.</li>
+                <li><strong>Relaxed alignment</strong> (default) — allows subdomain matches (<code>mail.example.com</code> aligns with <code>example.com</code>).</li>
+                <li><strong>Strict alignment</strong> — requires exact match.</li>
+            </ul>
+
+            <h2>Quick Verification</h2>
+            <ul>
+                <li>Query TXT records with the <a href="/dns-lookup/">DNS Record Checker</a> to confirm your SPF, DKIM, and DMARC records are published.</li>
+                <li>Send a test message to a mailbox you control and inspect the headers with the <a href="/email-header-analyzer/">Email Header Analyzer</a>. Look for <code>Authentication-Results</code> lines showing <code>spf=pass</code>, <code>dkim=pass</code>, and <code>dmarc=pass</code>.</li>
+                <li>If something fails, see <a href="/learn/email-not-delivering/">Email Not Delivering: diagnostic guide</a>.</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — query SPF, DKIM, DMARC TXT records.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> — verify authentication results on received messages.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test your sending server's TLS and banner.</li>
+                <li><a href="/blacklist-checker/">Blacklist Checker</a> — check IP/domain against DNSBLs.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/what-is-spf/">SPF explained</a>, <a href="/learn/what-is-dkim/">DKIM explained</a>, <a href="/learn/what-is-dmarc/">DMARC explained</a>, <a href="/learn/email-not-delivering/">Email not delivering diagnostic</a>, <a href="/learn/dns-cheat-sheet/">DNS records cheat sheet</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Verify your records</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

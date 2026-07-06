@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a lame delegation?","acceptedAnswer":{"@type":"Answer","text":"A delegation is 'lame' when the parent zone lists a nameserver that does not actually answer authoritatively for the child zone. Queries to it return NOTAUTH or REFUSED, causing slow or failed resolution. Fix it by updating the NS records at the registrar to match servers that really host the zone."}},{"@type":"Question","name":"Why does my secondary server return NOTAUTH for its own zone?","acceptedAnswer":{"@type":"Answer","text":"The zone transfer from the primary never succeeded, so the secondary has no zone data. Check allow-transfer settings on the primary, TSIG keys on both sides, and the secondary's logs for transfer failures."}},{"@type":"Question","name":"NOTAUTH vs REFUSED — which is which?","acceptedAnswer":{"@type":"Answer","text":"NOTAUTH: 'this zone is not mine (or your signature is not valid)'. REFUSED: 'I could answer, but policy says no' — like recursion denied to outside clients. Both indicate you are talking to the wrong server or without the right authorization, but REFUSED is a deliberate policy response."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS NOTAUTH — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS NOTAUTH — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS NOTAUTH (RCODE 9) errors in nsupdate, zone transfers, and slave zones. Covers lame delegations, TSIG problems, and unloaded zones.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NOTAUTH, RCODE 9, Not Authoritative, nsupdate NOTAUTH, zone transfer NOTAUTH, TSIG BADKEY, lame delegation">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS NOTAUTH — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS NOTAUTH (RCODE 9) errors in nsupdate, zone transfers, and slave zones. Covers lame delegations, TSIG problems, and unloaded zones.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/notauth">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/notauth">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS NOTAUTH</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS NOTAUTH</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">DNS response code 9 — the server is not authoritative for the zone, or the request was not properly authorized. Common in zone transfers and dynamic updates.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NOTAUTH</code></li><li><code>RCODE 9</code></li><li><code>Not Authoritative</code></li><li><code>nsupdate NOTAUTH</code></li><li><code>zone transfer NOTAUTH</code></li><li><code>TSIG BADKEY</code></li><li><code>lame delegation</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>NOTAUTH means the DNS server you contacted told you 'that zone is not mine' — you sent a zone transfer request, dynamic update, or SOA query for a zone the server is not authoritative for. It also doubles as an authorization failure when TSIG-signed requests carry a bad or unknown key. NOTAUTH is an operator error class: something is pointed at the wrong server (a lame delegation, an update aimed at a resolver), or the server that should host the zone failed to load it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Update or transfer sent to the wrong server</strong> — nsupdate must target the zone's primary authoritative server, and AXFR/IXFR must target a server that actually hosts the zone. Sending either to a recursive resolver or an unrelated nameserver yields NOTAUTH.</li>
+                <li><strong>The zone failed to load on the server</strong> — A syntax error in the zone file or configuration means the server that is supposed to be authoritative silently is not — it answers NOTAUTH (or SERVFAIL) for its own zone.</li>
+                <li><strong>Lame delegation</strong> — The parent zone's NS records point at a server that does not host the zone (decommissioned secondary, provider change not cleaned up). Resolvers following the delegation get NOTAUTH.</li>
+                <li><strong>TSIG key problems</strong> — Signed updates or transfers with a key the server does not recognize (name mismatch, wrong secret, clock skew beyond the TSIG fudge window) are rejected with NOTAUTH and a TSIG error such as BADKEY or BADTIME.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm which servers are really authoritative</h3>
+            <p>Ask the parent for the delegation, then ask each listed server directly for the SOA. Every authoritative server should answer with the aa flag set.</p>
+            <pre><code>dig NS example.com +short
+dig @ns1.example.com example.com SOA +norecurse
+# look for 'flags: qr aa' in the response</code></pre>
+            <h3>2. Point updates at the primary server</h3>
+            <p>Find the primary from the SOA MNAME field and direct nsupdate there explicitly.</p>
+            <pre><code>dig example.com SOA +short   # first field = primary (MNAME)
+nsupdate -k key.conf &lt;&lt;'EOF'
+server primary.example.com
+zone example.com
+update add test.example.com 300 A 192.0.2.1
+send
+EOF</code></pre>
+            <h3>3. Check the zone loads on the server</h3>
+            <p>On the server itself, validate configuration and zone file, then reload and watch the logs.</p>
+            <pre><code>named-checkconf
+named-checkzone example.com /etc/bind/zones/example.com.db
+sudo rndc reload example.com
+sudo journalctl -u named -n 20</code></pre>
+            <h3>4. Verify TSIG keys and clocks match</h3>
+            <p>The key name and secret must match exactly on both ends, and both machines need accurate time — TSIG allows only a small clock skew (default 300 seconds).</p>
+            <pre><code># test a signed transfer:
+dig @ns1.example.com example.com AXFR -y hmac-sha256:keyname:BASE64SECRET
+timedatectl   # confirm NTP-synced time on both hosts</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is a lame delegation?</h3>
+            <p>A delegation is 'lame' when the parent zone lists a nameserver that does not actually answer authoritatively for the child zone. Queries to it return NOTAUTH or REFUSED, causing slow or failed resolution. Fix it by updating the NS records at the registrar to match servers that really host the zone.</p>
+            <h3>Why does my secondary server return NOTAUTH for its own zone?</h3>
+            <p>The zone transfer from the primary never succeeded, so the secondary has no zone data. Check allow-transfer settings on the primary, TSIG keys on both sides, and the secondary's logs for transfer failures.</p>
+            <h3>NOTAUTH vs REFUSED — which is which?</h3>
+            <p>NOTAUTH: 'this zone is not mine (or your signature is not valid)'. REFUSED: 'I could answer, but policy says no' — like recursion denied to outside clients. Both indicate you are talking to the wrong server or without the right authorization, but REFUSED is a deliberate policy response.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/refused">DNS REFUSED</a> — policy-based rejection of queries or transfers.</li>
+                <li><a href="/errors/dns/yxdomain">DNS YXDOMAIN</a> — dynamic-update prerequisite conflicts.</li>
+                <li><a href="/errors/dns/servfail">DNS SERVFAIL</a> — what unloaded zones often produce for resolvers.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check NS/SOA records for any zone</span>
+                </a>
+        <a href="/dns-propagation/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Propagation Checker</span>
+                    <span class="recommended-tool-desc">Verify all nameservers agree</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"The server looks fine when I SSH in — why does Cloudflare say it is down?","acceptedAnswer":{"@type":"Answer","text":"Because 'up' for Cloudflare means 'accepts TCP connections from Cloudflare's IPs on the right port'. A running machine with a stopped web server, a 443 listener bound only to localhost, or a firewall dropping Cloudflare's ranges all look identical from the edge: refused. The direct-connection test from a third machine separates the cases."}},{"@type":"Question","name":"Why would a firewall block Cloudflare of all things?","acceptedAnswer":{"@type":"Answer","text":"Behind Cloudflare, the origin sees the entire internet funneled through a few hundred Cloudflare IPs. Naive rate-limiters and brute-force blockers (fail2ban on raw IPs, hosting 'attack protection') interpret that concentration as an attack and ban the ranges — taking the site down for everyone. Allowlist the published ranges and rate-limit on the real client IP (CF-Connecting-IP header) instead."}},{"@type":"Question","name":"Is 521 my host's fault or Cloudflare's?","acceptedAnswer":{"@type":"Answer","text":"Practically always the origin side (server or firewall). Cloudflare-side incidents exist but are rare and visible on cloudflarestatus.com — check it in ten seconds, then spend your time on the origin."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 521 — Web Server Is Down — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 521 — Web Server Is Down — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 521 'Web server is down'. Origin not listening on 443/80, hosting firewalls blocking Cloudflare's IP ranges, and how to verify.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 521, web server is down, error 521, cloudflare 521 fix, http 521">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 521 — Web Server Is Down — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 521 'Web server is down'. Origin not listening on 443/80, hosting firewalls blocking Cloudflare's IP ranges, and how to verify.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-521">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-521">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 521 — Web Server Is Down</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 521 — Web Server Is Down</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare tried to connect to the origin server and the connection was actively refused — nothing is accepting connections on the origin's port.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 521</code></li><li><code>web server is down</code></li><li><code>error 521</code></li><li><code>cloudflare 521 fix</code></li><li><code>http 521</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 521 is a refused TCP connection: Cloudflare reached the origin machine, and the machine said 'nothing is listening here'. Two causes cover nearly every case — the web server really is down (crashed, stopped, not listening on the HTTPS port), or a firewall on the origin is rejecting Cloudflare's IP ranges specifically. The second is sneakier: once a site moves behind Cloudflare, ALL traffic arrives from Cloudflare's published IP blocks, and security tools that rate-limit or block 'suspiciously busy' ranges end up refusing exactly the traffic that matters.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The origin web server is not running</strong> — Crashed, failed to restart after a deploy or reboot, or listening only on port 80 while Cloudflare connects to 443 (default in Full SSL modes).</li>
+                <li><strong>Firewall rejecting Cloudflare's IP ranges</strong> — iptables/ufw rules, hosting-panel security, or DDoS appliances refusing connections from Cloudflare's ranges — often after automated tools flagged the concentrated traffic.</li>
+                <li><strong>Wrong port expectations</strong> — The origin serves HTTPS on a nonstandard port or only plain HTTP, while the Cloudflare SSL mode dictates a 443 connection.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the web server is up and listening</h3>
+            <p>On the origin, confirm the service and its ports.</p>
+            <pre><code>sudo systemctl status nginx    # or apache2/caddy/myapp
+sudo ss -tlnp | grep -E ':443 |:80 '
+sudo systemctl restart nginx</code></pre>
+            <h3>2. Test a direct connection from outside</h3>
+            <p>From any machine (not the origin itself), try the origin IP. Refused here = server/port problem; works here but 521 through Cloudflare = firewall blocking Cloudflare specifically.</p>
+            <pre><code>curl -vk https://ORIGIN_IP/ -H 'Host: example.com' -o /dev/null
+nc -zv ORIGIN_IP 443</code></pre>
+            <h3>3. Allowlist Cloudflare's IP ranges</h3>
+            <p>Fetch the published ranges and permit them through every firewall layer (host + hosting provider).</p>
+            <pre><code># current ranges:
+curl -s https://www.cloudflare.com/ips-v4
+curl -s https://www.cloudflare.com/ips-v6
+# ufw example:
+for ip in $(curl -s https://www.cloudflare.com/ips-v4); do sudo ufw allow from $ip to any port 443 proto tcp; done</code></pre>
+            <h3>4. Align the SSL mode with what the origin serves</h3>
+            <p>If the origin only speaks HTTP on 80 (temporarily), Cloudflare's SSL mode must not demand 443 — though the real fix is putting a certificate on the origin and using Full (strict).</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>The server looks fine when I SSH in — why does Cloudflare say it is down?</h3>
+            <p>Because 'up' for Cloudflare means 'accepts TCP connections from Cloudflare's IPs on the right port'. A running machine with a stopped web server, a 443 listener bound only to localhost, or a firewall dropping Cloudflare's ranges all look identical from the edge: refused. The direct-connection test from a third machine separates the cases.</p>
+            <h3>Why would a firewall block Cloudflare of all things?</h3>
+            <p>Behind Cloudflare, the origin sees the entire internet funneled through a few hundred Cloudflare IPs. Naive rate-limiters and brute-force blockers (fail2ban on raw IPs, hosting 'attack protection') interpret that concentration as an attack and ban the ranges — taking the site down for everyone. Allowlist the published ranges and rate-limit on the real client IP (CF-Connecting-IP header) instead.</p>
+            <h3>Is 521 my host's fault or Cloudflare's?</h3>
+            <p>Practically always the origin side (server or firewall). Cloudflare-side incidents exist but are rare and visible on cloudflarestatus.com — check it in ten seconds, then spend your time on the origin.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-522">Cloudflare Error 522</a> — silence instead of refusal.</li>
+                <li><a href="/errors/cloudflare/error-523">Cloudflare Error 523</a> — no route to the origin at all.</li>
+                <li><a href="/errors/nginx/address-already-in-use">Nginx Address Already in Use</a> — why an origin server fails to start.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if the origin's ports answer</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Monitor the site from outside</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

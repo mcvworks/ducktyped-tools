@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Causes HTTP 429 Too Many Requests?","description":"Learn what HTTP 429 Too Many Requests means, how rate limiting works, common causes, and how to handle 429 errors in applications and APIs.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/http-429-too-many-requests/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Causes HTTP 429 Too Many Requests?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does HTTP 429 Too Many Requests mean?","acceptedAnswer":{"@type":"Answer","text":"HTTP 429 Too Many Requests means the server is rejecting your request because you have exceeded the allowed rate limit. The server considers you are sending too many requests in a given time period and is asking you to slow down."}},{"@type":"Question","name":"How do I handle a 429 response in my code?","acceptedAnswer":{"@type":"Answer","text":"Check the Retry-After response header, which indicates how many seconds to wait before retrying. Implement exponential backoff: wait 1 second, then 2, then 4, etc. between retries. Never retry immediately or in a tight loop, as this will extend the rate limit penalty."}},{"@type":"Question","name":"What is the Retry-After header?","acceptedAnswer":{"@type":"Answer","text":"The Retry-After header is included in 429 responses to tell the client when it can safely retry. It can be a number of seconds (e.g., Retry-After: 60) or an HTTP date (e.g., Retry-After: Sun, 08 Mar 2026 12:00:00 GMT). Always respect this header when present."}},{"@type":"Question","name":"Can rate limiting be per-user, per-IP, or global?","acceptedAnswer":{"@type":"Answer","text":"Rate limiting can be applied at any scope. Common approaches include per-IP (common for public APIs), per-API-key or per-user (for authenticated APIs), per-endpoint (different limits for different operations), and global (total request volume across all clients). The scope depends on the API provider's implementation."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP 429 Too Many Requests — Explained — duckTyped</title>
+    <meta name="description" content="Learn what HTTP 429 Too Many Requests means, how rate limiting works, common causes, and how to handle 429 errors in applications and APIs.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Causes HTTP 429 Too Many Requests? — Rate Limiting Explained — duckTyped">
+    <meta property="og:description" content="Learn what HTTP 429 means, how rate limiting works, and how to handle it.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/http-429-too-many-requests/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Causes HTTP 429 Too Many Requests? — duckTyped">
+    <meta name="twitter:description" content="Learn what HTTP 429 means and how to handle rate limiting.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/http-429-too-many-requests/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Causes HTTP 429 Too Many Requests?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Causes HTTP 429 Too Many Requests?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">HTTP 429 Too Many Requests is a rate-limiting response code. It means the server is intentionally rejecting your request because you have exceeded the allowed request rate. This guide explains how rate limiting works and how to handle 429 responses properly.</p>
+
+            <h2>What Is Rate Limiting?</h2>
+            <p><strong>Rate limiting</strong> is a technique servers use to control how many requests a client can make within a given time window. It protects servers from being overwhelmed by excessive traffic -- whether from legitimate high-volume usage, bugs in client code, or deliberate abuse.</p>
+            <p>Common rate limiting patterns:</p>
+            <ul>
+                <li><strong>Fixed window</strong> -- allows N requests per time window (e.g., 100 requests per minute). Simple but can allow bursts at window boundaries.</li>
+                <li><strong>Sliding window</strong> -- tracks requests over a rolling time period, preventing boundary bursts.</li>
+                <li><strong>Token bucket</strong> -- tokens are added to a bucket at a fixed rate. Each request consumes a token. When the bucket is empty, requests are rejected. Allows controlled bursts.</li>
+                <li><strong>Leaky bucket</strong> -- requests are processed at a constant rate. Excess requests queue up and are processed later or rejected if the queue is full.</li>
+            </ul>
+
+            <h2>Common Causes of 429 Errors</h2>
+
+            <h3>API Rate Limits</h3>
+            <p>Most APIs impose rate limits to ensure fair usage. For example, an API might allow 60 requests per minute per API key. If your application exceeds this, subsequent requests receive 429 responses until the rate limit window resets. Common APIs with rate limits include GitHub, Twitter/X, Stripe, OpenAI, and virtually every public API.</p>
+
+            <h3>Aggressive Polling or Scraping</h3>
+            <p>Applications that poll an endpoint too frequently (checking for updates every second instead of every 30 seconds) or scripts that scrape websites at high speed commonly trigger rate limits. Web Application Firewalls (WAFs) and CDNs often implement rate limiting at the edge to block scrapers.</p>
+
+            <h3>Concurrent Request Bursts</h3>
+            <p>Sending many requests simultaneously (e.g., fetching 100 API pages in parallel) can trigger rate limits even if the total number of requests is within the limit. Some rate limiters count concurrent connections, not just requests per second.</p>
+
+            <h3>Shared IP Address</h3>
+            <p>If rate limiting is IP-based, you may hit limits because other users sharing your IP address (common with corporate proxies, VPNs, or shared hosting) are also making requests to the same server.</p>
+
+            <h3>Login/Authentication Brute Force Protection</h3>
+            <p>Many applications rate-limit login attempts to prevent credential stuffing and brute force attacks. After a certain number of failed login attempts, the server returns 429 to slow down the attacker. This is a deliberate security measure.</p>
+
+            <h2>The Retry-After Header</h2>
+            <p>Well-implemented APIs include a <code>Retry-After</code> response header with 429 responses. This header tells you exactly when you can retry:</p>
+            <pre><code>HTTP/1.1 429 Too Many Requests
+Retry-After: 30
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1709913600</code></pre>
+            <p>Common rate-limit headers (not standardized, but widely used):</p>
+            <ul>
+                <li><code>Retry-After</code> -- seconds to wait (or an HTTP date) before retrying.</li>
+                <li><code>X-RateLimit-Limit</code> -- the maximum number of requests allowed in the window.</li>
+                <li><code>X-RateLimit-Remaining</code> -- how many requests you have left in the current window.</li>
+                <li><code>X-RateLimit-Reset</code> -- Unix timestamp when the rate limit window resets.</li>
+            </ul>
+
+            <h2>Handling 429 Errors Properly</h2>
+
+            <h3>Exponential Backoff</h3>
+            <p>The standard approach for handling 429 responses is <strong>exponential backoff with jitter</strong>:</p>
+            <ol>
+                <li>If a <code>Retry-After</code> header is present, wait that many seconds.</li>
+                <li>Otherwise, wait 1 second, then retry.</li>
+                <li>If still rate-limited, wait 2 seconds, then 4, then 8, and so on.</li>
+                <li>Add random <strong>jitter</strong> (e.g., +/- 20%) to prevent multiple clients from retrying simultaneously.</li>
+                <li>Set a maximum retry count (e.g., 5 attempts) to avoid infinite loops.</li>
+            </ol>
+
+            <h3>Request Queuing</h3>
+            <p>For applications that need to make many API calls, implement a request queue that sends requests at a controlled rate, staying under the limit. Libraries like <code>bottleneck</code> (Node.js) or <code>ratelimit</code> (Python) handle this automatically.</p>
+
+            <h3>Caching</h3>
+            <p>Reduce unnecessary API calls by caching responses. If the data does not change frequently, cache it locally and serve from cache instead of making a new API request for every user.</p>
+
+            <h3>Proactive Rate Tracking</h3>
+            <p>Track <code>X-RateLimit-Remaining</code> headers and slow down requests as you approach the limit, rather than waiting for a 429 response. This provides a smoother experience than hitting the limit and having to back off.</p>
+
+            <h2>429 vs. Other Error Codes</h2>
+            <ul>
+                <li><strong>429 Too Many Requests</strong> -- you exceeded the rate limit. Slow down and retry later.</li>
+                <li><strong>403 Forbidden</strong> -- you do not have permission. A rate-limited IP might be temporarily banned and receive 403 instead of 429.</li>
+                <li><strong>503 Service Unavailable</strong> -- the server is overloaded or under maintenance. Similar symptom but different cause than 429.</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> -- measure API response times and check for degraded performance.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> -- inspect rate-limit response headers.</li>
+                <li><a href="/link-checker/">Link Checker</a> -- check URL availability status codes.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-latency/">HTTP Latency guide</a>, <a href="/learn/http-502-bad-gateway/">What is HTTP 502 Bad Gateway</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/429-too-many-requests">Fix 429 Too Many Requests</a> -- step-by-step troubleshooting guide.</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> -- another common server error.</li>
+                <li><a href="/errors/http/">All HTTP Errors</a> -- browse all HTTP error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Check HTTP Latency</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

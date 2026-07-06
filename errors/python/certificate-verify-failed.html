@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the same URL work in my browser and in curl but not Python?","acceptedAnswer":{"@type":"Answer","text":"Each uses a different trust store: browsers and OS-integrated curl use the system store (where corporate CAs get installed by IT); Python uses certifi's Mozilla-derived bundle. Add the missing CA to the bundle Python reads (REQUESTS_CA_BUNDLE / SSL_CERT_FILE), and the difference disappears."}},{"@type":"Question","name":"Where does Python actually look for CA certificates?","acceptedAnswer":{"@type":"Answer","text":"python3 -c \"import ssl; print(ssl.get_default_verify_paths())\" shows the interpreter's default paths; requests uses certifi's bundle (python3 -c \"import certifi; print(certifi.where())\"). The two can differ — one reason urllib and requests sometimes disagree about the same server."}},{"@type":"Question","name":"How is this related to pip's TLS errors?","acceptedAnswer":{"@type":"Answer","text":"pip verifies PyPI's certificate the same way; on intercepted networks it fails identically. The pip config 'global.cert' (or --cert) points it at the corporate CA. Never use --trusted-host as a permanent fix — it disables verification for that host entirely."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python SSLCertVerificationError — Certificate Verify Failed — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python SSLCertVerificationError — Certificate Verify Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Python CERTIFICATE_VERIFY_FAILED. macOS Install Certificates.command, certifi, corporate proxy CAs via REQUESTS_CA_BUNDLE — not verify=False.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ssl.SSLCertVerificationError, CERTIFICATE_VERIFY_FAILED, certificate verify failed: unable to get local issuer certificate, requests.exceptions.SSLError, urllib certificate verify failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python SSLCertVerificationError — Certificate Verify Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Python CERTIFICATE_VERIFY_FAILED. macOS Install Certificates.command, certifi, corporate proxy CAs via REQUESTS_CA_BUNDLE — not verify=False.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/certificate-verify-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/certificate-verify-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python SSLCertVerificationError — Certificate Verify Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python SSLCertVerificationError — Certificate Verify Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The failure 'ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate' in requests, urllib, or pip.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ssl.SSLCertVerificationError</code></li><li><code>CERTIFICATE_VERIFY_FAILED</code></li><li><code>certificate verify failed: unable to get local issuer certificate</code></li><li><code>requests.exceptions.SSLError</code></li><li><code>urllib certificate verify failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Python could not validate the TLS certificate chain of the server it connected to. Two environments dominate: macOS python.org installs, which ship without linking to any CA store until you run the bundled 'Install Certificates.command' (the single most famous cause), and corporate networks, where a TLS-intercepting proxy re-signs traffic with a company CA that Python's trust bundle has never heard of. As with Node's equivalent error, the correct fix is teaching Python the right CA — disabling verification hands the connection to whoever is in the middle.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>macOS python.org install without certificates linked</strong> — The installer does not wire the certifi bundle in; every HTTPS request from that interpreter fails until the Install Certificates command runs.</li>
+                <li><strong>Corporate TLS interception</strong> — Zscaler/Netskope-style proxies re-encrypt with the company CA. Browsers trust it via the OS store; Python (using certifi's Mozilla bundle) does not.</li>
+                <li><strong>Server with an incomplete chain or expired certificate</strong> — If only one site fails from every network, the server likely serves no intermediate certificate (or an expired one) — a server-side problem.</li>
+                <li><strong>Stale certifi or frozen environments</strong> — Very old certifi bundles miss newer roots; frozen apps (PyInstaller) can ship without the bundle path resolving.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. macOS: run Install Certificates.command</h3>
+            <p>One double-click (or shell line) links the interpreter to certifi's CA bundle.</p>
+            <pre><code>/Applications/Python\ 3.12/Install\ Certificates.command
+# or equivalently:
+python3 -m pip install --upgrade certifi</code></pre>
+            <h3>2. Corporate networks: point Python at the company CA</h3>
+            <p>Export the proxy's root CA (from IT or the OS keychain) as PEM and set the bundle env vars — requests, pip, and most libraries honor them.</p>
+            <pre><code>export REQUESTS_CA_BUNDLE=/etc/ssl/certs/corp-root-ca.pem
+export SSL_CERT_FILE=/etc/ssl/certs/corp-root-ca.pem
+# pip permanently:
+pip config set global.cert /etc/ssl/certs/corp-root-ca.pem</code></pre>
+            <h3>3. Check whether the server is at fault</h3>
+            <p>Test the chain independently; a missing intermediate reproduces from any network and needs fixing server-side.</p>
+            <pre><code>openssl s_client -connect example.com:443 -servername example.com &lt;/dev/null 2&gt;/dev/null | grep -E 'verify|depth'
+# or use an online SSL checker for a second opinion</code></pre>
+            <h3>4. Never ship verify=False</h3>
+            <p>requests.get(url, verify=False) silences the error by trusting anyone — including an attacker. Acceptable for a one-off local experiment; a bug anywhere else. Audit for it before deploys.</p>
+            <pre><code>grep -rn 'verify=False\|CERT_NONE' --include='*.py' .</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does the same URL work in my browser and in curl but not Python?</h3>
+            <p>Each uses a different trust store: browsers and OS-integrated curl use the system store (where corporate CAs get installed by IT); Python uses certifi's Mozilla-derived bundle. Add the missing CA to the bundle Python reads (REQUESTS_CA_BUNDLE / SSL_CERT_FILE), and the difference disappears.</p>
+            <h3>Where does Python actually look for CA certificates?</h3>
+            <p>python3 -c "import ssl; print(ssl.get_default_verify_paths())" shows the interpreter's default paths; requests uses certifi's bundle (python3 -c "import certifi; print(certifi.where())"). The two can differ — one reason urllib and requests sometimes disagree about the same server.</p>
+            <h3>How is this related to pip's TLS errors?</h3>
+            <p>pip verifies PyPI's certificate the same way; on intercepted networks it fails identically. The pip config 'global.cert' (or --cert) points it at the corporate CA. Never use --trusted-host as a permanent fix — it disables verification for that host entirely.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/unable-to-get-issuer-cert-locally">Node UNABLE_TO_GET_ISSUER_CERT_LOCALLY</a> — the same problem in Node.</li>
+                <li><a href="/errors/ssl/ssl-certificate-verify-failed">SSL Certificate Verify Failed</a> — the general TLS verification error.</li>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate Chain Invalid</a> — server-side chain problems.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL certificates explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check the server's chain independently</span>
+                </a>
+        <a href="/csr-decoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">CSR Decoder</span>
+                    <span class="recommended-tool-desc">Inspect certificates</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

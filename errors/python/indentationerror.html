@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is TabError specifically?","acceptedAnswer":{"@type":"Answer","text":"A subclass of IndentationError raised when a single block mixes tabs and spaces ambiguously ('inconsistent use of tabs and spaces in indentation'). Python 3 refuses to guess how wide a tab is. Normalize to spaces and it disappears."}},{"@type":"Question","name":"The line looks perfectly aligned — why does Python disagree?","acceptedAnswer":{"@type":"Answer","text":"Alignment is visual; Python counts characters. A tab can render as the same width as 4 spaces while being a different indent level, and a non-breaking space looks identical to a space while not counting as indentation at all. repr() of the line settles every such argument."}},{"@type":"Question","name":"Tabs or spaces — does Python care which I choose?","acceptedAnswer":{"@type":"Answer","text":"Either works if perfectly consistent, but PEP 8 and the entire tooling ecosystem (black, most formatters) standardize on 4 spaces. Choosing spaces plus an auto-formatter makes this whole error class extinct in a codebase."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python IndentationError — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python IndentationError — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Python IndentationError and TabError. Tabs vs spaces, editor settings, invisible characters from copy-paste, and reindent tooling.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="IndentationError: unexpected indent, IndentationError: expected an indented block, unindent does not match any outer indentation level, TabError: inconsistent use of tabs and spaces in indentation">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python IndentationError — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Python IndentationError and TabError. Tabs vs spaces, editor settings, invisible characters from copy-paste, and reindent tooling.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/indentationerror">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/indentationerror">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python IndentationError</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python IndentationError</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Crashes like 'IndentationError: unexpected indent', 'expected an indented block', and 'unindent does not match any outer indentation level' — whitespace that Python cannot parse as structure.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>IndentationError: unexpected indent</code></li><li><code>IndentationError: expected an indented block</code></li><li><code>unindent does not match any outer indentation level</code></li><li><code>TabError: inconsistent use of tabs and spaces in indentation</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Python uses indentation as syntax, so inconsistent leading whitespace is a parse error, not a style issue. The three messages point at three shapes: 'unexpected indent' — a line is deeper than its context allows; 'expected an indented block' — a colon promised a body that is not there (or not indented); 'unindent does not match any outer indentation level' — a dedent lands between existing levels, the signature of mixed tabs and spaces. TabError is the explicit mixed-whitespace diagnosis. Copy-pasted code (from web pages, PDFs, chats) is the leading source.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mixed tabs and spaces</strong> — Visually identical lines with different whitespace — an editor inserting tabs into a spaces file, or paste from a source that used the other convention.</li>
+                <li><strong>Copy-paste artifacts</strong> — Web pages and PDFs smuggle non-breaking spaces (U+00A0) and other invisible characters into the indentation, which Python does not count as indent.</li>
+                <li><strong>Empty block after a colon</strong> — A def/if/for line whose body was deleted or never written — Python requires at least a pass.</li>
+                <li><strong>Merge/edit damage</strong> — Conflict resolution or bulk find-replace shifting some lines' indentation out of alignment with their block.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Make the invisible visible</h3>
+            <p>Turn on whitespace rendering in the editor, or inspect the raw bytes of the offending line.</p>
+            <pre><code>cat -A file.py | sed -n '41,43p'    # tabs show as ^I, line ends as $
+python3 -c &quot;print(repr(open('file.py').readlines()[41]))&quot;</code></pre>
+            <h3>2. Normalize the whole file to spaces</h3>
+            <p>Convert tabs and reindent in one pass — PEP 8 says 4 spaces.</p>
+            <pre><code>expand -t 4 file.py &gt; fixed.py &amp;&amp; mv fixed.py file.py
+# or auto-format, which settles it permanently:
+pip install black &amp;&amp; black file.py</code></pre>
+            <h3>3. Fill empty blocks</h3>
+            <p>Any promised body needs at least a placeholder.</p>
+            <pre><code>def todo_later():
+    pass   # or: raise NotImplementedError
+
+if condition:
+    ...    # Ellipsis works too</code></pre>
+            <h3>4. Set the editor so it cannot happen again</h3>
+            <p>Spaces-only indentation, 4 wide, plus an .editorconfig so every contributor's editor agrees.</p>
+            <pre><code># .editorconfig
+[*.py]
+indent_style = space
+indent_size = 4</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is TabError specifically?</h3>
+            <p>A subclass of IndentationError raised when a single block mixes tabs and spaces ambiguously ('inconsistent use of tabs and spaces in indentation'). Python 3 refuses to guess how wide a tab is. Normalize to spaces and it disappears.</p>
+            <h3>The line looks perfectly aligned — why does Python disagree?</h3>
+            <p>Alignment is visual; Python counts characters. A tab can render as the same width as 4 spaces while being a different indent level, and a non-breaking space looks identical to a space while not counting as indentation at all. repr() of the line settles every such argument.</p>
+            <h3>Tabs or spaces — does Python care which I choose?</h3>
+            <p>Either works if perfectly consistent, but PEP 8 and the entire tooling ecosystem (black, most formatters) standardize on 4 spaces. Choosing spaces plus an auto-formatter makes this whole error class extinct in a codebase.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/attempted-relative-import">Attempted Relative Import</a> — another parse-time structure error.</li>
+                <li><a href="/errors/python/attributeerror-nonetype">AttributeError: NoneType</a> — everyday runtime tracebacks.</li>
+                <li><a href="/errors/python/unicodedecodeerror">UnicodeDecodeError</a> — invisible-byte problems in data.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/character-counter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Character Counter</span>
+                    <span class="recommended-tool-desc">Reveal invisible characters in pasted code</span>
+                </a>
+        <a href="/line-tools/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Line Tools</span>
+                    <span class="recommended-tool-desc">Clean up whitespace in bulk</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/character-counter/" class="cta-btn-primary">Try Character Counter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

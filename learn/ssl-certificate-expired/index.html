@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificate Expired: How to Fix It","description":"How to quickly fix an expired SSL certificate. Renew, reinstall, and verify your TLS certificate with duckTyped's free SSL checker, plus prevention steps.","datePublished":"2026-04-05","dateModified":"2026-04-05","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/ssl-certificate-expired/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"SSL Certificate Expired"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What happens when an SSL certificate expires?","acceptedAnswer":{"@type":"Answer","text":"Browsers will display a security warning and block users from visiting the site. Automated clients (APIs, webhooks, mobile apps) will refuse to connect. The domain continues to work over plain HTTP, but any resource that requires HTTPS — including most modern APIs — will fail until the certificate is renewed."}},{"@type":"Question","name":"How do I renew an expired SSL certificate?","acceptedAnswer":{"@type":"Answer","text":"If you use Let's Encrypt with certbot or a similar ACME client, run the renew command (e.g., 'sudo certbot renew') and reload your web server. If you use a commercial CA, generate a new CSR, submit it to the CA, download the issued certificate, and install it on your server. Always verify with an SSL checker after installation."}},{"@type":"Question","name":"How can I prevent my SSL certificate from expiring?","acceptedAnswer":{"@type":"Answer","text":"Set up automatic renewal with an ACME client like certbot, acme.sh, or Caddy (which handles renewal automatically). Configure monitoring that alerts you 30, 14, and 7 days before expiration. Keep your DNS and CAA records in good shape so automated renewal can succeed."}},{"@type":"Question","name":"Why did my certificate expire if I thought it was on auto-renewal?","acceptedAnswer":{"@type":"Answer","text":"Common causes: the renewal cron job was disabled, the ACME HTTP-01 or DNS-01 challenge failed, a CAA record blocks your CA, the firewall blocks outbound connections to the CA, disk space ran out, or the certificate file paths changed. Check the ACME client logs — the error is almost always in there."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificate Expired: How to Fix It Fast — duckTyped</title>
+    <meta name="description" content="How to fix an expired SSL certificate: renew, reinstall, and verify with duckTyped's free SSL checker. Plus auto-renewal setup to prevent it happening again.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificate Expired: How to Fix It Fast — duckTyped">
+    <meta property="og:description" content="Fix an expired SSL certificate fast. Renew, reinstall, verify, and set up automatic renewal.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-certificate-expired/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SSL Certificate Expired: How to Fix It Fast — duckTyped">
+    <meta name="twitter:description" content="Fix an expired SSL certificate fast. Free SSL checker plus step-by-step renewal guide.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/ssl-certificate-expired/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>SSL Certificate Expired</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificate Expired: How to Fix It Fast</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-04-05">April 5, 2026</time></p>
+            <p class="standalone-intro">Your visitors are seeing a scary browser warning and your API consumers are getting connection errors. An expired TLS certificate is both very serious (your site is effectively offline over HTTPS) and very easy to fix. This guide shows you exactly how to confirm the problem, renew the certificate, verify the fix, and set up automatic renewal so it never happens again.</p>
+
+            <h2>What's Happening</h2>
+            <p>Every TLS certificate has a fixed validity period — usually 90 days for Let's Encrypt, or 1 year for most commercial CAs. Once the expiration date passes, browsers treat the certificate as untrusted and show warnings like:</p>
+            <ul>
+                <li><strong>Chrome/Edge</strong>: "Your connection is not private" with error code <code>NET::ERR_CERT_DATE_INVALID</code></li>
+                <li><strong>Firefox</strong>: "Warning: Potential Security Risk Ahead" (<code>SEC_ERROR_EXPIRED_CERTIFICATE</code>)</li>
+                <li><strong>Safari</strong>: "This Connection Is Not Private"</li>
+                <li><strong>curl / command line</strong>: <code>SSL certificate problem: certificate has expired</code></li>
+            </ul>
+            <p>Related error pages: <a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a>, <a href="/errors/ssl/net-err-cert-date-invalid">NET::ERR_CERT_DATE_INVALID</a>.</p>
+
+            <h2>Step 1 — Confirm the Certificate Is Actually Expired</h2>
+            <p>Before touching any config, run the <a href="/ssl-checker/">SSL Certificate Checker</a> on your domain. It shows the issuer, Common Name, Subject Alternative Names, full certificate chain, expiration date, and TLS configuration. If the tool reports the certificate expired, you have your answer.</p>
+            <p>If the tool says the certificate is <em>valid</em> but users still see warnings, the problem isn't expiration — it's one of these lookalikes:</p>
+            <ul>
+                <li><strong>Wrong hostname</strong> — the certificate covers <code>example.com</code> but users are visiting <code>www.example.com</code> (or vice versa).</li>
+                <li><strong>Incomplete chain</strong> — your server isn't sending the intermediate certificate. Some browsers tolerate this via AIA fetching, others don't.</li>
+                <li><strong>Client clock is wrong</strong> — if a user's computer clock is set incorrectly, valid certificates appear expired on their end only.</li>
+                <li><strong>Certificate not yet valid</strong> — a <a href="/errors/ssl/ssl-certificate-not-yet-valid">"not yet valid"</a> error means the server clock is behind or the cert's <em>notBefore</em> date is in the future.</li>
+            </ul>
+
+            <h2>Step 2 — Renew the Certificate</h2>
+            <p>How you renew depends on where the certificate came from.</p>
+
+            <h3>Let's Encrypt (Free, 90-day certificates)</h3>
+            <p>Most modern sites use Let's Encrypt via an ACME client. To renew manually:</p>
+            <pre><code># certbot
+sudo certbot renew
+sudo systemctl reload nginx   # or apache2, caddy, etc.
+
+# acme.sh
+acme.sh --renew -d example.com --force
+systemctl reload nginx</code></pre>
+            <p>If the renewal fails, the error in the certbot log is almost always one of: HTTP-01 challenge can't reach port 80 (firewall), DNS-01 challenge can't update DNS, CAA record blocks Let's Encrypt, or the account key is missing. Fix the underlying issue and re-run.</p>
+
+            <h3>Caddy (automatic)</h3>
+            <p>Caddy renews automatically as long as it's running and can reach the CA. If your Caddy certificate is expired, the daemon is probably not running — check with <code>systemctl status caddy</code> and review logs.</p>
+
+            <h3>Commercial CA (DigiCert, Sectigo, GoDaddy, GlobalSign, etc.)</h3>
+            <ol>
+                <li>Log into your CA's control panel and order a renewal.</li>
+                <li>Generate a new CSR on your server (or reuse the existing key and CSR — your CA's docs will specify).</li>
+                <li>Submit the CSR; the CA validates domain ownership and issues the new certificate.</li>
+                <li>Download the certificate plus the intermediate chain.</li>
+                <li>Install both on your server in the correct location (e.g., <code>/etc/nginx/ssl/</code>, <code>/etc/letsencrypt/live/example.com/</code>, or your load balancer's cert store).</li>
+                <li>Reload the web server, load balancer, or CDN.</li>
+            </ol>
+            <p>If you need to inspect a CSR before submitting it, use the <a href="/csr-decoder/">CSR Decoder</a> to verify the Common Name, SANs, and organization fields.</p>
+
+            <h3>CDN or Managed Hosting (Cloudflare, Fastly, Netlify, Vercel, AWS ACM)</h3>
+            <p>Most CDNs and managed hosts handle TLS for you — an expired certificate means either their automation broke or you're running in a mode that requires manual action (e.g., Cloudflare's "Full (Strict)" mode requires a valid cert on your origin <em>and</em> Cloudflare). Check the provider's dashboard and logs.</p>
+
+            <h2>Step 3 — Verify the Fix</h2>
+            <p>After installing the renewed certificate, <strong>always</strong> verify before walking away:</p>
+            <ol>
+                <li>Run the <a href="/ssl-checker/">SSL Checker</a> again. Confirm the new expiration date, correct hostname, and complete chain.</li>
+                <li>Open the site in a private/incognito window (to bypass any browser cache of the old cert warning).</li>
+                <li>If you use a load balancer or multiple servers, check each backend — certificates need to be updated on <em>all</em> of them, not just one.</li>
+                <li>If you use HSTS with a long <code>max-age</code>, users who visited before expiration may still see errors until the HSTS cache refreshes.</li>
+            </ol>
+
+            <h2>Step 4 — Set Up Automatic Renewal</h2>
+            <p>If you just renewed manually, the single most important thing you can do next is make sure this never happens again.</p>
+
+            <h3>Automate with ACME</h3>
+            <p>Certbot installs a systemd timer or cron job by default — verify it's actually running:</p>
+            <pre><code>systemctl list-timers | grep certbot
+# or
+sudo crontab -l | grep certbot</code></pre>
+            <p>Run a dry-run to confirm renewal will succeed when the real renewal fires:</p>
+            <pre><code>sudo certbot renew --dry-run</code></pre>
+
+            <h3>Add Expiration Monitoring</h3>
+            <p>Even with auto-renewal, monitor expiration externally. Set up alerts at 30, 14, and 7 days before expiration using:</p>
+            <ul>
+                <li>Your existing monitoring platform (Datadog, New Relic, Grafana, Uptime Kuma, etc.) — most have built-in TLS expiration checks.</li>
+                <li>A simple cron job that runs <code>openssl s_client</code> or hits your API and posts to Slack if the cert is close to expiring.</li>
+                <li>Free services like Let's Monitor or ssl-checker.io.</li>
+            </ul>
+
+            <h3>Keep CAA Records Sane</h3>
+            <p>A CAA DNS record that doesn't list your CA will silently block every future renewal. Use the <a href="/dns-lookup/">DNS Checker</a> to query your CAA record and confirm it includes the CA you actually use. If you're unsure, remove the CAA record entirely — that allows any CA to issue.</p>
+
+            <h2>Common Root Causes of Expiration</h2>
+            <ul>
+                <li><strong>Auto-renewal was never set up</strong> — someone ran certbot manually once, forgot to enable the timer.</li>
+                <li><strong>Server was down during renewal window</strong> — certbot ran but couldn't complete the HTTP-01 challenge.</li>
+                <li><strong>Port 80 firewall rule</strong> — HTTP-01 challenges need port 80 open to the internet, even if you redirect all traffic to HTTPS.</li>
+                <li><strong>CAA record was added after initial issuance</strong> — locked out your own CA.</li>
+                <li><strong>DNS provider API key expired</strong> — DNS-01 challenges can't update records.</li>
+                <li><strong>Disk full</strong> — renewal writes to <code>/etc/letsencrypt/</code> and fails if the disk is out of space.</li>
+                <li><strong>Service account rotated</strong> — the ACME client account key was deleted or the email address bounced, so the CA revoked the account.</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — inspect expiration, chain, and TLS configuration.</li>
+                <li><a href="/csr-decoder/">CSR Decoder</a> — verify a certificate signing request before submitting to a CA.</li>
+                <li><a href="/public-key-decoder/">Public Key Decoder</a> — inspect certificate and public key details.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — verify CAA records aren't blocking your CA.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> — check HSTS and related TLS hardening headers.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL certificates explained</a>, <a href="/learn/ssl-tls-handshake/">TLS handshake</a>, <a href="/learn/err-ssl-protocol-error/">ERR_SSL_PROTOCOL_ERROR</a>, <a href="/learn/website-not-loading/">Website not loading diagnostic</a>, <a href="/learn/security-headers/">Security headers guide</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check your SSL certificate</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,3214 @@
+{
+  "blocked_by_cors_policy": {
+    "category": "browser",
+    "title": "Blocked by CORS Policy",
+    "description": "The browser blocked a cross-origin request because the server did not return an Access-Control-Allow-Origin header.",
+    "url": "/errors/browser/blocked_by_cors_policy",
+    "keywords": [
+      "blocked by cors policy",
+      "no access-control-allow-origin header",
+      "cors error",
+      "access-control-allow-origin",
+      "cors preflight",
+      "cross-origin request blocked"
+    ]
+  },
+  "mx_record_not_found": {
+    "category": "dns",
+    "title": "MX Record Not Found",
+    "description": "A domain has no MX record, so sending mail servers have nowhere to deliver email and messages bounce.",
+    "url": "/errors/dns/mx-record-not-found",
+    "alsoIn": ["email"],
+    "keywords": [
+      "mx record not found",
+      "no mx record",
+      "mx record missing",
+      "email not delivering no mx",
+      "querymx enodata",
+      "domain has no mx record"
+    ]
+  },
+  "dns_probe_finished_nxdomain": {
+    "category": "browser",
+    "title": "DNS_PROBE_FINISHED_NXDOMAIN",
+    "description": "Domain name could not be resolved — DNS lookup returned no results.",
+    "url": "/errors/browser/dns_probe_finished_nxdomain",
+    "keywords": [
+      "nxdomain",
+      "dns probe",
+      "domain not found",
+      "chrome dns error"
+    ]
+  },
+  "err_connection_reset": {
+    "category": "browser",
+    "title": "ERR_CONNECTION_RESET",
+    "description": "The connection was interrupted while loading the page.",
+    "url": "/errors/browser/err_connection_reset",
+    "keywords": [
+      "connection reset",
+      "err_connection_reset",
+      "chrome error"
+    ]
+  },
+  "err_connection_refused": {
+    "category": "browser",
+    "title": "ERR_CONNECTION_REFUSED",
+    "description": "The server actively refused the connection request.",
+    "url": "/errors/browser/err_connection_refused",
+    "keywords": [
+      "connection refused",
+      "err_connection_refused",
+      "port blocked"
+    ]
+  },
+  "err_too_many_redirects": {
+    "category": "browser",
+    "title": "ERR_TOO_MANY_REDIRECTS",
+    "description": "The page entered a redirect loop and could not load.",
+    "url": "/errors/browser/err_too_many_redirects",
+    "keywords": [
+      "redirect loop",
+      "too many redirects",
+      "err_too_many_redirects"
+    ],
+    "alsoIn": [
+      "cloudflare"
+    ]
+  },
+  "err_name_not_resolved": {
+    "category": "browser",
+    "title": "ERR_NAME_NOT_RESOLVED",
+    "description": "The browser could not resolve the domain name — DNS lookup failed.",
+    "url": "/errors/browser/err_name_not_resolved",
+    "keywords": [
+      "name not resolved",
+      "dns failed",
+      "err_name_not_resolved"
+    ]
+  },
+  "err_ssl_version_or_cipher_mismatch": {
+    "category": "browser",
+    "title": "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+    "description": "The browser and server could not agree on a TLS version or cipher suite.",
+    "url": "/errors/browser/err_ssl_version_or_cipher_mismatch",
+    "keywords": [
+      "ssl version",
+      "cipher mismatch",
+      "tls version",
+      "ssl cipher"
+    ]
+  },
+  "err_cert_common_name_invalid": {
+    "category": "browser",
+    "title": "ERR_CERT_COMMON_NAME_INVALID",
+    "description": "The SSL certificate does not match the domain name being visited.",
+    "url": "/errors/browser/err_cert_common_name_invalid",
+    "keywords": [
+      "cert common name",
+      "certificate mismatch",
+      "ssl hostname"
+    ]
+  },
+  "err_internet_disconnected": {
+    "category": "browser",
+    "title": "ERR_INTERNET_DISCONNECTED",
+    "description": "Your device has no internet connection.",
+    "url": "/errors/browser/err_internet_disconnected",
+    "keywords": [
+      "internet disconnected",
+      "no internet",
+      "offline"
+    ]
+  },
+  "err_network_changed": {
+    "category": "browser",
+    "title": "ERR_NETWORK_CHANGED",
+    "description": "The network configuration changed while a page was loading.",
+    "url": "/errors/browser/err_network_changed",
+    "keywords": [
+      "network changed",
+      "err_network_changed",
+      "wifi switched"
+    ]
+  },
+  "err_cache_miss": {
+    "category": "browser",
+    "title": "ERR_CACHE_MISS",
+    "description": "The page requires form data to be resubmitted but the cache is missing.",
+    "url": "/errors/browser/err_cache_miss",
+    "keywords": [
+      "cache miss",
+      "form resubmit",
+      "post request",
+      "err_cache_miss"
+    ]
+  },
+  "err_blocked_by_client": {
+    "category": "browser",
+    "title": "ERR_BLOCKED_BY_CLIENT",
+    "description": "A browser extension blocked the request before it reached the server.",
+    "url": "/errors/browser/err_blocked_by_client",
+    "keywords": [
+      "blocked by client",
+      "ad blocker",
+      "extension blocked",
+      "err_blocked_by_client"
+    ]
+  },
+  "err_timed_out": {
+    "category": "browser",
+    "title": "ERR_TIMED_OUT",
+    "description": "Chrome waited too long for the server to respond and gave up.",
+    "url": "/errors/browser/err_timed_out",
+    "keywords": [
+      "timed out",
+      "connection timeout",
+      "err_timed_out",
+      "server slow"
+    ]
+  },
+  "400_bad_request": {
+    "category": "http",
+    "title": "400 Bad Request",
+    "description": "The server could not process the request due to malformed syntax.",
+    "url": "/errors/http/400-bad-request",
+    "keywords": [
+      "400",
+      "bad request",
+      "malformed request",
+      "invalid request"
+    ]
+  },
+  "401_unauthorized": {
+    "category": "http",
+    "title": "401 Unauthorized",
+    "description": "Authentication is required and the request did not provide valid credentials.",
+    "url": "/errors/http/401-unauthorized",
+    "keywords": [
+      "401",
+      "unauthorized",
+      "authentication failed",
+      "login required"
+    ]
+  },
+  "403_forbidden": {
+    "category": "http",
+    "title": "403 Forbidden",
+    "description": "The server refuses to authorize access to the requested resource.",
+    "url": "/errors/http/403-forbidden",
+    "keywords": [
+      "403",
+      "forbidden",
+      "access denied",
+      "not authorized"
+    ]
+  },
+  "404_not_found": {
+    "category": "http",
+    "title": "404 Not Found",
+    "description": "The requested resource could not be found on the server.",
+    "url": "/errors/http/404-not-found",
+    "keywords": [
+      "404",
+      "not found",
+      "page not found",
+      "missing page"
+    ]
+  },
+  "405_method_not_allowed": {
+    "category": "http",
+    "title": "405 Method Not Allowed",
+    "description": "The HTTP method used is not allowed for the requested resource.",
+    "url": "/errors/http/405-method-not-allowed",
+    "keywords": [
+      "405",
+      "method not allowed",
+      "http method",
+      "delete not allowed"
+    ]
+  },
+  "408_request_timeout": {
+    "category": "http",
+    "title": "408 Request Timeout",
+    "description": "The server closed the connection because the client took too long to send the request.",
+    "url": "/errors/http/408-request-timeout",
+    "keywords": [
+      "408",
+      "request timeout",
+      "server timeout",
+      "slow upload"
+    ]
+  },
+  "409_conflict": {
+    "category": "http",
+    "title": "409 Conflict",
+    "description": "The request conflicts with the current state of the resource.",
+    "url": "/errors/http/409-conflict",
+    "keywords": [
+      "409",
+      "conflict",
+      "duplicate resource",
+      "version conflict"
+    ]
+  },
+  "410_gone": {
+    "category": "http",
+    "title": "410 Gone",
+    "description": "The requested resource has been permanently removed.",
+    "url": "/errors/http/410-gone",
+    "keywords": [
+      "410",
+      "gone",
+      "permanently removed",
+      "deleted page"
+    ]
+  },
+  "415_unsupported_media_type": {
+    "category": "http",
+    "title": "415 Unsupported Media Type",
+    "description": "The server refuses to accept the request because the Content-Type is not supported.",
+    "url": "/errors/http/415-unsupported-media-type",
+    "keywords": [
+      "415",
+      "unsupported media type",
+      "content-type",
+      "wrong format"
+    ]
+  },
+  "422_unprocessable_entity": {
+    "category": "http",
+    "title": "422 Unprocessable Entity",
+    "description": "The request syntax is valid but the content fails semantic validation.",
+    "url": "/errors/http/422-unprocessable-entity",
+    "keywords": [
+      "422",
+      "unprocessable entity",
+      "validation error",
+      "invalid data"
+    ]
+  },
+  "429_too_many_requests": {
+    "category": "http",
+    "title": "429 Too Many Requests",
+    "description": "The client has sent too many requests and hit the server's rate limit.",
+    "url": "/errors/http/429-too-many-requests",
+    "keywords": [
+      "429",
+      "too many requests",
+      "rate limit",
+      "throttled"
+    ]
+  },
+  "500_internal_server_error": {
+    "category": "http",
+    "title": "500 Internal Server Error",
+    "description": "The server encountered an unexpected error while processing the request.",
+    "url": "/errors/http/500-internal-server-error",
+    "keywords": [
+      "500",
+      "internal server error",
+      "server crash",
+      "server error"
+    ]
+  },
+  "501_not_implemented": {
+    "category": "http",
+    "title": "501 Not Implemented",
+    "description": "The server does not support the HTTP method used in the request.",
+    "url": "/errors/http/501-not-implemented",
+    "keywords": [
+      "501",
+      "not implemented",
+      "unsupported method",
+      "http feature"
+    ]
+  },
+  "502_bad_gateway": {
+    "category": "http",
+    "title": "502 Bad Gateway",
+    "description": "The upstream server returned an invalid response.",
+    "url": "/errors/http/502-bad-gateway",
+    "keywords": [
+      "502",
+      "bad gateway",
+      "nginx error",
+      "proxy error"
+    ],
+    "alsoIn": [
+      "cloudflare"
+    ]
+  },
+  "503_service_unavailable": {
+    "category": "http",
+    "title": "503 Service Unavailable",
+    "description": "The server is temporarily unable to handle requests.",
+    "url": "/errors/http/503-service-unavailable",
+    "keywords": [
+      "503",
+      "service unavailable",
+      "server down",
+      "maintenance"
+    ]
+  },
+  "504_gateway_timeout": {
+    "category": "http",
+    "title": "504 Gateway Timeout",
+    "description": "The gateway timed out waiting for an upstream server to respond.",
+    "url": "/errors/http/504-gateway-timeout",
+    "keywords": [
+      "504",
+      "gateway timeout",
+      "upstream timeout",
+      "nginx timeout"
+    ],
+    "alsoIn": [
+      "cloudflare"
+    ]
+  },
+  "507_insufficient_storage": {
+    "category": "http",
+    "title": "507 Insufficient Storage",
+    "description": "The server cannot store the data needed to complete the request.",
+    "url": "/errors/http/507-insufficient-storage",
+    "keywords": [
+      "507",
+      "insufficient storage",
+      "disk full",
+      "storage quota"
+    ]
+  },
+  "dns_server_not_responding": {
+    "category": "dns",
+    "title": "DNS Server Not Responding",
+    "description": "The configured DNS server is offline or not responding to queries.",
+    "url": "/errors/dns/dns-server-not-responding",
+    "keywords": [
+      "dns server not responding",
+      "dns offline",
+      "dns server down"
+    ]
+  },
+  "dns_lookup_failed": {
+    "category": "dns",
+    "title": "DNS Lookup Failed",
+    "description": "The DNS query returned no usable result for the domain.",
+    "url": "/errors/dns/dns-lookup-failed",
+    "keywords": [
+      "dns lookup failed",
+      "dns error",
+      "domain resolution failed"
+    ]
+  },
+  "dns_probe_started": {
+    "category": "dns",
+    "title": "DNS_PROBE_STARTED",
+    "description": "Chrome is running its DNS diagnostic probe after a failed lookup.",
+    "url": "/errors/dns/dns-probe-started",
+    "keywords": [
+      "dns probe started",
+      "dns diagnostic",
+      "chrome dns probe"
+    ]
+  },
+  "dns_probe_finished_bad_config": {
+    "category": "dns",
+    "title": "DNS_PROBE_FINISHED_BAD_CONFIG",
+    "description": "Chrome detected a DNS misconfiguration on your device or network.",
+    "url": "/errors/dns/dns-probe-finished-bad-config",
+    "keywords": [
+      "dns bad config",
+      "dns misconfiguration",
+      "dns probe bad config"
+    ]
+  },
+  "dns_probe_finished_no_internet": {
+    "category": "dns",
+    "title": "DNS_PROBE_FINISHED_NO_INTERNET",
+    "description": "Chrome's DNS probe confirmed there is no internet connection.",
+    "url": "/errors/dns/dns-probe-finished-no-internet",
+    "keywords": [
+      "dns no internet",
+      "no internet connection",
+      "offline dns probe"
+    ]
+  },
+  "servfail": {
+    "category": "dns",
+    "title": "DNS SERVFAIL",
+    "description": "The DNS server returned a server failure response code.",
+    "url": "/errors/dns/servfail",
+    "keywords": [
+      "servfail",
+      "dns server failure",
+      "dnssec failure",
+      "dns rcode 2"
+    ]
+  },
+  "nxdomain": {
+    "category": "dns",
+    "title": "NXDOMAIN",
+    "description": "The DNS server confirmed the queried domain does not exist.",
+    "url": "/errors/dns/nxdomain",
+    "keywords": [
+      "nxdomain",
+      "domain not found",
+      "dns rcode 3",
+      "non-existent domain"
+    ]
+  },
+  "smtp_421": {
+    "category": "email",
+    "title": "SMTP 421 — Service Temporarily Unavailable",
+    "description": "The receiving mail server closed the connection temporarily.",
+    "url": "/errors/email/smtp-421",
+    "keywords": [
+      "smtp 421",
+      "mail server unavailable",
+      "email temporary error"
+    ]
+  },
+  "smtp_450": {
+    "category": "email",
+    "title": "SMTP 450 — Mailbox Temporarily Unavailable",
+    "description": "The recipient mailbox is temporarily unavailable; delivery will be retried.",
+    "url": "/errors/email/smtp-450",
+    "keywords": [
+      "smtp 450",
+      "mailbox unavailable",
+      "greylisting",
+      "email retry"
+    ]
+  },
+  "smtp_451": {
+    "category": "email",
+    "title": "SMTP 451 — Local Processing Error",
+    "description": "The mail server encountered a local error processing the message.",
+    "url": "/errors/email/smtp-451",
+    "keywords": [
+      "smtp 451",
+      "local error",
+      "spam filter deferral",
+      "email processing error"
+    ]
+  },
+  "smtp_452": {
+    "category": "email",
+    "title": "SMTP 452 — Insufficient System Storage",
+    "description": "The receiving mail server does not have enough disk space.",
+    "url": "/errors/email/smtp-452",
+    "keywords": [
+      "smtp 452",
+      "mail server full",
+      "disk space email",
+      "insufficient storage email"
+    ]
+  },
+  "smtp_521": {
+    "category": "email",
+    "title": "SMTP 521 — Server Does Not Accept Mail",
+    "description": "The receiving server is configured to never accept incoming email.",
+    "url": "/errors/email/smtp-521",
+    "keywords": [
+      "smtp 521",
+      "server no mail",
+      "null mx",
+      "email rejected"
+    ]
+  },
+  "smtp_535": {
+    "category": "email",
+    "title": "SMTP 535 — Authentication Failed",
+    "description": "SMTP authentication failed — username or password was rejected.",
+    "url": "/errors/email/smtp-535",
+    "keywords": [
+      "smtp 535",
+      "authentication failed",
+      "smtp login failed",
+      "wrong password email"
+    ]
+  },
+  "smtp_550": {
+    "category": "email",
+    "title": "SMTP 550 — Mailbox Unavailable",
+    "description": "The recipient address was rejected by the mail server.",
+    "url": "/errors/email/smtp-550",
+    "keywords": [
+      "smtp 550",
+      "mailbox unavailable",
+      "email rejected",
+      "user unknown"
+    ]
+  },
+  "smtp_553": {
+    "category": "email",
+    "title": "SMTP 553 — Mailbox Name Not Allowed",
+    "description": "The email address is invalid or violates the server's naming policy.",
+    "url": "/errors/email/smtp-553",
+    "keywords": [
+      "smtp 553",
+      "mailbox name invalid",
+      "email address invalid",
+      "relay restriction"
+    ]
+  },
+  "smtp_554": {
+    "category": "email",
+    "title": "SMTP 554 — Transaction Failed",
+    "description": "The mail server rejected the message, often due to spam filters.",
+    "url": "/errors/email/smtp-554",
+    "keywords": [
+      "smtp 554",
+      "transaction failed",
+      "spam rejected",
+      "email blocked"
+    ]
+  },
+  "mailbox_unavailable": {
+    "category": "email",
+    "title": "Mailbox Unavailable",
+    "description": "The recipient's email account cannot receive messages.",
+    "url": "/errors/email/mailbox-unavailable",
+    "keywords": [
+      "mailbox unavailable",
+      "email bounce",
+      "delivery failed",
+      "inbox full"
+    ]
+  },
+  "err_ssl_protocol_error": {
+    "category": "ssl",
+    "title": "ERR_SSL_PROTOCOL_ERROR",
+    "description": "The SSL handshake failed due to a protocol mismatch or configuration error.",
+    "url": "/errors/ssl/err_ssl_protocol_error",
+    "keywords": [
+      "ssl protocol error",
+      "err_ssl_protocol_error",
+      "ssl handshake",
+      "https error"
+    ]
+  },
+  "ssl_handshake_failed": {
+    "category": "ssl",
+    "title": "SSL Handshake Failed",
+    "description": "The browser and server could not complete TLS negotiation.",
+    "url": "/errors/ssl/ssl-handshake-failed",
+    "keywords": [
+      "ssl handshake failed",
+      "tls handshake",
+      "ssl negotiation failed"
+    ]
+  },
+  "ssl_certificate_expired": {
+    "category": "ssl",
+    "title": "SSL Certificate Expired",
+    "description": "The site's SSL certificate has passed its validity end date.",
+    "url": "/errors/ssl/ssl-certificate-expired",
+    "keywords": [
+      "ssl expired",
+      "certificate expired",
+      "ssl expiry",
+      "renew certificate"
+    ]
+  },
+  "ssl_certificate_revoked": {
+    "category": "ssl",
+    "title": "SSL Certificate Revoked",
+    "description": "The certificate authority revoked this certificate before expiry.",
+    "url": "/errors/ssl/ssl-certificate-revoked",
+    "keywords": [
+      "ssl revoked",
+      "certificate revoked",
+      "ocsp",
+      "crl revocation"
+    ]
+  },
+  "ssl_certificate_invalid": {
+    "category": "ssl",
+    "title": "SSL Certificate Invalid",
+    "description": "The SSL certificate failed browser validation for one or more reasons.",
+    "url": "/errors/ssl/ssl-certificate-invalid",
+    "keywords": [
+      "ssl invalid",
+      "certificate invalid",
+      "ssl error",
+      "https invalid"
+    ]
+  },
+  "net_err_cert_date_invalid": {
+    "category": "ssl",
+    "title": "NET::ERR_CERT_DATE_INVALID",
+    "description": "The certificate's validity dates do not match the current date.",
+    "url": "/errors/ssl/net-err-cert-date-invalid",
+    "keywords": [
+      "cert date invalid",
+      "certificate date",
+      "net::err_cert_date_invalid",
+      "ssl date error"
+    ]
+  },
+  "net_err_cert_authority_invalid": {
+    "category": "ssl",
+    "title": "NET::ERR_CERT_AUTHORITY_INVALID",
+    "description": "The certificate was issued by a Certificate Authority the browser does not trust.",
+    "url": "/errors/ssl/net-err-cert-authority-invalid",
+    "keywords": [
+      "cert authority invalid",
+      "untrusted ca",
+      "self signed certificate",
+      "net::err_cert_authority_invalid"
+    ]
+  },
+  "net_err_cert_weak_signature_algorithm": {
+    "category": "ssl",
+    "title": "NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM",
+    "description": "The certificate uses a deprecated weak signature algorithm such as SHA-1.",
+    "url": "/errors/ssl/net-err-cert-weak-signature-algorithm",
+    "keywords": [
+      "weak signature",
+      "sha-1 certificate",
+      "sha1 deprecated",
+      "net::err_cert_weak_signature_algorithm"
+    ]
+  },
+  "err_http2_protocol_error": {
+    "category": "browser",
+    "title": "ERR_HTTP2_PROTOCOL_ERROR",
+    "description": "HTTP/2 protocol error encountered by the browser",
+    "url": "/errors/browser/err_http2_protocol_error",
+    "keywords": [
+      "ERR_HTTP2_PROTOCOL_ERROR",
+      "http2 error",
+      "http/2 protocol error",
+      "chrome http2 error",
+      "net::ERR_HTTP2_PROTOCOL_ERROR",
+      "http2 stream error"
+    ]
+  },
+  "err_ssl_bad_record_mac_alert": {
+    "category": "browser",
+    "title": "ERR_SSL_BAD_RECORD_MAC_ALERT",
+    "description": "SSL/TLS record has an incorrect MAC (message authentication code)",
+    "url": "/errors/browser/err_ssl_bad_record_mac_alert",
+    "keywords": [
+      "ERR_SSL_BAD_RECORD_MAC_ALERT",
+      "ssl bad record mac",
+      "tls mac error",
+      "bad mac alert",
+      "ssl record error",
+      "net::ERR_SSL_BAD_RECORD_MAC_ALERT"
+    ]
+  },
+  "err_invalid_response": {
+    "category": "browser",
+    "title": "ERR_INVALID_RESPONSE",
+    "description": "Server sent a response the browser cannot parse",
+    "url": "/errors/browser/err_invalid_response",
+    "keywords": [
+      "ERR_INVALID_RESPONSE",
+      "invalid response",
+      "server invalid response",
+      "chrome invalid response",
+      "net::ERR_INVALID_RESPONSE",
+      "malformed response"
+    ]
+  },
+  "err_content_length_mismatch": {
+    "category": "browser",
+    "title": "ERR_CONTENT_LENGTH_MISMATCH",
+    "description": "Content-Length header does not match the actual response body size",
+    "url": "/errors/browser/err_content_length_mismatch",
+    "keywords": [
+      "ERR_CONTENT_LENGTH_MISMATCH",
+      "content length mismatch",
+      "content-length header",
+      "response size mismatch",
+      "net::ERR_CONTENT_LENGTH_MISMATCH"
+    ]
+  },
+  "err_empty_response": {
+    "category": "browser",
+    "title": "ERR_EMPTY_RESPONSE",
+    "description": "Server closed the connection without sending any data",
+    "url": "/errors/browser/err_empty_response",
+    "keywords": [
+      "ERR_EMPTY_RESPONSE",
+      "empty response",
+      "no data received",
+      "server no response",
+      "net::ERR_EMPTY_RESPONSE",
+      "blank response error"
+    ]
+  },
+  "err_insecure_response": {
+    "category": "browser",
+    "title": "ERR_INSECURE_RESPONSE",
+    "description": "Response was delivered over an insecure connection",
+    "url": "/errors/browser/err_insecure_response",
+    "keywords": [
+      "ERR_INSECURE_RESPONSE",
+      "insecure response",
+      "ssl insecure",
+      "https insecure",
+      "net::ERR_INSECURE_RESPONSE",
+      "insecure connection blocked"
+    ]
+  },
+  "err_address_unreachable": {
+    "category": "browser",
+    "title": "ERR_ADDRESS_UNREACHABLE",
+    "description": "IP address of the server is unreachable from the client",
+    "url": "/errors/browser/err_address_unreachable",
+    "keywords": [
+      "ERR_ADDRESS_UNREACHABLE",
+      "address unreachable",
+      "ip unreachable",
+      "server unreachable",
+      "net::ERR_ADDRESS_UNREACHABLE",
+      "cannot reach server"
+    ]
+  },
+  "err_connection_timed_out": {
+    "category": "browser",
+    "title": "ERR_CONNECTION_TIMED_OUT",
+    "description": "Connection attempt to the server timed out before completing",
+    "url": "/errors/browser/err_connection_timed_out",
+    "keywords": [
+      "ERR_CONNECTION_TIMED_OUT",
+      "connection timed out",
+      "server timeout",
+      "connection timeout",
+      "net::ERR_CONNECTION_TIMED_OUT",
+      "browser timeout"
+    ]
+  },
+  "err_quic_protocol_error": {
+    "category": "browser",
+    "title": "ERR_QUIC_PROTOCOL_ERROR",
+    "description": "QUIC protocol error during connection to the server",
+    "url": "/errors/browser/err_quic_protocol_error",
+    "keywords": [
+      "ERR_QUIC_PROTOCOL_ERROR",
+      "quic error",
+      "quic protocol error",
+      "http3 error",
+      "net::ERR_QUIC_PROTOCOL_ERROR",
+      "chrome quic error",
+      "udp connection error"
+    ]
+  },
+  "err_proxy_connection_failed": {
+    "category": "browser",
+    "title": "ERR_PROXY_CONNECTION_FAILED",
+    "description": "Browser could not establish a connection to the proxy server",
+    "url": "/errors/browser/err_proxy_connection_failed",
+    "keywords": [
+      "ERR_PROXY_CONNECTION_FAILED",
+      "proxy connection failed",
+      "proxy error",
+      "cannot connect to proxy",
+      "net::ERR_PROXY_CONNECTION_FAILED",
+      "proxy not responding"
+    ]
+  },
+  "err_tunnel_connection_failed": {
+    "category": "browser",
+    "title": "ERR_TUNNEL_CONNECTION_FAILED",
+    "description": "Failed to establish an HTTPS tunnel through a proxy server",
+    "url": "/errors/browser/err_tunnel_connection_failed",
+    "keywords": [
+      "ERR_TUNNEL_CONNECTION_FAILED",
+      "tunnel connection failed",
+      "proxy tunnel error",
+      "CONNECT method failed",
+      "net::ERR_TUNNEL_CONNECTION_FAILED",
+      "https proxy error"
+    ]
+  },
+  "err_aborted": {
+    "category": "browser",
+    "title": "ERR_ABORTED",
+    "description": "Network request was aborted before completion",
+    "url": "/errors/browser/err_aborted",
+    "keywords": [
+      "ERR_ABORTED",
+      "request aborted",
+      "net::ERR_ABORTED",
+      "cancelled request",
+      "aborted request",
+      "request cancelled"
+    ]
+  },
+  "err_failed": {
+    "category": "browser",
+    "title": "ERR_FAILED",
+    "description": "Generic network failure with no specific error code",
+    "url": "/errors/browser/err_failed",
+    "keywords": [
+      "ERR_FAILED",
+      "net::ERR_FAILED",
+      "generic network error",
+      "network failure",
+      "request failed",
+      "chrome err_failed"
+    ]
+  },
+  "err_unsafe_port": {
+    "category": "browser",
+    "title": "ERR_UNSAFE_PORT",
+    "description": "Connection blocked because the port number is restricted by the browser",
+    "url": "/errors/browser/err_unsafe_port",
+    "keywords": [
+      "ERR_UNSAFE_PORT",
+      "unsafe port",
+      "restricted port",
+      "blocked port",
+      "net::ERR_UNSAFE_PORT",
+      "chrome unsafe port",
+      "port blocked by browser"
+    ]
+  },
+  "301_moved_permanently": {
+    "category": "http",
+    "title": "301 Moved Permanently",
+    "description": "The requested resource has been permanently moved to a new URL",
+    "url": "/errors/http/301-moved-permanently",
+    "keywords": [
+      "301 moved permanently",
+      "permanent redirect",
+      "301 redirect",
+      "http 301",
+      "url redirect",
+      "moved permanently"
+    ]
+  },
+  "302_found": {
+    "category": "http",
+    "title": "302 Found",
+    "description": "The requested resource temporarily resides at a different URL",
+    "url": "/errors/http/302-found",
+    "keywords": [
+      "302 found",
+      "temporary redirect",
+      "302 redirect",
+      "http 302",
+      "302 vs 301",
+      "found redirect"
+    ]
+  },
+  "304_not_modified": {
+    "category": "http",
+    "title": "304 Not Modified",
+    "description": "The resource has not been modified since the last request",
+    "url": "/errors/http/304-not-modified",
+    "keywords": [
+      "304 not modified",
+      "http 304",
+      "browser cache",
+      "etag",
+      "if-modified-since",
+      "conditional request",
+      "cache validation"
+    ]
+  },
+  "307_temporary_redirect": {
+    "category": "http",
+    "title": "307 Temporary Redirect",
+    "description": "The resource temporarily resides at a different URL, preserving the request method",
+    "url": "/errors/http/307-temporary-redirect",
+    "keywords": [
+      "307 temporary redirect",
+      "http 307",
+      "method preserving redirect",
+      "307 vs 302",
+      "hsts redirect",
+      "temporary redirect"
+    ]
+  },
+  "308_permanent_redirect": {
+    "category": "http",
+    "title": "308 Permanent Redirect",
+    "description": "The resource has permanently moved, preserving the request method",
+    "url": "/errors/http/308-permanent-redirect",
+    "keywords": [
+      "308 permanent redirect",
+      "http 308",
+      "permanent redirect method",
+      "308 vs 301",
+      "api redirect",
+      "method preserving permanent redirect"
+    ]
+  },
+  "406_not_acceptable": {
+    "category": "http",
+    "title": "406 Not Acceptable",
+    "description": "The server cannot produce a response matching the client's Accept headers",
+    "url": "/errors/http/406-not-acceptable",
+    "keywords": [
+      "406 not acceptable",
+      "http 406",
+      "accept header",
+      "content negotiation",
+      "not acceptable error",
+      "media type negotiation"
+    ]
+  },
+  "407_proxy_authentication_required": {
+    "category": "http",
+    "title": "407 Proxy Authentication Required",
+    "description": "The client must authenticate with the proxy before the request can proceed",
+    "url": "/errors/http/407-proxy-authentication-required",
+    "keywords": [
+      "407 proxy authentication required",
+      "http 407",
+      "proxy auth",
+      "proxy authentication",
+      "proxy credentials",
+      "proxy-authenticate header"
+    ]
+  },
+  "411_length_required": {
+    "category": "http",
+    "title": "411 Length Required",
+    "description": "The server requires a Content-Length header in the request",
+    "url": "/errors/http/411-length-required",
+    "keywords": [
+      "411 length required",
+      "http 411",
+      "content-length header",
+      "length required error",
+      "missing content length"
+    ]
+  },
+  "412_precondition_failed": {
+    "category": "http",
+    "title": "412 Precondition Failed",
+    "description": "One or more precondition headers evaluated to false on the server",
+    "url": "/errors/http/412-precondition-failed",
+    "keywords": [
+      "412 precondition failed",
+      "http 412",
+      "if-match",
+      "etag mismatch",
+      "conditional request",
+      "optimistic concurrency",
+      "precondition headers"
+    ]
+  },
+  "413_payload_too_large": {
+    "category": "http",
+    "title": "413 Payload Too Large",
+    "description": "The request body exceeds the server's size limit",
+    "url": "/errors/http/413-payload-too-large",
+    "keywords": [
+      "413 payload too large",
+      "http 413",
+      "request entity too large",
+      "upload limit",
+      "client_max_body_size",
+      "file upload error",
+      "body size limit"
+    ]
+  },
+  "414_uri_too_long": {
+    "category": "http",
+    "title": "414 URI Too Long",
+    "description": "The request URL is longer than the server is willing to process",
+    "url": "/errors/http/414-uri-too-long",
+    "keywords": [
+      "414 uri too long",
+      "http 414",
+      "request uri too large",
+      "url too long",
+      "query string too long",
+      "url length limit"
+    ]
+  },
+  "416_range_not_satisfiable": {
+    "category": "http",
+    "title": "416 Range Not Satisfiable",
+    "description": "The requested byte range cannot be fulfilled by the server",
+    "url": "/errors/http/416-range-not-satisfiable",
+    "keywords": [
+      "416 range not satisfiable",
+      "http 416",
+      "byte range error",
+      "range header",
+      "partial content error",
+      "requested range not satisfiable"
+    ]
+  },
+  "417_expectation_failed": {
+    "category": "http",
+    "title": "417 Expectation Failed",
+    "description": "The server cannot meet the requirements of the Expect header",
+    "url": "/errors/http/417-expectation-failed",
+    "keywords": [
+      "417 expectation failed",
+      "http 417",
+      "expect header",
+      "100-continue",
+      "expectation failed error"
+    ]
+  },
+  "418_im_a_teapot": {
+    "category": "http",
+    "title": "418 I'm a Teapot",
+    "description": "The server refuses to brew coffee because it is a teapot",
+    "url": "/errors/http/418-im-a-teapot",
+    "keywords": [
+      "418 im a teapot",
+      "http 418",
+      "teapot error",
+      "rfc 2324",
+      "htcpcp",
+      "i'm a teapot",
+      "joke status code"
+    ]
+  },
+  "421_misdirected_request": {
+    "category": "http",
+    "title": "421 Misdirected Request",
+    "description": "The request was directed to a server that cannot produce a response",
+    "url": "/errors/http/421-misdirected-request",
+    "keywords": [
+      "421 misdirected request",
+      "http 421",
+      "connection coalescing",
+      "http2 misdirected",
+      "tls certificate mismatch",
+      "misdirected request"
+    ]
+  },
+  "423_locked": {
+    "category": "http",
+    "title": "423 Locked",
+    "description": "The resource is locked and cannot be modified",
+    "url": "/errors/http/423-locked",
+    "keywords": [
+      "423 locked",
+      "http 423",
+      "webdav locked",
+      "resource locked",
+      "locked error",
+      "webdav lock"
+    ]
+  },
+  "424_failed_dependency": {
+    "category": "http",
+    "title": "424 Failed Dependency",
+    "description": "The request failed because it depended on another request that also failed",
+    "url": "/errors/http/424-failed-dependency",
+    "keywords": [
+      "424 failed dependency",
+      "http 424",
+      "webdav failed dependency",
+      "dependent request failed",
+      "batch operation error",
+      "cascading failure"
+    ]
+  },
+  "425_too_early": {
+    "category": "http",
+    "title": "425 Too Early",
+    "description": "The server is unwilling to process a request that might be replayed",
+    "url": "/errors/http/425-too-early",
+    "keywords": [
+      "425 too early",
+      "http 425",
+      "tls 1.3 early data",
+      "0-rtt",
+      "replay attack",
+      "early data rejected",
+      "too early error"
+    ]
+  },
+  "426_upgrade_required": {
+    "category": "http",
+    "title": "426 Upgrade Required",
+    "description": "The server requires the client to upgrade to a different protocol",
+    "url": "/errors/http/426-upgrade-required",
+    "keywords": [
+      "426 upgrade required",
+      "http 426",
+      "upgrade header",
+      "protocol upgrade",
+      "websocket upgrade",
+      "https upgrade required"
+    ]
+  },
+  "428_precondition_required": {
+    "category": "http",
+    "title": "428 Precondition Required",
+    "description": "The server requires the request to be conditional",
+    "url": "/errors/http/428-precondition-required",
+    "keywords": [
+      "428 precondition required",
+      "http 428",
+      "conditional request required",
+      "if-match required",
+      "optimistic concurrency",
+      "precondition required error"
+    ]
+  },
+  "431_request_header_fields_too_large": {
+    "category": "http",
+    "title": "431 Request Header Fields Too Large",
+    "description": "The request headers are too large for the server to process",
+    "url": "/errors/http/431-request-header-fields-too-large",
+    "keywords": [
+      "431 request header fields too large",
+      "http 431",
+      "header too large",
+      "cookie too large",
+      "request headers too big",
+      "header size limit"
+    ]
+  },
+  "451_unavailable_for_legal_reasons": {
+    "category": "http",
+    "title": "451 Unavailable For Legal Reasons",
+    "description": "The resource is unavailable due to legal demands",
+    "url": "/errors/http/451-unavailable-for-legal-reasons",
+    "keywords": [
+      "451 unavailable for legal reasons",
+      "http 451",
+      "legal takedown",
+      "censorship",
+      "content blocked",
+      "dmca",
+      "fahrenheit 451",
+      "geo-blocking"
+    ]
+  },
+  "506_variant_also_negotiates": {
+    "category": "http",
+    "title": "506 Variant Also Negotiates",
+    "description": "The server has a circular reference in content negotiation",
+    "url": "/errors/http/506-variant-also-negotiates",
+    "keywords": [
+      "506 variant also negotiates",
+      "http 506",
+      "content negotiation error",
+      "transparent negotiation",
+      "circular reference error",
+      "variant negotiation"
+    ]
+  },
+  "508_loop_detected": {
+    "category": "http",
+    "title": "508 Loop Detected",
+    "description": "The server detected an infinite loop while processing the request",
+    "url": "/errors/http/508-loop-detected",
+    "keywords": [
+      "508 loop detected",
+      "http 508",
+      "infinite loop",
+      "webdav loop",
+      "recursive loop error",
+      "binding loop",
+      "depth infinity loop"
+    ]
+  },
+  "510_not_extended": {
+    "category": "http",
+    "title": "510 Not Extended",
+    "description": "The request requires an HTTP extension that the server does not support",
+    "url": "/errors/http/510-not-extended",
+    "keywords": [
+      "510 not extended",
+      "http 510",
+      "http extension",
+      "extension required",
+      "rfc 2774",
+      "not extended error"
+    ]
+  },
+  "511_network_authentication_required": {
+    "category": "http",
+    "title": "511 Network Authentication Required",
+    "description": "The client needs to authenticate to gain network access",
+    "url": "/errors/http/511-network-authentication-required",
+    "keywords": [
+      "511 network authentication required",
+      "http 511",
+      "captive portal",
+      "wifi login",
+      "network login required",
+      "captive portal login",
+      "public wifi authentication"
+    ]
+  },
+  "dns_probe_finished_bad_secure_config": {
+    "category": "dns",
+    "title": "DNS_PROBE_FINISHED_BAD_SECURE_CONFIG",
+    "description": "DNSSEC validation failure prevented DNS resolution",
+    "url": "/errors/dns/dns-probe-finished-bad-secure-config",
+    "keywords": [
+      "DNS_PROBE_FINISHED_BAD_SECURE_CONFIG",
+      "DNSSEC validation failure",
+      "DNSSEC error",
+      "bad secure config DNS",
+      "DNSSEC signature expired",
+      "DS record mismatch",
+      "chrome DNSSEC error"
+    ]
+  },
+  "dns_probe_possible": {
+    "category": "dns",
+    "title": "DNS_PROBE_POSSIBLE",
+    "description": "Chrome is investigating a possible DNS resolution issue",
+    "url": "/errors/dns/dns-probe-possible",
+    "keywords": [
+      "DNS_PROBE_POSSIBLE",
+      "dns probe possible chrome",
+      "possible DNS issue",
+      "chrome DNS error",
+      "intermittent DNS failure",
+      "DNS probe diagnostic"
+    ]
+  },
+  "dns_probe_timeout": {
+    "category": "dns",
+    "title": "DNS_PROBE_TIMEOUT",
+    "description": "DNS probe timed out while testing connectivity",
+    "url": "/errors/dns/dns-probe-timeout",
+    "keywords": [
+      "DNS_PROBE_TIMEOUT",
+      "dns probe timeout chrome",
+      "DNS timeout error",
+      "DNS not responding timeout",
+      "chrome DNS probe timed out",
+      "DNS query timeout"
+    ]
+  },
+  "dns_probe_network_change": {
+    "category": "dns",
+    "title": "DNS_PROBE_NETWORK_CHANGE",
+    "description": "DNS probe detected a network change during resolution",
+    "url": "/errors/dns/dns-probe-network-change",
+    "keywords": [
+      "DNS_PROBE_NETWORK_CHANGE",
+      "dns probe network change chrome",
+      "network changed DNS error",
+      "VPN DNS error",
+      "Wi-Fi switch DNS error",
+      "DNS error after network change"
+    ]
+  },
+  "refused": {
+    "category": "dns",
+    "title": "DNS REFUSED",
+    "description": "DNS server refused to answer the query",
+    "url": "/errors/dns/refused",
+    "keywords": [
+      "DNS REFUSED",
+      "RCODE 5",
+      "dns query refused",
+      "dns server refused",
+      "dns access denied",
+      "allow-query",
+      "allow-recursion",
+      "DNS ACL"
+    ]
+  },
+  "formerr": {
+    "category": "dns",
+    "title": "DNS FORMERR",
+    "description": "DNS format error in the query",
+    "url": "/errors/dns/formerr",
+    "keywords": [
+      "DNS FORMERR",
+      "RCODE 1",
+      "dns format error",
+      "malformed DNS query",
+      "EDNS0 error",
+      "dns query format error",
+      "dns parsing error"
+    ]
+  },
+  "dns_query_timeout": {
+    "category": "dns",
+    "title": "DNS Query Timeout",
+    "description": "DNS query timed out before receiving a response",
+    "url": "/errors/dns/dns-query-timeout",
+    "keywords": [
+      "DNS query timeout",
+      "DNS timeout",
+      "DNS not responding",
+      "DNS resolution timeout",
+      "dns timed out",
+      "port 53 blocked",
+      "DNS server unreachable"
+    ]
+  },
+  "relay_access_denied": {
+    "category": "email",
+    "title": "Relay Access Denied",
+    "description": "Mail server rejected the message because relay is not permitted",
+    "url": "/errors/email/relay-access-denied",
+    "keywords": [
+      "relay access denied",
+      "SMTP relay denied",
+      "open relay",
+      "relay not permitted",
+      "550 relay not permitted",
+      "SMTP authentication required",
+      "mail relay error"
+    ]
+  },
+  "message_rejected": {
+    "category": "email",
+    "title": "Message Rejected",
+    "description": "Email message was rejected by the receiving server",
+    "url": "/errors/email/message-rejected",
+    "keywords": [
+      "message rejected",
+      "email rejected",
+      "mail rejected by server",
+      "email blocked",
+      "spam filter rejection",
+      "DMARC rejection",
+      "SPF fail rejection",
+      "email bounce"
+    ]
+  },
+  "smtp_455": {
+    "category": "email",
+    "title": "SMTP 455 — Server Unable to Accommodate",
+    "description": "SMTP server temporarily unable to accommodate the request",
+    "url": "/errors/email/smtp-455",
+    "keywords": [
+      "SMTP 455",
+      "server unable to accommodate",
+      "SMTP temporary failure",
+      "4.7.5 SMTP",
+      "SMTP retry",
+      "mail server overloaded",
+      "TLS negotiation failure SMTP"
+    ]
+  },
+  "smtp_500": {
+    "category": "email",
+    "title": "SMTP 500 — Syntax Error",
+    "description": "SMTP command not recognized due to syntax error",
+    "url": "/errors/email/smtp-500",
+    "keywords": [
+      "SMTP 500",
+      "SMTP syntax error",
+      "command not recognized SMTP",
+      "500 unrecognized command",
+      "SMTP protocol error",
+      "EHLO error",
+      "SMTP command error"
+    ]
+  },
+  "smtp_501": {
+    "category": "email",
+    "title": "SMTP 501 — Syntax Error in Parameters",
+    "description": "SMTP command parameters contain a syntax error",
+    "url": "/errors/email/smtp-501",
+    "keywords": [
+      "SMTP 501",
+      "syntax error in parameters",
+      "SMTP parameter error",
+      "501 malformed address",
+      "SMTP address format",
+      "RCPT TO error",
+      "MAIL FROM error"
+    ]
+  },
+  "smtp_502": {
+    "category": "email",
+    "title": "SMTP 502 — Command Not Implemented",
+    "description": "SMTP command is recognized but not implemented on this server",
+    "url": "/errors/email/smtp-502",
+    "keywords": [
+      "SMTP 502",
+      "command not implemented",
+      "VRFY not implemented",
+      "EXPN disabled",
+      "SMTP extension not supported",
+      "502 command not implemented",
+      "AUTH mechanism not supported"
+    ]
+  },
+  "smtp_503": {
+    "category": "email",
+    "title": "SMTP 503 — Bad Sequence of Commands",
+    "description": "SMTP commands were sent in an incorrect order",
+    "url": "/errors/email/smtp-503",
+    "keywords": [
+      "SMTP 503",
+      "bad sequence of commands",
+      "SMTP command order",
+      "503 bad sequence",
+      "SMTP protocol sequence",
+      "EHLO before MAIL FROM",
+      "SMTP state error"
+    ]
+  },
+  "smtp_504": {
+    "category": "email",
+    "title": "SMTP 504 — Command Parameter Not Implemented",
+    "description": "SMTP command parameter is not implemented on this server",
+    "url": "/errors/email/smtp-504",
+    "keywords": [
+      "SMTP 504",
+      "command parameter not implemented",
+      "504 SMTP error",
+      "AUTH mechanism not supported",
+      "SMTP extension parameter",
+      "unsupported SMTP parameter"
+    ]
+  },
+  "ssl_certificate_unknown": {
+    "category": "ssl",
+    "title": "SSL Certificate Unknown",
+    "description": "Browser does not recognize or trust the SSL certificate",
+    "url": "/errors/ssl/ssl-certificate-unknown",
+    "keywords": [
+      "SSL certificate unknown",
+      "unknown certificate error",
+      "untrusted certificate",
+      "certificate not recognized",
+      "missing intermediate certificate",
+      "self-signed certificate error",
+      "TLS unknown CA"
+    ]
+  },
+  "ssl_certificate_verify_failed": {
+    "category": "ssl",
+    "title": "SSL Certificate Verify Failed",
+    "description": "SSL certificate verification failed during the TLS handshake",
+    "url": "/errors/ssl/ssl-certificate-verify-failed",
+    "keywords": [
+      "SSL certificate verify failed",
+      "certificate verification error",
+      "CERTIFICATE_VERIFY_FAILED",
+      "SSL verify error",
+      "Python SSL error",
+      "Node.js certificate error",
+      "curl certificate error",
+      "unable to verify certificate"
+    ]
+  },
+  "tls_version_unsupported": {
+    "category": "ssl",
+    "title": "TLS Version Not Supported",
+    "description": "The TLS protocol version is not supported by the server or client",
+    "url": "/errors/ssl/tls-version-unsupported",
+    "keywords": [
+      "TLS version not supported",
+      "unsupported TLS version",
+      "TLS 1.0 deprecated",
+      "TLS 1.1 deprecated",
+      "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+      "TLS version mismatch",
+      "upgrade TLS version"
+    ]
+  },
+  "certificate_chain_invalid": {
+    "category": "ssl",
+    "title": "Certificate Chain Invalid",
+    "description": "SSL certificate chain validation failed",
+    "url": "/errors/ssl/certificate-chain-invalid",
+    "keywords": [
+      "certificate chain invalid",
+      "incomplete certificate chain",
+      "missing intermediate certificate",
+      "SSL chain error",
+      "certificate chain broken",
+      "unable to verify certificate chain",
+      "chain of trust error"
+    ]
+  },
+  "ssl_wrong_version_number": {
+    "category": "ssl",
+    "title": "SSL Wrong Version Number",
+    "description": "Unexpected SSL/TLS version number in the server response",
+    "url": "/errors/ssl/ssl-wrong-version-number",
+    "keywords": [
+      "SSL wrong version number",
+      "wrong version number error",
+      "SSL version mismatch",
+      "HTTPS on HTTP port",
+      "TLS handshake wrong version",
+      "SSL_ERROR_RX_RECORD_TOO_LONG",
+      "STARTTLS required"
+    ]
+  },
+  "ssl_cipher_suite_not_supported": {
+    "category": "ssl",
+    "title": "SSL Cipher Suite Not Supported",
+    "description": "No common cipher suite between client and server",
+    "url": "/errors/ssl/ssl-cipher-suite-not-supported",
+    "keywords": [
+      "cipher suite not supported",
+      "no common cipher suite",
+      "SSL cipher mismatch",
+      "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+      "TLS cipher negotiation failed",
+      "ECDHE cipher",
+      "AES-GCM cipher",
+      "cipher suite configuration"
+    ]
+  },
+  "ssl_certificate_not_yet_valid": {
+    "category": "ssl",
+    "title": "SSL Certificate Not Yet Valid",
+    "description": "SSL certificate's start date is in the future",
+    "url": "/errors/ssl/ssl-certificate-not-yet-valid",
+    "keywords": [
+      "certificate not yet valid",
+      "SSL not yet valid",
+      "certificate future date",
+      "notBefore date error",
+      "certificate validity period",
+      "system clock SSL error",
+      "certificate start date",
+      "X.509 not yet valid"
+    ]
+  },
+  "docker_daemon_not_running": {
+    "category": "devops",
+    "title": "Docker Daemon Not Running",
+    "description": "Cannot connect to the Docker daemon",
+    "url": "/errors/devops/docker-daemon-not-running",
+    "keywords": [
+      "docker daemon not running",
+      "cannot connect to docker daemon",
+      "docker not starting",
+      "dockerd not running",
+      "docker service failed",
+      "docker socket error"
+    ]
+  },
+  "docker_network_not_found": {
+    "category": "devops",
+    "title": "Docker Network Not Found",
+    "description": "Docker network does not exist",
+    "url": "/errors/devops/docker-network-not-found",
+    "keywords": [
+      "docker network not found",
+      "network not found docker",
+      "docker network error",
+      "docker compose network missing",
+      "docker network create"
+    ]
+  },
+  "docker_image_pull_failed": {
+    "category": "devops",
+    "title": "Docker Image Pull Failed",
+    "description": "Failed to pull a Docker image from the registry",
+    "url": "/errors/devops/docker-image-pull-failed",
+    "keywords": [
+      "docker pull failed",
+      "docker image not found",
+      "docker pull error",
+      "docker registry authentication",
+      "docker pull timeout",
+      "manifest not found"
+    ]
+  },
+  "docker_port_already_allocated": {
+    "category": "devops",
+    "title": "Docker Port Already Allocated",
+    "description": "Port is already allocated by another container or process",
+    "url": "/errors/devops/docker-port-already-allocated",
+    "keywords": [
+      "docker port already allocated",
+      "bind address already in use",
+      "docker port conflict",
+      "port already in use docker",
+      "docker port binding error"
+    ]
+  },
+  "docker_no_space_left": {
+    "category": "devops",
+    "title": "Docker No Space Left on Device",
+    "description": "Docker ran out of disk space",
+    "url": "/errors/devops/docker-no-space-left",
+    "keywords": [
+      "docker no space left",
+      "docker disk full",
+      "docker space error",
+      "docker system prune",
+      "docker cleanup",
+      "no space left on device docker"
+    ]
+  },
+  "docker_container_already_exists": {
+    "category": "devops",
+    "title": "Docker Container Name Already in Use",
+    "description": "A container with the specified name already exists",
+    "url": "/errors/devops/docker-container-already-exists",
+    "keywords": [
+      "docker container already exists",
+      "container name already in use",
+      "docker name conflict",
+      "docker rm container",
+      "docker container name error"
+    ]
+  },
+  "git_repository_not_found": {
+    "category": "devops",
+    "title": "fatal: repository not found",
+    "description": "Git cannot find the remote repository",
+    "url": "/errors/devops/git-repository-not-found",
+    "keywords": [
+      "fatal repository not found",
+      "git repo not found",
+      "git clone not found",
+      "github repository not found",
+      "git remote not found"
+    ]
+  },
+  "git_remote_origin_already_exists": {
+    "category": "devops",
+    "title": "fatal: remote origin already exists",
+    "description": "Git remote named 'origin' is already configured",
+    "url": "/errors/devops/git-remote-origin-already-exists",
+    "keywords": [
+      "remote origin already exists",
+      "git remote add error",
+      "fatal remote origin",
+      "git origin error",
+      "git remote set-url"
+    ]
+  },
+  "git_merge_conflict": {
+    "category": "devops",
+    "title": "Git Merge Conflict",
+    "description": "Conflicting changes prevent automatic merge",
+    "url": "/errors/devops/git-merge-conflict",
+    "keywords": [
+      "git merge conflict",
+      "merge conflict resolution",
+      "git conflict markers",
+      "CONFLICT merge",
+      "git resolve conflict",
+      "automatic merge failed"
+    ]
+  },
+  "git_detached_head": {
+    "category": "devops",
+    "title": "Git Detached HEAD State",
+    "description": "Git HEAD is not pointing to a branch",
+    "url": "/errors/devops/git-detached-head",
+    "keywords": [
+      "git detached head",
+      "detached HEAD state",
+      "HEAD detached at",
+      "git checkout commit",
+      "git reattach head",
+      "not currently on any branch"
+    ]
+  },
+  "npm_err_eresolve": {
+    "category": "devops",
+    "title": "npm ERR! code ERESOLVE",
+    "description": "npm dependency resolution conflict",
+    "url": "/errors/devops/npm-err-eresolve",
+    "keywords": [
+      "npm ERESOLVE",
+      "npm peer dependency conflict",
+      "npm dependency resolution",
+      "could not resolve dependency",
+      "npm install error",
+      "peer dep conflict"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "npm_err_enotfound": {
+    "category": "devops",
+    "title": "npm ERR! code ENOTFOUND",
+    "description": "npm cannot reach the registry",
+    "url": "/errors/devops/npm-err-enotfound",
+    "keywords": [
+      "npm ENOTFOUND",
+      "npm registry unreachable",
+      "npm network error",
+      "npm cannot connect",
+      "npm dns error",
+      "npm offline"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "npm_err_econnreset": {
+    "category": "devops",
+    "title": "npm ERR! code ECONNRESET",
+    "description": "npm connection to registry was reset",
+    "url": "/errors/devops/npm-err-econnreset",
+    "keywords": [
+      "npm ECONNRESET",
+      "npm connection reset",
+      "npm network error",
+      "npm install connection",
+      "npm timeout error"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "npm_err_eperm": {
+    "category": "devops",
+    "title": "npm ERR! code EPERM",
+    "description": "npm permission error on file operation",
+    "url": "/errors/devops/npm-err-eperm",
+    "keywords": [
+      "npm EPERM",
+      "npm permission error",
+      "npm operation not permitted",
+      "npm windows permission",
+      "npm file locked",
+      "EPERM unlink"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "npm_err_eacces": {
+    "category": "devops",
+    "title": "npm ERR! code EACCES",
+    "description": "npm permission denied error",
+    "url": "/errors/devops/npm-err-eacces",
+    "keywords": [
+      "npm EACCES",
+      "npm permission denied",
+      "npm global install permission",
+      "npm sudo error",
+      "npm access denied",
+      "EACCES mkdir"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "kubernetes_crashloopbackoff": {
+    "category": "devops",
+    "title": "Kubernetes CrashLoopBackOff",
+    "description": "Pod is crashing repeatedly and Kubernetes is backing off restarts",
+    "url": "/errors/devops/kubernetes-crashloopbackoff",
+    "keywords": [
+      "CrashLoopBackOff",
+      "kubernetes crash loop",
+      "pod crashing",
+      "k8s crashloopbackoff",
+      "container restart loop",
+      "pod restart backoff"
+    ]
+  },
+  "kubernetes_imagepullbackoff": {
+    "category": "devops",
+    "title": "Kubernetes ImagePullBackOff",
+    "description": "Kubernetes cannot pull the container image",
+    "url": "/errors/devops/kubernetes-imagepullbackoff",
+    "keywords": [
+      "ImagePullBackOff",
+      "ErrImagePull",
+      "kubernetes image pull",
+      "k8s image error",
+      "imagePullSecrets",
+      "docker image pull kubernetes"
+    ]
+  },
+  "python_modulenotfounderror": {
+    "category": "devops",
+    "title": "Python ModuleNotFoundError",
+    "description": "Python cannot find the specified module",
+    "url": "/errors/devops/python-modulenotfounderror",
+    "keywords": [
+      "ModuleNotFoundError",
+      "python import error",
+      "no module named",
+      "python module not found",
+      "ImportError",
+      "pip install module"
+    ],
+    "alsoIn": [
+      "python"
+    ]
+  },
+  "java_classnotfoundexception": {
+    "category": "devops",
+    "title": "Java ClassNotFoundException",
+    "description": "Java cannot find the specified class at runtime",
+    "url": "/errors/devops/java-classnotfoundexception",
+    "keywords": [
+      "ClassNotFoundException",
+      "java class not found",
+      "java classpath error",
+      "Class.forName error",
+      "missing JAR",
+      "java dependency missing"
+    ]
+  },
+  "pip_install_failed": {
+    "category": "devops",
+    "title": "pip Install Failed",
+    "description": "pip package installation failed with error",
+    "url": "/errors/devops/pip-install-failed",
+    "keywords": [
+      "pip install failed",
+      "pip error",
+      "failed building wheel",
+      "pip install error",
+      "python package install",
+      "pip build failed"
+    ],
+    "alsoIn": [
+      "python"
+    ]
+  },
+  "yarn_integrity_check_failed": {
+    "category": "devops",
+    "title": "Yarn Integrity Check Failed",
+    "description": "Yarn detected a mismatch between node_modules and yarn.lock",
+    "url": "/errors/devops/yarn-integrity-check-failed",
+    "keywords": [
+      "yarn integrity check failed",
+      "yarn install error",
+      "yarn node_modules mismatch",
+      "yarn lockfile",
+      "yarn cache clean",
+      "integrity check failed"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "permission_denied_publickey": {
+    "category": "devops",
+    "title": "Permission Denied (publickey)",
+    "description": "SSH authentication failed using public key",
+    "url": "/errors/devops/permission-denied-publickey",
+    "keywords": [
+      "permission denied publickey",
+      "ssh key denied",
+      "git ssh error",
+      "ssh authentication failed",
+      "ssh public key error",
+      "github ssh denied"
+    ]
+  },
+  "mysql_access_denied": {
+    "category": "database",
+    "title": "MySQL Access Denied for User",
+    "description": "MySQL authentication failed for the specified user",
+    "url": "/errors/database/mysql-access-denied",
+    "keywords": [
+      "MySQL access denied",
+      "MySQL authentication failed",
+      "MySQL login error",
+      "access denied for user",
+      "mysql password error",
+      "mysql grant privileges"
+    ]
+  },
+  "postgresql_connection_refused": {
+    "category": "database",
+    "title": "PostgreSQL Connection Refused",
+    "description": "PostgreSQL server refused the connection",
+    "url": "/errors/database/postgresql-connection-refused",
+    "keywords": [
+      "postgresql connection refused",
+      "postgres connection error",
+      "psql connection refused",
+      "postgresql not running",
+      "pg_hba.conf",
+      "postgresql listen_addresses"
+    ]
+  },
+  "database_connection_timeout": {
+    "category": "database",
+    "title": "Database Connection Timeout",
+    "description": "Database connection attempt timed out",
+    "url": "/errors/database/database-connection-timeout",
+    "keywords": [
+      "database connection timeout",
+      "db timeout error",
+      "connection timed out database",
+      "database unreachable",
+      "database firewall",
+      "database security group"
+    ]
+  },
+  "database_too_many_connections": {
+    "category": "database",
+    "title": "Too Many Database Connections",
+    "description": "Database connection limit has been reached",
+    "url": "/errors/database/database-too-many-connections",
+    "keywords": [
+      "too many connections",
+      "database connection limit",
+      "max connections",
+      "connection pool",
+      "connection leak",
+      "database connections exhausted"
+    ]
+  },
+  "redis_connection_refused": {
+    "category": "database",
+    "title": "Redis Connection Refused",
+    "description": "Redis server refused the connection",
+    "url": "/errors/database/redis-connection-refused",
+    "keywords": [
+      "redis connection refused",
+      "redis not running",
+      "redis connection error",
+      "redis bind address",
+      "redis protected mode",
+      "cannot connect to redis"
+    ]
+  },
+  "mongodb_connection_failed": {
+    "category": "database",
+    "title": "MongoDB Connection Failed",
+    "description": "MongoDB client could not connect to the server",
+    "url": "/errors/database/mongodb-connection-failed",
+    "keywords": [
+      "mongodb connection failed",
+      "mongodb connection error",
+      "mongod not running",
+      "mongodb atlas connection",
+      "mongodb authentication failed",
+      "mongodb connection string"
+    ]
+  },
+  "sqlite_database_locked": {
+    "category": "database",
+    "title": "SQLite Database is Locked",
+    "description": "SQLite database file is locked by another process",
+    "url": "/errors/database/sqlite-database-locked",
+    "keywords": [
+      "sqlite database locked",
+      "sqlite locked error",
+      "sqlite concurrent access",
+      "sqlite WAL mode",
+      "database is locked",
+      "sqlite busy timeout"
+    ]
+  },
+  "database_deadlock_detected": {
+    "category": "database",
+    "title": "Database Deadlock Detected",
+    "description": "Two or more transactions are waiting for each other's locks",
+    "url": "/errors/database/database-deadlock-detected",
+    "keywords": [
+      "database deadlock",
+      "deadlock detected",
+      "transaction deadlock",
+      "deadlock victim",
+      "lock conflict database",
+      "deadlock prevention"
+    ]
+  },
+  "temporary_failure_in_name_resolution": {
+    "category": "dns",
+    "title": "Temporary failure in name resolution",
+    "description": "A Linux system error meaning the resolver could not translate a hostname into an IP address — usually because no DNS server is configured or reachable.",
+    "url": "/errors/dns/temporary-failure-in-name-resolution",
+    "keywords": [
+      "temporary failure in name resolution",
+      "linux dns not working",
+      "resolv.conf empty",
+      "systemd-resolved not resolving",
+      "socket.gaierror errno -3",
+      "wsl2 dns not working"
+    ]
+  },
+  "getaddrinfo_enotfound": {
+    "category": "dns",
+    "title": "getaddrinfo ENOTFOUND",
+    "description": "A Node.js error thrown when a hostname cannot be resolved to an IP address — the DNS lookup returned no result for the name your code tried to connect to.",
+    "url": "/errors/dns/getaddrinfo-enotfound",
+    "keywords": [
+      "getaddrinfo enotfound",
+      "node.js enotfound",
+      "error getaddrinfo enotfound undefined",
+      "enotfound localhost",
+      "node dns lookup failed",
+      "axios enotfound"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "getaddrinfo_eai_again": {
+    "category": "dns",
+    "title": "getaddrinfo EAI_AGAIN",
+    "description": "A temporary DNS resolution failure in Node.js and other applications — the resolver could not get an answer in time, often inside Docker containers or CI environments.",
+    "url": "/errors/dns/getaddrinfo-eai-again",
+    "keywords": [
+      "getaddrinfo eai_again",
+      "eai_again docker",
+      "npm install eai_again",
+      "node eai_again",
+      "dns temporary failure docker",
+      "kubernetes dns timeout ndots"
+    ],
+    "alsoIn": [
+      "node"
+    ]
+  },
+  "could_not_resolve_host": {
+    "category": "dns",
+    "title": "Could not resolve host",
+    "description": "The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.",
+    "url": "/errors/dns/could-not-resolve-host",
+    "keywords": [
+      "could not resolve host",
+      "curl 6 could not resolve host",
+      "git could not resolve host github.com",
+      "wget unable to resolve host address",
+      "curl exit code 6"
+    ]
+  },
+  "no_servers_could_be_reached": {
+    "category": "dns",
+    "title": "No servers could be reached",
+    "description": "The dig and nslookup error ';; connection timed out; no servers could be reached' — the tool could not contact any DNS server at all.",
+    "url": "/errors/dns/no-servers-could-be-reached",
+    "keywords": [
+      "no servers could be reached",
+      "dig connection timed out",
+      "nslookup no response from server",
+      "dns port 53 blocked",
+      "dig timeout all servers"
+    ]
+  },
+  "nodename_nor_servname_provided": {
+    "category": "dns",
+    "title": "nodename nor servname provided, or not known",
+    "description": "A macOS and BSD error meaning the system could not resolve a hostname (or service name) — the Mac equivalent of 'unknown host'.",
+    "url": "/errors/dns/nodename-nor-servname-provided",
+    "keywords": [
+      "nodename nor servname provided or not known",
+      "macos dns error",
+      "ping cannot resolve mac",
+      "ssh could not resolve hostname mac",
+      "dscacheutil flush cache"
+    ]
+  },
+  "dnssec_validation_failure": {
+    "category": "dns",
+    "title": "DNSSEC Validation Failure",
+    "description": "A domain fails to resolve on validating resolvers because its DNSSEC chain of trust is broken — typically expired signatures or a stale DS record.",
+    "url": "/errors/dns/dnssec-validation-failure",
+    "keywords": [
+      "dnssec validation failure",
+      "broken trust chain",
+      "servfail dnssec",
+      "ds record mismatch",
+      "rrsig expired",
+      "domain works on some dns servers not others"
+    ]
+  },
+  "notimp": {
+    "category": "dns",
+    "title": "DNS NOTIMP",
+    "description": "DNS response code 4 (Not Implemented) — the server understood the query but does not support the requested operation or query type.",
+    "url": "/errors/dns/notimp",
+    "keywords": [
+      "dns notimp",
+      "rcode 4 not implemented",
+      "dig any notimp",
+      "dns query type not supported",
+      "rfc 8482 any query"
+    ]
+  },
+  "yxdomain": {
+    "category": "dns",
+    "title": "DNS YXDOMAIN",
+    "description": "DNS response code 6 — a name exists when it should not. Seen in dynamic DNS updates with failed prerequisites and in DNAME/CNAME expansion overflows.",
+    "url": "/errors/dns/yxdomain",
+    "keywords": [
+      "dns yxdomain",
+      "rcode 6",
+      "nsupdate yxdomain",
+      "dhcp dns registration failed",
+      "name exists when it should not",
+      "dname yxdomain"
+    ]
+  },
+  "notauth": {
+    "category": "dns",
+    "title": "DNS NOTAUTH",
+    "description": "DNS response code 9 — the server is not authoritative for the zone, or the request was not properly authorized. Common in zone transfers and dynamic updates.",
+    "url": "/errors/dns/notauth",
+    "keywords": [
+      "dns notauth",
+      "rcode 9",
+      "nsupdate notauth",
+      "zone transfer notauth",
+      "lame delegation",
+      "tsig badkey"
+    ]
+  },
+  "dns_response_truncated": {
+    "category": "dns",
+    "title": "DNS Response Truncated",
+    "description": "A DNS answer was too large for UDP and was cut short (TC flag set) — and the fallback to TCP failed, so clients see incomplete or missing records.",
+    "url": "/errors/dns/dns-response-truncated",
+    "keywords": [
+      "dns response truncated",
+      "tc flag dns",
+      "dig truncated retrying in tcp mode",
+      "tcp port 53 blocked",
+      "edns buffer size 1232",
+      "dns udp size limit"
+    ]
+  },
+  "mysql_server_has_gone_away": {
+    "category": "database",
+    "title": "MySQL Server Has Gone Away",
+    "description": "MySQL error 2006 — the connection to the server was lost mid-use, typically because an idle connection timed out or a packet exceeded max_allowed_packet.",
+    "url": "/errors/database/mysql-server-has-gone-away",
+    "keywords": [
+      "mysql server has gone away",
+      "mysql error 2006",
+      "max_allowed_packet",
+      "wait_timeout mysql",
+      "mysql connection dropped",
+      "mysql import fails gone away"
+    ]
+  },
+  "mysql_cant_connect_through_socket": {
+    "category": "database",
+    "title": "Can't Connect to Local MySQL Server Through Socket",
+    "description": "MySQL error 2002 — the client looked for the Unix socket file (usually /var/run/mysqld/mysqld.sock) and found nothing listening.",
+    "url": "/errors/database/mysql-cant-connect-through-socket",
+    "keywords": [
+      "mysql error 2002",
+      "can't connect to local mysql server through socket",
+      "mysqld.sock missing",
+      "mysql socket vs tcp",
+      "mysql docker localhost",
+      "mariadb socket error"
+    ]
+  },
+  "mysql_lock_wait_timeout_exceeded": {
+    "category": "database",
+    "title": "MySQL Lock Wait Timeout Exceeded",
+    "description": "MySQL error 1205 — a transaction waited longer than innodb_lock_wait_timeout for row locks held by another transaction and gave up.",
+    "url": "/errors/database/mysql-lock-wait-timeout-exceeded",
+    "keywords": [
+      "lock wait timeout exceeded",
+      "mysql error 1205",
+      "innodb_lock_wait_timeout",
+      "find blocking transaction mysql",
+      "innodb_trx",
+      "mysql transaction stuck"
+    ]
+  },
+  "mysql_incorrect_string_value": {
+    "category": "database",
+    "title": "MySQL Incorrect String Value",
+    "description": "MySQL error 1366 — an INSERT or UPDATE contained bytes the column's character set cannot store, most famously emoji into a 'utf8' column.",
+    "url": "/errors/database/mysql-incorrect-string-value",
+    "keywords": [
+      "mysql incorrect string value",
+      "error 1366",
+      "mysql emoji error",
+      "utf8mb4 vs utf8",
+      "\\xf0\\x9f mysql",
+      "convert table to utf8mb4"
+    ]
+  },
+  "postgres_password_authentication_failed": {
+    "category": "database",
+    "title": "PostgreSQL Password Authentication Failed",
+    "description": "PostgreSQL error 28P01 — 'FATAL: password authentication failed for user'. The server rejected the supplied password for that role.",
+    "url": "/errors/database/postgres-password-authentication-failed",
+    "keywords": [
+      "password authentication failed for user postgres",
+      "28p01",
+      "pg_hba.conf",
+      "scram-sha-256 md5",
+      "reset postgres password",
+      "psql fatal password"
+    ]
+  },
+  "postgres_role_does_not_exist": {
+    "category": "database",
+    "title": "PostgreSQL Role Does Not Exist",
+    "description": "PostgreSQL error 28000 — 'FATAL: role \"username\" does not exist'. The role you tried to connect as has never been created on this cluster.",
+    "url": "/errors/database/postgres-role-does-not-exist",
+    "keywords": [
+      "role does not exist postgres",
+      "fatal role postgres does not exist",
+      "createuser postgres",
+      "psql default username",
+      "homebrew postgres role",
+      "28000 postgresql"
+    ]
+  },
+  "postgres_database_does_not_exist": {
+    "category": "database",
+    "title": "PostgreSQL Database Does Not Exist",
+    "description": "PostgreSQL error 3D000 — 'FATAL: database \"name\" does not exist'. The cluster you reached has no database by that name.",
+    "url": "/errors/database/postgres-database-does-not-exist",
+    "keywords": [
+      "database does not exist postgres",
+      "3d000",
+      "createdb postgres",
+      "psql default database",
+      "postgres wrong port 5433",
+      "brew postgres database missing"
+    ]
+  },
+  "postgres_connection_slots_reserved": {
+    "category": "database",
+    "title": "PostgreSQL Remaining Connection Slots Are Reserved",
+    "description": "PostgreSQL error 53300 — 'FATAL: remaining connection slots are reserved for non-replication superuser connections'. The cluster hit max_connections.",
+    "url": "/errors/database/postgres-connection-slots-reserved",
+    "keywords": [
+      "remaining connection slots are reserved",
+      "postgres 53300",
+      "max_connections postgres",
+      "pgbouncer setup",
+      "idle in transaction timeout",
+      "postgres connection pool exhausted"
+    ]
+  },
+  "redis_noauth_authentication_required": {
+    "category": "database",
+    "title": "Redis NOAUTH Authentication Required",
+    "description": "The Redis error returned when the server requires a password (requirepass or ACLs) but the client sent commands without authenticating first.",
+    "url": "/errors/database/redis-noauth-authentication-required",
+    "keywords": [
+      "noauth authentication required",
+      "redis auth error",
+      "redis-cli password",
+      "redis url password format",
+      "redis acl auth",
+      "requirepass"
+    ]
+  },
+  "redis_misconf_rdb_snapshots": {
+    "category": "database",
+    "title": "Redis MISCONF — Unable to Persist to Disk",
+    "description": "The Redis error 'MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk' — writes are blocked until persistence recovers.",
+    "url": "/errors/database/redis-misconf-rdb-snapshots",
+    "keywords": [
+      "misconf redis is configured to save rdb snapshots",
+      "redis unable to persist on disk",
+      "stop-writes-on-bgsave-error",
+      "redis bgsave failed",
+      "vm.overcommit_memory redis",
+      "redis disk full"
+    ]
+  },
+  "redis_oom_command_not_allowed": {
+    "category": "database",
+    "title": "Redis OOM Command Not Allowed",
+    "description": "The Redis error 'OOM command not allowed when used memory is greater than maxmemory' — the memory limit is reached and the eviction policy refuses to free space.",
+    "url": "/errors/database/redis-oom-command-not-allowed",
+    "keywords": [
+      "oom command not allowed",
+      "redis maxmemory",
+      "maxmemory-policy allkeys-lru",
+      "redis bigkeys",
+      "redis eviction policy",
+      "redis memory full"
+    ]
+  },
+  "mongodb_authentication_failed": {
+    "category": "database",
+    "title": "MongoDB Authentication Failed",
+    "description": "MongoDB error code 18 — 'Authentication failed' (Atlas reports 'bad auth'). The credentials, authentication database, or mechanism did not match.",
+    "url": "/errors/database/mongodb-authentication-failed",
+    "keywords": [
+      "mongodb authentication failed",
+      "code 18 mongodb",
+      "bad auth atlas",
+      "authsource admin",
+      "mongodb password special characters",
+      "scram-sha-256 mongodb"
+    ]
+  },
+  "sqlite_readonly_database": {
+    "category": "database",
+    "title": "SQLite Attempt to Write a Readonly Database",
+    "description": "The SQLite error raised when a write is attempted but the database file — or, just as often, its directory — is not writable by the process.",
+    "url": "/errors/database/sqlite-readonly-database",
+    "keywords": [
+      "attempt to write a readonly database",
+      "sqlite readonly error",
+      "sqlite journal permission",
+      "www-data sqlite permission",
+      "docker sqlite readonly",
+      "sqlite wal readonly"
+    ]
+  },
+  "sqlite_no_such_table": {
+    "category": "database",
+    "title": "SQLite No Such Table",
+    "description": "The SQLite error 'no such table: name' — the table does not exist in the database file the connection actually opened, which is often not the file you intended.",
+    "url": "/errors/database/sqlite-no-such-table",
+    "keywords": [
+      "sqlite no such table",
+      "sqlite creates empty database",
+      "sqlite relative path",
+      "sqlite_master list tables",
+      "django no such table",
+      "prisma sqlite no such table"
+    ]
+  },
+  "address_already_in_use": {
+    "category": "nginx",
+    "title": "Nginx bind() Failed — Address Already in Use",
+    "description": "The startup error 'nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)' — another process already owns the port nginx wants.",
+    "url": "/errors/nginx/address-already-in-use",
+    "keywords": [
+      "nginx bind failed address already in use",
+      "98 address already in use",
+      "nginx emerg bind 0.0.0.0:80",
+      "nginx won't start port 80",
+      "nginx port conflict apache"
+    ]
+  },
+  "unknown_directive": {
+    "category": "nginx",
+    "title": "Nginx Unknown Directive",
+    "description": "The config-test error 'nginx: [emerg] unknown directive' — a directive is misspelled, belongs to a module that is not loaded, or is not an nginx directive at all.",
+    "url": "/errors/nginx/unknown-directive",
+    "keywords": [
+      "nginx unknown directive",
+      "nginx emerg unknown directive",
+      "load_module nginx",
+      "nginx directive is not allowed here",
+      "nginx -t failed",
+      "headers-more nginx"
+    ]
+  },
+  "connection_refused_while_connecting_to_upstream": {
+    "category": "nginx",
+    "title": "Nginx Connection Refused While Connecting to Upstream",
+    "description": "The error-log line 'connect() failed (111: Connection refused) while connecting to upstream' — nginx reached the backend host, but nothing was listening. Visitors see a 502.",
+    "url": "/errors/nginx/connection-refused-while-connecting-to-upstream",
+    "keywords": [
+      "connect failed 111 connection refused while connecting to upstream",
+      "nginx upstream connection refused",
+      "nginx 502 connection refused",
+      "proxy_pass connection refused",
+      "fastcgi_pass connection refused",
+      "docker nginx localhost upstream"
+    ]
+  },
+  "upstream_timed_out": {
+    "category": "nginx",
+    "title": "Nginx Upstream Timed Out",
+    "description": "The error-log line 'upstream timed out (110: Connection timed out) while reading response header from upstream' — the backend took longer than nginx was willing to wait. Visitors see a 504.",
+    "url": "/errors/nginx/upstream-timed-out",
+    "keywords": [
+      "nginx upstream timed out 110",
+      "upstream timed out while reading response header",
+      "proxy_read_timeout",
+      "fastcgi_read_timeout",
+      "nginx 504 upstream timeout",
+      "nginx timeout while connecting to upstream"
+    ]
+  },
+  "no_live_upstreams": {
+    "category": "nginx",
+    "title": "Nginx No Live Upstreams",
+    "description": "The error-log line 'no live upstreams while connecting to upstream' — every server in the upstream block is currently marked failed, so nginx has nowhere to send the request.",
+    "url": "/errors/nginx/no-live-upstreams",
+    "keywords": [
+      "no live upstreams while connecting to upstream",
+      "nginx no live upstreams",
+      "max_fails fail_timeout",
+      "nginx upstream all down",
+      "nginx 502 no live upstreams",
+      "nginx backup server"
+    ]
+  },
+  "cannot_load_certificate": {
+    "category": "nginx",
+    "title": "Nginx Cannot Load Certificate",
+    "description": "Startup/reload errors like 'nginx: [emerg] cannot load certificate' or 'SSL_CTX_use_PrivateKey_file failed (key values mismatch)' — the TLS files are missing, unreadable, or mismatched.",
+    "url": "/errors/nginx/cannot-load-certificate",
+    "keywords": [
+      "nginx cannot load certificate",
+      "ssl_ctx_use_privatekey_file failed",
+      "key values mismatch nginx",
+      "nginx emerg pem routines",
+      "fullchain.pem nginx",
+      "certbot nginx certificate error"
+    ]
+  },
+  "too_many_open_files": {
+    "category": "nginx",
+    "title": "Nginx Too Many Open Files",
+    "description": "Error-log lines like 'socket() failed (24: Too many open files)' or 'accept4() failed' — nginx hit its file-descriptor limit and is dropping connections.",
+    "url": "/errors/nginx/too-many-open-files",
+    "keywords": [
+      "nginx too many open files",
+      "socket failed 24 too many open files",
+      "worker_rlimit_nofile",
+      "nginx ulimit",
+      "LimitNOFILE nginx systemd",
+      "worker_connections limit"
+    ]
+  },
+  "directory_index_forbidden": {
+    "category": "nginx",
+    "title": "Nginx Directory Index Forbidden",
+    "description": "The error-log line 'directory index of \"/var/www/html/\" is forbidden' — a request hit a directory, no index file matched, and autoindex is off, so nginx returned 403.",
+    "url": "/errors/nginx/directory-index-forbidden",
+    "keywords": [
+      "directory index of is forbidden",
+      "nginx 403 directory index",
+      "nginx autoindex",
+      "try_files nginx",
+      "nginx index directive",
+      "nginx 403 forbidden folder"
+    ]
+  },
+  "primary_script_unknown": {
+    "category": "nginx",
+    "title": "Nginx Primary Script Unknown (PHP-FPM)",
+    "description": "The error-log line 'FastCGI sent in stderr: \"Primary script unknown\"' — PHP-FPM could not find the script nginx asked it to run. Browsers show a bare 'File not found.'",
+    "url": "/errors/nginx/primary-script-unknown",
+    "keywords": [
+      "primary script unknown nginx",
+      "fastcgi sent in stderr primary script unknown",
+      "php-fpm file not found",
+      "script_filename nginx",
+      "nginx php docker file not found",
+      "fastcgi-php.conf"
+    ]
+  },
+  "conflicting_server_name": {
+    "category": "nginx",
+    "title": "Nginx Conflicting Server Name",
+    "description": "The warning 'nginx: [warn] conflicting server name \"example.com\" on 0.0.0.0:80, ignored' — two server blocks claim the same name, and nginx is silently ignoring one of them.",
+    "url": "/errors/nginx/conflicting-server-name",
+    "keywords": [
+      "conflicting server name nginx",
+      "nginx warn conflicting server name ignored",
+      "duplicate server block nginx",
+      "nginx server_name duplicate",
+      "nginx -T effective config",
+      "sites-enabled duplicate"
+    ]
+  },
+  "upstream_sent_too_big_header": {
+    "category": "nginx",
+    "title": "Nginx Upstream Sent Too Big Header",
+    "description": "The error-log line 'upstream sent too big header while reading response header from upstream' — the backend's response headers overflowed nginx's buffer. Visitors see a 502.",
+    "url": "/errors/nginx/upstream-sent-too-big-header",
+    "keywords": [
+      "upstream sent too big header",
+      "nginx too big header 502",
+      "proxy_buffer_size",
+      "fastcgi_buffer_size",
+      "nginx oauth 502",
+      "set-cookie too large nginx"
+    ]
+  },
+  "permission_denied_while_connecting_to_upstream": {
+    "category": "nginx",
+    "title": "Nginx Permission Denied While Connecting to Upstream",
+    "description": "The error-log line 'connect() to ... failed (13: Permission denied) while connecting to upstream' — the OS blocked nginx's connection to the backend, classically SELinux.",
+    "url": "/errors/nginx/permission-denied-while-connecting-to-upstream",
+    "keywords": [
+      "nginx permission denied while connecting to upstream",
+      "13 permission denied nginx",
+      "httpd_can_network_connect",
+      "selinux nginx proxy",
+      "php-fpm socket permission denied",
+      "setsebool nginx"
+    ]
+  },
+  "ah00558_could_not_reliably_determine_fqdn": {
+    "category": "apache",
+    "title": "Apache AH00558 — Could Not Reliably Determine FQDN",
+    "description": "The startup message 'AH00558: apache2: Could not reliably determine the server's fully qualified domain name' — Apache has no ServerName and is guessing.",
+    "url": "/errors/apache/ah00558-could-not-reliably-determine-fqdn",
+    "keywords": [
+      "ah00558",
+      "could not reliably determine the server's fully qualified domain name",
+      "apache servername",
+      "apache2 fqdn warning",
+      "set servername apache",
+      "127.0.1.1 apache"
+    ]
+  },
+  "ah00072_could_not_bind_to_address": {
+    "category": "apache",
+    "title": "Apache AH00072 — make_sock: Could Not Bind to Address",
+    "description": "The startup failure '(98)Address already in use: AH00072: make_sock: could not bind to address [::]:80' — another process holds Apache's port, or Apache is fighting itself.",
+    "url": "/errors/apache/ah00072-could-not-bind-to-address",
+    "keywords": [
+      "ah00072",
+      "make_sock could not bind to address",
+      "98 address already in use apache",
+      "ah00451 no listening sockets",
+      "apache port 80 in use",
+      "apache won't start port conflict"
+    ]
+  },
+  "invalid_command_rewriteengine": {
+    "category": "apache",
+    "title": "Apache Invalid Command 'RewriteEngine'",
+    "description": "The error \"Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration\" — mod_rewrite (or another module) is not enabled.",
+    "url": "/errors/apache/invalid-command-rewriteengine",
+    "keywords": [
+      "invalid command rewriteengine",
+      "perhaps misspelled or defined by a module not included",
+      "a2enmod rewrite",
+      "apache mod_rewrite not working",
+      "htaccess 500 invalid command",
+      "apache invalid command header"
+    ]
+  },
+  "ah01630_client_denied_by_server_configuration": {
+    "category": "apache",
+    "title": "Apache AH01630 — Client Denied by Server Configuration",
+    "description": "The error-log line 'AH01630: client denied by server configuration' — an authorization rule (usually Require directives) rejected the request. Visitors see 403 Forbidden.",
+    "url": "/errors/apache/ah01630-client-denied-by-server-configuration",
+    "keywords": [
+      "ah01630",
+      "client denied by server configuration",
+      "apache 403 forbidden fix",
+      "require all granted",
+      "order allow deny apache 2.4",
+      "ah01797"
+    ]
+  },
+  "ah00035_access_denied_search_permissions": {
+    "category": "apache",
+    "title": "Apache AH00035 — Search Permissions Missing on a Component of the Path",
+    "description": "The error-log line 'AH00035: access to / denied ... because search permissions are missing on a component of the path' — the Apache user cannot traverse a directory above the docroot.",
+    "url": "/errors/apache/ah00035-access-denied-search-permissions",
+    "keywords": [
+      "ah00035",
+      "search permissions are missing on a component of the path",
+      "apache 403 home directory",
+      "namei -l",
+      "www-data permission denied",
+      "apache docroot permissions"
+    ]
+  },
+  "ah00161_maxrequestworkers_reached": {
+    "category": "apache",
+    "title": "Apache AH00161 — MaxRequestWorkers Reached",
+    "description": "The warning 'AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting' — Apache is out of workers and queueing or refusing requests.",
+    "url": "/errors/apache/ah00161-maxrequestworkers-reached",
+    "keywords": [
+      "ah00161",
+      "server reached maxrequestworkers setting",
+      "apache maxrequestworkers",
+      "mpm_event tuning",
+      "apache slow under load",
+      "prefork to event php-fpm"
+    ]
+  },
+  "primary_script_unknown_php_fpm": {
+    "category": "apache",
+    "title": "Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM)",
+    "description": "The error-log line 'AH01071: Got error \\'Primary script unknown\\'' — Apache proxied a request to PHP-FPM, which could not find the script. Browsers show 'File not found.'",
+    "url": "/errors/apache/primary-script-unknown-php-fpm",
+    "keywords": [
+      "ah01071",
+      "got error primary script unknown apache",
+      "apache php-fpm file not found",
+      "sethandler proxy fcgi",
+      "proxypassmatch php-fpm",
+      "mod_proxy_fcgi primary script"
+    ]
+  },
+  "ah02565_certificate_key_mismatch": {
+    "category": "apache",
+    "title": "Apache AH02565 — Certificate and Private Key Do Not Match",
+    "description": "The startup failure 'AH02565: Certificate and private key ... from ... and ... do not match' — SSLCertificateFile and SSLCertificateKeyFile are not a pair.",
+    "url": "/errors/apache/ah02565-certificate-key-mismatch",
+    "keywords": [
+      "ah02565",
+      "certificate and private key do not match apache",
+      "sslcertificatefile key mismatch",
+      "apache ssl won't start",
+      "openssl modulus compare",
+      "certbot apache certificate"
+    ]
+  },
+  "ah00898_error_reading_from_remote_server": {
+    "category": "apache",
+    "title": "Apache AH00898 — Error Reading from Remote Server (mod_proxy)",
+    "description": "The error-log line 'AH00898: Error reading from remote server' (with AH01102 'error reading status line') — Apache's reverse proxy lost the backend mid-request. Visitors see 502.",
+    "url": "/errors/apache/ah00898-error-reading-from-remote-server",
+    "keywords": [
+      "ah00898",
+      "error reading from remote server apache",
+      "ah01102 error reading status line",
+      "apache mod_proxy 502",
+      "proxytimeout apache",
+      "proxypass timeout"
+    ]
+  },
+  "ah00023_no_space_left_on_device": {
+    "category": "apache",
+    "title": "Apache AH00023 — No Space Left on Device (Mutex/Semaphore)",
+    "description": "The startup failure 'No space left on device: AH00023: Couldn't create the mpm-accept mutex' — usually exhausted semaphores, not an actually full disk.",
+    "url": "/errors/apache/ah00023-no-space-left-on-device",
+    "keywords": [
+      "ah00023",
+      "no space left on device apache mutex",
+      "couldn't create the mpm-accept mutex",
+      "ipcs ipcrm semaphores apache",
+      "apache semaphore leak",
+      "kernel.sem"
+    ]
+  },
+  "ah00526_syntax_error": {
+    "category": "apache",
+    "title": "Apache AH00526 — Syntax Error in Configuration",
+    "description": "The configtest/startup failure 'AH00526: Syntax error on line N of file' — Apache cannot parse the configuration and refuses to start or reload until it is fixed.",
+    "url": "/errors/apache/ah00526-syntax-error",
+    "keywords": [
+      "ah00526",
+      "syntax error on line apache",
+      "apachectl configtest",
+      "apache won't start syntax error",
+      "apache unclosed virtualhost",
+      "apache2ctl dump_includes"
+    ]
+  },
+  "threaded_mpm_php_not_threadsafe": {
+    "category": "apache",
+    "title": "Apache Threaded MPM vs PHP Module Conflict",
+    "description": "The error 'Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe. You need to recompile PHP.' — mod_php demands the prefork MPM.",
+    "url": "/errors/apache/threaded-mpm-php-not-threadsafe",
+    "keywords": [
+      "apache is running a threaded mpm but your php module is not compiled to be threadsafe",
+      "mpm_event php",
+      "mod_php vs php-fpm",
+      "a2enmod php mpm_prefork",
+      "apache php threadsafe error",
+      "switch apache to php-fpm"
+    ]
+  },
+  "ah01276_cannot_serve_directory": {
+    "category": "apache",
+    "title": "Apache AH01276 — Cannot Serve Directory",
+    "description": "The error-log line 'AH01276: Cannot serve directory ...: No matching DirectoryIndex ... found, and server-generated directory index forbidden by Options directive' — visitors see 403.",
+    "url": "/errors/apache/ah01276-cannot-serve-directory",
+    "keywords": [
+      "ah01276",
+      "cannot serve directory apache",
+      "no matching directoryindex",
+      "directory index forbidden by options directive",
+      "apache 403 directory",
+      "directoryindex index.php"
+    ]
+  },
+  "cannot_find_module": {
+    "category": "node",
+    "title": "Node.js Cannot Find Module",
+    "description": "The crash \"Error: Cannot find module 'x'\" (code MODULE_NOT_FOUND) — Node's resolver could not locate a package or file your code requires or imports.",
+    "url": "/errors/node/cannot-find-module",
+    "keywords": [
+      "cannot find module node",
+      "module_not_found",
+      "error cannot find module express",
+      "node require cannot find module",
+      "cannot find module docker",
+      "case sensitive import linux"
+    ]
+  },
+  "cannot_use_import_statement_outside_a_module": {
+    "category": "node",
+    "title": "Cannot Use Import Statement Outside a Module",
+    "description": "The crash \"SyntaxError: Cannot use import statement outside a module\" — ES-module syntax ran in a CommonJS context, in Node, Jest, or a browser script tag.",
+    "url": "/errors/node/cannot-use-import-statement-outside-a-module",
+    "keywords": [
+      "cannot use import statement outside a module",
+      "syntaxerror import node",
+      "type module package.json",
+      "jest cannot use import statement",
+      "mjs vs cjs",
+      "es modules node"
+    ]
+  },
+  "err_require_esm": {
+    "category": "node",
+    "title": "Node.js ERR_REQUIRE_ESM",
+    "description": "The crash 'Error [ERR_REQUIRE_ESM]: require() of ES Module ... not supported' — CommonJS code tried to require() a package that ships only as an ES module.",
+    "url": "/errors/node/err-require-esm",
+    "keywords": [
+      "err_require_esm",
+      "require() of es module not supported",
+      "chalk 5 require error",
+      "node-fetch 3 esm",
+      "dynamic import commonjs",
+      "node 22 require esm"
+    ]
+  },
+  "javascript_heap_out_of_memory": {
+    "category": "node",
+    "title": "JavaScript Heap Out of Memory",
+    "description": "The crash 'FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory' — the Node process hit V8's heap ceiling and aborted.",
+    "url": "/errors/node/javascript-heap-out-of-memory",
+    "keywords": [
+      "javascript heap out of memory",
+      "reached heap limit allocation failed",
+      "max-old-space-size",
+      "node build out of memory",
+      "node_options heap",
+      "node memory leak heap snapshot"
+    ]
+  },
+  "eaddrinuse_address_already_in_use": {
+    "category": "node",
+    "title": "Node.js EADDRINUSE — Address Already in Use",
+    "description": "The crash 'Error: listen EADDRINUSE: address already in use :::3000' — another process (often a previous instance of the same app) already listens on the port.",
+    "url": "/errors/node/eaddrinuse-address-already-in-use",
+    "keywords": [
+      "eaddrinuse",
+      "listen eaddrinuse address already in use 3000",
+      "node port already in use",
+      "kill process on port 3000",
+      "nodemon eaddrinuse",
+      "lsof port node"
+    ]
+  },
+  "digital_envelope_routines_unsupported": {
+    "category": "node",
+    "title": "Node.js error:0308010C — Digital Envelope Routines Unsupported",
+    "description": "The build crash 'Error: error:0308010C:digital envelope routines::unsupported' — Node 17+ (OpenSSL 3) rejects legacy hash usage in older webpack toolchains.",
+    "url": "/errors/node/digital-envelope-routines-unsupported",
+    "keywords": [
+      "error:0308010c",
+      "digital envelope routines unsupported",
+      "openssl-legacy-provider",
+      "node 17 webpack error",
+      "react-scripts openssl error",
+      "err_ossl_evp_unsupported"
+    ]
+  },
+  "node_gyp_build_failed": {
+    "category": "node",
+    "title": "node-gyp Build Failed",
+    "description": "Install failures full of 'gyp ERR! build error' and 'gyp ERR! stack' — a package with native C/C++ code could not compile on your machine.",
+    "url": "/errors/node/node-gyp-build-failed",
+    "keywords": [
+      "gyp err build error",
+      "node-gyp rebuild failed",
+      "node gyp python not found",
+      "distutils node-gyp",
+      "node_module_version mismatch",
+      "npm install gyp error"
+    ]
+  },
+  "unhandled_promise_rejection": {
+    "category": "node",
+    "title": "Node.js Unhandled Promise Rejection",
+    "description": "The crash 'Error [ERR_UNHANDLED_REJECTION]: This error originated either by throwing inside of an async function without a catch block...' — a rejected promise had no handler, and Node 15+ exits.",
+    "url": "/errors/node/unhandled-promise-rejection",
+    "keywords": [
+      "unhandled promise rejection",
+      "err_unhandled_rejection",
+      "node crash unhandledrejection",
+      "no-floating-promises",
+      "promise rejection was not handled",
+      "node 15 unhandled rejection"
+    ]
+  },
+  "npm_err_elifecycle": {
+    "category": "node",
+    "title": "npm ERR! code ELIFECYCLE",
+    "description": "The npm failure 'npm ERR! code ELIFECYCLE, npm ERR! errno 1' — the package.json script npm ran exited with a non-zero code. npm is the messenger, not the culprit.",
+    "url": "/errors/node/npm-err-elifecycle",
+    "keywords": [
+      "npm err code elifecycle",
+      "elifecycle errno 1",
+      "npm run build failed",
+      "npm start elifecycle",
+      "postinstall failed npm",
+      "npm err errno 137"
+    ]
+  },
+  "npm_enoent_package_json": {
+    "category": "node",
+    "title": "npm ERR! ENOENT — Could Not Read package.json",
+    "description": "The failure 'npm ERR! code ENOENT ... Could not read package.json' — npm ran in a directory that has no package.json to read.",
+    "url": "/errors/node/npm-enoent-package-json",
+    "keywords": [
+      "npm err enoent package.json",
+      "could not read package.json",
+      "enoent no such file or directory open package.json",
+      "npm init",
+      "npm workspaces -w",
+      "docker workdir npm"
+    ]
+  },
+  "unable_to_get_issuer_cert_locally": {
+    "category": "node",
+    "title": "Node.js UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
+    "description": "TLS failures like 'npm ERR! UNABLE_TO_GET_ISSUER_CERT_LOCALLY' or fetch failing with 'unable to get local issuer certificate' — Node cannot verify the server's certificate chain, typically behind a corporate proxy.",
+    "url": "/errors/node/unable-to-get-issuer-cert-locally",
+    "keywords": [
+      "unable_to_get_issuer_cert_locally",
+      "unable to get local issuer certificate",
+      "node_extra_ca_certs",
+      "npm cafile corporate proxy",
+      "zscaler npm error",
+      "self signed certificate in certificate chain"
+    ]
+  },
+  "maximum_call_stack_size_exceeded": {
+    "category": "node",
+    "title": "Maximum Call Stack Size Exceeded",
+    "description": "The crash 'RangeError: Maximum call stack size exceeded' — function calls nested deeper than the stack allows, almost always runaway recursion.",
+    "url": "/errors/node/maximum-call-stack-size-exceeded",
+    "keywords": [
+      "maximum call stack size exceeded",
+      "rangeerror call stack",
+      "infinite recursion javascript",
+      "node stack overflow",
+      "recursion base case",
+      "call stack exceeded fix"
+    ]
+  },
+  "externally_managed_environment": {
+    "category": "python",
+    "title": "Python error: externally-managed-environment",
+    "description": "The pip refusal 'error: externally-managed-environment' — the system Python (Debian 12+, Ubuntu 23.04+, Fedora 38+, Homebrew) blocks pip installs outside a virtual environment.",
+    "url": "/errors/python/externally-managed-environment",
+    "keywords": [
+      "externally-managed-environment",
+      "pip error externally managed environment",
+      "pep 668",
+      "break-system-packages",
+      "ubuntu pip install blocked",
+      "pipx vs venv"
+    ]
+  },
+  "attempted_relative_import": {
+    "category": "python",
+    "title": "Python ImportError: Attempted Relative Import",
+    "description": "The crash 'ImportError: attempted relative import with no known parent package' — relative imports only work inside a package, and this file was run as a plain script.",
+    "url": "/errors/python/attempted-relative-import",
+    "keywords": [
+      "attempted relative import with no known parent package",
+      "importerror relative import",
+      "python -m module",
+      "relative import python script",
+      "beyond top-level package"
+    ]
+  },
+  "command_python_not_found": {
+    "category": "python",
+    "title": "python: command not found",
+    "description": "Shell errors 'python: command not found' or Windows opening the Microsoft Store — the python command is missing from PATH, or only python3 exists.",
+    "url": "/errors/python/command-python-not-found",
+    "keywords": [
+      "python command not found",
+      "python was not found run without arguments",
+      "python vs python3",
+      "windows python microsoft store",
+      "app execution aliases python",
+      "add python to path"
+    ]
+  },
+  "unicodedecodeerror": {
+    "category": "python",
+    "title": "Python UnicodeDecodeError",
+    "description": "The crash \"UnicodeDecodeError: 'utf-8' codec can't decode byte 0x.. in position ..\" — bytes were decoded with the wrong encoding, or binary data was opened as text.",
+    "url": "/errors/python/unicodedecodeerror",
+    "keywords": [
+      "unicodedecodeerror",
+      "utf-8 codec can't decode byte",
+      "0xe9 invalid continuation byte",
+      "python open encoding",
+      "cp1252 vs utf-8",
+      "charset detection python"
+    ]
+  },
+  "attributeerror_nonetype": {
+    "category": "python",
+    "title": "AttributeError: 'NoneType' Object Has No Attribute",
+    "description": "The most common Python traceback — a variable is None where code expected a real object, usually because some earlier call returned None.",
+    "url": "/errors/python/attributeerror-nonetype",
+    "keywords": [
+      "nonetype object has no attribute",
+      "attributeerror nonetype",
+      "python none error",
+      "dict.get returns none",
+      "list sort returns none",
+      "optional none mypy"
+    ]
+  },
+  "maximum_recursion_depth": {
+    "category": "python",
+    "title": "Python RecursionError: Maximum Recursion Depth Exceeded",
+    "description": "The crash 'RecursionError: maximum recursion depth exceeded' — function calls nested past Python's limit (default 1000), almost always runaway recursion.",
+    "url": "/errors/python/maximum-recursion-depth",
+    "keywords": [
+      "recursionerror maximum recursion depth exceeded",
+      "python recursion limit",
+      "sys.setrecursionlimit",
+      "getattr infinite recursion",
+      "python stack overflow",
+      "recursion depth exceeded in comparison"
+    ]
+  },
+  "indentationerror": {
+    "category": "python",
+    "title": "Python IndentationError",
+    "description": "Crashes like 'IndentationError: unexpected indent', 'expected an indented block', and 'unindent does not match any outer indentation level' — whitespace that Python cannot parse as structure.",
+    "url": "/errors/python/indentationerror",
+    "keywords": [
+      "indentationerror unexpected indent",
+      "expected an indented block",
+      "unindent does not match any outer indentation level",
+      "taberror inconsistent use of tabs",
+      "python tabs vs spaces",
+      "invisible character python paste"
+    ]
+  },
+  "pip_ssl_module_not_available": {
+    "category": "python",
+    "title": "pip: TLS/SSL Module Not Available",
+    "description": "The failure 'pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available' — this Python was built without OpenSSL support.",
+    "url": "/errors/python/pip-ssl-module-not-available",
+    "keywords": [
+      "ssl module in python is not available",
+      "pip tls/ssl error",
+      "pyenv ssl module missing",
+      "no module named _ssl",
+      "libssl-dev python build",
+      "python built without openssl"
+    ]
+  },
+  "no_module_named_pip": {
+    "category": "python",
+    "title": "Python: No Module Named pip",
+    "description": "The failure 'ModuleNotFoundError: No module named pip' (or '/usr/bin/python3: No module named pip') — this interpreter has no pip installed at all.",
+    "url": "/errors/python/no-module-named-pip",
+    "keywords": [
+      "no module named pip",
+      "usr/bin/python3 no module named pip",
+      "ensurepip",
+      "apt install python3-pip",
+      "venv without pip",
+      "python -m pip"
+    ]
+  },
+  "microsoft_visual_c_required": {
+    "category": "python",
+    "title": "error: Microsoft Visual C++ 14.0 or Greater Is Required",
+    "description": "The pip build failure 'error: Microsoft Visual C++ 14.0 or greater is required. Get it with Microsoft C++ Build Tools' — a package needs compiling and Windows has no compiler.",
+    "url": "/errors/python/microsoft-visual-c-required",
+    "keywords": [
+      "microsoft visual c++ 14.0 or greater is required",
+      "pip build tools error",
+      "error microsoft visual c++ required",
+      "python wheel windows",
+      "vs build tools pip",
+      "desktop development with c++"
+    ]
+  },
+  "venv_activate_scripts_disabled": {
+    "category": "python",
+    "title": "venv Activate: Running Scripts Is Disabled on This System",
+    "description": "The PowerShell failure 'Activate.ps1 cannot be loaded because running scripts is disabled on this system' — Windows' execution policy blocks the venv activation script.",
+    "url": "/errors/python/venv-activate-scripts-disabled",
+    "keywords": [
+      "activate.ps1 cannot be loaded because running scripts is disabled",
+      "set-executionpolicy remotesigned",
+      "venv activate powershell error",
+      "execution policy python venv",
+      "running scripts is disabled on this system"
+    ]
+  },
+  "certificate_verify_failed": {
+    "category": "python",
+    "title": "Python SSLCertVerificationError — Certificate Verify Failed",
+    "description": "The failure 'ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate' in requests, urllib, or pip.",
+    "url": "/errors/python/certificate-verify-failed",
+    "keywords": [
+      "ssl certificate_verify_failed python",
+      "unable to get local issuer certificate python",
+      "install certificates.command",
+      "requests_ca_bundle",
+      "python requests ssl error",
+      "pip certificate verify failed"
+    ]
+  },
+  "error_520": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 520 — Web Server Returns an Unknown Error",
+    "description": "Cloudflare reached the origin server, but the response was empty, malformed, or cut off — something Cloudflare could not interpret as valid HTTP.",
+    "url": "/errors/cloudflare/error-520",
+    "keywords": [
+      "cloudflare error 520",
+      "web server returns an unknown error",
+      "error 520 fix",
+      "cloudflare 520 origin",
+      "ray id 520",
+      "520 vs 502"
+    ]
+  },
+  "error_521": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 521 — Web Server Is Down",
+    "description": "Cloudflare tried to connect to the origin server and the connection was actively refused — nothing is accepting connections on the origin's port.",
+    "url": "/errors/cloudflare/error-521",
+    "keywords": [
+      "cloudflare error 521",
+      "web server is down cloudflare",
+      "error 521 fix",
+      "cloudflare ip ranges firewall",
+      "origin refusing connections",
+      "521 vs 522"
+    ]
+  },
+  "error_522": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 522 — Connection Timed Out",
+    "description": "Cloudflare's attempt to open a TCP connection to the origin produced no answer at all within the timeout — packets are being dropped, or the origin is too overloaded to accept.",
+    "url": "/errors/cloudflare/error-522",
+    "keywords": [
+      "cloudflare error 522",
+      "connection timed out cloudflare",
+      "error 522 fix",
+      "cloudflare 522 firewall",
+      "origin ip cloudflare dns",
+      "522 intermittent"
+    ]
+  },
+  "error_523": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 523 — Origin Is Unreachable",
+    "description": "Cloudflare has no network route to the origin at all — typically because the DNS record points at a private, wrong, or no-longer-routed IP address.",
+    "url": "/errors/cloudflare/error-523",
+    "keywords": [
+      "cloudflare error 523",
+      "origin is unreachable",
+      "error 523 fix",
+      "private ip cloudflare dns",
+      "origin ip wrong cloudflare",
+      "523 vs 522"
+    ]
+  },
+  "error_524": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 524 — A Timeout Occurred",
+    "description": "Cloudflare connected to the origin and delivered the request, but the origin did not complete an HTTP response within 100 seconds — long jobs and slow queries are the usual story.",
+    "url": "/errors/cloudflare/error-524",
+    "keywords": [
+      "cloudflare error 524",
+      "a timeout occurred cloudflare",
+      "error 524 fix",
+      "cloudflare 100 second timeout",
+      "524 long running request",
+      "524 vs 504"
+    ]
+  },
+  "error_525": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 525 — SSL Handshake Failed",
+    "description": "Cloudflare tried to establish a TLS connection to the origin (Full or Full-strict SSL mode) and the handshake failed — usually no certificate is being served on port 443.",
+    "url": "/errors/cloudflare/error-525",
+    "keywords": [
+      "cloudflare error 525",
+      "ssl handshake failed cloudflare",
+      "error 525 fix",
+      "cloudflare origin certificate",
+      "full strict ssl 525",
+      "525 vs 526"
+    ]
+  },
+  "error_526": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 526 — Invalid SSL Certificate",
+    "description": "Under Full (strict) SSL mode, the origin presented a certificate that failed validation — expired, self-signed, untrusted, or issued for a different hostname.",
+    "url": "/errors/cloudflare/error-526",
+    "keywords": [
+      "cloudflare error 526",
+      "invalid ssl certificate cloudflare",
+      "error 526 fix",
+      "full strict invalid certificate",
+      "origin certificate expired cloudflare",
+      "526 self signed"
+    ]
+  },
+  "error_1006": {
+    "category": "cloudflare",
+    "title": "Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned",
+    "description": "The page 'Access denied: the owner of this website has banned your IP address' — an IP Access Rule on the site explicitly blocks your address or range.",
+    "url": "/errors/cloudflare/error-1006",
+    "keywords": [
+      "cloudflare error 1006",
+      "error 1007",
+      "error 1008",
+      "owner of this website has banned your ip address",
+      "cloudflare ip access rules",
+      "banned ip cloudflare fix"
+    ]
+  },
+  "error_1015": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 1015 — You Are Being Rate Limited",
+    "description": "The request tripped a Rate Limiting rule configured by the site's owner — too many requests from your IP inside the rule's time window.",
+    "url": "/errors/cloudflare/error-1015",
+    "keywords": [
+      "cloudflare error 1015",
+      "you are being rate limited",
+      "error 1015 fix",
+      "cloudflare rate limiting rule",
+      "1015 how long",
+      "1015 vs 429"
+    ]
+  },
+  "error_1016": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 1016 — Origin DNS Error",
+    "description": "Cloudflare could not resolve the origin's address: the DNS record behind the proxy points at a hostname that does not resolve — a broken CNAME target is the classic cause.",
+    "url": "/errors/cloudflare/error-1016",
+    "keywords": [
+      "cloudflare error 1016",
+      "origin dns error",
+      "error 1016 fix",
+      "cname target nxdomain cloudflare",
+      "cloudflare load balancer 1016",
+      "1016 vs 523"
+    ]
+  },
+  "error_1020": {
+    "category": "cloudflare",
+    "title": "Cloudflare Error 1020 — Access Denied",
+    "description": "The request matched a firewall or WAF rule on the site — country, network, user-agent, path, or bot-score conditions the owner configured (or a managed rule).",
+    "url": "/errors/cloudflare/error-1020",
+    "keywords": [
+      "cloudflare error 1020",
+      "access denied error 1020",
+      "error 1020 fix",
+      "cloudflare waf rule blocked",
+      "ray id security events",
+      "1020 vs 1006"
+    ]
+  },
+  "redirect_loop": {
+    "category": "cloudflare",
+    "title": "Cloudflare Redirect Loop (ERR_TOO_MANY_REDIRECTS)",
+    "description": "The browser reports ERR_TOO_MANY_REDIRECTS on a site behind Cloudflare — almost always Flexible SSL mode fighting an origin that redirects HTTP to HTTPS.",
+    "url": "/errors/cloudflare/redirect-loop",
+    "keywords": [
+      "cloudflare too many redirects",
+      "err_too_many_redirects cloudflare",
+      "flexible ssl redirect loop",
+      "cloudflare redirect loop fix",
+      "full strict redirect loop",
+      "x-forwarded-proto redirect"
+    ]
+  }
+}

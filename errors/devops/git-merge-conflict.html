@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I prevent merge conflicts?","acceptedAnswer":{"@type":"Answer","text":"Merge frequently from the main branch into your feature branch to keep divergence small. Communicate with team members about which files you are modifying. Keep commits small and focused."}},{"@type":"Question","name":"What do the conflict markers mean?","acceptedAnswer":{"@type":"Answer","text":">>>>>> branch-name marks the end of the incoming branch's version. Delete all markers and keep only the correct code."}},{"@type":"Question","name":"Does rebasing cause conflicts too?","acceptedAnswer":{"@type":"Answer","text":"Yes. Rebasing replays commits one by one, so you may need to resolve conflicts at each step. However, rebase conflicts are resolved the same way as merge conflicts."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Git Merge Conflict — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Git Merge Conflict","step":[{"@type":"HowToStep","position":1,"name":"Accept one side entirely","text":"If you want to accept all changes from one side of the conflict, use the --ours or --theirs strategy."},{"@type":"HowToStep","position":2,"name":"Abort the merge","text":"If you want to cancel the merge entirely and return to the state before the merge started."},{"@type":"HowToStep","position":3,"name":"Use a merge tool","text":"Configure and use a graphical merge tool to visually resolve conflicts."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Merge Conflict — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Git merge conflicts. Learn what causes merge conflicts, how to read conflict markers, and how to resolve them step by step.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Git merge conflict, CONFLICT (content): Merge conflict, Automatic merge failed, fix conflicts and then commit, Unmerged paths, both modified">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Git Merge Conflict — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Git merge conflicts. Learn what causes merge conflicts, how to read conflict markers, and how to resolve them step by step.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/git-merge-conflict">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/git-merge-conflict">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Git Merge Conflict</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Git Merge Conflict</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Conflicting changes prevent automatic merge</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Git merge conflict</code></li><li><code>CONFLICT (content): Merge conflict</code></li><li><code>Automatic merge failed</code></li><li><code>fix conflicts and then commit</code></li><li><code>Unmerged paths</code></li><li><code>both modified</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A merge conflict occurs when Git cannot automatically combine changes from two branches because the same lines in a file were modified differently in each branch. Git marks the conflicting sections in the file and stops the merge, requiring manual resolution before the merge can be completed.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Same lines modified in both branches</strong> — Two developers edited the same lines in the same file on different branches. Git cannot determine which version to keep, so it marks both versions in the file.</li>
+                <li><strong>File deleted in one branch and modified in another</strong> — One branch deleted a file while another branch modified it. Git cannot decide whether to keep the modified version or honor the deletion.</li>
+                <li><strong>Diverged branches with overlapping changes</strong> — Branches that have been separate for a long time often accumulate overlapping changes in the same files, making conflicts more likely when they are finally merged.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Resolve conflicts manually</h3>
+            <p>Open each conflicted file, look for conflict markers (<<<<<<, =======, >>>>>>), choose the correct code, remove the markers, and stage the file.</p>
+            <pre><code># After resolving conflicts in the file:
+git add resolved-file.txt
+git commit -m &quot;Resolve merge conflict&quot;</code></pre>
+            <h3>2. Accept one side entirely</h3>
+            <p>If you want to accept all changes from one side of the conflict, use the --ours or --theirs strategy.</p>
+            <pre><code># Accept current branch's version:
+git checkout --ours file.txt
+
+# Accept incoming branch's version:
+git checkout --theirs file.txt
+
+git add file.txt</code></pre>
+            <h3>3. Abort the merge</h3>
+            <p>If you want to cancel the merge entirely and return to the state before the merge started.</p>
+            <pre><code>git merge --abort</code></pre>
+            <h3>4. Use a merge tool</h3>
+            <p>Configure and use a graphical merge tool to visually resolve conflicts.</p>
+            <pre><code>git mergetool</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I prevent merge conflicts?</h3>
+            <p>Merge frequently from the main branch into your feature branch to keep divergence small. Communicate with team members about which files you are modifying. Keep commits small and focused.</p>
+            <h3>What do the conflict markers mean?</h3>
+            <p><<<<<<< HEAD marks the start of your current branch's version. ======= separates the two versions. >>>>>>> branch-name marks the end of the incoming branch's version. Delete all markers and keep only the correct code.</p>
+            <h3>Does rebasing cause conflicts too?</h3>
+            <p>Yes. Rebasing replays commits one by one, so you may need to resolve conflicts at each step. However, rebase conflicts are resolved the same way as merge conflicts.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/git-detached-head">Git Detached HEAD</a> — Git is in detached HEAD state</li>
+                <li><a href="/errors/devops/git-repository-not-found">Repository Not Found</a> — Git cannot find the remote repository</li>
+                <li><a href="/errors/devops/git-remote-origin-already-exists">Remote Origin Already Exists</a> — Git remote origin is already configured</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/text-diff/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Text Diff</span>
+                    <span class="recommended-tool-desc">Compare text side by side</span>
+                </a>
+                <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Format and validate JSON</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/text-diff/" class="cta-btn-primary">Try Text Diff</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

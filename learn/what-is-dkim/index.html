@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"What Is DKIM (DomainKeys Identified Mail)?","description":"Learn what DKIM is, how DKIM signatures work, how to set up DKIM DNS records, and how DKIM fits into email authentication alongside SPF and DMARC.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/what-is-dkim/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"What Is DKIM?"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is DKIM?","acceptedAnswer":{"@type":"Answer","text":"DKIM (DomainKeys Identified Mail) is an email authentication method that uses cryptographic signatures to verify that an email was sent by an authorized server and that the message content has not been tampered with in transit. The sending server signs the email with a private key, and the receiving server verifies the signature using a public key published in DNS."}},{"@type":"Question","name":"How does DKIM signing work?","acceptedAnswer":{"@type":"Answer","text":"When sending an email, the mail server creates a hash of specific email headers and the message body, then encrypts the hash using a private key. The encrypted hash (signature) is added as a DKIM-Signature header. The receiving server retrieves the public key from DNS, decrypts the signature, and compares the hash to verify integrity."}},{"@type":"Question","name":"What is a DKIM selector?","acceptedAnswer":{"@type":"Answer","text":"A DKIM selector is a string that identifies which DKIM key to use for verification. The public key is published at a DNS TXT record at selector._domainkey.yourdomain.com. Selectors allow a domain to have multiple active DKIM keys, which is useful when rotating keys or using different keys for different email services."}},{"@type":"Question","name":"What causes DKIM verification to fail?","acceptedAnswer":{"@type":"Answer","text":"DKIM verification fails when the message has been modified in transit (mailing lists often break DKIM by adding footers or modifying headers), when the DNS public key record is missing or incorrect, when the DKIM key has been rotated without updating DNS, or when there is a mismatch between the signing domain and the key location."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is DKIM? — DomainKeys Identified Mail Explained — duckTyped</title>
+    <meta name="description" content="Learn what DKIM is, how DKIM signatures work, how to set up DKIM DNS records, and how DKIM fits into email authentication alongside SPF and DMARC.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="What Is DKIM? — DomainKeys Identified Mail Explained — duckTyped">
+    <meta property="og:description" content="Learn what DKIM is, how DKIM signatures verify email integrity, and how to configure DKIM.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/what-is-dkim/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Is DKIM? — DomainKeys Identified Mail Explained — duckTyped">
+    <meta name="twitter:description" content="Learn what DKIM is and how DKIM signatures verify email authenticity.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/what-is-dkim/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>What Is DKIM?</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>What Is DKIM (DomainKeys Identified Mail)?</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">DKIM is an email authentication method that uses cryptographic signatures to verify that an email was sent by an authorized server and that the message has not been modified in transit. It works by signing outgoing messages with a private key and publishing the corresponding public key in DNS.</p>
+
+            <h2>How DKIM Works</h2>
+            <p>DKIM operates on a simple principle: the sending server signs the email, and the receiving server verifies the signature. The process has two phases:</p>
+
+            <h3>Signing (Sender Side)</h3>
+            <ol>
+                <li>The sending mail server selects specific email headers (such as From, To, Subject, Date) and the message body.</li>
+                <li>It creates a <strong>hash</strong> (a fixed-length digest) of the selected headers and body content.</li>
+                <li>The hash is <strong>encrypted</strong> using the domain's private key, producing a digital signature.</li>
+                <li>The signature, along with metadata about the signing process, is added to the email as a <strong>DKIM-Signature</strong> header.</li>
+            </ol>
+
+            <h3>Verification (Receiver Side)</h3>
+            <ol>
+                <li>The receiving server reads the DKIM-Signature header to identify the signing domain (<code>d=</code>) and selector (<code>s=</code>).</li>
+                <li>It constructs a DNS query for <code>selector._domainkey.domain.com</code> to retrieve the public key.</li>
+                <li>Using the public key, it <strong>decrypts</strong> the signature to obtain the original hash.</li>
+                <li>It independently computes a hash of the same headers and body.</li>
+                <li>If the two hashes <strong>match</strong>, the signature is valid -- the email is authenticated and unmodified.</li>
+            </ol>
+
+            <h2>The DKIM-Signature Header</h2>
+            <p>A DKIM-Signature header looks like this:</p>
+            <pre><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.com; s=selector1;
+    c=relaxed/relaxed; q=dns/txt; h=from:to:subject:date:message-id;
+    bh=abcdef123456...=; b=ghijkl789012...=</code></pre>
+            <p>Key fields:</p>
+            <ul>
+                <li><code>v=1</code> -- DKIM version (always 1).</li>
+                <li><code>a=rsa-sha256</code> -- the signing algorithm. RSA-SHA256 is the standard; Ed25519 is an emerging alternative.</li>
+                <li><code>d=example.com</code> -- the signing domain. This is the domain claiming responsibility for the message.</li>
+                <li><code>s=selector1</code> -- the selector used to locate the public key in DNS.</li>
+                <li><code>c=relaxed/relaxed</code> -- canonicalization algorithm for headers/body. "Relaxed" is tolerant of minor formatting changes; "simple" requires exact matches.</li>
+                <li><code>h=from:to:subject:date:message-id</code> -- the list of headers included in the signature.</li>
+                <li><code>bh=...</code> -- the hash of the message body.</li>
+                <li><code>b=...</code> -- the actual signature (encrypted hash of the headers).</li>
+            </ul>
+
+            <h2>DKIM Selectors and DNS Records</h2>
+            <p>A <strong>selector</strong> is a label that identifies which DKIM key to use. The public key is published as a DNS TXT record at:</p>
+            <pre><code>selector._domainkey.example.com  TXT  "v=DKIM1; k=rsa; p=MIGfMA0GCS..."</code></pre>
+            <p>Selectors serve several purposes:</p>
+            <ul>
+                <li><strong>Key rotation</strong> -- you can publish a new key with a new selector while the old one remains active, allowing a gradual transition.</li>
+                <li><strong>Multiple services</strong> -- different email services (e.g., Google Workspace, SendGrid, Mailchimp) each use their own selector, so they can sign with different keys without conflicting.</li>
+                <li><strong>Key management</strong> -- selectors let you identify which system signed a particular message.</li>
+            </ul>
+            <p>The DNS record fields:</p>
+            <ul>
+                <li><code>v=DKIM1</code> -- DKIM version identifier.</li>
+                <li><code>k=rsa</code> -- key type (RSA is standard; Ed25519 is the alternative).</li>
+                <li><code>p=...</code> -- the public key in Base64 encoding. An empty <code>p=</code> value means the key has been revoked.</li>
+            </ul>
+
+            <h2>Common DKIM Issues</h2>
+
+            <h3>Signature Broken by Mailing Lists</h3>
+            <p>Mailing lists (like Google Groups or Mailman) often modify messages by adding footers, changing the Subject line, or rewriting the From header. Any modification to signed content invalidates the DKIM signature. This is one of the most common causes of DKIM failures and is why DMARC policies should account for mailing list behavior.</p>
+
+            <h3>Missing or Incorrect DNS Record</h3>
+            <p>If the public key DNS record does not exist at the expected location, or if it contains an incorrect or malformed key, DKIM verification fails. Always verify that the DNS record matches the selector and domain used by your mail server.</p>
+
+            <h3>Key Rotation Without DNS Update</h3>
+            <p>When rotating DKIM keys, the new private key must be deployed on the mail server and the corresponding new public key must be published in DNS <strong>before</strong> the old key is removed. If the old DNS record is deleted before all in-flight messages are delivered, some messages signed with the old key will fail verification.</p>
+
+            <h3>RSA Key Size Too Small</h3>
+            <p>DKIM keys should be at least 1024 bits, and 2048 bits is recommended. Some older configurations still use 512-bit keys, which are considered cryptographically weak and may be rejected by receiving servers. Note that 2048-bit keys may need to be split across multiple DNS TXT strings due to the 255-character limit per DNS string.</p>
+
+            <h2>DKIM and Email Authentication</h2>
+            <p>DKIM works alongside <strong>SPF</strong> and <strong>DMARC</strong> to form a comprehensive email authentication framework:</p>
+            <ul>
+                <li><strong>SPF</strong> verifies the sending server's IP address is authorized.</li>
+                <li><strong>DKIM</strong> verifies the message integrity and authenticity via cryptographic signatures.</li>
+                <li><strong>DMARC</strong> ties SPF and DKIM together with domain alignment rules and specifies what to do when authentication fails.</li>
+            </ul>
+            <p>DKIM is particularly valuable because it survives email forwarding -- unlike SPF, which breaks when a message is forwarded through an intermediate server. The signature travels with the message regardless of which servers handle it, as long as the message content is not modified.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- look up DKIM public key records in DNS.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> -- inspect DKIM-Signature headers and verification results.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> -- test mail server connectivity and configuration.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/what-is-spf/">What is SPF</a>, <a href="/learn/what-is-dmarc/">What is DMARC</a>, <a href="/learn/email-authentication/">How email authentication works</a>, <a href="/learn/email-auth-cheat-sheet/">Email auth cheat sheet</a>, <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550 Error</a> -- DKIM failures can contribute to message rejections.</li>
+                <li><a href="/errors/email/message-rejected">Message Rejected</a> -- authentication failures are a common cause.</li>
+                <li><a href="/errors/email/">All Email Errors</a> -- browse all email-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/email-header-analyzer/" class="cta-btn-primary">Analyze Email Headers</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

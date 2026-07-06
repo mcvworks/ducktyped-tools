@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Errors – 52x Codes & 1xxx Challenges Troubleshooting — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare errors 520-526 (origin, SSL, timeouts), 1015 rate limiting, 1016 origin DNS, 1020 access denied, and redirect loops. Owner and visitor fixes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cloudflare Errors – 52x Codes & 1xxx Challenges Troubleshooting — duckTyped">
+    <meta property="og:description" content="Fix Cloudflare errors 520-526 (origin, SSL, timeouts), 1015 rate limiting, 1016 origin DNS, 1020 access denied, and redirect loops. Owner and visitor fixes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        .errors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .error-card {
+            display: block;
+            text-decoration: none;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .error-card:hover {
+            border-color: var(--primary-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .error-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .badge-devops { background: rgba(130,87,229,0.1); color: #8257E5; }
+        .badge-database { background: rgba(56,189,248,0.1); color: #38BDF8; }
+        .badge-http { background: rgba(242,194,0,0.1); color: #F2C200; }
+        .badge-nginx { background: rgba(74,222,128,0.1); color: #4ADE80; }
+        .badge-apache { background: rgba(232,121,249,0.1); color: #E879F9; }
+        .badge-node { background: rgba(129,140,248,0.1); color: #818CF8; }
+        .badge-python { background: rgba(34,211,238,0.1); color: #22D3EE; }
+        .badge-cloudflare { background: rgba(251,146,60,0.1); color: #FB923C; }
+        .badge-browser { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-dns { background: rgba(72,224,199,0.1); color: #48E0C7; }
+        .badge-email { background: rgba(250,98,22,0.1); color: #FA6216; }
+        .badge-ssl { background: rgba(255,107,107,0.1); color: #ff6b6b; }
+        .error-card-title {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .error-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        .hub-breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+        .hub-breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .hub-breadcrumb a:hover { text-decoration: underline; }
+        .hub-tools-section {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            margin-bottom: 32px;
+        }
+        .hub-tools-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .hub-tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hub-tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--primary-dim);
+            border: 1px solid var(--primary-border);
+            border-radius: 999px;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .hub-tool-link:hover { filter: brightness(1.1); }
+        .hub-category-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .hub-category-link {
+            padding: 7px 16px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .hub-category-link:hover,
+        .hub-category-link.active {
+            background: var(--primary-dim);
+            border-color: var(--primary-border);
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="hub-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> &rsaquo; Cloudflare Errors
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Cloudflare Errors</h1>
+            <p class="standalone-intro">Cloudflare sits between visitors and the origin server, so its error pages describe which side broke: the 52x codes are origin-connection problems (down, timing out, TLS misconfigured), while the 1xxx codes are Cloudflare security features acting on the request. Each guide covers both perspectives — what a visitor can do, and what the site owner must fix. Generic 502/504 pages are cross-listed from the HTTP category.</p>
+        </div>
+
+        <div class="hub-category-nav">
+            <a href="/errors/browser/" class="hub-category-link">Browser</a>
+            <a href="/errors/http/" class="hub-category-link">HTTP</a>
+            <a href="/errors/dns/" class="hub-category-link">DNS</a>
+            <a href="/errors/email/" class="hub-category-link">Email</a>
+            <a href="/errors/ssl/" class="hub-category-link">SSL / TLS</a>
+            <a href="/errors/devops/" class="hub-category-link">DevOps</a>
+            <a href="/errors/database/" class="hub-category-link">Database</a>
+            <a href="/errors/nginx/" class="hub-category-link">Nginx</a>
+            <a href="/errors/apache/" class="hub-category-link">Apache</a>
+            <a href="/errors/node/" class="hub-category-link">Node.js</a>
+            <a href="/errors/python/" class="hub-category-link">Python</a>
+            <a href="/errors/cloudflare/" class="hub-category-link active">Cloudflare</a>
+        </div>
+
+        <div class="errors-grid">
+                <a href="/errors/http/502-bad-gateway" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">502 Bad Gateway</div>
+                    <div class="error-card-desc">The upstream server returned an invalid response.</div>
+                </a>
+                <a href="/errors/http/504-gateway-timeout" class="error-card">
+                    <span class="error-card-badge badge-http">HTTP</span>
+                    <div class="error-card-title">504 Gateway Timeout</div>
+                    <div class="error-card-desc">The gateway timed out waiting for an upstream server to respond.</div>
+                </a>
+                <a href="/errors/cloudflare/error-1015" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 1015 — You Are Being Rate Limited</div>
+                    <div class="error-card-desc">The request tripped a Rate Limiting rule configured by the site's owner — too many requests from your IP inside the rule's time window.</div>
+                </a>
+                <a href="/errors/cloudflare/error-1016" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 1016 — Origin DNS Error</div>
+                    <div class="error-card-desc">Cloudflare could not resolve the origin's address: the DNS record behind the proxy points at a hostname that does not resolve — a broken CNAME target is the classic cause.</div>
+                </a>
+                <a href="/errors/cloudflare/error-1020" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 1020 — Access Denied</div>
+                    <div class="error-card-desc">The request matched a firewall or WAF rule on the site — country, network, user-agent, path, or bot-score conditions the owner configured (or a managed rule).</div>
+                </a>
+                <a href="/errors/cloudflare/error-520" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 520 — Web Server Returns an Unknown Error</div>
+                    <div class="error-card-desc">Cloudflare reached the origin server, but the response was empty, malformed, or cut off — something Cloudflare could not interpret as valid HTTP.</div>
+                </a>
+                <a href="/errors/cloudflare/error-521" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 521 — Web Server Is Down</div>
+                    <div class="error-card-desc">Cloudflare tried to connect to the origin server and the connection was actively refused — nothing is accepting connections on the origin's port.</div>
+                </a>
+                <a href="/errors/cloudflare/error-522" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 522 — Connection Timed Out</div>
+                    <div class="error-card-desc">Cloudflare's attempt to open a TCP connection to the origin produced no answer at all within the timeout — packets are being dropped, or the origin is too overloaded to accept.</div>
+                </a>
+                <a href="/errors/cloudflare/error-523" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 523 — Origin Is Unreachable</div>
+                    <div class="error-card-desc">Cloudflare has no network route to the origin at all — typically because the DNS record points at a private, wrong, or no-longer-routed IP address.</div>
+                </a>
+                <a href="/errors/cloudflare/error-524" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 524 — A Timeout Occurred</div>
+                    <div class="error-card-desc">Cloudflare connected to the origin and delivered the request, but the origin did not complete an HTTP response within 100 seconds — long jobs and slow queries are the usual story.</div>
+                </a>
+                <a href="/errors/cloudflare/error-525" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 525 — SSL Handshake Failed</div>
+                    <div class="error-card-desc">Cloudflare tried to establish a TLS connection to the origin (Full or Full-strict SSL mode) and the handshake failed — usually no certificate is being served on port 443.</div>
+                </a>
+                <a href="/errors/cloudflare/error-526" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Error 526 — Invalid SSL Certificate</div>
+                    <div class="error-card-desc">Under Full (strict) SSL mode, the origin presented a certificate that failed validation — expired, self-signed, untrusted, or issued for a different hostname.</div>
+                </a>
+                <a href="/errors/cloudflare/error-1006" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned</div>
+                    <div class="error-card-desc">The page 'Access denied: the owner of this website has banned your IP address' — an IP Access Rule on the site explicitly blocks your address or range.</div>
+                </a>
+                <a href="/errors/cloudflare/redirect-loop" class="error-card">
+                    <span class="error-card-badge badge-cloudflare">Cloudflare</span>
+                    <div class="error-card-title">Cloudflare Redirect Loop (ERR_TOO_MANY_REDIRECTS)</div>
+                    <div class="error-card-desc">The browser reports ERR_TOO_MANY_REDIRECTS on a site behind Cloudflare — almost always Flexible SSL mode fighting an origin that redirects HTTP to HTTPS.</div>
+                </a>
+                <a href="/errors/browser/err_too_many_redirects" class="error-card">
+                    <span class="error-card-badge badge-browser">Browser</span>
+                    <div class="error-card-title">ERR_TOO_MANY_REDIRECTS</div>
+                    <div class="error-card-desc">The page entered a redirect loop and could not load.</div>
+                </a>
+        </div>
+
+        <!-- Related tools -->
+        <div class="hub-tools-section">
+            <div class="hub-tools-title">Related Tools</div>
+            <div class="hub-tools-list">
+                <a href="/dns-lookup/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    DNS Lookup
+                </a>
+                <a href="/ssl-checker/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    SSL Checker
+                </a>
+                <a href="/http-latency/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    HTTP Latency
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta">
+            <p>Browse all troubleshooting guides or explore free developer tools.</p>
+            <a href="/errors/" class="cta-btn-primary">All Error Guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

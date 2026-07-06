@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 410 Gone mean?","acceptedAnswer":{"@type":"Answer","text":"A 410 Gone error means the requested resource has been permanently removed from the server and will not be available again. Unlike a 404, the server is explicitly confirming the resource existed but no longer does."}},{"@type":"Question","name":"What is the difference between 404 and 410?","acceptedAnswer":{"@type":"Answer","text":"A 404 Not Found means the resource was not found, but it may still exist or could exist in the future. A 410 Gone is a definitive statement that the resource existed and has been permanently deleted. Search engines use 410 to quickly de-index removed pages."}},{"@type":"Question","name":"Should I use 410 or 404 for deleted pages?","acceptedAnswer":{"@type":"Answer","text":"Use 410 when you know for certain the resource has been permanently deleted and will never return. Use 404 for resources that may return or whose existence is unknown. 410 helps search engines de-index pages faster."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"410 Gone — Meaning, SEO Impact & When to Use It"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>410 Gone — Meaning, SEO Impact &amp; When to Use It — duckTyped</title>
+    <meta name="description" content="Learn what a 410 Gone HTTP status means, how it differs from 404, its impact on SEO, and when to return 410 for deleted pages.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 410, 410 Gone, 410 error, Resource permanently removed, 410 vs 404, 410 SEO">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="410 Gone — Meaning, SEO Impact &amp; When to Use It">
+    <meta property="og:description" content="Understand the difference between 404 and 410, when to use each, and how 410 affects search engine indexing.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/410-gone">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/410-gone">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>410 Gone</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>410 Gone</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 410 status means the resource has been permanently removed and will not return. It is a definitive signal to users, browsers, and search engines that this URL no longer exists.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 410</code></li><li><code>410 Gone</code></li><li><code>410 error</code></li><li><code>Resource permanently removed</code></li><li><code>410 vs 404</code></li><li><code>410 SEO</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 410 is a permanent version of <a href="/errors/http/404-not-found">404 Not Found</a>. While 404 says "I can't find this," 410 says "this used to exist here and I intentionally removed it — do not look for it again."</p>
+            <p>The 410 response has no body requirements beyond optionally explaining the removal. It should be used only when you are certain the resource will never return. If there is a replacement URL, prefer a 301 redirect instead.</p>
+
+            <h2>Common Use Cases</h2>
+            <ul>
+                <li><strong>Permanently deleted content</strong> — a blog post, product, or page that has been intentionally removed.</li>
+                <li><strong>Retired API endpoints</strong> — an API version that has been decommissioned.</li>
+                <li><strong>Deactivated user accounts</strong> — a public profile that belonged to a deleted account.</li>
+                <li><strong>Expired promotional pages</strong> — a campaign landing page no longer active.</li>
+                <li><strong>Removed features</strong> — a product feature that has been discontinued.</li>
+            </ul>
+
+            <h2>410 vs. 404 — Choosing the Right Code</h2>
+            <table>
+                <thead><tr><th>Situation</th><th>Code</th></tr></thead>
+                <tbody>
+                    <tr><td>Resource might return in the future</td><td>404</td></tr>
+                    <tr><td>Resource permanently deleted</td><td>410</td></tr>
+                    <tr><td>Resource moved to new URL</td><td>301 redirect</td></tr>
+                    <tr><td>Temporary removal</td><td>503 or 404</td></tr>
+                </tbody>
+            </table>
+
+            <h2>SEO Impact</h2>
+            <p>Search engines like Google treat 410 more aggressively than 404. Pages returning 410 are de-indexed faster from search results than pages returning 404. If you want to quickly remove a URL from search results, returning 410 is more efficient than 404.</p>
+            <p>However, Google has stated that they eventually treat both 404 and 410 the same — both result in de-indexing. The difference is primarily in speed.</p>
+
+            <h2>How to Implement 410</h2>
+
+            <h3>In nginx</h3>
+            <pre><code>location /old-page {
+    return 410;
+}</code></pre>
+
+            <h3>In Apache (.htaccess)</h3>
+            <pre><code>RedirectMatch 410 ^/old-page$</code></pre>
+
+            <h3>In Node.js/Express</h3>
+            <pre><code>app.get('/old-page', (req, res) => {
+    res.status(410).send('This resource has been permanently removed.');
+});</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Should I redirect 410 pages to my homepage?</h3>
+            <p>Only if the homepage is a relevant replacement. Redirecting all removed pages to a homepage passes little value and can create a "soft 404" that confuses search engines. If there is no replacement URL, return 410 or 404 with an informative message.</p>
+
+            <h3>Can I change a 410 back to 200 later?</h3>
+            <p>Technically yes, but it contradicts the semantics of 410. If you think the resource might return, use 404 instead. 410 is meant to be a permanent signal.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — resource not found, may or may not exist.</li>
+                <li><a href="/errors/http/301-moved-permanently">301 Moved Permanently</a> — resource moved to a new URL permanently.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — temporarily unavailable.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace URL redirects and redirect chains</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

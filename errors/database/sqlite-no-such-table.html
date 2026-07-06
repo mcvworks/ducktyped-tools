@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does SQLite create a database instead of erroring on a wrong path?","acceptedAnswer":{"@type":"Answer","text":"Historical default: opening implies create-if-missing (mode rwc). You can opt out with URI mode=rw — sqlite3.connect('file:app.db?mode=rw', uri=True) — which raises an error when the file does not exist, catching wrong paths immediately. Using it in production apps is a good defensive habit."}},{"@type":"Question","name":"The table exists in the SQLite CLI but the app cannot see it — how?","acceptedAnswer":{"@type":"Answer","text":"Two different files. The CLI opened the path you typed; the app resolved its relative path from its own working directory. Run PRAGMA database_list in both and compare the absolute paths — they will differ."}},{"@type":"Question","name":"Could the table have a different name than I think?","acceptedAnswer":{"@type":"Answer","text":"Yes — ORMs pluralize and prefix. Query sqlite_master for names LIKE the expected root ('%user%') and check your ORM's table-naming settings (Django's db_table, SQLAlchemy's __tablename__, Rails/Prisma conventions)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"SQLite No Such Table — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLite No Such Table — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SQLite 'no such table' errors. Why SQLite silently creates empty databases on wrong paths, plus migrations, .tables checks, and cwd pitfalls.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="no such table, sqlite3.OperationalError: no such table, SQLITE_ERROR: no such table, OperationalError: no such table, django.db.utils.OperationalError: no such table">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SQLite No Such Table — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SQLite 'no such table' errors. Why SQLite silently creates empty databases on wrong paths, plus migrations, .tables checks, and cwd pitfalls.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/sqlite-no-such-table">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/sqlite-no-such-table">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>SQLite No Such Table</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SQLite No Such Table</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The SQLite error 'no such table: name' — the table does not exist in the database file the connection actually opened, which is often not the file you intended.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>no such table</code></li><li><code>sqlite3.OperationalError: no such table</code></li><li><code>SQLITE_ERROR: no such table</code></li><li><code>OperationalError: no such table</code></li><li><code>django.db.utils.OperationalError: no such table</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SQLite has a behavior that turns small path mistakes into confusing errors: opening a database file that does not exist silently creates a new, empty one. So 'no such table: users' very often means 'you are connected to a freshly created empty database at the wrong path' — not that your real data lost its table. The remaining cases are the ordinary ones: migrations never ran on this environment, or the table name differs from what the code expects.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Wrong or relative database path</strong> — A relative path like 'app.db' resolves against the process's current working directory. Started from a different directory (systemd, cron, IDE), the app opens — and creates — a different, empty file.</li>
+                <li><strong>Migrations never ran</strong> — Fresh clones, new containers, and CI environments have the file (or get it auto-created) but nothing created the schema.</li>
+                <li><strong>Table name mismatch</strong> — ORM naming conventions (pluralization, prefixes, case) generate a different name than raw SQL expects — 'users' vs 'user' vs 'app_users'.</li>
+                <li><strong>Multiple database files drifting apart</strong> — Dev scripts write one file, the app reads another; backups or volume mounts shadow the real file with an older copy.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm which file the connection really opened</h3>
+            <p>Ask the connection itself — this settles the wrong-path hypothesis in one query.</p>
+            <pre><code>-- inside the connection:
+PRAGMA database_list;
+-- shows the absolute path of 'main'
+
+# suspicious sign: a tiny/empty db file created recently
+ls -la *.db &amp;&amp; find . -name '*.db' -newermt '1 day ago'</code></pre>
+            <h3>2. List the tables that actually exist</h3>
+            <p>Compare reality against expectation before touching migrations.</p>
+            <pre><code>sqlite3 /full/path/app.db '.tables'
+sqlite3 /full/path/app.db &quot;SELECT name FROM sqlite_master WHERE type='table';&quot;</code></pre>
+            <h3>3. Use absolute paths from configuration</h3>
+            <p>Remove working-directory dependence so every entry point opens the same file.</p>
+            <pre><code># instead of: sqlite3.connect('app.db')
+import os
+DB_PATH = os.environ.get('DB_PATH', '/var/lib/myapp/app.db')
+conn = sqlite3.connect(DB_PATH)</code></pre>
+            <h3>4. Run the migrations for this environment</h3>
+            <p>If the file is correct but empty, create the schema the supported way.</p>
+            <pre><code># examples:
+alembic upgrade head
+python manage.py migrate
+npx prisma migrate deploy
+npx knex migrate:latest</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does SQLite create a database instead of erroring on a wrong path?</h3>
+            <p>Historical default: opening implies create-if-missing (mode rwc). You can opt out with URI mode=rw — sqlite3.connect('file:app.db?mode=rw', uri=True) — which raises an error when the file does not exist, catching wrong paths immediately. Using it in production apps is a good defensive habit.</p>
+            <h3>The table exists in the SQLite CLI but the app cannot see it — how?</h3>
+            <p>Two different files. The CLI opened the path you typed; the app resolved its relative path from its own working directory. Run PRAGMA database_list in both and compare the absolute paths — they will differ.</p>
+            <h3>Could the table have a different name than I think?</h3>
+            <p>Yes — ORMs pluralize and prefix. Query sqlite_master for names LIKE the expected root ('%user%') and check your ORM's table-naming settings (Django's db_table, SQLAlchemy's __tablename__, Rails/Prisma conventions).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/sqlite-database-locked">SQLite Database Locked</a> — concurrency lock errors.</li>
+                <li><a href="/errors/database/sqlite-readonly-database">SQLite Readonly Database</a> — permission and mount issues.</li>
+                <li><a href="/errors/database/postgres-database-does-not-exist">PostgreSQL Database Does Not Exist</a> — the server-database analogue.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Verify DB paths in environment files</span>
+                </a>
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect config files cleanly</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/env-file-parser/" class="cta-btn-primary">Try Env File Parser</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

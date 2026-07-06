@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How SSL/TLS Handshakes Work","description":"A deep dive into the TLS handshake process: how browsers and servers establish encrypted connections, the differences between TLS 1.2 and TLS 1.3, and what happens at each step.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/ssl-tls-handshake/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"How SSL/TLS Handshakes Work"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a TLS handshake?","acceptedAnswer":{"@type":"Answer","text":"A TLS handshake is the process by which a client (browser) and server negotiate encryption parameters, authenticate the server's identity via its certificate, and establish a shared secret key for encrypting all subsequent communication. It happens before any application data is exchanged over HTTPS."}},{"@type":"Question","name":"What is the difference between TLS 1.2 and TLS 1.3 handshakes?","acceptedAnswer":{"@type":"Answer","text":"TLS 1.2 requires two round trips (2-RTT) to complete the handshake, while TLS 1.3 reduces this to one round trip (1-RTT). TLS 1.3 also removed support for insecure cipher suites, simplified the handshake by always using ephemeral key exchange, and introduced 0-RTT resumption for repeat connections."}},{"@type":"Question","name":"What is forward secrecy?","acceptedAnswer":{"@type":"Answer","text":"Forward secrecy (also called perfect forward secrecy) means that even if the server's private key is compromised in the future, past recorded sessions cannot be decrypted. This is achieved by using ephemeral key exchange (like ECDHE) where a unique key pair is generated for each session. TLS 1.3 mandates forward secrecy for all connections."}},{"@type":"Question","name":"What is 0-RTT resumption?","acceptedAnswer":{"@type":"Answer","text":"0-RTT (zero round-trip time) resumption is a TLS 1.3 feature that allows a client that has previously connected to a server to send encrypted application data in the very first message of a new connection, without waiting for the handshake to complete. This reduces latency for repeat connections but has a small replay attack risk."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How SSL/TLS Handshakes Work — TLS 1.2 vs 1.3 Explained — duckTyped</title>
+    <meta name="description" content="A deep dive into the TLS handshake process: how browsers and servers establish encrypted connections, TLS 1.2 vs TLS 1.3 differences, and what happens at each step.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How SSL/TLS Handshakes Work — TLS 1.2 vs 1.3 Explained — duckTyped">
+    <meta property="og:description" content="A deep dive into the TLS handshake: how browsers and servers establish encrypted connections.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-tls-handshake/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How SSL/TLS Handshakes Work — duckTyped">
+    <meta name="twitter:description" content="A deep dive into TLS handshakes and how encrypted connections are established.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/ssl-tls-handshake/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>How SSL/TLS Handshakes Work</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>How SSL/TLS Handshakes Work</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Every HTTPS connection begins with a TLS handshake -- a carefully orchestrated exchange where the client and server agree on encryption parameters, verify the server's identity, and establish a shared secret key. This guide walks through the handshake process step by step for both TLS 1.2 and TLS 1.3.</p>
+
+            <h2>What Happens Before the Handshake</h2>
+            <p>Before the TLS handshake can begin, the client must establish a TCP connection to the server. This requires a <strong>TCP three-way handshake</strong> (SYN, SYN-ACK, ACK), which takes one round trip. The TLS handshake then runs on top of this TCP connection. This means an HTTPS connection requires at least two round trips before any application data is exchanged (one for TCP, one or two for TLS).</p>
+
+            <h2>TLS 1.2 Handshake (2-RTT)</h2>
+            <p>The TLS 1.2 handshake requires <strong>two full round trips</strong> between client and server:</p>
+
+            <h3>Round Trip 1</h3>
+            <ol>
+                <li><strong>ClientHello</strong> -- the client sends:
+                    <ul>
+                        <li>Maximum TLS version supported</li>
+                        <li>A 32-byte <strong>client random</strong> value</li>
+                        <li>A list of supported <strong>cipher suites</strong> (e.g., TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)</li>
+                        <li>Supported compression methods (always null in practice)</li>
+                        <li>Extensions (including <strong>SNI</strong> -- Server Name Indication -- which tells the server which hostname the client wants, enabling virtual hosting)</li>
+                    </ul>
+                </li>
+                <li><strong>ServerHello</strong> -- the server responds with:
+                    <ul>
+                        <li>The chosen TLS version</li>
+                        <li>A 32-byte <strong>server random</strong> value</li>
+                        <li>The <strong>selected cipher suite</strong></li>
+                        <li>The server's <strong>certificate</strong> (containing its public key)</li>
+                        <li>Optionally, a <strong>ServerKeyExchange</strong> message with the server's ephemeral ECDHE public key (signed with the server's private key to prove authenticity)</li>
+                        <li>A <strong>ServerHelloDone</strong> message</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Round Trip 2</h3>
+            <ol start="3">
+                <li><strong>Client verification and key exchange</strong> -- the client:
+                    <ul>
+                        <li>Verifies the server's certificate chain up to a trusted root CA</li>
+                        <li>Generates its own ephemeral ECDHE key pair</li>
+                        <li>Sends the <strong>ClientKeyExchange</strong> message with its public ECDHE key</li>
+                        <li>Both sides independently compute the <strong>pre-master secret</strong> from the ECDHE key exchange</li>
+                        <li>Derives the <strong>master secret</strong> from the pre-master secret, client random, and server random</li>
+                        <li>Derives <strong>session keys</strong> from the master secret</li>
+                        <li>Sends a <strong>ChangeCipherSpec</strong> message indicating all future messages will be encrypted</li>
+                        <li>Sends a <strong>Finished</strong> message (encrypted with the new keys) containing a hash of all handshake messages</li>
+                    </ul>
+                </li>
+                <li><strong>Server confirmation</strong> -- the server:
+                    <ul>
+                        <li>Independently derives the same session keys</li>
+                        <li>Sends its own <strong>ChangeCipherSpec</strong> and <strong>Finished</strong> messages</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>After both Finished messages are verified, the handshake is complete and encrypted application data can flow.</p>
+
+            <h2>TLS 1.3 Handshake (1-RTT)</h2>
+            <p>TLS 1.3 (RFC 8446, finalized in 2018) dramatically simplified the handshake, reducing it to a single round trip:</p>
+
+            <h3>The Single Round Trip</h3>
+            <ol>
+                <li><strong>ClientHello</strong> -- the client sends everything needed upfront:
+                    <ul>
+                        <li>Supported TLS 1.3 cipher suites (only five are defined, all secure)</li>
+                        <li>A list of <strong>supported groups</strong> (key exchange curves like X25519 or P-256)</li>
+                        <li><strong>Key shares</strong> -- the client speculatively generates ECDHE key pairs for its preferred groups and includes the public keys</li>
+                        <li>Client random and extensions</li>
+                    </ul>
+                </li>
+                <li><strong>ServerHello + EncryptedExtensions + Certificate + Finished</strong> -- the server responds with everything in one message:
+                    <ul>
+                        <li>Selected cipher suite and key share</li>
+                        <li>The server computes the shared secret immediately</li>
+                        <li>Server certificate (now encrypted, unlike TLS 1.2)</li>
+                        <li>Certificate verification signature</li>
+                        <li>Finished message</li>
+                    </ul>
+                </li>
+                <li><strong>Client Finished</strong> -- the client verifies the server's certificate and sends its Finished message. Application data can be sent alongside this message.</li>
+            </ol>
+
+            <h3>Key Improvements in TLS 1.3</h3>
+            <ul>
+                <li><strong>1-RTT by default</strong> -- the handshake completes in one round trip instead of two, reducing latency.</li>
+                <li><strong>Mandatory forward secrecy</strong> -- all cipher suites use ephemeral key exchange (ECDHE). Static RSA key exchange is removed entirely.</li>
+                <li><strong>Encrypted certificates</strong> -- the server's certificate is sent encrypted, preventing passive observers from seeing which site is being accessed (SNI is still visible, though Encrypted Client Hello addresses this).</li>
+                <li><strong>Simplified cipher suites</strong> -- only five cipher suites are defined, all using AEAD encryption (AES-GCM or ChaCha20-Poly1305). Legacy algorithms like RC4, 3DES, CBC modes, and SHA-1 are gone.</li>
+                <li><strong>No renegotiation</strong> -- TLS 1.3 removes renegotiation, eliminating an entire class of attacks.</li>
+            </ul>
+
+            <h2>0-RTT Resumption</h2>
+            <p>TLS 1.3 introduces <strong>0-RTT (zero round-trip time) resumption</strong> for clients that have previously connected to a server. After an initial handshake, the server issues a <strong>session ticket</strong>. On the next connection, the client can use this ticket to send encrypted application data in the very first message -- before the handshake even completes.</p>
+            <p>This is ideal for latency-sensitive applications, but it comes with a caveat: 0-RTT data can be <strong>replayed</strong> by an attacker who captures the initial message. For this reason, 0-RTT should only be used for idempotent operations (like GET requests), never for state-changing operations (like POST requests or payments).</p>
+
+            <h2>Cipher Suites Explained</h2>
+            <p>A cipher suite defines the combination of algorithms used during and after the handshake. In TLS 1.2, a cipher suite name describes four components:</p>
+            <pre><code>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ |     |     |        |       |      |
+ |     |     |        |       |      Hash for PRF
+ |     |     |        |       Mode (AEAD)
+ |     |     |        Symmetric cipher + key size
+ |     |     Authentication (certificate type)
+ |     Key exchange mechanism
+ Protocol</code></pre>
+            <p>In TLS 1.3, cipher suite names are simpler because key exchange and authentication are negotiated separately:</p>
+            <pre><code>TLS_AES_256_GCM_SHA384
+TLS_CHACHA20_POLY1305_SHA256</code></pre>
+
+            <h2>Common Handshake Failures</h2>
+            <ul>
+                <li><strong>Certificate verification failed</strong> -- the server's certificate is expired, self-signed, or issued for a different domain.</li>
+                <li><strong>No shared cipher suite</strong> -- the client and server do not support any common cipher suites. Often caused by outdated clients or overly restrictive server configurations.</li>
+                <li><strong>Protocol version mismatch</strong> -- the server requires TLS 1.2+ but the client only supports TLS 1.0/1.1 (or vice versa).</li>
+                <li><strong>SNI mismatch</strong> -- the server cannot identify which certificate to present because the client did not send the SNI extension or sent the wrong hostname.</li>
+                <li><strong>Firewall or middleware interference</strong> -- deep packet inspection devices, corporate proxies, or misconfigured firewalls can interfere with the TLS handshake.</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> -- inspect a server's certificate, chain, and TLS configuration.</li>
+                <li><a href="/security-headers/">Security Headers</a> -- check HSTS and other security headers that enforce HTTPS.</li>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> -- measure connection and TLS handshake times.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL Certificates guide</a>, <a href="/learn/ssl-tls-cheat-sheet/">SSL/TLS cheat sheet</a>, <a href="/learn/err-ssl-protocol-error/">What causes ERR_SSL_PROTOCOL_ERROR</a>, <a href="/learn/ssl-certificate-expired/">SSL certificate expired? Fix guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> -- handshake failures often produce this error.</li>
+                <li><a href="/errors/ssl/">All SSL/TLS Errors</a> -- browse all SSL-related error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SMTP 550 mean?","acceptedAnswer":{"@type":"Answer","text":"SMTP error 550 means the receiving mail server rejected your message, most commonly because the recipient's mailbox does not exist or the server has a policy-based rejection in place. The exact reason is usually included in the extended reply code or text following 550."}},{"@type":"Question","name":"What is the difference between 550 and 554?","acceptedAnswer":{"@type":"Answer","text":"SMTP 550 typically indicates a specific mailbox-level rejection — the address does not exist, the mailbox is full, or the user is not allowed to receive mail. SMTP 554 is a more generic transaction failure, often used by spam filters to reject messages that match a policy rule."}},{"@type":"Question","name":"How do I fix SMTP 550 errors?","acceptedAnswer":{"@type":"Answer","text":"First verify the recipient email address is correct and the account exists. If you are sure the address is valid, check your SPF, DKIM, and DMARC records — authentication failures can trigger 550 responses from strict servers. Also check whether your sending IP or domain is on a blacklist."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 550 Mailbox Unavailable — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 550 Mailbox Unavailable","step":[{"@type":"HowToStep","position":1,"name":"Verify the Recipient Address","text":"Confirm the email address is typed correctly. Use the Email Validator to check whether the domain has valid MX records and whether the address format is valid."},{"@type":"HowToStep","position":2,"name":"Check Your SPF Record","text":"Use the DNS Record Checker to look up the TXT records for your sending domain. Verify your SPF record includes all servers authorized to send email on your behalf:"},{"@type":"HowToStep","position":3,"name":"Verify DKIM Configuration","text":"Check that your DKIM TXT record is published in DNS and that your mail server is signing outgoing messages. Use the DNS checker to look up selector._domainkey.yourdomain.com."},{"@type":"HowToStep","position":4,"name":"Check DMARC Policy","text":"Look up _dmarc.yourdomain.com in the DNS checker. A DMARC policy of p=reject means any message that fails both SPF and DKIM alignment will be rejected."},{"@type":"HowToStep","position":5,"name":"Check Blacklists","text":"Use the Blacklist Checker to see if your sending IP is on any DNS-based block lists. If blacklisted, contact the blacklist provider to request delisting after resolving the underlying issue (spam, misconfiguration)."},{"@type":"HowToStep","position":6,"name":"Check SMTP Connection","text":"Use the SMTP Checker to verify the recipient domain's mail server is reachable and accepting connections on port 25."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 550 Mailbox Unavailable — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what the SMTP 550 error means and how to fix it. Covers non-existent mailboxes, blacklisting, SPF/DKIM failures, and sender policy rejections.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 550, 550 User unknown, 550 5.1.1, 550 Requested action not taken, 550 Mailbox not found, 550 No such user, 550 Recipient rejected, 550 5.7.1 Relaying denied">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 550 Mailbox Unavailable — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 550 email bounces with step-by-step solutions covering mailbox verification, SPF/DKIM, blacklisting, and server policies.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-550">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-550">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 550</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 550 — Mailbox Unavailable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP error 550 means the receiving mail server rejected your message. The most common reason is that the recipient address does not exist. Here is what causes it and how to diagnose and fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 550</code></li><li><code>550 User unknown</code></li><li><code>550 5.1.1</code></li><li><code>550 Requested action not taken</code></li><li><code>550 Mailbox not found</code></li><li><code>550 No such user</code></li><li><code>550 Recipient rejected</code></li><li><code>550 5.7.1 Relaying denied</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where This Error Occurs</h2>
+                <div class="dt-diagram" data-diagram="smtp" data-error="550"></div>
+            </div>
+
+            <h2>What Does SMTP 550 Mean?</h2>
+            <p>In the SMTP protocol, response codes in the 5xx range indicate permanent failures. <strong>550</strong> specifically means the server refused to deliver the message to the requested address. The full response typically looks like:</p>
+            <pre><code>550 5.1.1 The email account that you tried to reach does not exist.
+550 5.7.1 Message rejected due to sender policy.
+550 No such user here</code></pre>
+            <p>The second set of digits (e.g., <code>5.1.1</code> or <code>5.7.1</code>) is the enhanced status code that provides more specific information about the rejection reason.</p>
+
+            <h2>Enhanced Status Codes</h2>
+            <ul>
+                <li><strong>5.1.1</strong> — the recipient address does not exist on this server.</li>
+                <li><strong>5.1.2</strong> — bad recipient domain — cannot find the domain in DNS.</li>
+                <li><strong>5.7.1</strong> — delivery not authorized. Sender policy, relay denial, or authentication failure.</li>
+                <li><strong>5.7.26</strong> — SPF authentication failed for the sender domain.</li>
+            </ul>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Non-existent mailbox</strong> — the email address has been deleted, misspelled, or never existed.</li>
+                <li><strong>Sender policy rejection</strong> — the recipient server's anti-spam policy blocked the message based on the sender's IP or domain reputation.</li>
+                <li><strong>SPF failure</strong> — the sending server's IP is not authorized by the sender domain's SPF record.</li>
+                <li><strong>DKIM failure</strong> — the message signature is invalid or missing, and the recipient server enforces DKIM.</li>
+                <li><strong>DMARC policy failure</strong> — SPF and/or DKIM fails, and the DMARC policy is set to <code>reject</code>.</li>
+                <li><strong>IP blacklisted</strong> — the sending IP address is on a DNS blacklist (DNSBL).</li>
+                <li><strong>Relay access denied</strong> — you are trying to send mail through a server you are not authorized to use as a relay.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Verify the Recipient Address</h3>
+            <p>Confirm the email address is typed correctly. Use the <a href="/email-validator/">Email Validator</a> to check whether the domain has valid MX records and whether the address format is valid.</p>
+
+            <h3>2. Check Your SPF Record</h3>
+            <p>Use the <a href="/dns-lookup/">DNS Record Checker</a> to look up the TXT records for your sending domain. Verify your SPF record includes all servers authorized to send email on your behalf:</p>
+            <pre><code>v=spf1 include:_spf.google.com include:sendgrid.net ~all</code></pre>
+            <p>The <code>~all</code> (soft fail) or <code>-all</code> (hard fail) at the end controls how receiving servers handle unauthorized senders.</p>
+
+            <h3>3. Verify DKIM Configuration</h3>
+            <p>Check that your DKIM TXT record is published in DNS and that your mail server is signing outgoing messages. Use the DNS checker to look up <code>selector._domainkey.yourdomain.com</code>.</p>
+
+            <h3>4. Check DMARC Policy</h3>
+            <p>Look up <code>_dmarc.yourdomain.com</code> in the DNS checker. A DMARC policy of <code>p=reject</code> means any message that fails both SPF and DKIM alignment will be rejected.</p>
+
+            <h3>5. Check Blacklists</h3>
+            <p>Use the <a href="/blacklist-checker/">Blacklist Checker</a> to see if your sending IP is on any DNS-based block lists. If blacklisted, contact the blacklist provider to request delisting after resolving the underlying issue (spam, misconfiguration).</p>
+
+            <h3>6. Check SMTP Connection</h3>
+            <p>Use the <a href="/smtp-checker/">SMTP Checker</a> to verify the recipient domain's mail server is reachable and accepting connections on port 25.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/email-validator/">Email Validator</a> — check whether an email address and its domain have valid MX records.</li>
+                <li><a href="/blacklist-checker/">Blacklist Checker</a> — check your sending IP against DNS block lists.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test connectivity to a mail server.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — verify SPF, DKIM, and DMARC records.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does a 550 bounce mean the email address is fake?</h3>
+            <p>Not always. A 550 with code <code>5.1.1</code> usually means the mailbox does not exist. However, some servers return 550 for policy reasons even when the mailbox exists — for example, if your IP is blacklisted or your message failed authentication. Read the extended message text carefully.</p>
+
+            <h3>Can I retry a message that gets a 550 bounce?</h3>
+            <p>Not immediately. 5xx codes are permanent failures. Retrying without fixing the underlying issue will result in the same rejection. Fix the root cause first, then resend.</p>
+
+            <h3>What is the difference between a soft bounce and a hard bounce?</h3>
+            <p>A <strong>hard bounce</strong> (like a 550) is a permanent delivery failure — the message was definitively rejected. A <strong>soft bounce</strong> is a temporary failure (4xx codes) where the server suggests retrying later. Hard bounces should remove the address from your mailing list.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-554">SMTP 554 Transaction Failed</a> — broader rejection, often spam-related.</li>
+                <li><a href="/errors/email/smtp-553">SMTP 553 Mailbox Name Invalid</a> — sender or recipient address is syntactically unacceptable.</li>
+                <li><a href="/errors/email/smtp-521">SMTP 521 — Does Not Accept Mail</a> — destination server refuses all incoming email.</li>
+                <li><a href="/errors/email/mailbox-unavailable">Mailbox Unavailable</a> — recipient mailbox cannot receive messages.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses and MX records</span>
+                </a>
+        <a href="/blacklist-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Blacklist Checker</span>
+                    <span class="recommended-tool-desc">Check IP and domain against blacklists</span>
+                </a>
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/blacklist-checker/" class="cta-btn-primary">Check IP Blacklists</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

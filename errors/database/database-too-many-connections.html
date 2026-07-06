@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many connections should I allow?","acceptedAnswer":{"@type":"Answer","text":"It depends on your server's RAM. Each PostgreSQL connection uses about 5-10MB of RAM. A server with 4GB RAM can typically handle 200-400 connections. Use connection pooling instead of increasing the limit excessively."}},{"@type":"Question","name":"What is connection pooling?","acceptedAnswer":{"@type":"Answer","text":"Connection pooling maintains a set of reusable database connections. Instead of opening and closing connections for each request, the application borrows a connection from the pool, uses it, and returns it. This dramatically reduces the total number of connections needed."}},{"@type":"Question","name":"How do I find connection leaks?","acceptedAnswer":{"@type":"Answer","text":"Monitor active connections over time. If the count keeps growing without decreasing, you have a leak. Check your application code for connections opened without corresponding close/release calls, especially in error handling paths."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Too Many Database Connections — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Too Many Database Connections","step":[{"@type":"HowToStep","position":1,"name":"Implement connection pooling","text":"Use a connection pooler to manage and reuse database connections efficiently."},{"@type":"HowToStep","position":2,"name":"Check and kill idle connections","text":"Identify and terminate idle connections that are consuming connection slots."},{"@type":"HowToStep","position":3,"name":"Increase the connection limit","text":"Raise the maximum connections setting if the server has sufficient resources."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Too Many Database Connections — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'too many connections' database error. Learn how to diagnose connection leaks, configure connection pooling, and increase database connection limits.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Too many connections, Max connections reached, ERROR 1040 (HY000): Too many connections, Connection pool exhausted, FATAL: too many connections for role">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Too Many Database Connections — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'too many connections' database error. Learn how to diagnose connection leaks, configure connection pooling, and increase database connection limits.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/database-too-many-connections">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/database-too-many-connections">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Too Many Database Connections</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Too Many Database Connections</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Database connection limit has been reached</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Too many connections</code></li><li><code>Max connections reached</code></li><li><code>ERROR 1040 (HY000): Too many connections</code></li><li><code>Connection pool exhausted</code></li><li><code>FATAL: too many connections for role</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when the number of simultaneous connections to the database has reached the configured maximum limit. Every database has a connection limit, and each application connection consumes server resources. When the limit is hit, new connections are rejected until existing ones are closed.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Connection leaks in application code</strong> — The application opens database connections but fails to close them properly, causing connections to accumulate over time until the limit is reached.</li>
+                <li><strong>No connection pooling</strong> — Each request opens a new database connection instead of reusing connections from a pool. Under high traffic, this quickly exhausts the connection limit.</li>
+                <li><strong>Connection pool size too large</strong> — Multiple application instances each maintain their own connection pool. The sum of all pool sizes exceeds the database's maximum connection limit.</li>
+                <li><strong>Long-running transactions holding connections</strong> — Queries or transactions that take a long time to complete hold connections open, reducing the number available for other requests.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Implement connection pooling</h3>
+            <p>Use a connection pooler to manage and reuse database connections efficiently.</p>
+            <pre><code># PgBouncer for PostgreSQL:
+[databases]
+mydb = host=localhost port=5432 dbname=mydb
+
+[pgbouncer]
+listen_port = 6432
+max_client_conn = 1000
+default_pool_size = 20
+pool_mode = transaction</code></pre>
+            <h3>2. Check and kill idle connections</h3>
+            <p>Identify and terminate idle connections that are consuming connection slots.</p>
+            <pre><code>-- PostgreSQL:
+SELECT pid, usename, application_name, state, query_start
+FROM pg_stat_activity WHERE state = 'idle';
+
+-- Kill a specific connection:
+SELECT pg_terminate_backend(pid);
+
+-- MySQL:
+SHOW PROCESSLIST;
+KILL &lt;process_id&gt;;</code></pre>
+            <h3>3. Increase the connection limit</h3>
+            <p>Raise the maximum connections setting if the server has sufficient resources.</p>
+            <pre><code>-- PostgreSQL (postgresql.conf):
+max_connections = 200
+
+-- MySQL (my.cnf):
+max_connections = 200
+
+-- Restart required after change</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How many connections should I allow?</h3>
+            <p>It depends on your server's RAM. Each PostgreSQL connection uses about 5-10MB of RAM. A server with 4GB RAM can typically handle 200-400 connections. Use connection pooling instead of increasing the limit excessively.</p>
+            <h3>What is connection pooling?</h3>
+            <p>Connection pooling maintains a set of reusable database connections. Instead of opening and closing connections for each request, the application borrows a connection from the pool, uses it, and returns it. This dramatically reduces the total number of connections needed.</p>
+            <h3>How do I find connection leaks?</h3>
+            <p>Monitor active connections over time. If the count keeps growing without decreasing, you have a leak. Check your application code for connections opened without corresponding close/release calls, especially in error handling paths.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — Database connection timed out</li>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> — MySQL authentication failed</li>
+                <li><a href="/errors/database/database-deadlock-detected">Database Deadlock</a> — Database deadlock detected</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

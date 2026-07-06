@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"I am just a visitor — can I do anything about a 520?","acceptedAnswer":{"@type":"Answer","text":"Very little: refresh after a minute, and try another network to rule out a local edge case. The failure is between Cloudflare and the website's own server, so the fix belongs to the site owner. The Ray ID on the error page helps the owner find your exact request in their logs."}},{"@type":"Question","name":"What is a Ray ID and why does every Cloudflare error show one?","acceptedAnswer":{"@type":"Answer","text":"A unique identifier for the request that failed. Site owners can search it in the Cloudflare dashboard (and correlate the timestamp with origin logs) to find precisely what happened to that one request — always include it in support reports."}},{"@type":"Question","name":"How is 520 different from 502 Bad Gateway?","acceptedAnswer":{"@type":"Answer","text":"502 is the standard 'upstream sent an invalid response' code and can come from any proxy in the chain, including your own nginx. 520 is Cloudflare-specific and means Cloudflare itself received the unusable response from your origin. If your origin runs a reverse proxy too, a backend failure can surface as either — the origin logs disambiguate."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 520 — Web Server Returns an Unknown Error — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 520 — Web Server Returns an Unknown Error — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 520. Origin crashes mid-response, oversized headers, connection resets — how to diagnose with origin logs and a grey-cloud test.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 520, web server returns an unknown error, error 520, cloudflare 520 origin error, http 520">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 520 — Web Server Returns an Unknown Error — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 520. Origin crashes mid-response, oversized headers, connection resets — how to diagnose with origin logs and a grey-cloud test.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-520">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-520">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 520 — Web Server Returns an Unknown Error</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 520 — Web Server Returns an Unknown Error</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare reached the origin server, but the response was empty, malformed, or cut off — something Cloudflare could not interpret as valid HTTP.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 520</code></li><li><code>web server returns an unknown error</code></li><li><code>error 520</code></li><li><code>cloudflare 520 origin error</code></li><li><code>http 520</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Error 520 is Cloudflare's catch-all for 'the origin answered, but not with usable HTTP': an empty response, a reset connection after the request was sent, or headers too large to process. Unlike 521 (refused) or 522 (silence), the TCP connection worked — the origin then misbehaved. That makes it an origin-side bug hunt: application crashes mid-request, a web server resetting connections under load, or a response exceeding Cloudflare's header limits.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Application crashing mid-response</strong> — The origin process segfaults or is killed while writing the response — Cloudflare sees a connection that opens, receives the request, and dies.</li>
+                <li><strong>Oversized response headers</strong> — Responses with very large header blocks (runaway cookies, debug headers — beyond roughly 16KB) exceed what Cloudflare accepts and are treated as invalid.</li>
+                <li><strong>Connection resets from the origin stack</strong> — Aggressive keepalive timeouts, TCP resets from an overloaded server or an intermediate firewall, or a web server restart during the request.</li>
+                <li><strong>Non-HTTP service answering the port</strong> — The origin IP/port in Cloudflare DNS points at something that is not speaking HTTP where Cloudflare expects it.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Correlate with origin logs at the exact timestamps</h3>
+            <p>520s always have an origin-side story. Check the web server error log and the app's crash logs around the Ray ID's time (shown on the error page).</p>
+            <pre><code>sudo tail -100 /var/log/nginx/error.log
+sudo journalctl -u myapp --since '15 minutes ago'
+dmesg | grep -iE 'segfault|oom' | tail</code></pre>
+            <h3>2. Test the origin directly, bypassing Cloudflare</h3>
+            <p>Request the origin IP with the right Host header. If this also fails or returns garbage, the origin is confirmed as the problem.</p>
+            <pre><code>curl -v --resolve example.com:443:ORIGIN_IP https://example.com/ -o /dev/null
+# or temporarily grey-cloud the DNS record in the Cloudflare dashboard
+# (proxy off) and retest through the domain</code></pre>
+            <h3>3. Check response header size on the failing routes</h3>
+            <p>Hunt for endpoints setting enormous cookies or debug headers.</p>
+            <pre><code>curl -s -D - -o /dev/null https://ORIGIN_IP/failing-path -H 'Host: example.com' -k | wc -c</code></pre>
+            <h3>4. Stabilize keepalive between origin and Cloudflare</h3>
+            <p>Make the origin's keepalive timeout comfortably longer than a few seconds so it does not reset connections Cloudflare is reusing.</p>
+            <pre><code># nginx:
+keepalive_timeout 90s;
+# apache:
+KeepAlive On
+KeepAliveTimeout 90</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>I am just a visitor — can I do anything about a 520?</h3>
+            <p>Very little: refresh after a minute, and try another network to rule out a local edge case. The failure is between Cloudflare and the website's own server, so the fix belongs to the site owner. The Ray ID on the error page helps the owner find your exact request in their logs.</p>
+            <h3>What is a Ray ID and why does every Cloudflare error show one?</h3>
+            <p>A unique identifier for the request that failed. Site owners can search it in the Cloudflare dashboard (and correlate the timestamp with origin logs) to find precisely what happened to that one request — always include it in support reports.</p>
+            <h3>How is 520 different from 502 Bad Gateway?</h3>
+            <p>502 is the standard 'upstream sent an invalid response' code and can come from any proxy in the chain, including your own nginx. 520 is Cloudflare-specific and means Cloudflare itself received the unusable response from your origin. If your origin runs a reverse proxy too, a backend failure can surface as either — the origin logs disambiguate.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — the generic upstream-response failure.</li>
+                <li><a href="/errors/cloudflare/error-521">Cloudflare Error 521</a> — the origin refused the connection.</li>
+                <li><a href="/errors/cloudflare/error-522">Cloudflare Error 522</a> — the origin never answered at all.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Test the site's responses from outside</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Reproduce the failing request</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is DNS_PROBE_POSSIBLE a serious error?","acceptedAnswer":{"@type":"Answer","text":"No. It is a diagnostic state indicating Chrome is still investigating the issue. It often resolves on its own. If it persists or transitions to a more specific error like DNS_PROBE_FINISHED_NXDOMAIN, follow the troubleshooting steps for that specific error."}},{"@type":"Question","name":"Why do I see this error only on certain websites?","acceptedAnswer":{"@type":"Answer","text":"Some domains may have slower DNS servers or be hosted on nameservers that are geographically distant. The extra latency can trigger Chrome's probe mechanism while faster domains resolve normally."}},{"@type":"Question","name":"Does this error appear in other browsers?","acceptedAnswer":{"@type":"Answer","text":"DNS_PROBE_POSSIBLE is specific to Chrome's DNS probing system. Other browsers may show different error messages or simply display a generic connection error for the same underlying DNS issue."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS_PROBE_POSSIBLE — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS_PROBE_POSSIBLE","step":[{"@type":"HowToStep","position":1,"name":"Wait and retry","text":"This error is often transient. Wait a few seconds and reload the page. Chrome's DNS probe will complete its diagnostics and either resolve the issue or report a more specific error."},{"@type":"HowToStep","position":2,"name":"Flush Chrome's internal DNS cache","text":"Navigate to chrome://net-internals/#dns and click 'Clear host cache'. This forces Chrome to perform fresh DNS lookups rather than relying on potentially stale cached entries."},{"@type":"HowToStep","position":3,"name":"Check your network connection","text":"Verify that your network connection is stable. If you are on Wi-Fi, try moving closer to the router or switching to a wired connection. Run a quick connectivity test to confirm internet access."},{"@type":"HowToStep","position":4,"name":"Switch DNS servers","text":"If the error persists, your current DNS server may be unreliable. Switch to a public DNS provider for more consistent resolution."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS_PROBE_POSSIBLE — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS_PROBE_POSSIBLE in Chrome. Understand why Chrome reports a possible DNS issue and how to resolve intermittent DNS failures with practical solutions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS_PROBE_POSSIBLE, DNS probe possible error, Possible DNS issue">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS_PROBE_POSSIBLE — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS_PROBE_POSSIBLE in Chrome. Understand why Chrome reports a possible DNS issue and how to resolve intermittent DNS failures with practical solutions.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-probe-possible">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-probe-possible">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS_PROBE_POSSIBLE</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS_PROBE_POSSIBLE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Chrome is investigating a possible DNS resolution issue</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS_PROBE_POSSIBLE</code></li><li><code>DNS probe possible error</code></li><li><code>Possible DNS issue</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>DNS_PROBE_POSSIBLE is a transient Chrome error indicating that the browser suspects a DNS resolution problem but has not confirmed it yet. Chrome's internal DNS probe mechanism is running diagnostics to determine whether the failure is caused by DNS misconfiguration, network issues, or a temporary glitch. This error often resolves itself within seconds, but persistent occurrences indicate an underlying network or DNS problem.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Intermittent network connectivity</strong> — Brief network dropouts or unstable Wi-Fi connections can cause DNS queries to fail sporadically. Chrome detects the failure and begins probing to determine whether the DNS infrastructure is the root cause.</li>
+                <li><strong>DNS server under load or slow to respond</strong> — The configured DNS server is taking too long to respond, causing Chrome to suspect a DNS failure while the query is still in progress.</li>
+                <li><strong>VPN or proxy connection instability</strong> — A VPN or proxy that routes DNS queries through a tunnel may experience momentary disruptions, causing Chrome to flag a possible DNS issue during the reconnection window.</li>
+                <li><strong>DNS cache transition</strong> — Chrome's internal DNS cache is being rebuilt after a network change or cache flush, and lookups performed during this transition period may trigger the probe.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Wait and retry</h3>
+            <p>This error is often transient. Wait a few seconds and reload the page. Chrome's DNS probe will complete its diagnostics and either resolve the issue or report a more specific error.</p>
+            <h3>2. Flush Chrome's internal DNS cache</h3>
+            <p>Navigate to chrome://net-internals/#dns and click 'Clear host cache'. This forces Chrome to perform fresh DNS lookups rather than relying on potentially stale cached entries.</p>
+            <h3>3. Check your network connection</h3>
+            <p>Verify that your network connection is stable. If you are on Wi-Fi, try moving closer to the router or switching to a wired connection. Run a quick connectivity test to confirm internet access.</p>
+            <pre><code># Test basic connectivity
+ping -c 4 8.8.8.8
+
+# Test DNS resolution
+nslookup google.com</code></pre>
+            <h3>4. Switch DNS servers</h3>
+            <p>If the error persists, your current DNS server may be unreliable. Switch to a public DNS provider for more consistent resolution.</p>
+            <pre><code># Recommended public DNS servers
+# Google DNS: 8.8.8.8, 8.8.4.4
+# Cloudflare DNS: 1.1.1.1, 1.0.0.1
+# Quad9: 9.9.9.9, 149.112.112.112</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is DNS_PROBE_POSSIBLE a serious error?</h3>
+            <p>No. It is a diagnostic state indicating Chrome is still investigating the issue. It often resolves on its own. If it persists or transitions to a more specific error like DNS_PROBE_FINISHED_NXDOMAIN, follow the troubleshooting steps for that specific error.</p>
+            <h3>Why do I see this error only on certain websites?</h3>
+            <p>Some domains may have slower DNS servers or be hosted on nameservers that are geographically distant. The extra latency can trigger Chrome's probe mechanism while faster domains resolve normally.</p>
+            <h3>Does this error appear in other browsers?</h3>
+            <p>DNS_PROBE_POSSIBLE is specific to Chrome's DNS probing system. Other browsers may show different error messages or simply display a generic connection error for the same underlying DNS issue.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-probe-started">DNS_PROBE_STARTED</a> — Chrome has started a DNS probe</li>
+                <li><a href="/errors/dns/dns-probe-finished-no-internet">DNS_PROBE_FINISHED_NO_INTERNET</a> — DNS probe completed with no internet</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — DNS resolution could not complete</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

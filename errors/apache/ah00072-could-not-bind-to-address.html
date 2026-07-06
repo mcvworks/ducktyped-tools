@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"The error says the conflict is with Apache itself — how?","acceptedAnswer":{"@type":"Answer","text":"A duplicate Listen for the same port makes the second bind fail after the first succeeded — Apache collides with its own earlier directive. Keep Listen lines only in ports.conf (Debian) or httpd.conf (RHEL), never inside vhost files."}},{"@type":"Question","name":"How do Apache and nginx share one server?","acceptedAnswer":{"@type":"Answer","text":"One of them takes 80/443 and reverse-proxies to the other on a local port. The common pattern is nginx in front (static/TLS) with Apache on 127.0.0.1:8080 for legacy apps — set Listen and the vhost accordingly, and keep mod_remoteip configured so Apache logs real client IPs."}},{"@type":"Question","name":"What is AH00451?","acceptedAnswer":{"@type":"Answer","text":"'no listening sockets available, shutting down' — the follow-up line meaning every Listen failed. It is the consequence, not a separate problem: fix the AH00072 bind conflicts above it and AH00451 disappears."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00072 — make_sock: Could Not Bind to Address — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00072 — make_sock: Could Not Bind to Address — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00072 'could not bind to address :80/:443'. Find the conflicting process, duplicate Listen directives, and stale processes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00072: make_sock: could not bind to address, (98)Address already in use: AH00072, AH00451: no listening sockets available, shutting down, apache could not bind to address 0.0.0.0:80">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00072 — make_sock: Could Not Bind to Address — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00072 'could not bind to address :80/:443'. Find the conflicting process, duplicate Listen directives, and stale processes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00072-could-not-bind-to-address">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00072-could-not-bind-to-address">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00072 — make_sock: Could Not Bind to Address</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00072 — make_sock: Could Not Bind to Address</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The startup failure '(98)Address already in use: AH00072: make_sock: could not bind to address [::]:80' — another process holds Apache's port, or Apache is fighting itself.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00072: make_sock: could not bind to address</code></li><li><code>(98)Address already in use: AH00072</code></li><li><code>AH00451: no listening sockets available, shutting down</code></li><li><code>apache could not bind to address 0.0.0.0:80</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Apache could not claim the port a Listen directive told it to use, so startup aborts (AH00451: no listening sockets available). Same root causes as any port conflict: nginx or another server on 80/443, a stale Apache still holding the socket, or the same Listen declared twice (ports.conf plus a vhost, or two included files) making Apache collide with itself — the giveaway for that case is the error naming a port that only Apache uses.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Another web server owns the port</strong> — Nginx, Caddy, a Node app, or a Docker container publishing 80/443 got there first. Only one listener per address:port.</li>
+                <li><strong>Duplicate Listen directives</strong> — Listen 80 in ports.conf and again in an included vhost file makes Apache try to bind twice — it then reports a conflict with itself.</li>
+                <li><strong>Stale Apache processes</strong> — A crashed restart can leave the old process tree holding the socket, so the new start finds the port taken by its predecessor.</li>
+                <li><strong>IPv6/IPv4 split conflicts</strong> — The error naming [::]:80 with 0.0.0.0:80 free (or vice versa) points at another service bound on just one protocol family.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Identify the holder</h3>
+            <p>Name the process on the port before changing anything.</p>
+            <pre><code>sudo ss -tlnp | grep -E ':80 |:443 '
+# if it is nginx: decide which server fronts the box;
+# if it is apache/httpd: stale process — see below</code></pre>
+            <h3>2. Check for duplicate Listen directives</h3>
+            <p>Dump the whole effective config and count the Listen lines per port.</p>
+            <pre><code># Debian/Ubuntu:
+sudo apache2ctl -t -D DUMP_RUN_CFG 2&gt;/dev/null | head
+grep -rn '^\s*Listen' /etc/apache2/ | sort
+# RHEL: grep -rn '^\s*Listen' /etc/httpd/</code></pre>
+            <h3>3. Clear stale processes and restart</h3>
+            <p>Kill leftovers, then start through systemd so tracking is correct.</p>
+            <pre><code>ps aux | grep [a]pache2
+sudo pkill -f apache2   # or httpd
+sudo systemctl start apache2</code></pre>
+            <h3>4. Move Apache if the other service should keep the port</h3>
+            <p>When nginx fronts the machine and proxies to Apache, bind Apache elsewhere.</p>
+            <pre><code># /etc/apache2/ports.conf
+Listen 127.0.0.1:8080
+# and match the vhost:
+&lt;VirtualHost 127.0.0.1:8080&gt;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>The error says the conflict is with Apache itself — how?</h3>
+            <p>A duplicate Listen for the same port makes the second bind fail after the first succeeded — Apache collides with its own earlier directive. Keep Listen lines only in ports.conf (Debian) or httpd.conf (RHEL), never inside vhost files.</p>
+            <h3>How do Apache and nginx share one server?</h3>
+            <p>One of them takes 80/443 and reverse-proxies to the other on a local port. The common pattern is nginx in front (static/TLS) with Apache on 127.0.0.1:8080 for legacy apps — set Listen and the vhost accordingly, and keep mod_remoteip configured so Apache logs real client IPs.</p>
+            <h3>What is AH00451?</h3>
+            <p>'no listening sockets available, shutting down' — the follow-up line meaning every Listen failed. It is the consequence, not a separate problem: fix the AH00072 bind conflicts above it and AH00451 disappears.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/address-already-in-use">Nginx Address Already in Use</a> — the same conflict from nginx's side.</li>
+                <li><a href="/errors/apache/ah00526-syntax-error">AH00526 Syntax Error</a> — other startup blockers.</li>
+                <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — container port conflicts.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">See what answers on 80/443</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Confirm which server responds</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

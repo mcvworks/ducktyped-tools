@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SSL Certificate Invalid mean?","acceptedAnswer":{"@type":"Answer","text":"SSL Certificate Invalid is a general category covering any situation where a browser cannot validate an SSL certificate. This includes expired certificates, untrusted certificate authorities, hostname mismatches, revoked certificates, and incomplete certificate chains."}},{"@type":"Question","name":"Why would an SSL certificate be invalid?","acceptedAnswer":{"@type":"Answer","text":"The most common reasons are: the certificate has expired, the certificate was issued for a different hostname, the certificate was issued by a CA not trusted by the browser, or the certificate chain is incomplete (missing intermediate certificates)."}},{"@type":"Question","name":"How do I fix an invalid SSL certificate?","acceptedAnswer":{"@type":"Answer","text":"Use the SSL Checker tool to diagnose the specific issue. Different causes require different fixes: renew an expired certificate, reissue for the correct hostname, install intermediate certificates, or replace a self-signed certificate with one from a trusted CA."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Certificate Invalid — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificate Invalid — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what an invalid SSL certificate means, the different types of certificate errors, and how to diagnose and fix each one.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL certificate invalid, Invalid certificate, Certificate verification failed, ERR_CERT_INVALID">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificate Invalid — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand SSL certificate validation failures and how to diagnose and fix specific certificate errors.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-certificate-invalid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-certificate-invalid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Certificate Invalid</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificate Invalid</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSL Certificate Invalid is an umbrella error for any certificate validation failure. The browser cannot verify the certificate is trustworthy — for any of several possible reasons.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL certificate invalid</code></li><li><code>Invalid certificate</code></li><li><code>Certificate verification failed</code></li><li><code>ERR_CERT_INVALID</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When a browser connects to an HTTPS site, it validates the server's SSL certificate through a chain of checks. If any check fails, the browser shows some form of "certificate invalid" warning and blocks the connection.</p>
+            <p>The specific reason for the failure is usually shown in the detailed error message. Use the <a href="/ssl-checker/">SSL Checker</a> to inspect the full certificate chain and identify the exact problem.</p>
+
+            <h2>Types of Certificate Invalidity</h2>
+
+            <h3>Expired Certificate</h3>
+            <p>The certificate's <code>Not After</code> date has passed. Chrome shows <a href="/errors/ssl/net-err-cert-date-invalid">NET::ERR_CERT_DATE_INVALID</a>. Fix: renew the certificate.</p>
+
+            <h3>Hostname Mismatch</h3>
+            <p>The certificate does not cover the domain you are visiting. Chrome shows <a href="/errors/browser/err_cert_common_name_invalid">ERR_CERT_COMMON_NAME_INVALID</a>. Fix: reissue with the correct hostname(s) in the SANs.</p>
+
+            <h3>Untrusted Certificate Authority</h3>
+            <p>The certificate was signed by a CA not in the browser's trusted root store (e.g., a self-signed cert, an internal CA, or an expired root CA). Chrome shows <a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a>. Fix: use a publicly trusted CA like Let's Encrypt.</p>
+
+            <h3>Revoked Certificate</h3>
+            <p>The CA has revoked the certificate. Chrome shows <code>NET::ERR_CERT_REVOKED</code>. Fix: issue a new certificate immediately.</p>
+
+            <h3>Incomplete Certificate Chain</h3>
+            <p>The server is not sending intermediate CA certificates, so browsers cannot build the trust chain from the leaf certificate to a trusted root. Fix: configure your web server to include the full chain file.</p>
+
+            <h3>Weak Signature Algorithm</h3>
+            <p>The certificate uses a deprecated algorithm like SHA-1. Chrome shows <a href="/errors/ssl/net-err-cert-weak-signature-algorithm">NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM</a>. Fix: reissue with SHA-256.</p>
+
+            <h2>How to Diagnose the Specific Issue</h2>
+            <ol>
+                <li>Use the <a href="/ssl-checker/">SSL Checker</a> to inspect the full certificate and chain.</li>
+                <li>Click "Advanced" in Chrome's error page — it shows the specific NET:: error code.</li>
+                <li>Check Firefox's detailed security error page for the exact SEC_ERROR code.</li>
+            </ol>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — comprehensive certificate validation and chain inspection.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can a valid certificate show as invalid due to client issues?</h3>
+            <p>Yes. An incorrect system clock makes valid certificates appear expired. Missing root CA updates on older operating systems can make newer CAs appear untrusted. On very old Android devices, Let's Encrypt's root may not be trusted.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — certificate past validity date.</li>
+                <li><a href="/errors/ssl/ssl-certificate-revoked">SSL Certificate Revoked</a> — certificate invalidated by CA.</li>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — untrusted CA.</li>
+                <li><a href="/errors/browser/err_cert_common_name_invalid">ERR_CERT_COMMON_NAME_INVALID</a> — hostname mismatch.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

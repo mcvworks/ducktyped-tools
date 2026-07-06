@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do captive portals use 511 instead of redirecting?","acceptedAnswer":{"@type":"Answer","text":"Using 511 clearly identifies the response as a network-level authentication requirement, not a server-side redirect. This prevents HTTP clients from caching the portal page as the actual content of the requested URL."}},{"@type":"Question","name":"Does 511 affect HTTPS connections?","acceptedAnswer":{"@type":"Answer","text":"Captive portals cannot intercept HTTPS traffic without triggering certificate errors. This is why trying an HTTP (not HTTPS) URL is recommended to trigger the portal. Modern devices use dedicated captive portal detection URLs."}},{"@type":"Question","name":"Can I prevent captive portal issues?","acceptedAnswer":{"@type":"Answer","text":"You can use a VPN that connects before the captive portal, use mobile data instead, or authenticate through the portal as quickly as possible. Some devices have automatic captive portal detection."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"511 Network Authentication Required — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 511 Network Authentication Required","step":[{"@type":"HowToStep","position":1,"name":"Open a browser and navigate to any HTTP page","text":"Open a web browser and navigate to a non-HTTPS page (e.g., http://neverssl.com). The captive portal should intercept the request and display the login page."},{"@type":"HowToStep","position":2,"name":"Look for the captive portal login page","text":"Most devices detect captive portals automatically and display a login prompt. On macOS, look for a notification. On Windows, check for a 'Sign in to network' popup. On mobile, check notifications."},{"@type":"HowToStep","position":3,"name":"Disconnect and reconnect to the network","text":"If the captive portal is not appearing, disconnect from the Wi-Fi network and reconnect. This often triggers the captive portal detection mechanism in your operating system."},{"@type":"HowToStep","position":4,"name":"Try accessing the router's IP address directly","text":"Navigate to common captive portal addresses like 192.168.1.1 or 10.0.0.1 in your browser to access the login page directly."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>511 Network Authentication Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 511 Network Authentication Required errors. Learn about captive portals, Wi-Fi login pages, and how to resolve network authentication requirements.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 511, 511 Network Authentication Required, 511 error, Captive portal, WiFi login required, Network login page">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="511 Network Authentication Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 511 Network Authentication Required errors. Learn about captive portals, Wi-Fi login pages, and how to resolve network authentication requirements.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/511-network-authentication-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/511-network-authentication-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>511 Network Authentication Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>511 Network Authentication Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The client needs to authenticate to gain network access</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 511</code></li><li><code>511 Network Authentication Required</code></li><li><code>511 error</code></li><li><code>Captive portal</code></li><li><code>WiFi login required</code></li><li><code>Network login page</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 511 Network Authentication Required response indicates that the client needs to authenticate to gain access to the network. This is typically generated by captive portals used in hotels, airports, and public Wi-Fi networks that require users to accept terms, log in, or pay before granting internet access. The response usually includes a link to the login page.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Captive portal login required</strong> — You are connected to a Wi-Fi network (hotel, airport, coffee shop) that requires authentication through a web-based portal before granting internet access.</li>
+                <li><strong>Network terms acceptance required</strong> — The network requires you to accept terms of service or an acceptable use policy through a web portal before allowing internet traffic.</li>
+                <li><strong>Network session expired</strong> — Your previous captive portal authentication has expired and the network is requiring you to re-authenticate or re-accept terms.</li>
+                <li><strong>Paid Wi-Fi access required</strong> — The network requires payment before granting internet access, and is redirecting all traffic to a payment portal.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Open a browser and navigate to any HTTP page</h3>
+            <p>Open a web browser and navigate to a non-HTTPS page (e.g., http://neverssl.com). The captive portal should intercept the request and display the login page.</p>
+            <h3>2. Look for the captive portal login page</h3>
+            <p>Most devices detect captive portals automatically and display a login prompt. On macOS, look for a notification. On Windows, check for a 'Sign in to network' popup. On mobile, check notifications.</p>
+            <h3>3. Disconnect and reconnect to the network</h3>
+            <p>If the captive portal is not appearing, disconnect from the Wi-Fi network and reconnect. This often triggers the captive portal detection mechanism in your operating system.</p>
+            <h3>4. Try accessing the router's IP address directly</h3>
+            <p>Navigate to common captive portal addresses like 192.168.1.1 or 10.0.0.1 in your browser to access the login page directly.</p>
+            <pre><code># Common captive portal addresses to try
+http://192.168.1.1
+http://10.0.0.1
+http://captive.apple.com
+http://connectivitycheck.gstatic.com/generate_204</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why do captive portals use 511 instead of redirecting?</h3>
+            <p>Using 511 clearly identifies the response as a network-level authentication requirement, not a server-side redirect. This prevents HTTP clients from caching the portal page as the actual content of the requested URL.</p>
+            <h3>Does 511 affect HTTPS connections?</h3>
+            <p>Captive portals cannot intercept HTTPS traffic without triggering certificate errors. This is why trying an HTTP (not HTTPS) URL is recommended to trigger the portal. Modern devices use dedicated captive portal detection URLs.</p>
+            <h3>Can I prevent captive portal issues?</h3>
+            <p>You can use a VPN that connects before the captive portal, use mobile data instead, or authenticate through the portal as quickly as possible. Some devices have automatic captive portal detection.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — Authentication required by the origin server</li>
+                <li><a href="/errors/http/407-proxy-authentication-required">407 Proxy Authentication Required</a> — Proxy authentication required</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — Server refuses to authorize the request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check ports</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

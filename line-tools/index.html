@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Line Tools","url":"https://ducktyped.xyz/line-tools/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Sort lines, remove duplicates, reverse order, filter blank lines, and more text line operations.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are line tools?","acceptedAnswer":{"@type":"Answer","text":"Line tools provide utilities for processing text line by line — sorting, deduplicating, reversing, numbering, filtering, and transforming lines of text. Useful for processing log files, CSVs, and data lists."}},{"@type":"Question","name":"Can I sort and deduplicate lines?","acceptedAnswer":{"@type":"Answer","text":"Yes, the tool can sort lines alphabetically or numerically, remove duplicate lines, reverse line order, add line numbers, and filter lines by pattern — all in your browser."}},{"@type":"Question","name":"Is this tool free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free with no registration. All processing happens in your browser."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Tools — Sort, Deduplicate, Filter Lines — duckTyped</title>
+    <meta name="description" content="Sort lines, remove duplicates, reverse order, filter blank lines, and more text line operations. Free line processing tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Line Tools — Sort, Deduplicate, Filter — duckTyped">
+    <meta property="og:description" content="Sort, deduplicate, reverse, filter, and process text lines.">
+    <meta property="og:url" content="https://ducktyped.xyz/line-tools/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/line-tools.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Line Tools — duckTyped">
+    <meta name="twitter:description" content="Sort, deduplicate, reverse, and process text lines.">
+    <link rel="canonical" href="https://ducktyped.xyz/line-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        .line-ops-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 18px; }
+        .line-ops-group { display: flex; flex-direction: column; gap: 6px; }
+        .line-ops-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); font-weight: 600; }
+        .line-ops-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .line-ops-row .preset-btn { flex: 0 1 auto; min-width: unset; padding: 8px 16px; font-size: 0.85em; }
+    </style>
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Line Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Process text lines with multiple operations: sort, remove duplicates, reverse, remove blank lines, trim whitespace, and more.</p><div class="example-box"><strong>Example uses:</strong><p>Cleaning up log files, removing duplicate entries from lists, sorting configuration values, preparing data for CSV import.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Line Tools</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste text below and click any operation to process it.</p>
+            <div class="input-group"><label>Input:</label><textarea id="lineInput" rows="8" placeholder="Paste your text here, one item per line..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div class="line-ops-grid">
+                <div class="line-ops-group">
+                    <span class="line-ops-label">Sort</span>
+                    <div class="line-ops-row">
+                        <button onclick="lineOp('sortAZ')" class="preset-btn blue">Sort A&rarr;Z</button>
+                        <button onclick="lineOp('sortZA')" class="preset-btn blue">Sort Z&rarr;A</button>
+                        <button onclick="lineOp('reverse')" class="preset-btn blue">Reverse</button>
+                        <button onclick="lineOp('shuffle')" class="preset-btn blue">Shuffle</button>
+                    </div>
+                </div>
+                <div class="line-ops-group">
+                    <span class="line-ops-label">Clean</span>
+                    <div class="line-ops-row">
+                        <button onclick="lineOp('dedup')" class="preset-btn green">Remove Duplicates</button>
+                        <button onclick="lineOp('blank')" class="preset-btn green">Remove Blank Lines</button>
+                        <button onclick="lineOp('trim')" class="preset-btn green">Trim Whitespace</button>
+                    </div>
+                </div>
+                <div class="line-ops-group">
+                    <span class="line-ops-label">Transform</span>
+                    <div class="line-ops-row">
+                        <button onclick="lineOp('number')" class="preset-btn red">Add Line Numbers</button>
+                        <button onclick="lineOp('unnumber')" class="preset-btn red">Remove Line Numbers</button>
+                        <button onclick="lineOp('lower')" class="preset-btn red">Lowercase All</button>
+                        <button onclick="lineOp('upper')" class="preset-btn red">Uppercase All</button>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group"><label>Output:</label><textarea id="lineOutput" rows="8" readonly style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <button onclick="navigator.clipboard.writeText(document.getElementById('lineOutput').value)">Copy Output</button>
+                <span id="lineStats" style="color:var(--text-secondary);font-size:0.9em;"></span>
+            </div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/character-counter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Character Counter</a>
+            <a href="/text-diff/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Text Diff Tool</a>
+            <a href="/regex-tester/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Regex Tester</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">🛠 <strong>Troubleshoot:</strong> <a href="/errors/python/indentationerror">Python IndentationError</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function lineOp(op) {
+        var input = document.getElementById('lineInput').value, lines = input.split('\n'), result;
+        switch(op) {
+            case 'sortAZ': result = lines.slice().sort(function(a,b){return a.localeCompare(b);}); break;
+            case 'sortZA': result = lines.slice().sort(function(a,b){return b.localeCompare(a);}); break;
+            case 'dedup': result = []; var seen = {}; lines.forEach(function(l){if(!seen[l]){seen[l]=1;result.push(l);}}); break;
+            case 'blank': result = lines.filter(function(l){return l.trim().length>0;}); break;
+            case 'reverse': result = lines.slice().reverse(); break;
+            case 'trim': result = lines.map(function(l){return l.trim();}); break;
+            case 'number': result = lines.map(function(l,i){return (i+1)+'. '+l;}); break;
+            case 'unnumber': result = lines.map(function(l){return l.replace(/^\d+[\.\)\-\s]+/,'');}); break;
+            case 'shuffle': result = lines.slice(); for(var i=result.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=result[i];result[i]=result[j];result[j]=t;} break;
+            case 'lower': result = lines.map(function(l){return l.toLowerCase();}); break;
+            case 'upper': result = lines.map(function(l){return l.toUpperCase();}); break;
+            default: result = lines;
+        }
+        document.getElementById('lineOutput').value = result.join('\n');
+        document.getElementById('lineStats').textContent = 'Input: '+lines.length+' lines → Output: '+result.length+' lines';
+    }
+    </script>
+</body>
+</html>

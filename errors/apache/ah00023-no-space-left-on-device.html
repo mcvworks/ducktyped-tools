@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Linux call semaphore exhaustion 'no space left on device'?","acceptedAnswer":{"@type":"Answer","text":"The semget() syscall reuses ENOSPC to signal 'no space in the kernel's semaphore tables'. Apache just relays the errno text. Once you have seen it, the phrasing plus AH00023's mutex context is unambiguous."}},{"@type":"Question","name":"Is it safe to remove semaphores with ipcrm?","acceptedAnswer":{"@type":"Answer","text":"Safe for sets owned by the Apache user while Apache is stopped — they are orphans by definition. Do not bulk-remove other users' semaphores (databases hold live ones). The awk filter on the owner column is what keeps the operation surgical."}},{"@type":"Question","name":"Which mutexes does this affect — and can I change their type?","acceptedAnswer":{"@type":"Answer","text":"mpm-accept, ssl-cache, rewrite-map and others. The Mutex directive can switch mechanisms (e.g. 'Mutex posixsem default' or file-based), which sidesteps SysV limits — an option when you cannot control kernel settings, at slight performance/portability trade-offs."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00023 — No Space Left on Device (Mutex/Semaphore) — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00023 — No Space Left on Device (Mutex/Semaphore) — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache 'No space left on device: AH00023 Couldn't create mutex'. Clean leaked IPC semaphores with ipcs/ipcrm, raise kernel limits, or check disk/inodes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="No space left on device: AH00023: Couldn&#39;t create the mpm-accept mutex, ah00023, apache mutex semaphore, apache no space left on device">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00023 — No Space Left on Device (Mutex/Semaphore) — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache 'No space left on device: AH00023 Couldn't create mutex'. Clean leaked IPC semaphores with ipcs/ipcrm, raise kernel limits, or check disk/inodes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00023-no-space-left-on-device">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00023-no-space-left-on-device">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00023 — No Space Left on Device (Mutex/Semaphore)</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00023 — No Space Left on Device (Mutex/Semaphore)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The startup failure 'No space left on device: AH00023: Couldn't create the mpm-accept mutex' — usually exhausted semaphores, not an actually full disk.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>No space left on device: AH00023: Couldn&#39;t create the mpm-accept mutex</code></li><li><code>ah00023</code></li><li><code>apache mutex semaphore</code></li><li><code>apache no space left on device</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Misleading by design: 'no space left on device' here usually refers to kernel IPC resources, not the filesystem. Apache creates System V semaphores for its internal mutexes; repeated crashes or kill -9 restarts leak them, and once the kernel's semaphore limit fills, the next start fails with AH00023. The same message can occasionally be literal — a full disk or exhausted inodes preventing lock/log file creation — so check both, in that order of likelihood when disks look fine.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Leaked System V semaphores</strong> — Every unclean Apache death (segfault, OOM kill, kill -9) can orphan its semaphore sets. They accumulate invisibly until semmni/semmns limits are hit.</li>
+                <li><strong>Kernel semaphore limits too low for the workload</strong> — Hosts running many Apache instances (or other IPC-heavy software like PostgreSQL and Oracle) can exhaust default limits without any leak.</li>
+                <li><strong>Actually out of disk or inodes</strong> — The literal reading: no room for pid files, lock files, or logs. Rare for this specific AH code, quick to rule out.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Rule out the literal disk case</h3>
+            <p>Two commands settle it.</p>
+            <pre><code>df -h /var /tmp
+df -i /var   # inodes</code></pre>
+            <h3>2. List and clean leaked semaphores</h3>
+            <p>Remove semaphore sets owned by the Apache user while Apache is stopped, then start.</p>
+            <pre><code>sudo systemctl stop apache2
+ipcs -s | grep -E 'www-data|apache'
+# remove them all for that user:
+for id in $(ipcs -s | awk '/www-data|apache/ {print $2}'); do sudo ipcrm -s $id; done
+sudo systemctl start apache2</code></pre>
+            <h3>3. Raise kernel semaphore limits if legitimately needed</h3>
+            <p>The four sem values are SEMMSL SEMMNS SEMOPM SEMMNI; raise MNS/MNI for many concurrent semaphore sets.</p>
+            <pre><code>cat /proc/sys/kernel/sem
+echo 'kernel.sem = 250 32000 100 1024' | sudo tee /etc/sysctl.d/99-sem.conf
+sudo sysctl -p /etc/sysctl.d/99-sem.conf</code></pre>
+            <h3>4. Fix the crash loop that leaks them</h3>
+            <p>Leaked semaphores are a symptom: find why Apache keeps dying uncleanly (segfaulting module, OOM) in the error log and journal, or the leak returns.</p>
+            <pre><code>sudo journalctl -u apache2 | grep -iE 'segfault|killed|oom' | tail
+sudo dmesg | grep -i apache | tail</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does Linux call semaphore exhaustion 'no space left on device'?</h3>
+            <p>The semget() syscall reuses ENOSPC to signal 'no space in the kernel's semaphore tables'. Apache just relays the errno text. Once you have seen it, the phrasing plus AH00023's mutex context is unambiguous.</p>
+            <h3>Is it safe to remove semaphores with ipcrm?</h3>
+            <p>Safe for sets owned by the Apache user while Apache is stopped — they are orphans by definition. Do not bulk-remove other users' semaphores (databases hold live ones). The awk filter on the owner column is what keeps the operation surgical.</p>
+            <h3>Which mutexes does this affect — and can I change their type?</h3>
+            <p>mpm-accept, ssl-cache, rewrite-map and others. The Mutex directive can switch mechanisms (e.g. 'Mutex posixsem default' or file-based), which sidesteps SysV limits — an option when you cannot control kernel settings, at slight performance/portability trade-offs.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/apache/ah00072-could-not-bind-to-address">AH00072 Could Not Bind</a> — other startup failures.</li>
+                <li><a href="/errors/database/redis-misconf-rdb-snapshots">Redis MISCONF</a> — disk-space failures in another daemon.</li>
+                <li><a href="/errors/apache/ah00526-syntax-error">AH00526 Syntax Error</a> — config-related startup blocks.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Confirm recovery after restart</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

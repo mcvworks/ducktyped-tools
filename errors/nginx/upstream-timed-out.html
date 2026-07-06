@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this the same as a 504 Gateway Timeout?","acceptedAnswer":{"@type":"Answer","text":"This log line is the usual cause of the 504 the visitor sees. 504 is the symptom on the client side; 'upstream timed out' in the error log is nginx's reason. If you see 504s without this line, something else in the chain (a CDN or another proxy layer) timed out instead."}},{"@type":"Question","name":"Which timeout directive actually applies?","acceptedAnswer":{"@type":"Answer","text":"For proxy_pass: proxy_connect_timeout (TCP connect), proxy_send_timeout (sending the request), proxy_read_timeout (waiting between reads of the response — the one that fires for slow backends). For PHP, the fastcgi_* equivalents. WebSockets need long proxy_read_timeout since frames can be minutes apart."}},{"@type":"Question","name":"Should I just set the timeout to 10 minutes?","acceptedAnswer":{"@type":"Answer","text":"Usually no. Long timeouts keep connections and workers pinned during incidents and hide real performance regressions. Raise it surgically for endpoints that legitimately take long, and prefer converting those to async jobs; keep everything else fast-failing."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Upstream Timed Out — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Upstream Timed Out — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx 'upstream timed out (110: Connection timed out)'. proxy_read_timeout, fastcgi_read_timeout, slow backends, and when raising timeouts is wrong.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="upstream timed out (110: Connection timed out) while reading response header from upstream, nginx upstream timed out, 110 connection timed out nginx, nginx 504 upstream timeout, proxy_read_timeout exceeded">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Upstream Timed Out — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx 'upstream timed out (110: Connection timed out)'. proxy_read_timeout, fastcgi_read_timeout, slow backends, and when raising timeouts is wrong.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/upstream-timed-out">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/upstream-timed-out">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Upstream Timed Out</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Upstream Timed Out</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'upstream timed out (110: Connection timed out) while reading response header from upstream' — the backend took longer than nginx was willing to wait. Visitors see a 504.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>upstream timed out (110: Connection timed out) while reading response header from upstream</code></li><li><code>nginx upstream timed out</code></li><li><code>110 connection timed out nginx</code></li><li><code>nginx 504 upstream timeout</code></li><li><code>proxy_read_timeout exceeded</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Nginx connected to the backend fine, sent the request, and then waited for a response that did not arrive within the timeout — 60 seconds by default. The client gets a 504 Gateway Timeout. Which timeout fired matters: 'while connecting' means the TCP connection itself stalled (network/firewall); 'while reading response header' — by far the most common — means the backend accepted the request but is too slow to answer: a heavy query, a stuck external call, or exhausted workers.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The backend is genuinely slow</strong> — A report endpoint, a huge unindexed database query, an external API call without its own timeout — the request needs more than 60 seconds and nginx gives up first.</li>
+                <li><strong>Backend worker pool is exhausted</strong> — All PHP-FPM children / gunicorn workers / Node event loop capacity are busy, so new requests queue until they either get served late or time out.</li>
+                <li><strong>Timeout directives are set too low for specific routes</strong> — A global proxy_read_timeout tuned for fast pages also applies to the one endpoint that legitimately takes two minutes, guaranteeing 504s there.</li>
+                <li><strong>Network path problems on 'while connecting' timeouts</strong> — If the log says 'while connecting to upstream', the TCP handshake itself hung — a firewall dropping packets, wrong routes, or a dead host, not a slow application.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm how slow the backend really is</h3>
+            <p>Time the backend directly, bypassing nginx, to separate 'slow app' from 'network problem'.</p>
+            <pre><code>time curl -sS -o /dev/null http://127.0.0.1:3000/slow-endpoint
+# detailed timing through the public URL:
+curl -w 'connect=%{time_connect}s ttfb=%{time_starttransfer}s total=%{time_total}s\n' -o /dev/null -sS https://example.com/slow-endpoint</code></pre>
+            <h3>2. Raise the timeout only where it is legitimate</h3>
+            <p>Scope longer timeouts to the specific slow location instead of globally, so real failures elsewhere still fail fast.</p>
+            <pre><code>location /reports/ {
+    proxy_pass http://backend;
+    proxy_read_timeout 300s;
+    proxy_send_timeout 300s;
+}
+# PHP-FPM equivalent:
+# fastcgi_read_timeout 300s;  (and max_execution_time in PHP)</code></pre>
+            <h3>3. Fix the slowness at the source</h3>
+            <p>EXPLAIN the query and add the missing index, put a timeout on outbound API calls, or move multi-minute work to a background job that the client polls — a 5-minute HTTP request is fragile no matter the timeout settings.</p>
+            <h3>4. Check worker saturation</h3>
+            <p>If fast endpoints also time out under load, the pool is exhausted — scale workers within memory limits.</p>
+            <pre><code># PHP-FPM: watch for 'max children reached' warnings
+sudo grep -i 'max_children' /var/log/php*-fpm.log*
+# gunicorn/node: check process CPU and event-loop lag during the incident</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is this the same as a 504 Gateway Timeout?</h3>
+            <p>This log line is the usual cause of the 504 the visitor sees. 504 is the symptom on the client side; 'upstream timed out' in the error log is nginx's reason. If you see 504s without this line, something else in the chain (a CDN or another proxy layer) timed out instead.</p>
+            <h3>Which timeout directive actually applies?</h3>
+            <p>For proxy_pass: proxy_connect_timeout (TCP connect), proxy_send_timeout (sending the request), proxy_read_timeout (waiting between reads of the response — the one that fires for slow backends). For PHP, the fastcgi_* equivalents. WebSockets need long proxy_read_timeout since frames can be minutes apart.</p>
+            <h3>Should I just set the timeout to 10 minutes?</h3>
+            <p>Usually no. Long timeouts keep connections and workers pinned during incidents and hide real performance regressions. Raise it surgically for endpoints that legitimately take long, and prefer converting those to async jobs; keep everything else fast-failing.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — the client-facing symptom.</li>
+                <li><a href="/errors/nginx/connection-refused-while-connecting-to-upstream">Connection Refused (Upstream)</a> — the active-refusal counterpart.</li>
+                <li><a href="/errors/nginx/no-live-upstreams">No Live Upstreams</a> — timeouts marking all backends failed.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a>, <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure response times from outside</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Reproduce slow requests precisely</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

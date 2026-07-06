@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"1020 vs 1006 — what is the difference?","acceptedAnswer":{"@type":"Answer","text":"1006/1007/1008 are specifically IP Access Rules (explicit address/range bans). 1020 is everything else in the firewall toolbox — custom WAF expressions, managed rules, bot verdicts, country blocks. For owners the practical difference is which dashboard page holds the fix."}},{"@type":"Question","name":"Why does one browser work while another gets 1020 on the same machine?","acceptedAnswer":{"@type":"Answer","text":"Because the rule may match browser attributes rather than your IP: user-agent, header order, TLS fingerprint, or a bot score derived from them. That is the tell that a fingerprint/bot rule (not an IP rule) is firing."}},{"@type":"Question","name":"As a small crawler/integration developer, how do I avoid tripping 1020 on partner sites?","acceptedAnswer":{"@type":"Answer","text":"Identify honestly (stable, descriptive user-agent with contact info), respect robots.txt and rate limits, and ask the site owner to allowlist your ASN/IPs or user-agent. Evading bot rules by spoofing tends to escalate blocks — the allowlist conversation works better."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 1020 — Access Denied — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 1020 — Access Denied — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 1020 'Access denied'. What visitors can change, and how owners trace the exact matching rule in Security Events by Ray ID.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 1020, access denied error 1020, error 1020, cloudflare firewall rule blocked, 1020 access denied fix">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 1020 — Access Denied — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 1020 'Access denied'. What visitors can change, and how owners trace the exact matching rule in Security Events by Ray ID.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-1020">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-1020">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 1020 — Access Denied</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 1020 — Access Denied</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">The request matched a firewall or WAF rule on the site — country, network, user-agent, path, or bot-score conditions the owner configured (or a managed rule).</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 1020</code></li><li><code>access denied error 1020</code></li><li><code>error 1020</code></li><li><code>cloudflare firewall rule blocked</code></li><li><code>1020 access denied fix</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Error 1020 is the general 'a security rule said no': WAF custom rules, managed rulesets, bot-management verdicts, or zone lockdowns matched some attribute of the request — source country or ASN, user-agent string, path pattern, TLS fingerprint, bot score. Unlike the 1006 family (explicit IP bans), the trigger can be anything the rule language can express, which is why the visitor experience feels arbitrary: same person, different browser, different result. For owners, every 1020 is one Security-Events lookup away from an explanation.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Country/ASN rules</strong> — Blocking traffic from specific countries or networks (data centers, VPN providers' ASNs) — legitimate travelers and VPN users match instantly.</li>
+                <li><strong>Bot management and fingerprint heuristics</strong> — Unusual browsers, automation frameworks, privacy tools that strip headers, or odd TLS stacks can score as bots and match a blocking rule.</li>
+                <li><strong>Path/method rules</strong> — Rules protecting /wp-admin, /xmlrpc.php, or API paths block anyone touching them from outside an allowlist.</li>
+                <li><strong>Overbroad custom expressions</strong> — A rule written during an attack ('block everything with this header pattern') that keeps matching normal traffic afterwards.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Visitors: change the obvious attributes</h3>
+            <p>Turn the VPN off (or pick another exit country), try a mainstream browser without aggressive privacy extensions, and avoid tools that modify your user-agent. If the site blocks your whole country, only the owner can allow you.</p>
+            <h3>2. Visitors: report with the Ray ID</h3>
+            <p>The Ray ID at the bottom of the 1020 page lets the owner find the exact rule that fired for your request — a report containing it usually gets a real answer.</p>
+            <h3>3. Owners: look up the event</h3>
+            <p>Security → Events, filter by the Ray ID (or IP/time). The event names the service (WAF custom rule, managed rule ID, IP Access Rule, Bot Fight Mode) and the matched expression — no guessing.</p>
+            <pre><code># via API:
+curl -s 'https://api.cloudflare.com/client/v4/zones/ZONE_ID/security/events?ray_id=RAY_ID' \
+  -H 'Authorization: Bearer API_TOKEN' | head -60</code></pre>
+            <h3>4. Owners: soften or scope the rule</h3>
+            <p>Switch block actions to Managed Challenge for gray-area matches, add exceptions (paths, known partners' ASNs), and re-review incident-era rules on a schedule so they do not fossilize.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>1020 vs 1006 — what is the difference?</h3>
+            <p>1006/1007/1008 are specifically IP Access Rules (explicit address/range bans). 1020 is everything else in the firewall toolbox — custom WAF expressions, managed rules, bot verdicts, country blocks. For owners the practical difference is which dashboard page holds the fix.</p>
+            <h3>Why does one browser work while another gets 1020 on the same machine?</h3>
+            <p>Because the rule may match browser attributes rather than your IP: user-agent, header order, TLS fingerprint, or a bot score derived from them. That is the tell that a fingerprint/bot rule (not an IP rule) is firing.</p>
+            <h3>As a small crawler/integration developer, how do I avoid tripping 1020 on partner sites?</h3>
+            <p>Identify honestly (stable, descriptive user-agent with contact info), respect robots.txt and rate limits, and ask the site owner to allowlist your ASN/IPs or user-agent. Evading bot rules by spoofing tends to escalate blocks — the allowlist conversation works better.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-1006">Cloudflare Error 1006</a> — explicit IP bans.</li>
+                <li><a href="/errors/cloudflare/error-1015">Cloudflare Error 1015</a> — rate-limit denials.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — generic access denial.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Checker</span>
+                    <span class="recommended-tool-desc">See the network attributes you present</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test requests with clean headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/isp-lookup/" class="cta-btn-primary">Try ISP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

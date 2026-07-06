@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Visitors see 502 Bad Gateway — is that this error?","acceptedAnswer":{"@type":"Answer","text":"This log line is one of the causes behind a 502. The 502 page is what the client sees; 'connection refused while connecting to upstream' in /var/log/nginx/error.log tells you why — the backend was not listening. Other 502 flavors (timeouts, oversized headers) have their own log lines and their own guides."}},{"@type":"Question","name":"Why does it happen intermittently, a few seconds at a time?","acceptedAnswer":{"@type":"Answer","text":"The backend is restarting — crash loops, deployment restarts, or OOM kills. Check the app's logs and 'journalctl -u yourapp' around the timestamps in the nginx error log. Zero-downtime deploys (start new instance, then switch) or a second upstream server remove the visible blips."}},{"@type":"Question","name":"Connection refused vs timed out — what is the difference?","acceptedAnswer":{"@type":"Answer","text":"Refused (111) is an active 'no' — the host is reachable, the port is closed; look at the backend process. Timed out (110) is silence — packets go unanswered; look at firewalls, network paths, or an overloaded backend that cannot even accept."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Connection Refused While Connecting to Upstream — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Connection Refused While Connecting to Upstream — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx 'connect() failed (111: Connection refused) while connecting to upstream'. Dead backends, wrong proxy_pass ports, and Docker localhost traps.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="connect() failed (111: Connection refused) while connecting to upstream, nginx upstream connection refused, nginx 502 connection refused, 111 connection refused nginx, fastcgi connection refused">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Connection Refused While Connecting to Upstream — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx 'connect() failed (111: Connection refused) while connecting to upstream'. Dead backends, wrong proxy_pass ports, and Docker localhost traps.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/connection-refused-while-connecting-to-upstream">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/connection-refused-while-connecting-to-upstream">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Connection Refused While Connecting to Upstream</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Connection Refused While Connecting to Upstream</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'connect() failed (111: Connection refused) while connecting to upstream' — nginx reached the backend host, but nothing was listening. Visitors see a 502.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>connect() failed (111: Connection refused) while connecting to upstream</code></li><li><code>nginx upstream connection refused</code></li><li><code>nginx 502 connection refused</code></li><li><code>111 connection refused nginx</code></li><li><code>fastcgi connection refused</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Nginx accepted a client request and tried to hand it to the backend named in proxy_pass or fastcgi_pass — and the backend's machine answered 'nothing listens on that port'. The client gets a 502 Bad Gateway; this log line is the server-side reason. It always means the network path worked but the destination was wrong or dead: the app crashed or never started, the port in proxy_pass does not match the app's real port, or (very common in containers) 'localhost' does not mean what the config assumes.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The backend application is down</strong> — Crashed, OOM-killed, failed to boot after deploy, or never enabled at boot. Nothing listens, so the kernel refuses the connection.</li>
+                <li><strong>proxy_pass points at the wrong port or interface</strong> — App listens on 3000, config says 8000; or the app binds 127.0.0.1 while nginx connects to the machine's external IP (or the reverse).</li>
+                <li><strong>'localhost' inside a container is not the host</strong> — When nginx runs in a container, 127.0.0.1 is the container itself. A proxy_pass to localhost:3000 for an app in another container (or on the host) refuses — use the service name or host gateway instead.</li>
+                <li><strong>PHP-FPM socket/TCP mismatch</strong> — fastcgi_pass says 127.0.0.1:9000 while PHP-FPM listens on a Unix socket (or the other way round), or the socket path differs per PHP version (/run/php/php8.3-fpm.sock).</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the backend is running and where it listens</h3>
+            <p>Confirm the process exists and note the exact address:port it bound — then compare with proxy_pass.</p>
+            <pre><code>sudo ss -tlnp | grep -E '3000|9000'
+systemctl status myapp
+# test from the nginx host/container itself:
+curl -sS http://127.0.0.1:3000/health</code></pre>
+            <h3>2. Fix the proxy_pass target</h3>
+            <p>Make the config match reality — port, host, and scheme.</p>
+            <pre><code>location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></pre>
+            <h3>3. In Docker, address containers by service name</h3>
+            <p>On a shared network, the service name resolves to the right container. For an app on the host, use host.docker.internal (add the host-gateway mapping on Linux).</p>
+            <pre><code># docker-compose.yml
+services:
+  nginx:
+    ...
+  app:
+    ...
+# nginx.conf inside the nginx container:
+#   proxy_pass http://app:3000;
+# app on the HOST instead:
+#   extra_hosts: [&quot;host.docker.internal:host-gateway&quot;]
+#   proxy_pass http://host.docker.internal:3000;</code></pre>
+            <h3>4. Align PHP-FPM's listen with fastcgi_pass</h3>
+            <p>Check the pool config and use the same socket or TCP address in nginx.</p>
+            <pre><code>grep -r '^listen' /etc/php/*/fpm/pool.d/
+# if it shows: listen = /run/php/php8.3-fpm.sock
+fastcgi_pass unix:/run/php/php8.3-fpm.sock;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Visitors see 502 Bad Gateway — is that this error?</h3>
+            <p>This log line is one of the causes behind a 502. The 502 page is what the client sees; 'connection refused while connecting to upstream' in /var/log/nginx/error.log tells you why — the backend was not listening. Other 502 flavors (timeouts, oversized headers) have their own log lines and their own guides.</p>
+            <h3>Why does it happen intermittently, a few seconds at a time?</h3>
+            <p>The backend is restarting — crash loops, deployment restarts, or OOM kills. Check the app's logs and 'journalctl -u yourapp' around the timestamps in the nginx error log. Zero-downtime deploys (start new instance, then switch) or a second upstream server remove the visible blips.</p>
+            <h3>Connection refused vs timed out — what is the difference?</h3>
+            <p>Refused (111) is an active 'no' — the host is reachable, the port is closed; look at the backend process. Timed out (110) is silence — packets go unanswered; look at firewalls, network paths, or an overloaded backend that cannot even accept.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — what the client sees for this failure.</li>
+                <li><a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a> — the timeout counterpart.</li>
+                <li><a href="/errors/nginx/no-live-upstreams">No Live Upstreams</a> — when every backend is marked failed.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check whether the backend port is open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Test the site's responses from outside</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

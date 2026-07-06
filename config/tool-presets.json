@@ -1,0 +1,12 @@
+{
+  "_comment": "Preset tool views for /utility?preset=<name>. Each key is a preset name, and its value is an array of tool card IDs from the utility dashboard. The site owner must populate each preset with the desired tool IDs. Available tool IDs can be found as id attributes on .tool-card elements in /frontend/utility/index.html.",
+  "techs": [
+    "passwordGen",
+    "noteSender",
+    "dnsChecker",
+    "qrGenerator",
+    "emailHeaderAnalyzer",
+    "plainNotes",
+    "ispChecker"
+  ]
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Cron Expressions Explained","description":"Learn cron expression syntax field by field, 5-field vs 6-field formats, special strings like @daily and @reboot, ranges, steps, lists, timezone and DST gotchas, and common real-world schedules.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/cron-parser/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Cron Parser"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What do the five fields in a cron expression mean?","acceptedAnswer":{"@type":"Answer","text":"Reading left to right, the five fields are: minute (0-59), hour (0-23), day of month (1-31), month (1-12), and day of week (0-7, where both 0 and 7 mean Sunday). For example, 0 9 * * 1-5 means 9:00 AM every weekday."}},{"@type":"Question","name":"What is the difference between 5-field and 6-field cron expressions?","acceptedAnswer":{"@type":"Answer","text":"Classic Unix cron uses five fields starting with the minute. Some schedulers — notably Quartz (Java) and Spring — add a seconds field at the front, making six fields. AWS EventBridge uses six fields too, but its sixth field is a year at the end. Always check which dialect your scheduler expects."}},{"@type":"Question","name":"What does */15 mean in cron?","acceptedAnswer":{"@type":"Answer","text":"The slash defines a step. */15 in the minute field means every 15 minutes — it fires at minutes 0, 15, 30, and 45. Steps can also apply to ranges: 9-17/2 in the hour field means every 2 hours between 9 AM and 5 PM."}},{"@type":"Question","name":"What timezone do cron jobs run in?","acceptedAnswer":{"@type":"Answer","text":"Classic crontab uses the server's local timezone, while most cloud schedulers (Kubernetes CronJobs, GitHub Actions, AWS EventBridge) default to UTC. A job written for 9 AM local time will fire at the wrong hour if the scheduler runs in UTC, and daylight saving transitions can cause local-time jobs to skip or double-run."}},{"@type":"Question","name":"What does @daily mean in a crontab?","acceptedAnswer":{"@type":"Answer","text":"@daily is a special string equivalent to 0 0 * * * — it runs once a day at midnight. Other shortcuts include @hourly (0 * * * *), @weekly, @monthly, @yearly, and @reboot, which runs once when the system starts rather than on a time schedule."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Expressions Explained — Syntax, Fields &amp; Examples — duckTyped</title>
+    <meta name="description" content="Learn cron syntax field by field: 5-field vs 6-field formats, @daily and @reboot, ranges, steps, lists, timezone and DST gotchas, and real-world examples.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cron Expressions Explained — Syntax, Fields & Examples — duckTyped">
+    <meta property="og:description" content="Learn cron syntax field by field: formats, special strings, ranges, steps, lists, timezone gotchas, and real-world examples.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/cron-parser/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cron Expressions Explained — Syntax, Fields & Examples — duckTyped">
+    <meta name="twitter:description" content="Learn cron syntax field by field, special strings, timezone gotchas, and real-world examples.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/cron-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Cron Parser</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cron Expressions Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Learn how to read and write cron expressions: the five fields, ranges, steps and lists, special strings like <code>@daily</code> and <code>@reboot</code>, 5-field vs 6-field dialects, timezone and DST pitfalls, and a library of real-world schedules.</p>
+
+            <h2>What Is a Cron Expression?</h2>
+            <p>A <strong>cron expression</strong> is a compact string that describes a recurring schedule. It originated with the Unix <code>cron</code> daemon in the 1970s and is now the lingua franca of scheduling everywhere: crontabs on Linux servers, Kubernetes CronJobs, GitHub Actions <code>schedule:</code> triggers, AWS EventBridge rules, and countless application-level job runners.</p>
+            <p>The classic format has <strong>five space-separated fields</strong>, read left to right:</p>
+            <pre><code>┌───────────── minute        (0–59)
+│ ┌─────────── hour          (0–23)
+│ │ ┌───────── day of month  (1–31)
+│ │ │ ┌─────── month         (1–12 or JAN–DEC)
+│ │ │ │ ┌───── day of week   (0–7, 0 and 7 = Sunday, or SUN–SAT)
+│ │ │ │ │
+0 9 * * 1-5    →  "At 09:00 on every weekday"</code></pre>
+            <p>Each field accepts a number, a wildcard, or an expression built from ranges, lists, and steps. The job fires whenever the current time matches <em>all</em> fields — with one famous exception covered below.</p>
+
+            <h2>The Five Fields, One by One</h2>
+            <ul>
+                <li><strong>Minute (0–59)</strong> — the minute within the hour. <code>0</code> means on the hour; <code>30</code> means half past.</li>
+                <li><strong>Hour (0–23)</strong> — 24-hour clock. <code>0</code> is midnight, <code>13</code> is 1 PM. There is no AM/PM in cron.</li>
+                <li><strong>Day of month (1–31)</strong> — the calendar day. <code>1</code> is the first of the month. Days that do not exist in a given month (e.g., 31 in April) simply never match, so <code>0 0 31 * *</code> only fires in 7 months of the year.</li>
+                <li><strong>Month (1–12)</strong> — <code>1</code> is January. Most implementations also accept three-letter names: <code>JAN</code>, <code>FEB</code>, <code>MAR</code>.</li>
+                <li><strong>Day of week (0–7)</strong> — <code>0</code> and <code>7</code> both mean Sunday, <code>1</code> is Monday. Names like <code>MON</code> and <code>FRI</code> are widely supported and far more readable.</li>
+            </ul>
+            <p>The classic trap: when <strong>both</strong> day-of-month and day-of-week are restricted (neither is <code>*</code>), standard Vixie cron fires when <em>either</em> matches, not both. So <code>0 0 13 * 5</code> runs on the 13th of every month <strong>and</strong> on every Friday — not just on Friday the 13th. Quartz and some modern schedulers handle this differently, which is one more reason to verify expressions with a parser before deploying them.</p>
+
+            <h2>Ranges, Steps, and Lists</h2>
+            <p>Four operators turn single values into schedules:</p>
+            <ul>
+                <li><strong><code>*</code> (wildcard)</strong> — matches every value in the field. <code>*</code> in the hour field means "every hour."</li>
+                <li><strong><code>-</code> (range)</strong> — an inclusive span. <code>1-5</code> in day-of-week means Monday through Friday; <code>9-17</code> in the hour field means 9 AM through 5 PM.</li>
+                <li><strong><code>,</code> (list)</strong> — discrete values. <code>0,30</code> in the minute field means on the hour and at half past. Lists can contain ranges: <code>MON,WED,FRI</code> or <code>1-3,5</code>.</li>
+                <li><strong><code>/</code> (step)</strong> — every Nth value. <code>*/15</code> in the minute field means minutes 0, 15, 30, 45. Steps combine with ranges: <code>9-17/2</code> means 9, 11, 13, 15, 17.</li>
+            </ul>
+            <p>Combining them reads naturally once you know the grammar:</p>
+            <pre><code>*/10 9-17 * * 1-5    # every 10 minutes, 9 AM–5 PM, weekdays only
+0 8,12,18 * * *      # at 08:00, 12:00, and 18:00 every day
+30 2 1,15 * *        # at 02:30 on the 1st and 15th of each month</code></pre>
+            <p>One subtlety with steps: <code>*/7</code> in the minute field fires at 0, 7, 14, 21, 28, 35, 42, 49, 56 — then resets at the top of the next hour, so the gap between :56 and :00 is only 4 minutes. Steps divide the field's range; they are not true "every N minutes forever" intervals.</p>
+
+            <h2>5-Field vs 6-Field Formats and Special Strings</h2>
+            <p>Not all cron dialects agree on the number of fields:</p>
+            <ul>
+                <li><strong>5 fields</strong> — classic Unix/Vixie cron, Kubernetes CronJobs, GitHub Actions: <code>minute hour dom month dow</code>.</li>
+                <li><strong>6 fields with seconds first</strong> — Quartz (Java), Spring's <code>@Scheduled</code>: <code>second minute hour dom month dow</code>. The expression <code>0 0 9 * * MON-FRI</code> here means 9:00:00 AM on weekdays.</li>
+                <li><strong>6 fields with a year last</strong> — AWS EventBridge: <code>minute hour dom month dow year</code>, and it requires <code>?</code> in either dom or dow.</li>
+            </ul>
+            <p>Pasting a Quartz expression into a Linux crontab (or vice versa) silently shifts every field one position — a schedule meant for 9 AM daily becomes minute 9 of every hour. Always confirm which dialect your scheduler speaks.</p>
+            <p>Most crontab implementations also accept <strong>special strings</strong> in place of the five fields:</p>
+            <pre><code>@reboot     # once, at daemon/system startup (not time-based)
+@hourly     # 0 * * * *
+@daily      # 0 0 * * *      (alias: @midnight)
+@weekly     # 0 0 * * 0
+@monthly    # 0 0 1 * *
+@yearly     # 0 0 1 1 *      (alias: @annually)</code></pre>
+            <p><code>@reboot</code> is the odd one out: it is an event, not a schedule, and it is handy for starting user-level services on boot without writing a systemd unit. Note that special strings are a crontab feature — Kubernetes supports the time-based ones but most cloud schedulers do not.</p>
+
+            <h2>Timezone Gotchas: Server TZ, UTC, and DST</h2>
+            <p>Cron expressions contain <strong>no timezone information</strong> — the scheduler supplies it, and different schedulers supply different defaults:</p>
+            <ul>
+                <li>Classic <code>crontab</code> evaluates expressions in the <strong>server's local timezone</strong> (some crons honor a <code>CRON_TZ=</code> variable per crontab).</li>
+                <li><strong>GitHub Actions, AWS EventBridge (by default), and most CI schedulers run in UTC.</strong> A nightly job written as <code>0 2 * * *</code> fires at 2 AM UTC — which is 7 PM the <em>previous day</em> in Los Angeles.</li>
+                <li>Kubernetes CronJobs historically used the controller's timezone; modern clusters support an explicit <code>timeZone: "Europe/Berlin"</code> field, which you should always set.</li>
+            </ul>
+            <p><strong>Daylight saving time</strong> adds two failure modes for jobs scheduled in a local timezone. When clocks spring forward, the hour from 2:00 to 3:00 simply does not exist — a job scheduled at <code>30 2 * * *</code> is <strong>skipped</strong> that night (some crons run it late; behavior varies). When clocks fall back, 1:00–2:00 occurs twice, and the same job may <strong>run twice</strong>. The pragmatic rules:</p>
+            <ul>
+                <li>Schedule infrastructure jobs in <strong>UTC</strong> whenever the audience is machines, not humans.</li>
+                <li>Avoid scheduling anything between <strong>1:00 and 3:00 local time</strong> in zones that observe DST.</li>
+                <li>When a job must align with human time (reports at 9 AM in the office's timezone), use a scheduler that accepts an explicit IANA timezone rather than doing offset math yourself.</li>
+            </ul>
+            <p>When debugging "why did this run at the wrong time," converting between the server's epoch timestamps and your wall clock with a <a href="/timestamp-converter/">timestamp converter</a> usually reveals the offset immediately.</p>
+
+            <h2>Common Real-World Expressions</h2>
+            <pre><code>*/5 * * * *      # every 5 minutes — health checks, queue polling
+0 * * * *        # top of every hour — log rotation, cache refresh
+0 0 * * *        # daily at midnight — cleanup jobs, daily rollups
+30 3 * * *       # daily at 03:30 — backups, off-peak maintenance
+0 9 * * 1-5      # 9 AM weekdays — business-hours reports
+0 0 * * 0        # Sunday at midnight — weekly digests
+0 0 1 * *        # first of the month — billing, invoice generation
+0 0 1 1 *        # January 1st — yearly archival
+0 */6 * * *      # every 6 hours — certificate/DNS re-checks
+15 4 * * 1       # Monday 04:15 — weekly DB maintenance, offset from
+                 # the top of the hour to avoid thundering herds</code></pre>
+            <p>That last point is a real operational tip: thousands of machines all running <code>0 0 * * *</code> hit shared services at exactly midnight. Offsetting jobs to odd minutes (<code>17 0 * * *</code>) spreads the load.</p>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/cron-parser/">Cron Expression Parser</a> takes the guesswork out of reading schedules:</p>
+            <ol>
+                <li><strong>Enter a 5-field cron expression</strong> (or click a preset like "Every 5 min" or "Monday 9am").</li>
+                <li><strong>Click Parse Cron</strong> to get a plain-English description of the schedule.</li>
+                <li><strong>Check the next 5 run times</strong>, computed in your browser's local timezone, to confirm the expression fires when you expect.</li>
+            </ol>
+            <p>A built-in field reference table is right below the parser. Everything runs entirely in your browser — nothing is sent to a server.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Cron Expression Parser:</p>
+            <ul>
+                <li><a href="/timestamp-converter/">Unix Timestamp Converter</a> -- convert job log timestamps between epoch seconds and human-readable dates.</li>
+                <li><a href="/timezone-converter/">Timezone Converter</a> -- translate a schedule between UTC and your local timezone.</li>
+                <li><a href="/regex-tester/">Regex Tester</a> -- debug the patterns that often live next to cron jobs in config files.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/timestamp-converter/">Unix Timestamps guide</a>, <a href="/learn/http-latency/">HTTP Latency guide</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/cron-parser/" class="cta-btn-primary">Try the Cron Parser</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

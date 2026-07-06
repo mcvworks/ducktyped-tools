@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does pip suddenly want a compiler for a pure 'pip install'?","acceptedAnswer":{"@type":"Answer","text":"PyPI serves either prebuilt wheels or source distributions. When no wheel matches your Python/OS/architecture, pip compiles the source — which needs MSVC on Windows. The wheel lookup is the invisible step; everything about this error is really about why no wheel matched."}},{"@type":"Question","name":"Which exact Microsoft download do I need?","acceptedAnswer":{"@type":"Answer","text":"'Build Tools for Visual Studio' (a standalone ~7GB toolchain), selecting the 'Desktop development with C++' workload. You do not need the Visual Studio IDE. '14.0 or greater' in the message covers every current version — 2022 Build Tools satisfy it."}},{"@type":"Question","name":"Is this the Windows version of node-gyp errors?","acceptedAnswer":{"@type":"Answer","text":"Precisely — same story, different ecosystem: native extensions, missing toolchain, prebuilt binaries as the escape hatch. The strategies transfer both ways: prefer wheel/prebuild coverage, keep the package manager current, install the platform toolchain only when compilation is truly required."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"error: Microsoft Visual C++ 14.0 or Greater Is Required — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>error: Microsoft Visual C++ 14.0 or Greater Is Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'Microsoft Visual C++ 14.0 or greater is required' from pip. Install Build Tools correctly, or avoid compiling with wheels and version pinning.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="error: Microsoft Visual C++ 14.0 or greater is required, Microsoft C++ Build Tools, building wheel failed windows, error: command cl.exe failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="error: Microsoft Visual C++ 14.0 or Greater Is Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'Microsoft Visual C++ 14.0 or greater is required' from pip. Install Build Tools correctly, or avoid compiling with wheels and version pinning.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/microsoft-visual-c-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/microsoft-visual-c-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>error: Microsoft Visual C++ 14.0 or Greater Is Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>error: Microsoft Visual C++ 14.0 or Greater Is Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The pip build failure 'error: Microsoft Visual C++ 14.0 or greater is required. Get it with Microsoft C++ Build Tools' — a package needs compiling and Windows has no compiler.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>error: Microsoft Visual C++ 14.0 or greater is required</code></li><li><code>Microsoft C++ Build Tools</code></li><li><code>building wheel failed windows</code></li><li><code>error: command cl.exe failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>The package being installed contains C/C++ extensions, PyPI had no prebuilt wheel matching your exact Python version/architecture, so pip fell back to compiling from source — and Windows ships no compiler. You have two directions: avoid the compile (usually better — get a wheel by upgrading pip, choosing compatible versions, or a different package build) or enable it (install the Microsoft C++ Build Tools, several gigabytes). The avoid-first strategy resolves most cases in minutes.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No wheel for your Python version</strong> — Brand-new Python releases lag wheel coverage for a few weeks; running 3.13 the day it ships forces source builds of half the ecosystem.</li>
+                <li><strong>Old pip that cannot see modern wheels</strong> — Older pip versions do not recognize newer wheel tags (manylinux/abi3 conventions) and skip perfectly good prebuilt wheels.</li>
+                <li><strong>Package genuinely without Windows wheels</strong> — Some scientific and niche packages publish source-only releases, or dropped Windows binaries for certain versions.</li>
+                <li><strong>32-bit Python on a 64-bit machine</strong> — Accidentally installed x86 Python finds few wheels; everything tries to compile.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Upgrade pip and retry first</h3>
+            <p>The cheapest fix — newer pip finds wheels older pip cannot.</p>
+            <pre><code>python -m pip install --upgrade pip setuptools wheel
+python -m pip install package-name</code></pre>
+            <h3>2. Check wheel availability and pick versions that have them</h3>
+            <p>The package's PyPI 'Download files' page lists wheels per Python version — pin to a version with a wheel for yours, or use the Python version the package supports.</p>
+            <pre><code>pip install package-name==2.1.0   # last version with cp312 wheels, e.g.
+pip debug --verbose | findstr cp    # your interpreter's wheel tags</code></pre>
+            <h3>3. Or install the compiler properly</h3>
+            <p>The error's link is correct: 'Build Tools for Visual Studio' with the 'Desktop development with C++' workload — not the Visual Studio IDE itself.</p>
+            <pre><code>winget install Microsoft.VisualStudio.2022.BuildTools
+# in the installer select: Desktop development with C++
+# then reopen the terminal and retry pip install</code></pre>
+            <h3>4. Consider conda for heavy scientific stacks</h3>
+            <p>conda distributes everything prebuilt — on Windows it sidesteps this entire error class for numpy/scipy-adjacent ecosystems.</p>
+            <pre><code>conda install package-name</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does pip suddenly want a compiler for a pure 'pip install'?</h3>
+            <p>PyPI serves either prebuilt wheels or source distributions. When no wheel matches your Python/OS/architecture, pip compiles the source — which needs MSVC on Windows. The wheel lookup is the invisible step; everything about this error is really about why no wheel matched.</p>
+            <h3>Which exact Microsoft download do I need?</h3>
+            <p>'Build Tools for Visual Studio' (a standalone ~7GB toolchain), selecting the 'Desktop development with C++' workload. You do not need the Visual Studio IDE. '14.0 or greater' in the message covers every current version — 2022 Build Tools satisfy it.</p>
+            <h3>Is this the Windows version of node-gyp errors?</h3>
+            <p>Precisely — same story, different ecosystem: native extensions, missing toolchain, prebuilt binaries as the escape hatch. The strategies transfer both ways: prefer wheel/prebuild coverage, keep the package manager current, install the platform toolchain only when compilation is truly required.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/node-gyp-build-failed">node-gyp Build Failed</a> — the Node.js counterpart.</li>
+                <li><a href="/errors/devops/pip-install-failed">pip Install Failed</a> — general pip failures.</li>
+                <li><a href="/errors/python/command-python-not-found">python: command not found</a> — Windows Python setup issues.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect dependency metadata</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

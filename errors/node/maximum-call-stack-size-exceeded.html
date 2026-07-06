@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I just increase the stack size?","acceptedAnswer":{"@type":"Answer","text":"node --stack-size exists, but it treats the symptom: infinite recursion exhausts any size, and deep-but-finite recursion is more robustly fixed by iteration. Raising the stack is defensible only for a known-finite algorithm slightly over the default on trusted input."}},{"@type":"Question","name":"Why does JSON.stringify throw this on my object?","acceptedAnswer":{"@type":"Answer","text":"If the object is cyclic, stringify usually throws 'Converting circular structure to JSON' (TypeError) instead — but custom toJSON methods or replacer functions that recurse can produce the stack error. Either way the fix is breaking the cycle or using a structured-clone/serializer that handles cycles."}},{"@type":"Question","name":"Does async/await recursion also blow the stack?","acceptedAnswer":{"@type":"Answer","text":"Each await unwinds the stack before continuing, so truly asynchronous recursion (awaiting something that yields to the event loop) does not accumulate frames the same way — it can still loop forever, but as a hang or memory growth rather than this RangeError. Synchronous recursion inside async functions crashes identically."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Maximum Call Stack Size Exceeded — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximum Call Stack Size Exceeded — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'RangeError: Maximum call stack size exceeded'. Find the recursion loop in the stack trace, missing base cases, accidental getters, and iterative rewrites.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="RangeError: Maximum call stack size exceeded, maximum call stack size exceeded, call stack exceeded node, infinite recursion error javascript">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Maximum Call Stack Size Exceeded — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'RangeError: Maximum call stack size exceeded'. Find the recursion loop in the stack trace, missing base cases, accidental getters, and iterative rewrites.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/maximum-call-stack-size-exceeded">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/maximum-call-stack-size-exceeded">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Maximum Call Stack Size Exceeded</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Maximum Call Stack Size Exceeded</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'RangeError: Maximum call stack size exceeded' — function calls nested deeper than the stack allows, almost always runaway recursion.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>RangeError: Maximum call stack size exceeded</code></li><li><code>maximum call stack size exceeded</code></li><li><code>call stack exceeded node</code></li><li><code>infinite recursion error javascript</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Every function call pushes a frame onto the call stack; V8 caps that stack (roughly ten thousand frames, size-dependent). Exceeding it throws this RangeError. Unlike heap exhaustion, this is nearly always a logic bug: recursion without a reachable base case, two functions calling each other forever, a getter that reads itself, or deep recursion over data (tree traversal on a huge or cyclic structure). The repeating pattern in the stack trace is the diagnosis — the same function name(s) over and over.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Recursion without a reachable base case</strong> — The termination condition never becomes true for some input (off-by-one, unexpected empty value), so the function calls itself until the stack dies.</li>
+                <li><strong>Accidental self-reference</strong> — A getter returning itself (get name() { return this.name; }), a wrapper calling the function it wraps by the same name, or an event handler re-emitting the event it handles.</li>
+                <li><strong>Mutual recursion</strong> — A calls B calls A — visible as two names alternating in the stack trace. Often introduced by refactors that split one function into two.</li>
+                <li><strong>Legitimately deep recursion over big or cyclic data</strong> — Tree/graph algorithms recursing per node blow the stack on deep structures — or loop forever on cycles the code did not guard against.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read the repeating frames</h3>
+            <p>The loop is right there in the trace; log the arguments at the top of the recursing function to see why the base case never hits.</p>
+            <pre><code>function walk(node, depth = 0) {
+  if (depth &gt; 1000) {           // temporary tripwire while debugging
+    console.error('runaway at', JSON.stringify(node).slice(0, 120));
+    throw new Error('recursion tripwire');
+  }
+  ...
+  return walk(node.child, depth + 1);
+}</code></pre>
+            <h3>2. Fix the base case (and validate inputs)</h3>
+            <p>Make termination provable: handle empty/null/zero explicitly, and ensure each call strictly progresses toward it.</p>
+            <pre><code>function sum(list) {
+  if (list.length === 0) return 0;        // base case FIRST
+  return list[0] + sum(list.slice(1));    // strictly smaller input
+}</code></pre>
+            <h3>3. Convert deep recursion to iteration</h3>
+            <p>An explicit stack turns unbounded call depth into bounded heap usage — the standard fix for tree walkers on real-world data.</p>
+            <pre><code>function walkIterative(root) {
+  const stack = [root];
+  while (stack.length) {
+    const node = stack.pop();
+    visit(node);
+    for (const child of node.children ?? []) stack.push(child);
+  }
+}</code></pre>
+            <h3>4. Guard against cycles in graph-shaped data</h3>
+            <p>Track visited nodes so cyclic references terminate.</p>
+            <pre><code>function walkGraph(node, seen = new Set()) {
+  if (seen.has(node)) return;
+  seen.add(node);
+  for (const next of node.edges) walkGraph(next, seen);
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can I just increase the stack size?</h3>
+            <p>node --stack-size exists, but it treats the symptom: infinite recursion exhausts any size, and deep-but-finite recursion is more robustly fixed by iteration. Raising the stack is defensible only for a known-finite algorithm slightly over the default on trusted input.</p>
+            <h3>Why does JSON.stringify throw this on my object?</h3>
+            <p>If the object is cyclic, stringify usually throws 'Converting circular structure to JSON' (TypeError) instead — but custom toJSON methods or replacer functions that recurse can produce the stack error. Either way the fix is breaking the cycle or using a structured-clone/serializer that handles cycles.</p>
+            <h3>Does async/await recursion also blow the stack?</h3>
+            <p>Each await unwinds the stack before continuing, so truly asynchronous recursion (awaiting something that yields to the event loop) does not accumulate frames the same way — it can still loop forever, but as a hang or memory growth rather than this RangeError. Synchronous recursion inside async functions crashes identically.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/javascript-heap-out-of-memory">Heap Out of Memory</a> — the heap counterpart.</li>
+                <li><a href="/errors/node/unhandled-promise-rejection">Unhandled Promise Rejection</a> — async error-path crashes.</li>
+                <li><a href="/errors/node/cannot-find-module">Cannot Find Module</a> — module resolution failures.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect deeply nested data</span>
+                </a>
+        <a href="/regex-tester/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Regex Tester</span>
+                    <span class="recommended-tool-desc">Catastrophic-backtracking regexes can hang too</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is pg_hba.conf?","acceptedAnswer":{"@type":"Answer","text":"pg_hba.conf (PostgreSQL Host-Based Authentication) controls which hosts can connect, which users they can log in as, which databases they can access, and what authentication method is required. It is separate from listen_addresses in postgresql.conf."}},{"@type":"Question","name":"How do I find the PostgreSQL configuration files?","acceptedAnswer":{"@type":"Answer","text":"Run 'SHOW config_file;' in a psql session, or check common locations: /etc/postgresql//main/ on Ubuntu/Debian, /var/lib/pgsql//data/ on RHEL/CentOS, or /usr/local/var/postgres/ on macOS with Homebrew."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"PostgreSQL Connection Refused — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix PostgreSQL Connection Refused","step":[{"@type":"HowToStep","position":1,"name":"Start PostgreSQL service","text":"Start the PostgreSQL service and enable it to start on boot."},{"@type":"HowToStep","position":2,"name":"Configure listen_addresses for remote access","text":"Edit postgresql.conf to listen on all interfaces and pg_hba.conf to allow connections from your IP range."},{"@type":"HowToStep","position":3,"name":"Check port and connectivity","text":"Verify that PostgreSQL is listening on the expected port."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Connection Refused — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix PostgreSQL 'connection refused' error. Learn how to start PostgreSQL, configure pg_hba.conf, and fix connection settings for local and remote access.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="PostgreSQL connection refused, could not connect to server, Connection refused port 5432, FATAL: password authentication failed, psql: could not connect to server">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PostgreSQL Connection Refused — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix PostgreSQL 'connection refused' error. Learn how to start PostgreSQL, configure pg_hba.conf, and fix connection settings for local and remote access.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/postgresql-connection-refused">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/postgresql-connection-refused">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>PostgreSQL Connection Refused</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>PostgreSQL Connection Refused</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">PostgreSQL server refused the connection</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>PostgreSQL connection refused</code></li><li><code>could not connect to server</code></li><li><code>Connection refused port 5432</code></li><li><code>FATAL: password authentication failed</code></li><li><code>psql: could not connect to server</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when a client cannot establish a TCP connection to the PostgreSQL server. The server is either not running, not listening on the expected port or address, or a firewall is blocking the connection. Unlike authentication errors, this error means the connection was rejected at the network level before any credentials were exchanged.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>PostgreSQL service is not running</strong> — The PostgreSQL server process has stopped or was never started. This can happen after a system reboot if the service is not enabled to start automatically.</li>
+                <li><strong>Server not listening on the expected address</strong> — PostgreSQL's listen_addresses setting in postgresql.conf defaults to 'localhost', which only accepts connections from the local machine. Remote connections require listen_addresses to include the server's IP or '*'.</li>
+                <li><strong>Wrong port number</strong> — The client is trying to connect on a port different from what PostgreSQL is listening on. The default is 5432, but it may be configured differently.</li>
+                <li><strong>Firewall blocking the port</strong> — A host-level firewall (iptables, ufw, Windows Firewall) or network firewall is blocking connections to PostgreSQL's port.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Start PostgreSQL service</h3>
+            <p>Start the PostgreSQL service and enable it to start on boot.</p>
+            <pre><code>sudo systemctl start postgresql
+sudo systemctl enable postgresql
+sudo systemctl status postgresql</code></pre>
+            <h3>2. Configure listen_addresses for remote access</h3>
+            <p>Edit postgresql.conf to listen on all interfaces and pg_hba.conf to allow connections from your IP range.</p>
+            <pre><code># In postgresql.conf:
+listen_addresses = '*'
+
+# In pg_hba.conf (add a line):
+host  all  all  0.0.0.0/0  md5
+
+# Restart PostgreSQL:
+sudo systemctl restart postgresql</code></pre>
+            <h3>3. Check port and connectivity</h3>
+            <p>Verify that PostgreSQL is listening on the expected port.</p>
+            <pre><code>sudo ss -tlnp | grep 5432
+# Or:
+sudo netstat -tlnp | grep postgres</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is pg_hba.conf?</h3>
+            <p>pg_hba.conf (PostgreSQL Host-Based Authentication) controls which hosts can connect, which users they can log in as, which databases they can access, and what authentication method is required. It is separate from listen_addresses in postgresql.conf.</p>
+            <h3>How do I find the PostgreSQL configuration files?</h3>
+            <p>Run 'SHOW config_file;' in a psql session, or check common locations: /etc/postgresql/&lt;version&gt;/main/ on Ubuntu/Debian, /var/lib/pgsql/&lt;version&gt;/data/ on RHEL/CentOS, or /usr/local/var/postgres/ on macOS with Homebrew.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> — MySQL authentication failed</li>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — Database connection timed out</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Connection refused by server</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

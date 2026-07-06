@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_BLOCKED_BY_CLIENT mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_BLOCKED_BY_CLIENT means a browser extension (most commonly an ad blocker) has intercepted and blocked a network request before it reached the server. The block happens client-side in the browser before any connection is made."}},{"@type":"Question","name":"Which extensions cause ERR_BLOCKED_BY_CLIENT?","acceptedAnswer":{"@type":"Answer","text":"Ad blockers (uBlock Origin, AdBlock, AdBlock Plus), privacy extensions (Privacy Badger, Ghostery), and corporate endpoint security extensions are the most common causes. Any extension that uses the chrome.webRequest or declarativeNetRequest API can block requests."}},{"@type":"Question","name":"How do I fix ERR_BLOCKED_BY_CLIENT?","acceptedAnswer":{"@type":"Answer","text":"Disable your extensions one at a time to identify which is blocking the request. If an ad blocker is the cause, whitelist the affected site or disable the rule causing the block. You can also test in incognito mode with extensions disabled."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_BLOCKED_BY_CLIENT — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_BLOCKED_BY_CLIENT — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_BLOCKED_BY_CLIENT means and how to fix it. Covers ad blockers, privacy extensions, and browser extension conflicts.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_BLOCKED_BY_CLIENT, ERR_BLOCKED_BY_CLIENT Chrome, Blocked by ad blocker, ERR_BLOCKED_BY_CLIENT uBlock, Request blocked by extension">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_BLOCKED_BY_CLIENT — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_BLOCKED_BY_CLIENT by identifying and disabling the browser extension blocking the request.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_blocked_by_client">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_blocked_by_client">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_BLOCKED_BY_CLIENT</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_BLOCKED_BY_CLIENT</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means a browser extension intercepted and blocked a network request before it left your browser. Usually caused by ad blockers or privacy extensions.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_BLOCKED_BY_CLIENT</code></li><li><code>ERR_BLOCKED_BY_CLIENT Chrome</code></li><li><code>Blocked by ad blocker</code></li><li><code>ERR_BLOCKED_BY_CLIENT uBlock</code></li><li><code>Request blocked by extension</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p><strong>ERR_BLOCKED_BY_CLIENT</strong> is distinct from server-side blocks like <a href="/errors/http/403-forbidden">403 Forbidden</a>. The request never reached the server — it was cancelled by a browser extension or client-side rule before any connection was made.</p>
+            <p>Chrome extensions can intercept and block any network request using the <code>webRequest</code> or <code>declarativeNetRequest</code> API. This is how ad blockers work — they cancel requests to known tracking and advertising domains before the browser even opens a connection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Ad blockers</strong> — uBlock Origin, AdBlock, AdBlock Plus blocking a script, image, or API call.</li>
+                <li><strong>Privacy extensions</strong> — Privacy Badger, Ghostery, Disconnect blocking a tracker.</li>
+                <li><strong>Corporate security extensions</strong> — endpoint security tools enforcing a content policy.</li>
+                <li><strong>Parental control extensions</strong> — blocking certain content categories.</li>
+                <li><strong>Custom filter lists</strong> — a user-added block rule that matches the resource URL.</li>
+                <li><strong>Anti-malware browser protection</strong> — blocking a URL flagged as suspicious.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Users</h3>
+
+            <h4>1. Test in Incognito Mode</h4>
+            <p>Open the page in an incognito/private window (<kbd>Ctrl+Shift+N</kbd>). Incognito mode disables most extensions by default. If the page loads, an extension is the cause.</p>
+
+            <h4>2. Identify the Blocking Extension</h4>
+            <p>Open Chrome DevTools (<kbd>F12</kbd>) → Network tab → reload the page → look for requests with status "blocked" or "(blocked:extension)". The initiator column may name the responsible extension.</p>
+
+            <h4>3. Disable Extensions One by One</h4>
+            <p>Go to <code>chrome://extensions/</code> and toggle off extensions one at a time, reloading the page each time to find the culprit.</p>
+
+            <h4>4. Whitelist the Site in Your Ad Blocker</h4>
+            <p>Once you identify the blocking extension, add the affected site to its whitelist or disable it on that site using the extension's toolbar icon.</p>
+
+            <h3>For Developers</h3>
+
+            <h4>5. Avoid Common Ad/Tracking Patterns in URLs</h4>
+            <p>Ad blockers use filter lists that match URLs containing patterns like <code>/ads/</code>, <code>/analytics/</code>, <code>/track</code>, or <code>/pixel</code>. Rename legitimate API endpoints that match these patterns to avoid accidental blocks.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can ERR_BLOCKED_BY_CLIENT appear for the entire page?</h3>
+            <p>Usually it affects individual resources (scripts, images, API calls) rather than the entire page. If the main document URL is blocked, the whole page will fail to load. If only a sub-resource is blocked, the page may load partially.</p>
+
+            <h3>Is ERR_BLOCKED_BY_CLIENT always caused by extensions?</h3>
+            <p>In Chrome, yes. Unlike <a href="/errors/http/403-forbidden">403 Forbidden</a> (server block) or firewall rules, this specific error code indicates the block happened in the browser itself via an extension API.</p>
+
+            <h3>My site works on other browsers but not Chrome — could ERR_BLOCKED_BY_CLIENT be the cause?</h3>
+            <p>If you have extensions in Chrome that you do not have in other browsers, yes. The extension is blocking a resource that the other browsers allow. Test in Chrome with extensions disabled to confirm.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — server-side block, not client-side.</li>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — authentication required.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server refused the connection.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+        <a href="/url-safety/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Safety</span>
+                    <span class="recommended-tool-desc">Check if a URL is safe to visit</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

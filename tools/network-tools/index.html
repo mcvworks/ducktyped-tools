@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Network Tools — duckTyped","description":"Free browser-based network tools: DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, HTTP latency checker, ISP lookup, and MAC address lookup.","url":"https://ducktyped.xyz/tools/network-tools/","publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ducktyped.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://ducktyped.xyz/utility/"},{"@type":"ListItem","position":3,"name":"Network Tools","item":"https://ducktyped.xyz/tools/network-tools/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What network tools does duckTyped offer?","acceptedAnswer":{"@type":"Answer","text":"duckTyped provides free browser-based network tools including DNS record lookup, WHOIS domain lookup, port scanner, HTTP latency checker, ISP/IP lookup, MAC address lookup, subnet calculator, reverse DNS, and traceroute."}},{"@type":"Question","name":"Are these network tools free?","acceptedAnswer":{"@type":"Answer","text":"Yes, all duckTyped network tools are completely free with no registration required. They run in your browser with no data tracking or storage."}},{"@type":"Question","name":"Can I use these tools for network troubleshooting?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. These tools are designed for diagnosing DNS issues, checking server connectivity, verifying port accessibility, tracing network paths, and investigating IP ownership — all common network troubleshooting tasks."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Tools — DNS, WHOIS, Port Scanner &amp; More — duckTyped</title>
+    <meta name="description" content="Free browser-based network tools: DNS record lookup, WHOIS domain info, port scanner, subnet calculator, traceroute, reverse DNS, HTTP latency checker, ISP lookup, and MAC address lookup.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Network Tools — DNS, WHOIS, Port Scanner &amp; More — duckTyped">
+    <meta property="og:description" content="Free browser-based network tools: DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, HTTP latency, ISP lookup, and MAC address lookup.">
+    <meta property="og:url" content="https://ducktyped.xyz/tools/network-tools/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/network-tools.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Network Tools — duckTyped">
+    <meta name="twitter:description" content="DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, and more network utilities. Free, no registration.">
+    <link rel="canonical" href="https://ducktyped.xyz/tools/network-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/utility/">Tools</a> <span>/</span> <span>Network Tools</span>
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Network Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Diagnose and inspect network infrastructure directly in your browser. Look up DNS records, scan ports, trace routes, check IP ownership, and calculate subnets — all free, no registration required.</p>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Tools</h2>
+            <div class="learn-grid">
+                <a href="/dns-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>DNS Record Checker</h3>
+                    <p>Look up A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, SPF, DKIM, and DMARC records for any domain.</p>
+                </a>
+                <a href="/whois-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>WHOIS Lookup</h3>
+                    <p>Retrieve domain registration details, registrar info, creation date, expiry, and owner contact data.</p>
+                </a>
+                <a href="/port-scanner/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Port Scanner</h3>
+                    <p>Scan TCP ports on any host to check which ports are open, closed, or filtered by a firewall.</p>
+                </a>
+                <a href="/http-latency/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>HTTP Latency Checker</h3>
+                    <p>Measure HTTP response times and verify server reachability from multiple locations.</p>
+                </a>
+                <a href="/isp-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>ISP / IP Lookup</h3>
+                    <p>Identify the ISP, ASN, and approximate geolocation of any IP address or your own public IP.</p>
+                </a>
+                <a href="/mac-lookup/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>MAC Address Lookup</h3>
+                    <p>Look up the hardware manufacturer and vendor of any MAC address using the OUI database.</p>
+                </a>
+                <a href="/subnet-calculator/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Subnet Calculator</h3>
+                    <p>Calculate subnet masks, CIDR ranges, usable host counts, and network boundaries for IPv4 networks.</p>
+                </a>
+                <a href="/reverse-dns/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Reverse DNS Lookup</h3>
+                    <p>Perform PTR record lookups to find the hostname associated with any IP address.</p>
+                </a>
+                <a href="/traceroute/" class="learn-card">
+                    <span class="category-badge">Network</span>
+                    <h3>Traceroute</h3>
+                    <p>Trace the network path from your device to any host, showing each hop and its latency.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Related Guides</h2>
+            <div class="learn-grid">
+                <a href="/learn/dns-lookup/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>How DNS Records Work</h3>
+                    <p>Understand A, AAAA, MX, TXT, CNAME, NS, SOA, and CAA records and how DNS resolution works end to end.</p>
+                </a>
+                <a href="/learn/whois-lookup/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>What is WHOIS?</h3>
+                    <p>How WHOIS works, what data it exposes, and how domain registration records are managed by ICANN and registrars.</p>
+                </a>
+                <a href="/learn/port-scanner/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>TCP Port Scanning Explained</h3>
+                    <p>How port scanning works, what common port numbers mean, and how firewalls affect reachability.</p>
+                </a>
+                <a href="/learn/http-latency/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>HTTP Latency and Performance</h3>
+                    <p>What causes network latency, how to benchmark HTTP response times, and how to diagnose slow connections.</p>
+                </a>
+                <a href="/learn/isp-lookup/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>IP Geolocation and ISP Data</h3>
+                    <p>How IP-to-location mapping works, what ASNs are, and the accuracy limits of IP geolocation data.</p>
+                </a>
+                <a href="/learn/subnet-calculator/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Subnetting and CIDR Notation</h3>
+                    <p>CIDR notation, subnet masks, network vs host portions, and practical subnetting examples.</p>
+                </a>
+                <a href="/learn/reverse-dns/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Reverse DNS Explained</h3>
+                    <p>PTR records, how reverse DNS zones work, and why rDNS matters for email deliverability and security.</p>
+                </a>
+                <a href="/learn/traceroute/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Traceroute and Network Path Analysis</h3>
+                    <p>How traceroute works, reading hop output, and diagnosing routing problems and packet loss.</p>
+                </a>
+            </div>
+        </div>
+
+        
+        <div class="learn-category-section">
+            <h2>When to Use Each Tool</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Tool to Use</th><th>What It Shows</th></tr></thead>
+                    <tbody>
+                        <tr><td>Website not loading</td><td><a href="/dns-lookup/">DNS Lookup</a></td><td>Whether DNS records resolve correctly</td></tr>
+                        <tr><td>Who owns a domain</td><td><a href="/whois-lookup/">WHOIS Lookup</a></td><td>Registrar, owner, expiry date</td></tr>
+                        <tr><td>Service not connecting</td><td><a href="/port-scanner/">Port Scanner</a></td><td>Whether the port is open or blocked</td></tr>
+                        <tr><td>Slow website</td><td><a href="/http-latency/">HTTP Latency</a></td><td>Response time breakdown (DNS, connect, TLS, TTFB)</td></tr>
+                        <tr><td>Unknown IP address</td><td><a href="/isp-lookup/">ISP Lookup</a></td><td>ISP, organization, ASN, location</td></tr>
+                        <tr><td>Unknown device on network</td><td><a href="/mac-lookup/">MAC Lookup</a></td><td>Device manufacturer from MAC address</td></tr>
+                        <tr><td>Planning IP allocation</td><td><a href="/subnet-calculator/">Subnet Calculator</a></td><td>Network range, host count, broadcast address</td></tr>
+                        <tr><td>Email deliverability issues</td><td><a href="/reverse-dns/">Reverse DNS</a></td><td>PTR record for an IP address</td></tr>
+                        <tr><td>Network path problems</td><td><a href="/traceroute/">Traceroute</a></td><td>Every hop from you to the destination</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Quick Comparison</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Tool</th><th>Input</th><th>Protocol</th><th>Best For</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="/dns-lookup/">DNS Lookup</a></td><td>Domain name</td><td>DNS (UDP/53)</td><td>Record verification, email debugging</td></tr>
+                        <tr><td><a href="/whois-lookup/">WHOIS</a></td><td>Domain or IP</td><td>WHOIS (TCP/43)</td><td>Registration info, abuse contacts</td></tr>
+                        <tr><td><a href="/port-scanner/">Port Scanner</a></td><td>Host + ports</td><td>TCP</td><td>Firewall testing, service discovery</td></tr>
+                        <tr><td><a href="/http-latency/">HTTP Latency</a></td><td>URL</td><td>HTTP/HTTPS</td><td>Performance monitoring</td></tr>
+                        <tr><td><a href="/isp-lookup/">ISP Lookup</a></td><td>IP address</td><td>WHOIS/GeoIP</td><td>IP investigation, geolocation</td></tr>
+                        <tr><td><a href="/subnet-calculator/">Subnet Calc</a></td><td>CIDR notation</td><td>—</td><td>Network planning, ACL rules</td></tr>
+                        <tr><td><a href="/reverse-dns/">Reverse DNS</a></td><td>IP address</td><td>DNS PTR</td><td>Mail server setup, verification</td></tr>
+                        <tr><td><a href="/traceroute/">Traceroute</a></td><td>Host</td><td>ICMP/UDP</td><td>Path analysis, latency diagnosis</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Other Tool Categories</h2>
+            <div class="learn-grid">
+                <a href="/tools/email-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Email Tools</h3>
+                    <p>Email validator, SMTP checker, email header analyzer, blacklist checker, and breach checker.</p>
+                </a>
+                <a href="/tools/security-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Security Tools</h3>
+                    <p>SSL checker, security headers, password generator, hash generator, and URL safety checker.</p>
+                </a>
+                <a href="/tools/data-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Data Tools</h3>
+                    <p>Base64 encoder, URL encoder, JSON formatter, timestamp converter, QR generator, and more.</p>
+                </a>
+                <a href="/tools/dev-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Dev Tools</h3>
+                    <p>JWT decoder, regex tester, redirect checker, robots.txt analyzer, and tech stack detector.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

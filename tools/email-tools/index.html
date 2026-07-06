@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Email Tools — duckTyped","description":"Free browser-based email tools: email validator, email header analyzer, SMTP checker, blacklist checker, breach checker, and DNS-based SPF/DKIM/DMARC lookup.","url":"https://ducktyped.xyz/tools/email-tools/","publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ducktyped.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://ducktyped.xyz/utility/"},{"@type":"ListItem","position":3,"name":"Email Tools","item":"https://ducktyped.xyz/tools/email-tools/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What email tools does duckTyped offer?","acceptedAnswer":{"@type":"Answer","text":"duckTyped provides email validator, SMTP checker, email header analyzer, encrypted note sender, plain text notes, and webhook tester — all free and browser-based."}},{"@type":"Question","name":"How do I troubleshoot email delivery issues?","acceptedAnswer":{"@type":"Answer","text":"Start with the SMTP Checker to verify your mail server is reachable, then use the Email Header Analyzer to inspect delivery paths and authentication results (SPF, DKIM, DMARC). Check DNS records with the DNS Lookup tool to verify MX, SPF, and DKIM configuration."}},{"@type":"Question","name":"Is my email data safe with these tools?","acceptedAnswer":{"@type":"Answer","text":"Yes. All tools run in your browser. No email addresses, headers, or content is stored or transmitted to our servers. duckTyped has no analytics or tracking."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Tools — Validator, SMTP Checker, Header Analyzer &amp; More — duckTyped</title>
+    <meta name="description" content="Free browser-based email tools: validate email addresses, analyze email headers, test SMTP servers, check IP/domain blacklists, check for data breaches, and inspect SPF, DKIM, and DMARC records.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Email Tools — Validator, SMTP Checker, Header Analyzer &amp; More — duckTyped">
+    <meta property="og:description" content="Free email tools: email validator, SMTP checker, header analyzer, blacklist checker, breach checker, and SPF/DKIM/DMARC lookup.">
+    <meta property="og:url" content="https://ducktyped.xyz/tools/email-tools/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/email-tools.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Email Tools — duckTyped">
+    <meta name="twitter:description" content="Email validator, SMTP checker, header analyzer, blacklist checker, breach checker, and SPF/DKIM/DMARC lookup. Free, no registration.">
+    <link rel="canonical" href="https://ducktyped.xyz/tools/email-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/utility/">Tools</a> <span>/</span> <span>Email Tools</span>
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Email Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Diagnose email deliverability problems, verify addresses, inspect authentication records, and check server connectivity — all from your browser. No registration or software installation required.</p>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Tools</h2>
+            <div class="learn-grid">
+                <a href="/email-validator/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Address Validator</h3>
+                    <p>Validate email addresses for RFC compliance and verify MX records exist for the domain.</p>
+                </a>
+                <a href="/email-header-analyzer/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Header Analyzer</h3>
+                    <p>Analyze raw email headers to trace delivery hops, diagnose spam classification, and check SPF, DKIM, and DMARC authentication results.</p>
+                </a>
+                <a href="/smtp-checker/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>SMTP Checker</h3>
+                    <p>Test SMTP server connectivity and verify that email ports 25, 465, 587, and 2525 are open and reachable.</p>
+                </a>
+                <a href="/blacklist-checker/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Blacklist / RBL Checker</h3>
+                    <p>Check whether a domain or IP address appears on email blacklists and DNS-based blocklists that affect deliverability.</p>
+                </a>
+                <a href="/breach-checker/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>Email Breach Checker</h3>
+                    <p>Check if an email address has appeared in known data breaches using the Have I Been Pwned API with k-anonymity.</p>
+                </a>
+                <a href="/dns-lookup/" class="learn-card">
+                    <span class="category-badge">Email</span>
+                    <h3>DNS Record Checker (SPF / DKIM / DMARC)</h3>
+                    <p>Look up TXT records to inspect SPF policies, DKIM public keys, and DMARC policies for any domain.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Related Guides</h2>
+            <div class="learn-grid">
+                <a href="/learn/email-validator/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Email Address Validation</h3>
+                    <p>Email syntax rules, MX record verification, disposable address detection, and RFC 5321 compliance.</p>
+                </a>
+                <a href="/learn/email-header-analyzer/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Understanding Email Headers</h3>
+                    <p>How to read Received headers, understand SPF/DKIM/DMARC authentication, and trace the delivery path of an email.</p>
+                </a>
+                <a href="/learn/smtp-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>SMTP Protocol Explained</h3>
+                    <p>How SMTP works, what each port does (25, 465, 587), and how to diagnose mail server connectivity problems.</p>
+                </a>
+                <a href="/learn/blacklist-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Email Blacklists and RBLs</h3>
+                    <p>What DNS blocklists are, why IPs get listed, how to check your reputation, and how to request delisting.</p>
+                </a>
+                <a href="/learn/breach-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Data Breach Awareness</h3>
+                    <p>How credential databases are exposed, what Have I Been Pwned is, and what to do after a breach.</p>
+                </a>
+                <a href="/learn/dns-lookup/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>How DNS Records Work (SPF, DKIM, DMARC)</h3>
+                    <p>How TXT records carry SPF policies, DKIM public keys, and DMARC directives to authenticate email senders.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Common Email Errors</h2>
+            <div class="learn-grid">
+                <a href="/errors/email/smtp-550" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SMTP 550 — Mailbox Unavailable</h3>
+                    <p>Recipient address rejected. The most common email bounce code and how to fix it.</p>
+                </a>
+                <a href="/errors/email/smtp-421" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SMTP 421 — Service Unavailable</h3>
+                    <p>Temporary failure from the receiving mail server. Causes and retry strategies.</p>
+                </a>
+                <a href="/errors/email/smtp-535" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SMTP 535 — Authentication Failed</h3>
+                    <p>Invalid SMTP credentials. How to diagnose and fix authentication failures.</p>
+                </a>
+                <a href="/errors/email/smtp-554" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SMTP 554 — Transaction Failed</h3>
+                    <p>Message rejected by the receiving server, often due to spam policy or blacklisting.</p>
+                </a>
+            </div>
+        </div>
+
+        
+        <div class="learn-category-section">
+            <h2>When to Use Each Tool</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Tool to Use</th><th>What It Shows</th></tr></thead>
+                    <tbody>
+                        <tr><td>Verifying an email address</td><td><a href="/email-validator/">Email Validator</a></td><td>Format check, MX records, mailbox existence</td></tr>
+                        <tr><td>Mail server not responding</td><td><a href="/smtp-checker/">SMTP Checker</a></td><td>Server reachability, TLS support, banner</td></tr>
+                        <tr><td>Email going to spam</td><td><a href="/email-header-analyzer/">Header Analyzer</a></td><td>SPF/DKIM/DMARC pass/fail, routing path</td></tr>
+                        <tr><td>Sending a secret message</td><td><a href="/secure-note/">Encrypted Note</a></td><td>AES-256 encrypted shareable link</td></tr>
+                        <tr><td>Quick scratch notes</td><td><a href="/plain-notes/">Plain Notes</a></td><td>Auto-saved browser-local notepad</td></tr>
+                        <tr><td>Testing webhook endpoints</td><td><a href="/webhook-tester/">Webhook Tester</a></td><td>Captures and displays incoming HTTP requests</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Email Troubleshooting Workflow</h2>
+            <p>When email is not delivering, follow this order:</p>
+            <ol>
+                <li><strong>Check DNS:</strong> Use <a href="/dns-lookup/">DNS Lookup</a> to verify MX, SPF, DKIM, and DMARC records</li>
+                <li><strong>Test SMTP:</strong> Use <a href="/smtp-checker/">SMTP Checker</a> to verify the mail server is reachable on port 25/587</li>
+                <li><strong>Analyze Headers:</strong> Use <a href="/email-header-analyzer/">Header Analyzer</a> to see where the email was rejected or delayed</li>
+                <li><strong>Check Blacklists:</strong> Use <a href="/blacklist-checker/">Blacklist Checker</a> to see if your sending IP is blacklisted</li>
+            </ol>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Other Tool Categories</h2>
+            <div class="learn-grid">
+                <a href="/tools/network-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Network Tools</h3>
+                    <p>DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, and more.</p>
+                </a>
+                <a href="/tools/security-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Security Tools</h3>
+                    <p>SSL checker, security headers, password generator, hash generator, and URL safety checker.</p>
+                </a>
+                <a href="/tools/data-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Data Tools</h3>
+                    <p>Base64 encoder, URL encoder, JSON formatter, timestamp converter, QR generator, and more.</p>
+                </a>
+                <a href="/tools/dev-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Dev Tools</h3>
+                    <p>JWT decoder, regex tester, redirect checker, robots.txt analyzer, and tech stack detector.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

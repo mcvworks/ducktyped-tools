@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_CERT_COMMON_NAME_INVALID mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_CERT_COMMON_NAME_INVALID means the SSL certificate presented by the server does not match the domain you are visiting. The certificate's Common Name (CN) or Subject Alternative Names (SANs) do not include the hostname in your browser's address bar."}},{"@type":"Question","name":"Is it safe to proceed past ERR_CERT_COMMON_NAME_INVALID?","acceptedAnswer":{"@type":"Answer","text":"It is generally not safe for production websites. This error means you cannot verify you are talking to the correct server. However, on internal development servers with self-signed certificates, this is expected and you can safely proceed if you trust the server."}},{"@type":"Question","name":"How do I fix ERR_CERT_COMMON_NAME_INVALID on my server?","acceptedAnswer":{"@type":"Answer","text":"Reissue your SSL certificate making sure it includes all hostnames you serve, including www and non-www variants. Use Subject Alternative Names (SANs) rather than just the Common Name field. Let's Encrypt makes this free and straightforward."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_CERT_COMMON_NAME_INVALID — Certificate Mismatch Fix"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_CERT_COMMON_NAME_INVALID — Certificate Mismatch Fix — duckTyped</title>
+    <meta name="description" content="Learn what ERR_CERT_COMMON_NAME_INVALID means and how to fix certificate hostname mismatch errors. Covers www vs non-www, wildcard certs, and SAN configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NET::ERR_CERT_COMMON_NAME_INVALID, ERR_CERT_COMMON_NAME_INVALID Chrome, Your connection is not private, SSL certificate name mismatch, Certificate common name invalid, Subject Alternative Name missing">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_CERT_COMMON_NAME_INVALID — Certificate Mismatch Fix">
+    <meta property="og:description" content="Fix ERR_CERT_COMMON_NAME_INVALID by correcting SSL certificate hostname configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_cert_common_name_invalid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_cert_common_name_invalid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_CERT_COMMON_NAME_INVALID</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_CERT_COMMON_NAME_INVALID</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the SSL certificate does not match the domain you are visiting. The hostname in the certificate does not cover the address in your browser.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NET::ERR_CERT_COMMON_NAME_INVALID</code></li><li><code>ERR_CERT_COMMON_NAME_INVALID Chrome</code></li><li><code>Your connection is not private</code></li><li><code>SSL certificate name mismatch</code></li><li><code>Certificate common name invalid</code></li><li><code>Subject Alternative Name missing</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Every SSL certificate contains a list of hostnames it is valid for — either in the <strong>Common Name (CN)</strong> field or the <strong>Subject Alternative Names (SAN)</strong> extension. When your browser connects to a site, it checks that the server's certificate covers that exact hostname.</p>
+            <p><strong>ERR_CERT_COMMON_NAME_INVALID</strong> appears when the certificate does not list the hostname you are connecting to. For example, a certificate for <code>example.com</code> will trigger this error if you visit <code>www.example.com</code> and the certificate does not also cover <code>www.example.com</code>.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>www vs. non-www mismatch</strong> — certificate covers <code>example.com</code> but not <code>www.example.com</code>, or vice versa.</li>
+                <li><strong>Wrong subdomain</strong> — accessing <code>app.example.com</code> with a certificate only covering <code>example.com</code>.</li>
+                <li><strong>Wildcard certificate doesn't match</strong> — a <code>*.example.com</code> wildcard covers one subdomain level but not <code>www.sub.example.com</code>.</li>
+                <li><strong>Self-signed certificate</strong> — development servers often use certificates for <code>localhost</code> or an internal IP.</li>
+                <li><strong>CDN or reverse proxy misconfiguration</strong> — the proxy presents its own certificate which does not match your domain.</li>
+                <li><strong>Expired certificate replaced incorrectly</strong> — a new certificate was installed that does not include all the same hostnames.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Site Owners</h3>
+
+            <h4>1. Reissue the Certificate With All Hostnames</h4>
+            <p>When requesting a certificate, include all hostnames as Subject Alternative Names. For a typical site, include both <code>example.com</code> and <code>www.example.com</code>. Let's Encrypt allows multiple SANs at no cost.</p>
+
+            <h4>2. Use a Wildcard Certificate</h4>
+            <p>A wildcard certificate (<code>*.example.com</code>) covers all direct subdomains. If you serve content on multiple subdomains, this simplifies certificate management.</p>
+
+            <h4>3. Verify Your Certificate</h4>
+            <p>Use the <a href="/ssl-checker/">SSL Checker</a> to confirm which hostnames your current certificate covers and when it expires.</p>
+
+            <h3>For Visitors</h3>
+
+            <h4>4. Check the URL</h4>
+            <p>Confirm you are visiting the intended address. Phishing sites sometimes use certificates for a slightly different domain to appear legitimate.</p>
+
+            <h4>5. Check Your Hosts File</h4>
+            <p>If you have modified your <code>hosts</code> file to point a domain to a different IP, the server at that IP may present a certificate for a different hostname.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — verify certificate hostnames, SANs, and expiry dates.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is a Subject Alternative Name (SAN)?</h3>
+            <p>A SAN is an extension in an SSL certificate that lists additional hostnames the certificate is valid for. Modern browsers require hostnames to be listed as SANs — they no longer accept the Common Name field alone for hostname verification.</p>
+
+            <h3>Does a wildcard certificate cover all subdomains?</h3>
+            <p>A wildcard like <code>*.example.com</code> covers one subdomain level: <code>www.example.com</code>, <code>api.example.com</code>, etc. It does not cover <code>example.com</code> itself (without a SAN entry) or deeper subdomains like <code>a.b.example.com</code>.</p>
+
+            <h3>My development server shows this error — is that normal?</h3>
+            <p>Yes. Self-signed certificates on <code>localhost</code> or internal hostnames will always trigger this in browsers. You can safely proceed on internal development servers you trust. For production, use a valid certificate from a trusted CA.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — certificate has passed its validity date.</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — certificate failed validation for other reasons.</li>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — certificate issued by an untrusted CA.</li>
+                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</a> — TLS version or cipher incompatibility.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a>, <a href="/learn/ssl-certificate-expired/">Fixing expired or invalid SSL certificates</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

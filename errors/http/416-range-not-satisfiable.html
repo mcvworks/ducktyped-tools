@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are range requests used for?","acceptedAnswer":{"@type":"Answer","text":"Range requests allow downloading specific portions of a file, enabling features like download resume, video seeking, and parallel chunk downloads. They are essential for media streaming."}},{"@type":"Question","name":"How do I check if a server supports range requests?","acceptedAnswer":{"@type":"Answer","text":"Send a HEAD request and look for the 'Accept-Ranges: bytes' header in the response. If present, the server supports byte-range requests."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"416 Range Not Satisfiable — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 416 Range Not Satisfiable","step":[{"@type":"HowToStep","position":1,"name":"Remove the Range header and download the full resource","text":"If the range request is not essential, remove the Range header to download the complete resource. This is the simplest fix for one-off downloads."},{"@type":"HowToStep","position":2,"name":"Check the resource size before requesting a range","text":"Send a HEAD request first to get the Content-Length and confirm the resource supports range requests (Accept-Ranges: bytes), then construct a valid range."},{"@type":"HowToStep","position":3,"name":"Restart the download from the beginning","text":"If you are resuming a failed download and get 416, the file on the server may have changed. Delete the partial download and start fresh."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>416 Range Not Satisfiable — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 416 Range Not Satisfiable errors. Learn about byte-range requests, partial content downloads, and how to handle range header issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 416, 416 Range Not Satisfiable, 416 error, Requested range not satisfiable, Range header error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="416 Range Not Satisfiable — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 416 Range Not Satisfiable errors. Learn about byte-range requests, partial content downloads, and how to handle range header issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/416-range-not-satisfiable">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/416-range-not-satisfiable">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>416 Range Not Satisfiable</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>416 Range Not Satisfiable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The requested byte range cannot be fulfilled by the server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 416</code></li><li><code>416 Range Not Satisfiable</code></li><li><code>416 error</code></li><li><code>Requested range not satisfiable</code></li><li><code>Range header error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 416 Range Not Satisfiable response indicates that the Range header in the request specifies a byte range that cannot be satisfied for the target resource. This typically happens when the requested range exceeds the size of the resource, or the range format is invalid. The response includes a Content-Range header indicating the actual size of the resource.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Range exceeds resource size</strong> — The Range header requests bytes beyond the end of the file. For example, requesting bytes 1000-2000 of a file that is only 500 bytes long.</li>
+                <li><strong>Stale resume position</strong> — A download resume attempt specifies a byte offset from a previous partial download, but the file on the server has been replaced with a smaller version.</li>
+                <li><strong>Invalid range format</strong> — The Range header is malformed or specifies an invalid range, such as a start position greater than the end position.</li>
+                <li><strong>Server does not support range requests</strong> — The server does not support partial content delivery but the client is sending Range headers, often due to automatic resume logic in download managers.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Remove the Range header and download the full resource</h3>
+            <p>If the range request is not essential, remove the Range header to download the complete resource. This is the simplest fix for one-off downloads.</p>
+            <pre><code># Download without range header
+curl -o file.zip https://example.com/file.zip
+
+# Instead of
+curl -H 'Range: bytes=1000-' -o file.zip https://example.com/file.zip</code></pre>
+            <h3>2. Check the resource size before requesting a range</h3>
+            <p>Send a HEAD request first to get the Content-Length and confirm the resource supports range requests (Accept-Ranges: bytes), then construct a valid range.</p>
+            <pre><code>curl -I https://example.com/file.zip</code></pre>
+            <h3>3. Restart the download from the beginning</h3>
+            <p>If you are resuming a failed download and get 416, the file on the server may have changed. Delete the partial download and start fresh.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What are range requests used for?</h3>
+            <p>Range requests allow downloading specific portions of a file, enabling features like download resume, video seeking, and parallel chunk downloads. They are essential for media streaming.</p>
+            <h3>How do I check if a server supports range requests?</h3>
+            <p>Send a HEAD request and look for the 'Accept-Ranges: bytes' header in the response. If present, the server supports byte-range requests.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — Resource could not be found</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — Server encountered an unexpected error</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

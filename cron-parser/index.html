@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Cron Expression Parser","url":"https://ducktyped.xyz/cron-parser/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Parse, build, and understand cron expressions. See human-readable descriptions and next run times for any cron schedule.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a cron expression?","acceptedAnswer":{"@type":"Answer","text":"A cron expression is a string of five or six fields that defines a schedule for recurring tasks. The fields represent minute, hour, day of month, month, and day of week (e.g., \"0 9 * * 1-5\" means 9 AM on weekdays)."}},{"@type":"Question","name":"How do I read a cron expression?","acceptedAnswer":{"@type":"Answer","text":"Enter the cron expression in the parser above. It translates the expression into human-readable text and shows the next scheduled execution times so you can verify it works as expected."}},{"@type":"Question","name":"What does * mean in cron?","acceptedAnswer":{"@type":"Answer","text":"The asterisk (*) means \"every\" — it matches all possible values for that field. For example, * in the hour field means \"every hour.\""}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Expression Parser — Build and Decode Cron Schedules — duckTyped</title>
+    <meta name="description" content="Parse, build, and understand cron expressions. See human-readable descriptions and next run times for any cron schedule.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Cron Expression Parser — duckTyped">
+    <meta property="og:description" content="Parse, build, and understand cron expressions. See human-readable descriptions and next run times.">
+    <meta property="og:url" content="https://ducktyped.xyz/cron-parser/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/cron-parser.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Cron Expression Parser — duckTyped">
+    <meta name="twitter:description" content="Parse and understand cron expressions. See human-readable descriptions and next run times.">
+    <link rel="canonical" href="https://ducktyped.xyz/cron-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Cron Expression Parser</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Parse cron expressions into human-readable descriptions, or use preset examples. See the next scheduled run times for any cron expression.</p><div class="example-box"><strong>Example uses:</strong><p>Understanding a cron expression from a CI/CD config, building a cron schedule for a backup job, verifying that a cron expression fires at the right time.</p></div>
+            <a href="/learn/cron-parser/" class="learn-more-link">Learn cron expression syntax and timezone gotchas</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Cron Expression Parser</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a 5-field cron expression (minute hour day-of-month month day-of-week).</p>
+            <div class="input-group"><label>Cron Expression:</label><input type="text" id="cronInput" value="0 9 * * 1-5" placeholder="0 9 * * 1-5" onkeypress="if(event.key==='Enter') parseCron()"></div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px;">
+                <button onclick="setCron('* * * * *')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">Every min</button>
+                <button onclick="setCron('0 * * * *')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">Every hour</button>
+                <button onclick="setCron('0 0 * * *')" class="preset-btn green" style="padding:6px 12px;font-size:0.8em;">Daily midnight</button>
+                <button onclick="setCron('0 9 * * 1')" class="preset-btn green" style="padding:6px 12px;font-size:0.8em;">Monday 9am</button>
+                <button onclick="setCron('0 0 1 * *')" class="preset-btn red" style="padding:6px 12px;font-size:0.8em;">Monthly 1st</button>
+                <button onclick="setCron('*/5 * * * *')" class="preset-btn red" style="padding:6px 12px;font-size:0.8em;">Every 5 min</button>
+            </div>
+            <button onclick="parseCron()">Parse Cron</button>
+            <div id="cronResult"></div>
+            <div style="margin-top: 20px; padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px;">
+                <h3 style="margin-bottom: 10px; font-size: 1em;">Cron Field Reference</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                    <tr style="border-bottom: 1px solid var(--border-color);"><th style="text-align: left; padding: 6px; color: var(--primary-color);">Field</th><th style="text-align: left; padding: 6px; color: var(--primary-color);">Values</th><th style="text-align: left; padding: 6px; color: var(--primary-color);">Special</th></tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 6px; color: var(--text-primary);">Minute</td><td style="padding: 6px; color: var(--text-secondary);">0-59</td><td style="padding: 6px; color: var(--text-secondary);">* , - /</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 6px; color: var(--text-primary);">Hour</td><td style="padding: 6px; color: var(--text-secondary);">0-23</td><td style="padding: 6px; color: var(--text-secondary);">* , - /</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 6px; color: var(--text-primary);">Day of Month</td><td style="padding: 6px; color: var(--text-secondary);">1-31</td><td style="padding: 6px; color: var(--text-secondary);">* , - /</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 6px; color: var(--text-primary);">Month</td><td style="padding: 6px; color: var(--text-secondary);">1-12</td><td style="padding: 6px; color: var(--text-secondary);">* , - /</td></tr>
+                    <tr><td style="padding: 6px; color: var(--text-primary);">Day of Week</td><td style="padding: 6px; color: var(--text-secondary);">0-7 (0,7=Sun)</td><td style="padding: 6px; color: var(--text-secondary);">* , - /</td></tr>
+                </table>
+            </div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/timestamp-converter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Timestamp Converter</a>
+            <a href="/timezone-converter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Timezone Converter</a>
+            <a href="/regex-tester/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Regex Tester</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/cron-parser/">Cron Expression Parser — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function setCron(v) { document.getElementById('cronInput').value = v; parseCron(); }
+    function expandField(field, min, max) {
+        var vals = [];
+        field.split(',').forEach(function(part) {
+            if (part.indexOf('/') > -1) {
+                var ps = part.split('/'), step = parseInt(ps[1]), start = ps[0] === '*' ? min : parseInt(ps[0]);
+                for (var i = start; i <= max; i += step) vals.push(i);
+            } else if (part.indexOf('-') > -1) {
+                var r = part.split('-'); for (var i = parseInt(r[0]); i <= parseInt(r[1]); i++) vals.push(i);
+            } else if (part === '*') {
+                for (var i = min; i <= max; i++) vals.push(i);
+            } else { vals.push(parseInt(part)); }
+        });
+        return vals;
+    }
+    function describeCron(parts) {
+        var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        var monthNames = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+        var desc = 'At ';
+        if (parts[0] === '*' && parts[1] === '*') desc = 'Every minute';
+        else if (parts[0].indexOf('/') > -1 && parts[1] === '*') desc = 'Every ' + parts[0].split('/')[1] + ' minutes';
+        else if (parts[1] === '*') desc = 'At minute ' + parts[0] + ' of every hour';
+        else desc = 'At ' + parts[1].padStart(2,'0') + ':' + parts[0].padStart(2,'0');
+        if (parts[2] !== '*') desc += ', on day ' + parts[2] + ' of the month';
+        if (parts[3] !== '*') { var ms = expandField(parts[3],1,12); desc += ', in ' + ms.map(function(m){return monthNames[m];}).join(', '); }
+        if (parts[4] !== '*') { var ds = expandField(parts[4],0,7); desc += ', on ' + ds.map(function(d){return dayNames[d%7];}).join(', '); }
+        return desc;
+    }
+    function getNextRuns(parts, count) {
+        var mins = expandField(parts[0],0,59), hrs = expandField(parts[1],0,23);
+        var doms = expandField(parts[2],1,31), mons = expandField(parts[3],1,12), dows = expandField(parts[4],0,7).map(function(d){return d%7;});
+        var now = new Date(), runs = [], d = new Date(now);
+        d.setSeconds(0); d.setMilliseconds(0); d.setMinutes(d.getMinutes() + 1);
+        for (var i = 0; i < 525600 && runs.length < count; i++) {
+            if (mins.indexOf(d.getMinutes()) > -1 && hrs.indexOf(d.getHours()) > -1 &&
+                mons.indexOf(d.getMonth()+1) > -1 &&
+                (parts[2] === '*' || doms.indexOf(d.getDate()) > -1) &&
+                (parts[4] === '*' || dows.indexOf(d.getDay()) > -1)) {
+                runs.push(new Date(d));
+            }
+            d.setMinutes(d.getMinutes() + 1);
+        }
+        return runs;
+    }
+    function parseCron() {
+        var input = document.getElementById('cronInput').value.trim();
+        var parts = input.split(/\s+/);
+        var r = document.getElementById('cronResult');
+        if (parts.length !== 5) { r.innerHTML = '<p style="color:#ef4444;margin-top:12px;">Invalid cron: expected 5 fields.</p>'; return; }
+        var desc = describeCron(parts);
+        var runs = getNextRuns(parts, 5);
+        var html = '<div style="margin-top:15px;padding:15px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;">';
+        html += '<p style="color:var(--primary-color);font-weight:600;margin-bottom:8px;">Description:</p>';
+        html += '<p style="color:var(--text-primary);margin-bottom:15px;font-size:1.05em;">' + desc + '</p>';
+        html += '<p style="color:var(--primary-color);font-weight:600;margin-bottom:8px;">Next 5 runs:</p>';
+        runs.forEach(function(run) {
+            html += '<p style="color:var(--text-secondary);margin:4px 0;font-size:0.95em;">' + run.toLocaleString() + '</p>';
+        });
+        if (runs.length === 0) html += '<p style="color:var(--text-secondary);">No runs found in the next year.</p>';
+        html += '</div>';
+        r.innerHTML = html;
+    }
+    parseCron();
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What do 'nodename' and 'servname' actually mean?","acceptedAnswer":{"@type":"Answer","text":"They are the two arguments of the BSD getaddrinfo call: nodename is the hostname, servname is the service name or port. The error text covers both failing, but in practice it is nearly always the hostname that could not be resolved."}},{"@type":"Question","name":"Why does the site load in Safari but ping fails with this error?","acceptedAnswer":{"@type":"Answer","text":"Safari may be resolving through a different path — cached results, iCloud Private Relay, or DNS-over-HTTPS. Command-line tools use the system resolver directly. Flush the cache and compare 'dscacheutil -q host -a name' with 'dig' to see where they diverge."}},{"@type":"Question","name":"Why do .local hostnames fail on macOS?","acceptedAnswer":{"@type":"Answer","text":"macOS reserves .local for Bonjour/multicast DNS and does not send those names to your DNS server by default. If your company uses a .local Active Directory domain, add the domain to the resolver search settings or use the fully qualified non-.local name."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"nodename nor servname provided, or not known — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nodename nor servname provided, or not known — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'nodename nor servname provided, or not known' on macOS. Covers DNS cache flushing, /etc/hosts syntax, SSH config, and .local name quirks.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="nodename nor servname provided, or not known, ping: cannot resolve: Unknown host, ssh: Could not resolve hostname, getaddrinfo EAI_NONAME, macOS DNS resolution failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="nodename nor servname provided, or not known — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'nodename nor servname provided, or not known' on macOS. Covers DNS cache flushing, /etc/hosts syntax, SSH config, and .local name quirks.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/nodename-nor-servname-provided">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/nodename-nor-servname-provided">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>nodename nor servname provided, or not known</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>nodename nor servname provided, or not known</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A macOS and BSD error meaning the system could not resolve a hostname (or service name) — the Mac equivalent of 'unknown host'.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>nodename nor servname provided, or not known</code></li><li><code>ping: cannot resolve: Unknown host</code></li><li><code>ssh: Could not resolve hostname</code></li><li><code>getaddrinfo EAI_NONAME</code></li><li><code>macOS DNS resolution failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This wordy message comes from the BSD getaddrinfo implementation used by macOS. 'Nodename' is the hostname and 'servname' is the service/port; the error fires when neither could be translated — in practice, almost always because the hostname failed to resolve. You will see it from ping, ssh, and many command-line tools on a Mac. The causes are the usual resolution suspects, plus a few macOS-specific ones: the mDNSResponder cache, /etc/hosts formatting, and .local names being handled by Bonjour instead of DNS.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The hostname does not resolve</strong> — Typo, expired domain, or an internal name that only exists on another network (VPN, office DNS). The Mac's resolver got a definitive 'no such name'.</li>
+                <li><strong>Stale mDNSResponder cache</strong> — macOS caches lookups in mDNSResponder. After a domain's records change or a VPN connects, cached negative answers can keep a resolvable name failing.</li>
+                <li><strong>Malformed /etc/hosts entry</strong> — A missing newline at the end of /etc/hosts, tabs vs spaces confusion, or a commented-out line means the override you think exists is not being read.</li>
+                <li><strong>.local names going to Bonjour instead of DNS</strong> — macOS treats .local as multicast DNS (Bonjour). Corporate domains ending in .local often fail on Macs even though they work fine on Windows and Linux clients.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Flush the macOS DNS cache</h3>
+            <p>The first thing to try after any DNS change — clears cached negative answers held by mDNSResponder.</p>
+            <pre><code>sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder</code></pre>
+            <h3>2. Test what macOS actually resolves</h3>
+            <p>dscacheutil queries through the same system path applications use (dig bypasses it), so it reveals what apps really see — including /etc/hosts entries.</p>
+            <pre><code>dscacheutil -q host -a name example.com
+dig +short example.com   # compare: raw DNS answer</code></pre>
+            <h3>3. Check /etc/hosts formatting</h3>
+            <p>Verify the entry exists, is uncommented, uses a valid IP first, and the file ends with a newline.</p>
+            <pre><code>cat -A /etc/hosts | tail -5   # shows hidden characters
+# valid format:
+# 192.168.1.50   myserver.example.com myserver</code></pre>
+            <h3>4. Fix SSH host aliases</h3>
+            <p>For ssh specifically, check ~/.ssh/config — an alias with a wrong or missing HostName resolves the alias itself, which does not exist in DNS.</p>
+            <pre><code># ~/.ssh/config
+Host myserver          # alias you type
+    HostName server1.example.com   # name that must resolve
+    User deploy
+
+ssh -v myserver 2&gt;&amp;1 | head -5   # shows the name being resolved</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What do 'nodename' and 'servname' actually mean?</h3>
+            <p>They are the two arguments of the BSD getaddrinfo call: nodename is the hostname, servname is the service name or port. The error text covers both failing, but in practice it is nearly always the hostname that could not be resolved.</p>
+            <h3>Why does the site load in Safari but ping fails with this error?</h3>
+            <p>Safari may be resolving through a different path — cached results, iCloud Private Relay, or DNS-over-HTTPS. Command-line tools use the system resolver directly. Flush the cache and compare 'dscacheutil -q host -a name' with 'dig' to see where they diverge.</p>
+            <h3>Why do .local hostnames fail on macOS?</h3>
+            <p>macOS reserves .local for Bonjour/multicast DNS and does not send those names to your DNS server by default. If your company uses a .local Active Directory domain, add the domain to the resolver search settings or use the fully qualified non-.local name.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — the DNS answer behind most of these failures.</li>
+                <li><a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a> — the Linux counterpart.</li>
+                <li><a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> — the curl/git flavor of the same problem.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check what the name resolves to publicly</span>
+                </a>
+        <a href="/reverse-dns/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Reverse DNS Lookup</span>
+                    <span class="recommended-tool-desc">Map an IP back to its hostname</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

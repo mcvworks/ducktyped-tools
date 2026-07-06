@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 424 only used with WebDAV?","acceptedAnswer":{"@type":"Answer","text":"It was defined for WebDAV but some modern APIs use it to indicate cascading failures in batch or transactional operations. The concept of dependent request failure applies broadly."}},{"@type":"Question","name":"How do I find the original error in a batch operation?","acceptedAnswer":{"@type":"Answer","text":"Look at the multi-status (207) response body for the operation that returned a status code other than 424. That is the root cause. All 424 responses are secondary failures."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"424 Failed Dependency — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 424 Failed Dependency","step":[{"@type":"HowToStep","position":1,"name":"Fix the root cause operation","text":"Identify which operation in the batch originally failed (it will have a different status code, not 424) and resolve that issue first. The dependent operations should then succeed."},{"@type":"HowToStep","position":2,"name":"Retry the entire batch operation","text":"If the original failure was transient (like a temporary lock conflict), retry the entire batch operation. Individual retries of 424 responses will fail again if the dependency is not met."},{"@type":"HowToStep","position":3,"name":"Break operations into smaller batches","text":"Reduce the scope of batch operations to minimize cascading failures. Process resources individually or in smaller groups to isolate failures."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>424 Failed Dependency — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 424 Failed Dependency errors. Learn about WebDAV batch operations, dependent request failures, and how to resolve cascading errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 424, 424 Failed Dependency, 424 error, Failed dependency, WebDAV dependency failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="424 Failed Dependency — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 424 Failed Dependency errors. Learn about WebDAV batch operations, dependent request failures, and how to resolve cascading errors.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/424-failed-dependency">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/424-failed-dependency">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>424 Failed Dependency</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>424 Failed Dependency</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The request failed because it depended on another request that also failed</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 424</code></li><li><code>424 Failed Dependency</code></li><li><code>424 error</code></li><li><code>Failed dependency</code></li><li><code>WebDAV dependency failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 424 Failed Dependency response indicates that the request could not be performed because it depended on another operation that failed. This status code is defined in the WebDAV extension and typically occurs during batch operations where multiple related resources are being modified in a single request. If one operation in the batch fails, dependent operations return 424.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Dependent WebDAV operation failed</strong> — A batch WebDAV operation (like COPY or MOVE with depth) failed on one resource, causing dependent operations on related resources to fail with 424.</li>
+                <li><strong>Transaction rollback</strong> — The server is processing multiple related operations as a transaction. When one operation fails, all dependent operations are rolled back and return 424.</li>
+                <li><strong>Prerequisite resource operation failed</strong> — The request depends on a previous operation (like creating a parent directory before creating a file) that failed, causing this request to fail as well.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Fix the root cause operation</h3>
+            <p>Identify which operation in the batch originally failed (it will have a different status code, not 424) and resolve that issue first. The dependent operations should then succeed.</p>
+            <h3>2. Retry the entire batch operation</h3>
+            <p>If the original failure was transient (like a temporary lock conflict), retry the entire batch operation. Individual retries of 424 responses will fail again if the dependency is not met.</p>
+            <h3>3. Break operations into smaller batches</h3>
+            <p>Reduce the scope of batch operations to minimize cascading failures. Process resources individually or in smaller groups to isolate failures.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 424 only used with WebDAV?</h3>
+            <p>It was defined for WebDAV but some modern APIs use it to indicate cascading failures in batch or transactional operations. The concept of dependent request failure applies broadly.</p>
+            <h3>How do I find the original error in a batch operation?</h3>
+            <p>Look at the multi-status (207) response body for the operation that returned a status code other than 424. That is the root cause. All 424 responses are secondary failures.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/423-locked">423 Locked</a> — Resource is locked</li>
+                <li><a href="/errors/http/409-conflict">409 Conflict</a> — Request conflicts with current resource state</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — Server encountered an unexpected error</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

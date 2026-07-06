@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SSL Certificate Expired mean?","acceptedAnswer":{"@type":"Answer","text":"An SSL Certificate Expired error means the site's SSL/TLS certificate has passed its validity end date. Browsers check certificate validity dates and block connections to sites with expired certificates to protect users from potentially outdated security configurations."}},{"@type":"Question","name":"How do I renew an SSL certificate?","acceptedAnswer":{"@type":"Answer","text":"Renew your certificate through your certificate authority or hosting provider before it expires. Let's Encrypt certificates renew automatically if you use certbot or a hosting panel with auto-renewal enabled. Paid certificates from CAs like DigiCert, Sectigo, or Comodo require manual renewal or renewal through your reseller."}},{"@type":"Question","name":"Is it safe to bypass an expired SSL certificate warning?","acceptedAnswer":{"@type":"Answer","text":"Generally no, especially for public websites. An expired certificate may indicate the site is abandoned or its security practices are outdated. On your own development server, bypassing is acceptable. Never bypass on login pages, banking sites, or anywhere you enter sensitive data."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Certificate Expired — Meaning, Causes & Solutions"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificate Expired — Meaning, Causes &amp; Solutions — duckTyped</title>
+    <meta name="description" content="Learn what an expired SSL certificate means, how to renew it, and how to set up automatic renewal. Covers Let's Encrypt, paid CAs, and certbot configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL certificate expired, Certificate has expired, SEC_ERROR_EXPIRED_CERTIFICATE, Your connection is not private, NET::ERR_CERT_DATE_INVALID">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificate Expired — Meaning, Causes &amp; Solutions">
+    <meta property="og:description" content="Fix expired SSL certificate errors by renewing your certificate and setting up automatic renewal with certbot or your hosting provider.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-certificate-expired">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-certificate-expired">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Certificate Expired</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificate Expired</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the site's SSL certificate is past its validity end date. Browsers block these sites to protect users from outdated security configurations.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL certificate expired</code></li><li><code>Certificate has expired</code></li><li><code>SEC_ERROR_EXPIRED_CERTIFICATE</code></li><li><code>Your connection is not private</code></li><li><code>NET::ERR_CERT_DATE_INVALID</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SSL/TLS certificates have a validity period — a start date and an end date (typically shown as "Not Before" and "Not After" in the certificate). Browsers check these dates on every connection. If the current date is past the certificate's end date, the browser shows an expiry warning and blocks the connection by default.</p>
+            <p>Browser messages for this include <a href="/errors/ssl/net-err-cert-date-invalid">NET::ERR_CERT_DATE_INVALID</a> in Chrome, <code>SEC_ERROR_EXPIRED_CERTIFICATE</code> in Firefox, and "Your connection isn't private" with an expired certificate warning.</p>
+
+            <h2>How Long Are SSL Certificates Valid?</h2>
+            <p>As of 2020, the maximum validity for publicly trusted SSL certificates is 398 days (~13 months). Let's Encrypt certificates are valid for 90 days and designed to be renewed every 60 days. Older certificates from before 2020 may have had longer lifetimes.</p>
+
+            <h2>How to Fix an Expired Certificate</h2>
+
+            <h3>For Site Owners</h3>
+
+            <h4>1. Renew Let's Encrypt Certificates</h4>
+            <p>If using certbot:</p>
+            <pre><code>sudo certbot renew
+sudo systemctl reload nginx   # or apache2</code></pre>
+            <p>If the certificate expired because auto-renewal failed, check the certbot timer:</p>
+            <pre><code>systemctl status certbot.timer</code></pre>
+
+            <h4>2. Renew Paid Certificates</h4>
+            <p>Purchase a new certificate from your CA and install it. Download the new certificate and chain files, update your web server configuration, and reload the server.</p>
+
+            <h4>3. Set Up Auto-Renewal</h4>
+            <p>Configure certbot's systemd timer or cron job to run <code>certbot renew</code> twice daily. Most hosting panels (cPanel, Plesk) have built-in auto-renewal. Cloudflare's managed certificates renew automatically.</p>
+
+            <h4>4. Set Up Expiry Monitoring</h4>
+            <p>Use the <a href="/ssl-checker/">SSL Checker</a> to check your current certificate's expiry date. Set calendar reminders or use a monitoring service to alert you 30 days before expiry.</p>
+
+            <h3>For Visitors</h3>
+            <p>If you trust the site (e.g., it is your own or an internal tool), you can click "Advanced" → "Proceed" to bypass the warning. Never do this on public sites where you enter login credentials or payment information.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — check your certificate's expiry date and validity.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why did my Let's Encrypt certificate expire if auto-renewal is set up?</h3>
+            <p>Common reasons: the certbot renewal process failed silently (check <code>/var/log/letsencrypt/letsencrypt.log</code>), the server's port 80 or 443 was blocked during renewal, the domain's DNS was pointing elsewhere during the HTTP challenge, or the certbot cron job was disabled.</p>
+
+            <h3>Can I check certificate expiry without a tool?</h3>
+            <p>Click the padlock in your browser → Connection is secure → Certificate is valid → view the "Expires" date. Or use OpenSSL: <code>echo | openssl s_client -connect domain.com:443 2>/dev/null | openssl x509 -noout -dates</code></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/net-err-cert-date-invalid">NET::ERR_CERT_DATE_INVALID</a> — certificate date validation failure.</li>
+                <li><a href="/errors/ssl/ssl-certificate-revoked">SSL Certificate Revoked</a> — certificate revoked by the CA.</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — generic certificate validation failure.</li>
+                <li><a href="/errors/browser/err_cert_common_name_invalid">ERR_CERT_COMMON_NAME_INVALID</a> — certificate hostname mismatch.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

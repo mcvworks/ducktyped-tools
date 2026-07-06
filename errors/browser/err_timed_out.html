@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_TIMED_OUT mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_TIMED_OUT means Chrome waited too long for the server to respond and gave up. The connection or data transfer did not complete within the browser's timeout limit. This can be caused by a slow server, congested network, firewall, or an overloaded upstream server."}},{"@type":"Question","name":"What is the difference between ERR_TIMED_OUT and ERR_CONNECTION_TIMED_OUT?","acceptedAnswer":{"@type":"Answer","text":"ERR_TIMED_OUT typically refers to a timeout while waiting for data during an established connection. ERR_CONNECTION_TIMED_OUT occurs when the initial TCP connection attempt times out — the server never accepted the connection at all. Both indicate the server is unreachable or too slow."}},{"@type":"Question","name":"How do I fix ERR_TIMED_OUT?","acceptedAnswer":{"@type":"Answer","text":"Try reloading the page, clearing your browser cache, and checking your internet connection. If the problem persists on a specific site, the server may be overloaded or experiencing issues. Use the HTTP Latency tool to test response times."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_TIMED_OUT — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_TIMED_OUT","step":[{"@type":"HowToStep","position":1,"name":"Reload the Page","text":"A temporary server spike may resolve itself. Try reloading with Ctrl+R or F5. If it loads intermittently, the server is under heavy load."},{"@type":"HowToStep","position":2,"name":"Check Your Internet Connection","text":"Ensure you have a working connection by loading another site. Run a speed test to check for high latency or packet loss."},{"@type":"HowToStep","position":3,"name":"Try the Site From Another Network","text":"Switch to mobile data or a different Wi-Fi network. If the site loads on another network, the issue may be with your ISP or router."},{"@type":"HowToStep","position":4,"name":"Check If the Site Is Down for Everyone","text":"Use the HTTP Latency tool to test whether the server is responding. If response times are very high or there is no response, the server itself has a problem."},{"@type":"HowToStep","position":5,"name":"Flush DNS and Clear Browser Cache","text":"Stale DNS entries can sometimes route traffic to a dead server IP. Flush your DNS cache and clear your browser cache, then retry."},{"@type":"HowToStep","position":6,"name":"Disable VPN or Proxy","text":"If you are using a VPN, try disabling it. VPN endpoints can add significant latency or drop connections."},{"@type":"HowToStep","position":7,"name":"Check Firewall Rules (for Server Owners)","text":"Verify your server's firewall allows inbound connections on the relevant port (80 for HTTP, 443 for HTTPS). Check that iptables or cloud security group rules are not dropping packets."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_TIMED_OUT — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_TIMED_OUT means in Chrome and how to fix connection timeout errors. Covers server overload, firewall issues, and network troubleshooting.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_TIMED_OUT, ERR_TIMED_OUT Chrome, This site can&#39;t be reached, Connection timed out, took too long to respond, Request timeout">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_TIMED_OUT — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_TIMED_OUT in Chrome by troubleshooting server response times, firewall rules, and network conditions.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_timed_out">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_timed_out">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_TIMED_OUT</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_TIMED_OUT</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means Chrome waited too long for the server to respond and gave up. The server is either overloaded, unreachable, or blocked by a firewall.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_TIMED_OUT</code></li><li><code>ERR_TIMED_OUT Chrome</code></li><li><code>This site can&#39;t be reached</code></li><li><code>Connection timed out</code></li><li><code>took too long to respond</code></li><li><code>Request timeout</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p><strong>ERR_TIMED_OUT</strong> occurs when a network request does not complete within Chrome's timeout window. The browser established (or began establishing) a connection but the server did not send a response in time.</p>
+            <p>This can happen at different stages: the DNS lookup may succeed, the TCP connection may open, but the server simply never sends data back. Unlike <a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — where the server actively rejects the connection — a timeout means the server silently stopped responding.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server is overloaded</strong> — too many simultaneous requests are queuing up, causing slow or no responses.</li>
+                <li><strong>Server is down</strong> — the server process has crashed or the machine is offline.</li>
+                <li><strong>Firewall dropping packets</strong> — a firewall is silently discarding traffic without sending a rejection.</li>
+                <li><strong>Slow network</strong> — high latency or packet loss causing slow response times.</li>
+                <li><strong>Large page or slow response</strong> — a page with slow database queries or expensive server-side processing.</li>
+                <li><strong>Geographic distance</strong> — connecting to a server on the other side of the world with high round-trip latency.</li>
+                <li><strong>VPN or proxy adding latency</strong> — routing traffic through a distant VPN endpoint.</li>
+                <li><strong>Port blocked by ISP</strong> — your ISP may block certain ports, causing connections to time out.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reload the Page</h3>
+            <p>A temporary server spike may resolve itself. Try reloading with <kbd>Ctrl+R</kbd> or <kbd>F5</kbd>. If it loads intermittently, the server is under heavy load.</p>
+
+            <h3>2. Check Your Internet Connection</h3>
+            <p>Ensure you have a working connection by loading another site. Run a speed test to check for high latency or packet loss.</p>
+
+            <h3>3. Try the Site From Another Network</h3>
+            <p>Switch to mobile data or a different Wi-Fi network. If the site loads on another network, the issue may be with your ISP or router.</p>
+
+            <h3>4. Check If the Site Is Down for Everyone</h3>
+            <p>Use the <a href="/http-latency/">HTTP Latency tool</a> to test whether the server is responding. If response times are very high or there is no response, the server itself has a problem.</p>
+
+            <h3>5. Flush DNS and Clear Browser Cache</h3>
+            <p>Stale DNS entries can sometimes route traffic to a dead server IP. Flush your DNS cache and clear your browser cache, then retry.</p>
+
+            <h3>6. Disable VPN or Proxy</h3>
+            <p>If you are using a VPN, try disabling it. VPN endpoints can add significant latency or drop connections.</p>
+
+            <h3>7. Check Firewall Rules (for Server Owners)</h3>
+            <p>Verify your server's firewall allows inbound connections on the relevant port (80 for HTTP, 443 for HTTPS). Check that <code>iptables</code> or cloud security group rules are not dropping packets.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency</a> — test how quickly a server responds from your location.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How long does Chrome wait before showing ERR_TIMED_OUT?</h3>
+            <p>Chrome's default connection timeout is approximately 30 seconds, though this can vary. For keep-alive connections with no data received, the timeout can be longer. The value is not user-configurable in standard Chrome settings.</p>
+
+            <h3>ERR_TIMED_OUT vs. 504 Gateway Timeout — what is the difference?</h3>
+            <p>A <a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> is a server-side HTTP response — a gateway received no response from an upstream server and returned 504 to the browser. ERR_TIMED_OUT is a browser-side timeout — Chrome gave up waiting before any HTTP response arrived.</p>
+
+            <h3>Can a firewall cause ERR_TIMED_OUT?</h3>
+            <p>Yes. A firewall that drops packets without sending a rejection (TCP RST) causes the connection to silently hang until the browser times out. A firewall that actively rejects connections sends a TCP RST, which produces <a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> instead.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — gateway timed out waiting for upstream server.</li>
+                <li><a href="/errors/http/408-request-timeout">408 Request Timeout</a> — server timed out waiting for client request.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server actively rejected the connection.</li>
+                <li><a href="/errors/browser/err_internet_disconnected">ERR_INTERNET_DISCONNECTED</a> — no network connection.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Test HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

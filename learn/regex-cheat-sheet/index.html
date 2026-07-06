@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Regex Cheat Sheet","description":"Complete regular expression reference: character classes, quantifiers, anchors, groups, lookaround, flags, and ready-to-use patterns for email, URL, IP address, and more.","datePublished":"2026-03-11","dateModified":"2026-03-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/regex-cheat-sheet/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Regex Cheat Sheet"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is regex?","acceptedAnswer":{"@type":"Answer","text":"Regular expressions (regex) are patterns used to match character combinations in strings. They are used for search, validation, text processing, and data extraction in virtually all programming languages."}},{"@type":"Question","name":"What does the dot (.) match in regex?","acceptedAnswer":{"@type":"Answer","text":"The dot matches any single character except a newline. With the 's' (dotAll) flag enabled, it matches newlines too. To match a literal dot, escape it with a backslash: \\."}},{"@type":"Question","name":"What is the difference between * and + in regex?","acceptedAnswer":{"@type":"Answer","text":"The asterisk (*) matches zero or more occurrences of the preceding element, while plus (+) matches one or more. For example, a* matches '' and 'aaa', but a+ requires at least one 'a'."}},{"@type":"Question","name":"How do I make regex case-insensitive?","acceptedAnswer":{"@type":"Answer","text":"Add the 'i' flag to your regex. In JavaScript: /pattern/i. In Python: re.compile(pattern, re.IGNORECASE). This makes the pattern match both uppercase and lowercase letters."}},{"@type":"Question","name":"What is a lookahead in regex?","acceptedAnswer":{"@type":"Answer","text":"A lookahead asserts that what follows the current position matches a pattern, without consuming characters. Positive lookahead (?=...) asserts the pattern exists ahead; negative lookahead (?!...) asserts it does not."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regex Cheat Sheet — Complete Regular Expression Reference — duckTyped</title>
+    <meta name="description" content="Complete regex cheat sheet: character classes, quantifiers, anchors, groups, lookaround, flags, and common patterns. Quick reference for JavaScript, Python, Go, and Java.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="regex cheat sheet, regular expression reference, regex patterns, regex syntax, regex examples, regex tutorial, regex quick reference">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Regex Cheat Sheet — Complete Regular Expression Reference — duckTyped">
+    <meta property="og:description" content="Complete regex reference: character classes, quantifiers, groups, lookaround, flags, and common patterns.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/regex-cheat-sheet/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Regex Cheat Sheet — duckTyped">
+    <meta name="twitter:description" content="Complete regular expression reference with syntax tables and ready-to-use patterns.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/regex-cheat-sheet/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Regex Cheat Sheet</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Regex Cheat Sheet</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-11">March 11, 2026</time></p>
+            <p class="standalone-intro">Complete regular expression reference. Bookmark this page for quick lookups when writing patterns for validation, search, and text processing.</p>
+
+            <p>Regular expressions (regex) are patterns that describe sets of strings. They are supported in virtually every programming language and are essential for text search, validation, parsing, and transformation. <a href="/learn/regex-tester/">Learn more about regex fundamentals</a> or <a href="/regex-tester/">test your patterns live</a>.</p>
+
+            <h2>Character Classes</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Pattern</th><th>Matches</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>.</code></td><td>Any character except newline</td><td><code>a.c</code> → "abc", "a1c", "a-c"</td></tr>
+                        <tr><td><code>\d</code></td><td>Any digit [0-9]</td><td><code>\d{3}</code> → "123", "456"</td></tr>
+                        <tr><td><code>\D</code></td><td>Any non-digit [^0-9]</td><td><code>\D+</code> → "abc", "---"</td></tr>
+                        <tr><td><code>\w</code></td><td>Word character [a-zA-Z0-9_]</td><td><code>\w+</code> → "hello", "var_1"</td></tr>
+                        <tr><td><code>\W</code></td><td>Non-word character [^a-zA-Z0-9_]</td><td><code>\W</code> → " ", "-", "!"</td></tr>
+                        <tr><td><code>\s</code></td><td>Whitespace (space, tab, newline)</td><td><code>\s+</code> → "   ", "\t\n"</td></tr>
+                        <tr><td><code>\S</code></td><td>Non-whitespace</td><td><code>\S+</code> → "hello", "123"</td></tr>
+                        <tr><td><code>[abc]</code></td><td>Any character in the set</td><td><code>[aeiou]</code> → "a", "e", "i"</td></tr>
+                        <tr><td><code>[^abc]</code></td><td>Any character NOT in the set</td><td><code>[^0-9]</code> → "a", "!", " "</td></tr>
+                        <tr><td><code>[a-z]</code></td><td>Character range</td><td><code>[a-fA-F0-9]</code> → hex chars</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Anchors</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Pattern</th><th>Matches</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>^</code></td><td>Start of string (or line with <code>m</code> flag)</td><td><code>^Hello</code> → "Hello world"</td></tr>
+                        <tr><td><code>$</code></td><td>End of string (or line with <code>m</code> flag)</td><td><code>world$</code> → "Hello world"</td></tr>
+                        <tr><td><code>\b</code></td><td>Word boundary</td><td><code>\bcat\b</code> → "the cat sat" (not "scatter")</td></tr>
+                        <tr><td><code>\B</code></td><td>Non-word boundary</td><td><code>\Bcat\B</code> → "scatter" (not "cat")</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Quantifiers</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Pattern</th><th>Matches</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>*</code></td><td>0 or more (greedy)</td><td><code>ab*c</code> → "ac", "abc", "abbc"</td></tr>
+                        <tr><td><code>+</code></td><td>1 or more (greedy)</td><td><code>ab+c</code> → "abc", "abbc" (not "ac")</td></tr>
+                        <tr><td><code>?</code></td><td>0 or 1 (optional)</td><td><code>colou?r</code> → "color", "colour"</td></tr>
+                        <tr><td><code>{n}</code></td><td>Exactly n times</td><td><code>\d{4}</code> → "2026"</td></tr>
+                        <tr><td><code>{n,}</code></td><td>n or more times</td><td><code>\d{2,}</code> → "12", "123", "1234"</td></tr>
+                        <tr><td><code>{n,m}</code></td><td>Between n and m times</td><td><code>\d{2,4}</code> → "12", "123", "1234"</td></tr>
+                        <tr><td><code>*?</code></td><td>0 or more (lazy/non-greedy)</td><td><code>&lt;.*?&gt;</code> → matches shortest tag</td></tr>
+                        <tr><td><code>+?</code></td><td>1 or more (lazy/non-greedy)</td><td><code>".+?"</code> → matches shortest quoted string</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Groups &amp; Lookaround</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Pattern</th><th>Description</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>(abc)</code></td><td>Capturing group</td><td><code>(\d{3})-(\d{4})</code> captures area code and number</td></tr>
+                        <tr><td><code>(?:abc)</code></td><td>Non-capturing group</td><td><code>(?:http|https)://</code> groups without capturing</td></tr>
+                        <tr><td><code>(?&lt;name&gt;abc)</code></td><td>Named capturing group</td><td><code>(?&lt;year&gt;\d{4})</code> captures as "year"</td></tr>
+                        <tr><td><code>\1</code></td><td>Backreference to group 1</td><td><code>(\w+)\s\1</code> → "the the" (duplicate words)</td></tr>
+                        <tr><td><code>a|b</code></td><td>Alternation (or)</td><td><code>cat|dog</code> → "cat" or "dog"</td></tr>
+                        <tr><td><code>(?=abc)</code></td><td>Positive lookahead</td><td><code>\d+(?= dollars)</code> → "100" in "100 dollars"</td></tr>
+                        <tr><td><code>(?!abc)</code></td><td>Negative lookahead</td><td><code>\d+(?! dollars)</code> → "100" not followed by "dollars"</td></tr>
+                        <tr><td><code>(?&lt;=abc)</code></td><td>Positive lookbehind</td><td><code>(?&lt;=\$)\d+</code> → "50" in "$50"</td></tr>
+                        <tr><td><code>(?&lt;!abc)</code></td><td>Negative lookbehind</td><td><code>(?&lt;!\$)\d+</code> → digits not preceded by $</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Flags</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Flag</th><th>Name</th><th>Effect</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>g</code></td><td>Global</td><td>Find all matches, not just the first</td></tr>
+                        <tr><td><code>i</code></td><td>Case-insensitive</td><td><code>/hello/i</code> matches "Hello", "HELLO", "hElLo"</td></tr>
+                        <tr><td><code>m</code></td><td>Multiline</td><td><code>^</code> and <code>$</code> match start/end of each line, not just the string</td></tr>
+                        <tr><td><code>s</code></td><td>DotAll</td><td><code>.</code> matches newline characters too</td></tr>
+                        <tr><td><code>u</code></td><td>Unicode</td><td>Enables full Unicode matching (emoji, CJK, etc.)</td></tr>
+                        <tr><td><code>y</code></td><td>Sticky</td><td>Matches only at the current position (lastIndex)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Common Patterns</h2>
+            <p>Ready-to-use patterns for common validation and extraction tasks:</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Use Case</th><th>Pattern</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Email (simple)</td><td><code>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}</code></td><td>Covers most valid emails</td></tr>
+                        <tr><td>URL</td><td><code>https?://[^\s/$.?#].[^\s]*</code></td><td>Matches HTTP and HTTPS URLs</td></tr>
+                        <tr><td>IPv4 Address</td><td><code>\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b</code></td><td>Does not validate range (0-255)</td></tr>
+                        <tr><td>IPv4 (strict)</td><td><code>\b(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3}\b</code></td><td>Validates 0-255 range</td></tr>
+                        <tr><td>Phone (US)</td><td><code>\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}</code></td><td>Matches (555) 123-4567, 555-123-4567, etc.</td></tr>
+                        <tr><td>Date (YYYY-MM-DD)</td><td><code>\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])</code></td><td>ISO 8601 date format</td></tr>
+                        <tr><td>Hex Color</td><td><code>#(?:[0-9a-fA-F]{3}){1,2}\b</code></td><td>Matches #FFF and #FF5733</td></tr>
+                        <tr><td>HTML Tag</td><td><code>&lt;([a-z][a-z0-9]*)\b[^&gt;]*&gt;(.*?)&lt;/\1&gt;</code></td><td>Simple tag matching (not for parsing HTML)</td></tr>
+                        <tr><td>Slug</td><td><code>^[a-z0-9]+(?:-[a-z0-9]+)*$</code></td><td>URL-safe slug: "my-page-title"</td></tr>
+                        <tr><td>Strong Password</td><td><code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&amp;])[A-Za-z\d@$!%*?&amp;]{8,}$</code></td><td>Min 8 chars, upper, lower, digit, special</td></tr>
+                        <tr><td>Whitespace trim</td><td><code>^\s+|\s+$</code></td><td>Leading/trailing whitespace</td></tr>
+                        <tr><td>Duplicate words</td><td><code>\b(\w+)\s+\1\b</code></td><td>Finds "the the", "is is"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Special Characters to Escape</h2>
+            <p>These characters have special meaning in regex and must be escaped with <code>\</code> to match literally:</p>
+            <p><code>. * + ? ^ $ { } [ ] ( ) | \ /</code></p>
+            <p>For example, to match a literal dot: <code>\.</code> — to match a literal dollar sign: <code>\$</code></p>
+
+            <h2>Language Differences</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Feature</th><th>JavaScript</th><th>Python</th><th>Go</th><th>Java</th></tr></thead>
+                    <tbody>
+                        <tr><td>Syntax</td><td><code>/pattern/flags</code></td><td><code>re.compile(r"pattern")</code></td><td><code>regexp.Compile("pattern")</code></td><td><code>Pattern.compile("pattern")</code></td></tr>
+                        <tr><td>Lookbehind</td><td>Variable length (ES2018+)</td><td>Fixed length only</td><td>Not supported</td><td>Variable length</td></tr>
+                        <tr><td>Named groups</td><td><code>(?&lt;name&gt;...)</code></td><td><code>(?P&lt;name&gt;...)</code></td><td><code>(?P&lt;name&gt;...)</code></td><td><code>(?&lt;name&gt;...)</code></td></tr>
+                        <tr><td>Unicode flag</td><td><code>/u</code></td><td>Built-in (str is Unicode)</td><td>Built-in (UTF-8)</td><td><code>Pattern.UNICODE_CHARACTER_CLASS</code></td></tr>
+                        <tr><td>Atomic groups</td><td>Not supported</td><td>Not supported</td><td>Not supported</td><td><code>(?&gt;...)</code></td></tr>
+                        <tr><td>Possessive quantifiers</td><td>Not supported</td><td>Not supported</td><td>Not supported</td><td><code>a++</code>, <code>a*+</code></td></tr>
+                        <tr><td>Engine type</td><td>Backtracking (NFA)</td><td>Backtracking (NFA)</td><td>RE2 (no backtracking)</td><td>Backtracking (NFA)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between greedy and lazy matching?</h3>
+            <p>Greedy quantifiers (<code>*</code>, <code>+</code>) match as many characters as possible. Lazy quantifiers (<code>*?</code>, <code>+?</code>) match as few as possible. For example, given the string <code>&lt;b&gt;bold&lt;/b&gt;</code>, the pattern <code>&lt;.*&gt;</code> (greedy) matches the entire string, while <code>&lt;.*?&gt;</code> (lazy) matches just <code>&lt;b&gt;</code>.</p>
+
+            <h3>Should I use regex to parse HTML?</h3>
+            <p>No. HTML is a context-free language that regex cannot fully parse. Use a proper HTML parser (DOMParser, cheerio, Beautiful Soup) instead. Regex is fine for simple pattern extraction from known HTML structures, but not for general HTML parsing.</p>
+
+            <h3>How do I match across multiple lines?</h3>
+            <p>Use the <code>s</code> (dotAll) flag to make <code>.</code> match newlines, or use <code>[\s\S]</code> as a cross-platform alternative. The <code>m</code> (multiline) flag makes <code>^</code> and <code>$</code> match line boundaries instead of string boundaries.</p>
+
+            <h3>Why is Go regex different?</h3>
+            <p>Go uses the RE2 engine which guarantees linear-time matching by disallowing backtracking features like backreferences, lookahead, and lookbehind. This makes Go regex safer against ReDoS (Regular Expression Denial of Service) but less feature-rich.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/regex-tester/">Regex Tester</a> — test and debug your patterns in real-time</li>
+                <li><a href="/learn/regex-tester/">Learn how regex works</a> — fundamentals and examples</li>
+                <li><a href="/text-diff/">Text Diff</a> — compare text before and after regex replacements</li>
+                <li><a href="/line-tools/">Line Tools</a> — sort, filter, and deduplicate text lines</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/regex-tester/" class="cta-btn-primary">Try Regex Tester</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

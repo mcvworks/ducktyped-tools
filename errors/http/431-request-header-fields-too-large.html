@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the maximum header size?","acceptedAnswer":{"@type":"Answer","text":"There is no official limit in the HTTP specification. Nginx defaults to 8KB per header line and 8KB total. Apache defaults to 8,190 bytes per field. Node.js defaults to 16KB total."}},{"@type":"Question","name":"Why does clearing cookies fix 431 errors?","acceptedAnswer":{"@type":"Answer","text":"Cookies are sent as headers with every request to a domain. Over time, third-party scripts and subdomains can accumulate many cookies, causing the total Cookie header to exceed server limits."}},{"@type":"Question","name":"Can this error happen on only some pages?","acceptedAnswer":{"@type":"Answer","text":"Yes. Different pages may set different cookies or trigger different headers. A page that sets additional cookies might push the total header size over the limit."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"431 Request Header Fields Too Large — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 431 Request Header Fields Too Large","step":[{"@type":"HowToStep","position":1,"name":"Clear cookies for the domain","text":"Clear cookies for the affected domain in your browser. This is the most common fix since large Cookie headers are the primary cause of 431 errors."},{"@type":"HowToStep","position":2,"name":"Increase server header buffer size","text":"If you control the server, increase the maximum allowed header size."},{"@type":"HowToStep","position":3,"name":"Reduce JWT token size","text":"If large JWTs are the issue, reduce the number of claims embedded in the token. Move detailed permissions to a server-side lookup instead of encoding them in the token."},{"@type":"HowToStep","position":4,"name":"Audit and remove unnecessary cookies","text":"Review which cookies are being set for the domain and remove unnecessary ones. Set appropriate domain and path scopes to avoid sending irrelevant cookies."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>431 Request Header Fields Too Large — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 431 Request Header Fields Too Large errors. Learn what causes oversized request headers, including cookies, and how to reduce header size.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 431, 431 Request Header Fields Too Large, 431 error, Headers too large, Cookie too large, Request header too long">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="431 Request Header Fields Too Large — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 431 Request Header Fields Too Large errors. Learn what causes oversized request headers, including cookies, and how to reduce header size.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/431-request-header-fields-too-large">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/431-request-header-fields-too-large">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>431 Request Header Fields Too Large</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>431 Request Header Fields Too Large</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The request headers are too large for the server to process</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 431</code></li><li><code>431 Request Header Fields Too Large</code></li><li><code>431 error</code></li><li><code>Headers too large</code></li><li><code>Cookie too large</code></li><li><code>Request header too long</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 431 Request Header Fields Too Large response indicates that the server refuses to process the request because one or more header fields, or the total size of all headers, exceeds the server's configured maximum. This commonly occurs when cookies accumulate to excessive sizes, authorization tokens are very large, or custom headers contain too much data.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Excessive cookie size</strong> — The browser has accumulated many cookies for the domain, and the total Cookie header size exceeds the server's header size limit. This is the most common cause.</li>
+                <li><strong>Large authorization token</strong> — A JWT or other authorization token in the Authorization header is unusually large, often due to embedding too many claims or permissions.</li>
+                <li><strong>Too many custom headers</strong> — The request includes many custom headers (e.g., from browser extensions, proxy chains, or middleware) that together exceed the header size limit.</li>
+                <li><strong>Server header buffer too small</strong> — The server's configured header buffer size is too small for the application's normal request patterns.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Clear cookies for the domain</h3>
+            <p>Clear cookies for the affected domain in your browser. This is the most common fix since large Cookie headers are the primary cause of 431 errors.</p>
+            <h3>2. Increase server header buffer size</h3>
+            <p>If you control the server, increase the maximum allowed header size.</p>
+            <pre><code># Nginx
+large_client_header_buffers 4 32k;
+
+# Apache
+LimitRequestFieldSize 16384
+
+# Node.js
+http.createServer({ maxHeaderSize: 32768 }, handler);</code></pre>
+            <h3>3. Reduce JWT token size</h3>
+            <p>If large JWTs are the issue, reduce the number of claims embedded in the token. Move detailed permissions to a server-side lookup instead of encoding them in the token.</p>
+            <h3>4. Audit and remove unnecessary cookies</h3>
+            <p>Review which cookies are being set for the domain and remove unnecessary ones. Set appropriate domain and path scopes to avoid sending irrelevant cookies.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the maximum header size?</h3>
+            <p>There is no official limit in the HTTP specification. Nginx defaults to 8KB per header line and 8KB total. Apache defaults to 8,190 bytes per field. Node.js defaults to 16KB total.</p>
+            <h3>Why does clearing cookies fix 431 errors?</h3>
+            <p>Cookies are sent as headers with every request to a domain. Over time, third-party scripts and subdomains can accumulate many cookies, causing the total Cookie header to exceed server limits.</p>
+            <h3>Can this error happen on only some pages?</h3>
+            <p>Yes. Different pages may set different cookies or trigger different headers. A page that sets additional cookies might push the total header size over the limit.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/414-uri-too-long">414 URI Too Long</a> — Request URL exceeds server limits</li>
+                <li><a href="/errors/http/413-payload-too-large">413 Payload Too Large</a> — Request body exceeds server limits</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Try Security Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 510 commonly used?","acceptedAnswer":{"@type":"Answer","text":"No. HTTP Extension Framework (RFC 2774) is rarely implemented. Most servers use standard HTTP headers and status codes. You are unlikely to encounter 510 in typical web development."}},{"@type":"Question","name":"What are HTTP extensions?","acceptedAnswer":{"@type":"Answer","text":"HTTP extensions allow adding new functionality to HTTP without changing the protocol. They use Ext and Man headers to declare optional and mandatory extensions. This mechanism is defined in RFC 2774."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"510 Not Extended — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 510 Not Extended","step":[{"@type":"HowToStep","position":1,"name":"Include required extension headers","text":"Check the 510 response for information about which extensions are required and include the appropriate extension declarations in your request."},{"@type":"HowToStep","position":2,"name":"Check API documentation for required extensions","text":"Review the server's documentation to understand which HTTP extensions are required for the endpoint and how to properly declare them in your requests."},{"@type":"HowToStep","position":3,"name":"Contact the server administrator","text":"If the required extensions are unclear, contact the server administrator to determine what extensions are needed and whether alternative access methods are available."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>510 Not Extended — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 510 Not Extended errors. Learn about HTTP extension frameworks, what causes extension requirement failures, and how to resolve them.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 510, 510 Not Extended, 510 error, Not extended, Extension required">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="510 Not Extended — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 510 Not Extended errors. Learn about HTTP extension frameworks, what causes extension requirement failures, and how to resolve them.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/510-not-extended">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/510-not-extended">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>510 Not Extended</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>510 Not Extended</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The request requires an HTTP extension that the server does not support</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 510</code></li><li><code>510 Not Extended</code></li><li><code>510 error</code></li><li><code>Not extended</code></li><li><code>Extension required</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 510 Not Extended response indicates that the server requires further extensions to the request in order to fulfill it. The policy for accessing the resource has not been met because the client did not include a required HTTP extension. This status code is defined in RFC 2774 and is rarely encountered in practice.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing required HTTP extension</strong> — The server requires the client to use a specific HTTP extension (specified via the Ext or Man headers) that was not included in the request.</li>
+                <li><strong>Unsupported extension declaration</strong> — The client did not declare a mandatory extension that the server requires for processing the request.</li>
+                <li><strong>Server policy requires extension headers</strong> — The server's access policy requires specific extension headers for the requested resource, and the client's request does not include them.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Include required extension headers</h3>
+            <p>Check the 510 response for information about which extensions are required and include the appropriate extension declarations in your request.</p>
+            <h3>2. Check API documentation for required extensions</h3>
+            <p>Review the server's documentation to understand which HTTP extensions are required for the endpoint and how to properly declare them in your requests.</p>
+            <h3>3. Contact the server administrator</h3>
+            <p>If the required extensions are unclear, contact the server administrator to determine what extensions are needed and whether alternative access methods are available.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 510 commonly used?</h3>
+            <p>No. HTTP Extension Framework (RFC 2774) is rarely implemented. Most servers use standard HTTP headers and status codes. You are unlikely to encounter 510 in typical web development.</p>
+            <h3>What are HTTP extensions?</h3>
+            <p>HTTP extensions allow adding new functionality to HTTP without changing the protocol. They use Ext and Man headers to declare optional and mandatory extensions. This mechanism is defined in RFC 2774.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/501-not-implemented">501 Not Implemented</a> — Server does not support the request method</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/426-upgrade-required">426 Upgrade Required</a> — Protocol upgrade required</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

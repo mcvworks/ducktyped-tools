@@ -1,0 +1,125 @@
+/* ============================================
+   DUCKTYPED — DIAGRAM SYSTEM
+   Theme-aware SVG flow diagrams for error pages
+   ============================================ */
+
+.dt-diagram-section {
+    margin: 2rem 0;
+}
+
+.dt-diagram-section h2 {
+    margin-bottom: 1rem;
+}
+
+.dt-diagram-wrap {
+    background: var(--diagram-bg);
+    border: 1px solid var(--diagram-node-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+}
+
+.dt-diagram-wrap svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* SVG element theming via CSS */
+.dt-diagram-wrap .dt-node rect,
+.dt-diagram-wrap .dt-node circle {
+    fill: var(--diagram-node-bg);
+    stroke: var(--diagram-node-border);
+    stroke-width: 1.5;
+    rx: 8;
+    ry: 8;
+}
+
+.dt-diagram-wrap .dt-node text {
+    fill: var(--diagram-node-text);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.dt-diagram-wrap .dt-node-label {
+    fill: var(--diagram-label);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.dt-diagram-wrap .dt-arrow line,
+.dt-diagram-wrap .dt-arrow polyline,
+.dt-diagram-wrap .dt-arrow path {
+    stroke: var(--diagram-arrow);
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.dt-diagram-wrap .dt-arrowhead {
+    fill: var(--diagram-arrow);
+    stroke: none;
+}
+
+.dt-diagram-wrap .dt-highlight rect,
+.dt-diagram-wrap .dt-highlight circle {
+    fill: var(--diagram-highlight-fill);
+    stroke: var(--diagram-highlight-stroke);
+    stroke-width: 2;
+}
+
+.dt-diagram-wrap .dt-highlight text {
+    fill: var(--diagram-highlight-stroke);
+}
+
+.dt-diagram-wrap .dt-error rect,
+.dt-diagram-wrap .dt-error circle {
+    fill: var(--diagram-error-fill);
+    stroke: var(--diagram-error-stroke);
+    stroke-width: 2;
+    stroke-dasharray: 6 3;
+}
+
+.dt-diagram-wrap .dt-error text {
+    fill: var(--diagram-error-stroke);
+}
+
+.dt-diagram-wrap .dt-success rect {
+    fill: var(--diagram-success-fill);
+    stroke: var(--diagram-success-stroke);
+    stroke-width: 2;
+}
+
+.dt-diagram-wrap .dt-success text {
+    fill: var(--diagram-success-stroke);
+}
+
+.dt-diagram-wrap .dt-error-label {
+    fill: var(--diagram-error-stroke);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.dt-diagram-wrap .dt-flow-label {
+    fill: var(--diagram-label);
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 400;
+}
+
+/* Responsive: scale diagrams on small screens instead of forcing scroll */
+@media (max-width: 600px) {
+    .dt-diagram-wrap {
+        padding: 1rem 0.5rem;
+        overflow-x: visible;
+    }
+    .dt-diagram-wrap svg {
+        min-width: 0;
+        width: 100%;
+        height: auto;
+    }
+}

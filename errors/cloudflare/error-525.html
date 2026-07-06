@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I just switch back to Flexible mode to make 525 go away?","acceptedAnswer":{"@type":"Answer","text":"It stops the error but reintroduces the problem Full mode solves: with Flexible, traffic between Cloudflare and your origin travels unencrypted. Since Origin CA certificates are free and take minutes, Full (strict) is almost always the right destination — treat Flexible as a legacy stopgap."}},{"@type":"Question","name":"What exactly is the Origin CA certificate and where is it trusted?","acceptedAnswer":{"@type":"Answer","text":"A certificate issued by Cloudflare's own CA specifically for origin-to-Cloudflare connections. Browsers do NOT trust it — if users ever hit your origin directly it will warn. Behind Cloudflare that never happens for proxied traffic, which is why it is the lowest-friction way to satisfy Full (strict)."}},{"@type":"Question","name":"525 vs 526 — which is which?","acceptedAnswer":{"@type":"Answer","text":"525: the TLS handshake itself failed (no cert, protocol mismatch, port closed). 526: the handshake succeeded but the certificate presented failed validation under Full (strict) — expired, self-signed, or wrong hostname. 525 is 'could not talk TLS'; 526 is 'talked TLS, papers not in order'."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 525 — SSL Handshake Failed — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 525 — SSL Handshake Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 525 'SSL handshake failed'. Origin missing TLS on 443, SNI mismatches, legacy protocols — and the free Origin CA certificate.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 525, ssl handshake failed cloudflare, error 525, http 525">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 525 — SSL Handshake Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 525 'SSL handshake failed'. Origin missing TLS on 443, SNI mismatches, legacy protocols — and the free Origin CA certificate.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-525">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-525">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 525 — SSL Handshake Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 525 — SSL Handshake Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare tried to establish a TLS connection to the origin (Full or Full-strict SSL mode) and the handshake failed — usually no certificate is being served on port 443.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 525</code></li><li><code>ssl handshake failed cloudflare</code></li><li><code>error 525</code></li><li><code>http 525</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>In Full and Full (strict) SSL modes, Cloudflare connects to the origin over HTTPS. Error 525 means that TLS handshake failed: nothing speaks TLS on port 443, the server does not present a certificate for the requested hostname (SNI), or the origin only offers protocols/ciphers too old for Cloudflare's client. It commonly appears right after switching the SSL mode from Flexible to Full — the dashboard changed, but the origin never got a certificate. Cloudflare's free Origin CA certificate exists precisely for this.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No TLS on the origin's port 443</strong> — The mode says Full, but the origin serves plain HTTP only — the handshake dies immediately. The top cause after 'improving' the SSL mode without touching the server.</li>
+                <li><strong>SNI/vhost mismatch</strong> — The origin serves TLS but has no certificate configured for this hostname; the default vhost answers with the wrong cert or resets.</li>
+                <li><strong>Legacy protocols or ciphers only</strong> — Origins limited to TLS 1.0/1.1 or obsolete cipher suites cannot negotiate with Cloudflare's modern client settings.</li>
+                <li><strong>Port 443 closed while 80 is open</strong> — Firewall allows HTTP but not HTTPS from Cloudflare's ranges — the handshake never even starts.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Test the origin's TLS directly with SNI</h3>
+            <p>This reproduces exactly what Cloudflare does and prints the failure reason.</p>
+            <pre><code>openssl s_client -connect ORIGIN_IP:443 -servername example.com &lt;/dev/null 2&gt;&amp;1 | head -25
+# look for: certificate chain, protocol/cipher, or immediate errors</code></pre>
+            <h3>2. Install a Cloudflare Origin CA certificate</h3>
+            <p>Free, valid up to 15 years, trusted by Cloudflare (only by Cloudflare — perfect for origins living behind it). Generate in the dashboard (SSL/TLS → Origin Server), install, and use Full (strict).</p>
+            <pre><code># nginx after downloading cert+key from the dashboard:
+ssl_certificate     /etc/ssl/cf-origin/example.com.pem;
+ssl_certificate_key /etc/ssl/cf-origin/example.com.key;
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></pre>
+            <h3>3. Or use Let's Encrypt on the origin</h3>
+            <p>Equally valid — a publicly trusted certificate on the origin also satisfies Full (strict).</p>
+            <pre><code>sudo certbot --nginx -d example.com -d www.example.com</code></pre>
+            <h3>4. Modernize protocols and open 443</h3>
+            <p>Ensure TLS 1.2+ is enabled and the HTTPS port is reachable from Cloudflare's ranges.</p>
+            <pre><code># nginx:
+ssl_protocols TLSv1.2 TLSv1.3;
+# firewall check from outside:
+nc -zv ORIGIN_IP 443</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Should I just switch back to Flexible mode to make 525 go away?</h3>
+            <p>It stops the error but reintroduces the problem Full mode solves: with Flexible, traffic between Cloudflare and your origin travels unencrypted. Since Origin CA certificates are free and take minutes, Full (strict) is almost always the right destination — treat Flexible as a legacy stopgap.</p>
+            <h3>What exactly is the Origin CA certificate and where is it trusted?</h3>
+            <p>A certificate issued by Cloudflare's own CA specifically for origin-to-Cloudflare connections. Browsers do NOT trust it — if users ever hit your origin directly it will warn. Behind Cloudflare that never happens for proxied traffic, which is why it is the lowest-friction way to satisfy Full (strict).</p>
+            <h3>525 vs 526 — which is which?</h3>
+            <p>525: the TLS handshake itself failed (no cert, protocol mismatch, port closed). 526: the handshake succeeded but the certificate presented failed validation under Full (strict) — expired, self-signed, or wrong hostname. 525 is 'could not talk TLS'; 526 is 'talked TLS, papers not in order'.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-526">Cloudflare Error 526</a> — invalid certificate under Full (strict).</li>
+                <li><a href="/errors/nginx/cannot-load-certificate">Nginx Cannot Load Certificate</a> — origin-side certificate config failures.</li>
+                <li><a href="/errors/ssl/tls-version-unsupported">TLS Version Unsupported</a> — protocol negotiation failures.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a>, <a href="/learn/ssl-checker/">SSL certificates explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Inspect certificates and TLS setup</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Verify 443 is reachable</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Data Tools — duckTyped","description":"Free browser-based data tools: Base64 encoder/decoder, URL encoder/decoder, JSON formatter, timestamp converter, color converter, QR code generator, QR code scanner, and metadata extractor.","url":"https://ducktyped.xyz/tools/data-tools/","publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ducktyped.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://ducktyped.xyz/utility/"},{"@type":"ListItem","position":3,"name":"Data Tools","item":"https://ducktyped.xyz/tools/data-tools/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What data tools does duckTyped offer?","acceptedAnswer":{"@type":"Answer","text":"duckTyped provides JSON formatter, character counter, text diff, timestamp converter, timezone converter, ASCII table, query string parser, metadata extractor, and UUID generator — all free and browser-based."}},{"@type":"Question","name":"Is my data safe when using these tools?","acceptedAnswer":{"@type":"Answer","text":"Yes. All data processing happens in your browser. Nothing is sent to any server. duckTyped has no analytics, tracking, or data collection."}},{"@type":"Question","name":"Can I use these tools offline?","acceptedAnswer":{"@type":"Answer","text":"Most duckTyped data tools work entirely client-side after the page loads. Once cached by your browser, many will function without an active internet connection."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Tools — Base64, JSON Formatter, Timestamp Converter &amp; More — duckTyped</title>
+    <meta name="description" content="Free browser-based data tools: Base64 encoder/decoder, URL encoder/decoder, JSON formatter and validator, Unix timestamp converter, color converter, QR code generator, QR scanner, and file metadata extractor.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Data Tools — Base64, JSON, Timestamp, QR Code &amp; More — duckTyped">
+    <meta property="og:description" content="Free data tools: Base64 encoder, URL encoder, JSON formatter, timestamp converter, color converter, QR generator, and metadata extractor.">
+    <meta property="og:url" content="https://ducktyped.xyz/tools/data-tools/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/data-tools.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Data Tools — duckTyped">
+    <meta name="twitter:description" content="Base64 encoder, URL encoder, JSON formatter, timestamp converter, color converter, QR generator, and more. Free, no registration.">
+    <link rel="canonical" href="https://ducktyped.xyz/tools/data-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/utility/">Tools</a> <span>/</span> <span>Data Tools</span>
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Data Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Encode, decode, convert, and transform data in your browser. From Base64 and URL encoding to JSON formatting, timestamp conversion, color conversion, and QR codes — all client-side with no server uploads.</p>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Tools</h2>
+            <div class="learn-grid">
+                <a href="/base64-encoder/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>Base64 Encoder / Decoder</h3>
+                    <p>Encode text or binary data to Base64, or decode Base64 strings back to plain text.</p>
+                </a>
+                <a href="/url-encoder/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>URL Encoder / Decoder</h3>
+                    <p>Encode and decode URLs using percent-encoding (RFC 3986) to handle special characters in query strings and paths.</p>
+                </a>
+                <a href="/json-formatter/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>JSON Formatter</h3>
+                    <p>Format, pretty-print, and validate JSON data with syntax highlighting. Minify JSON or expand it for readability.</p>
+                </a>
+                <a href="/timestamp-converter/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>Timestamp Converter</h3>
+                    <p>Convert between Unix timestamps and human-readable date formats. Supports milliseconds, seconds, and ISO 8601.</p>
+                </a>
+                <a href="/color-converter/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>Color Converter</h3>
+                    <p>Convert colors between HEX, RGB, HSL, HSV, and CSS color names with a live preview.</p>
+                </a>
+                <a href="/qr-generator/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes from any text, URL, WiFi credentials, or vCard contact data.</p>
+                </a>
+                <a href="/qr-scanner/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>QR Code Scanner</h3>
+                    <p>Scan and decode QR codes from uploaded images or your device camera, entirely in the browser.</p>
+                </a>
+                <a href="/metadata-extractor/" class="learn-card">
+                    <span class="category-badge">Data</span>
+                    <h3>Metadata Extractor</h3>
+                    <p>Extract EXIF data, file properties, and embedded metadata from images and other file types.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Related Guides</h2>
+            <div class="learn-grid">
+                <a href="/learn/base64-encoder/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Base64 Encoding Explained</h3>
+                    <p>What Base64 is, how the encoding scheme works, Unicode handling, and practical use cases like data URIs and API payloads.</p>
+                </a>
+                <a href="/learn/url-encoder/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>URL Encoding and Percent-Encoding</h3>
+                    <p>Percent-encoding rules, reserved characters, URI components, and when to encode query parameters vs path segments.</p>
+                </a>
+                <a href="/learn/json-formatter/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>JSON Formatting and Validation</h3>
+                    <p>JSON syntax rules, common validation errors, formatting vs minifying, and tips for working with nested JSON data.</p>
+                </a>
+                <a href="/learn/timestamp-converter/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Unix Timestamps Explained</h3>
+                    <p>What Unix time is, how epoch timestamps work, timezone handling, and common timestamp formats like ISO 8601.</p>
+                </a>
+                <a href="/learn/color-converter/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Color Formats and Conversion</h3>
+                    <p>How HEX, RGB, and HSL color models work, and how to convert between them for web and design projects.</p>
+                </a>
+                <a href="/learn/qr-generator/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>QR Code Generation</h3>
+                    <p>QR code encoding, error correction levels, data capacity, and supported payload formats like WiFi, vCard, and URLs.</p>
+                </a>
+                <a href="/learn/qr-scanner/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>QR Code Scanning</h3>
+                    <p>How QR code detection and decoding works, camera access in browsers, and supported image formats.</p>
+                </a>
+                <a href="/learn/metadata-extractor/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>File Metadata and EXIF Data</h3>
+                    <p>What metadata is embedded in files, how EXIF works in images, and privacy implications of file metadata.</p>
+                </a>
+            </div>
+        </div>
+
+        
+        <div class="learn-category-section">
+            <h2>When to Use Each Tool</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Tool to Use</th><th>What It Does</th></tr></thead>
+                    <tbody>
+                        <tr><td>Formatting messy JSON</td><td><a href="/json-formatter/">JSON Formatter</a></td><td>Beautifies, validates, and minifies JSON</td></tr>
+                        <tr><td>Counting text length</td><td><a href="/character-counter/">Character Counter</a></td><td>Characters, words, sentences, reading time</td></tr>
+                        <tr><td>Comparing two texts</td><td><a href="/text-diff/">Text Diff</a></td><td>Highlights additions, deletions, changes</td></tr>
+                        <tr><td>Converting timestamps</td><td><a href="/timestamp-converter/">Timestamp Converter</a></td><td>Unix ↔ human-readable date conversion</td></tr>
+                        <tr><td>Timezone math</td><td><a href="/timezone-converter/">Timezone Converter</a></td><td>Convert times between any timezones</td></tr>
+                        <tr><td>Looking up ASCII values</td><td><a href="/ascii-table/">ASCII Table</a></td><td>Character ↔ decimal/hex/octal mapping</td></tr>
+                        <tr><td>Parsing URL parameters</td><td><a href="/query-string-parser/">Query String Parser</a></td><td>Extracts key-value pairs from URLs</td></tr>
+                        <tr><td>Inspecting file metadata</td><td><a href="/metadata-extractor/">Metadata Extractor</a></td><td>EXIF data, file info, GPS coordinates</td></tr>
+                        <tr><td>Generating unique IDs</td><td><a href="/uuid-generator/">UUID Generator</a></td><td>UUID v4, v7 generation</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Other Tool Categories</h2>
+            <div class="learn-grid">
+                <a href="/tools/network-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Network Tools</h3>
+                    <p>DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, and more.</p>
+                </a>
+                <a href="/tools/email-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Email Tools</h3>
+                    <p>Email validator, SMTP checker, email header analyzer, blacklist checker, and breach checker.</p>
+                </a>
+                <a href="/tools/security-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Security Tools</h3>
+                    <p>SSL checker, security headers, password generator, hash generator, and URL safety checker.</p>
+                </a>
+                <a href="/tools/dev-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Dev Tools</h3>
+                    <p>JWT decoder, regex tester, redirect checker, robots.txt analyzer, and tech stack detector.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

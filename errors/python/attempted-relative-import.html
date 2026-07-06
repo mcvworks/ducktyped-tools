@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the same file work when imported but crash when run?","acceptedAnswer":{"@type":"Answer","text":"Imported, the module is known as 'app.main' — '.' means 'app'. Run directly, it is '__main__' with no package attribute, so relative dots have no anchor. Same file, two identities; 'python -m app.main' runs it under the imported identity."}},{"@type":"Question","name":"Do I still need __init__.py files?","acceptedAnswer":{"@type":"Answer","text":"For regular packages, yes — they mark the directory as a package and are where Python looks for package context (namespace packages exist but behave differently with tooling). An empty __init__.py is enough; missing ones are a frequent cause of import weirdness in tests."}},{"@type":"Question","name":"Should I just append to sys.path?","acceptedAnswer":{"@type":"Answer","text":"sys.path hacks work until they don't — they break under different working directories and confuse tools. The maintainable options are: -m invocation, absolute imports, or an editable install. Reserve sys.path manipulation for quick throwaway scripts."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python ImportError: Attempted Relative Import — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python ImportError: Attempted Relative Import — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'attempted relative import with no known parent package'. Run modules with python -m, package layout, __init__.py, and when to use absolute imports.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ImportError: attempted relative import with no known parent package, attempted relative import beyond top-level package, ValueError: attempted relative import, python relative import error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python ImportError: Attempted Relative Import — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'attempted relative import with no known parent package'. Run modules with python -m, package layout, __init__.py, and when to use absolute imports.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/attempted-relative-import">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/attempted-relative-import">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python ImportError: Attempted Relative Import</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python ImportError: Attempted Relative Import</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'ImportError: attempted relative import with no known parent package' — relative imports only work inside a package, and this file was run as a plain script.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ImportError: attempted relative import with no known parent package</code></li><li><code>attempted relative import beyond top-level package</code></li><li><code>ValueError: attempted relative import</code></li><li><code>python relative import error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Relative imports ('from . import utils') resolve against the importing module's package — the dotted path Python knows it by. When you execute a file directly ('python src/app/main.py'), that file runs as the top-level script named __main__ with no package, so '.' points nowhere and Python raises this error. The code is often fine; the invocation is what strips the package context. Running the module through its package ('python -m app.main') restores it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Running a package module as a script</strong> — 'python app/main.py' executes the file without its package identity. The same file works when imported by something else — the asymmetry that makes this error confusing.</li>
+                <li><strong>Relative imports in a genuinely top-level script</strong> — A standalone script (not part of any package) using 'from . import x' — there is no parent package for '.' to mean, ever.</li>
+                <li><strong>Missing package structure</strong> — No __init__.py (in setups not using namespace packages) or a directory layout that does not match the dotted paths used in imports.</li>
+                <li><strong>Tests importing across an src/ layout</strong> — pytest collecting tests that relatively import application code without the package being installed or the rootdir configured.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Run the module via -m from the project root</h3>
+            <p>This gives the file its package identity so relative imports resolve.</p>
+            <pre><code># layout:
+#   project/
+#     app/__init__.py
+#     app/main.py     (uses: from . import utils)
+cd project
+python -m app.main</code></pre>
+            <h3>2. Or switch to absolute imports</h3>
+            <p>Absolute imports work under both invocation styles and are the default recommendation in most style guides.</p>
+            <pre><code># instead of:  from . import utils
+from app import utils
+# instead of:  from ..core import db
+from app.core import db</code></pre>
+            <h3>3. Install the package in editable mode for tests and tools</h3>
+            <p>With src/ layouts, an editable install makes the package importable from anywhere — pytest, scripts, notebooks.</p>
+            <pre><code># pyproject.toml present:
+pip install -e .
+pytest</code></pre>
+            <h3>4. Give scripts a proper entry point</h3>
+            <p>Rather than executing files inside the package, define a console script so users run a command, not a path.</p>
+            <pre><code># pyproject.toml
+[project.scripts]
+myapp = &quot;app.main:main&quot;
+# then: pip install -e .  -&gt;  myapp</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does the same file work when imported but crash when run?</h3>
+            <p>Imported, the module is known as 'app.main' — '.' means 'app'. Run directly, it is '__main__' with no package attribute, so relative dots have no anchor. Same file, two identities; 'python -m app.main' runs it under the imported identity.</p>
+            <h3>Do I still need __init__.py files?</h3>
+            <p>For regular packages, yes — they mark the directory as a package and are where Python looks for package context (namespace packages exist but behave differently with tooling). An empty __init__.py is enough; missing ones are a frequent cause of import weirdness in tests.</p>
+            <h3>Should I just append to sys.path?</h3>
+            <p>sys.path hacks work until they don't — they break under different working directories and confuse tools. The maintainable options are: -m invocation, absolute imports, or an editable install. Reserve sys.path manipulation for quick throwaway scripts.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/python-modulenotfounderror">Python ModuleNotFoundError</a> — the missing-package sibling.</li>
+                <li><a href="/errors/python/command-python-not-found">python: command not found</a> — interpreter/PATH problems.</li>
+                <li><a href="/errors/node/cannot-find-module">Node Cannot Find Module</a> — the Node.js counterpart.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect tool configs</span>
+                </a>
+        <a href="/regex-tester/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Regex Tester</span>
+                    <span class="recommended-tool-desc">Debug import-path patterns in tooling</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

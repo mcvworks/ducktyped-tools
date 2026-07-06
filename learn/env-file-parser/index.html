@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":".env Files Explained","description":"Learn .env file syntax, quoting and escaping rules, how variable expansion differs between dotenv, Docker Compose, and the shell, precedence rules, and how to keep secrets safe.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/env-file-parser/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Env File Parser"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a .env file?","acceptedAnswer":{"@type":"Answer","text":"A .env file is a plain-text file of KEY=value lines that supplies environment variables to an application. It keeps machine-specific configuration and secrets such as API keys and database URLs out of source code, following the twelve-factor app principle of storing config in the environment."}},{"@type":"Question","name":"What is the difference between single and double quotes in a .env file?","acceptedAnswer":{"@type":"Answer","text":"In most dotenv parsers, double quotes expand escape sequences like \\n into real characters and may allow variable expansion, while single quotes keep the value completely literal. Unquoted values are trimmed and usually end at a # comment marker."}},{"@type":"Question","name":"Does a .env file override existing environment variables?","acceptedAnswer":{"@type":"Answer","text":"Usually not. Most dotenv libraries and Docker Compose treat the real environment as authoritative: a variable already set in the shell wins over the value in the .env file. Some libraries offer an override option to reverse this, so check your parser's defaults."}},{"@type":"Question","name":"Should I commit .env files to git?","acceptedAnswer":{"@type":"Answer","text":"Never commit .env files containing real secrets. Add .env to .gitignore and commit a .env.example file with placeholder values instead. If a secret has ever been committed, rotate it — removing the file later does not erase it from git history."}},{"@type":"Question","name":"Why is my .env variable not being read?","acceptedAnswer":{"@type":"Answer","text":"Common causes: spaces around the equals sign (KEY = value is invalid for most parsers), a UTF-8 BOM at the start of the file corrupting the first key, Windows line endings, an export prefix the parser does not support, or a variable already set in the real environment taking precedence."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.env Files Explained — Syntax, Quoting &amp; Security — duckTyped</title>
+    <meta name="description" content=".env file syntax explained: quoting and escaping, multiline values, variable expansion in dotenv vs Docker Compose vs shell, precedence, and security practices.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content=".env Files Explained — Syntax, Quoting &amp; Security — duckTyped">
+    <meta property="og:description" content=".env syntax, quoting rules, expansion differences between parsers, precedence, and how to keep secrets out of git.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/env-file-parser/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content=".env Files Explained — Syntax, Quoting &amp; Security — duckTyped">
+    <meta name="twitter:description" content=".env syntax, quoting, parser differences, precedence, and secret hygiene.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/env-file-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Env File Parser</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>.env Files Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Master .env file syntax: quoting and escaping rules, multiline values, how variable expansion differs between dotenv, Docker Compose, and the shell, which value wins when they conflict, and how to keep secrets out of git.</p>
+
+            <h2>What Is a .env File?</h2>
+            <p>A <strong>.env file</strong> is a plain-text file of <code>KEY=value</code> lines that supplies <strong>environment variables</strong> to an application at startup. It exists to solve one problem: configuration &mdash; especially secrets like API keys and database credentials &mdash; should live in the <em>environment</em>, not in source code. That principle comes from the twelve-factor app methodology, and the .env file is its most popular implementation: each developer and each deployment keeps its own local file, while the code reads <code>process.env.DATABASE_URL</code> (or <code>os.environ</code>, <code>$_ENV</code>, etc.) without caring where the value came from.</p>
+            <p>A typical file looks like this:</p>
+            <pre><code># Database
+DATABASE_URL=postgres://app:s3cret@localhost:5432/myapp
+
+# Third-party services
+STRIPE_API_KEY="sk_test_your_secret_key_here"
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+
+# Feature flags
+DEBUG=true</code></pre>
+            <p>The catch: there is <strong>no official .env specification</strong>. The format originated in Ruby's dotenv gem and was reimplemented by Node's <code>dotenv</code>, Python's <code>python-dotenv</code>, PHP's <code>vlucas/phpdotenv</code>, Docker Compose, Vite, and dozens of others &mdash; each with slightly different rules. The basics below are safe everywhere; the differences are where bugs live.</p>
+
+            <h2>Syntax Basics</h2>
+            <p>The portable core of the format:</p>
+            <ul>
+                <li>One <code>KEY=value</code> pair per line. Keys are conventionally <code>UPPER_SNAKE_CASE</code>, must not contain spaces, and should start with a letter or underscore.</li>
+                <li><strong>No spaces around the <code>=</code>.</strong> This is the single most common .env mistake. Shell syntax forbids it, and dotenv parsers either reject the line or create a key with a trailing space.</li>
+                <li>Lines starting with <code>#</code> are comments. Most parsers also allow inline comments after an <em>unquoted</em> value (<code>PORT=587 # smtp</code>), which means an unquoted value containing <code>#</code> gets silently truncated.</li>
+                <li>Blank lines are ignored. An empty value (<code>EMPTY_VAR=</code>) sets the variable to an empty string &mdash; which is different from the variable being unset.</li>
+            </ul>
+            <p>Right vs wrong, side by side:</p>
+            <pre><code># Wrong                          # Right
+KEY = value                      KEY=value
+PASSWORD=p@ss word               PASSWORD="p@ss word"
+SECRET=abc#123                   SECRET="abc#123"
+export NODE_ENV=production       NODE_ENV=production
+MY-KEY=value                     MY_KEY=value</code></pre>
+            <p>The <code>export</code> prefix deserves a note: it makes the file <code>source</code>-able by a shell, and some parsers tolerate it, but Docker Compose and several strict parsers do not. Leave it out unless you specifically source the file.</p>
+
+            <h2>Quoting and Escaping Rules</h2>
+            <p>Quotes are where parsers diverge most, but the dominant convention (Node dotenv, python-dotenv, Compose) mirrors the shell:</p>
+            <ul>
+                <li><strong>Unquoted</strong> values are trimmed of surrounding whitespace and end at an inline <code>#</code>. Fine for hostnames, ports, and booleans.</li>
+                <li><strong>Double quotes</strong> (<code>"..."</code>) preserve spaces and <code>#</code>, and <em>expand escape sequences</em>: <code>\n</code> becomes a real newline, <code>\"</code> a literal quote. In parsers that support expansion, <code>$VAR</code> is also substituted inside double quotes.</li>
+                <li><strong>Single quotes</strong> (<code>'...'</code>) are fully literal: no escapes, no expansion. Use them when the value itself contains <code>$</code>, backslashes, or anything else you want untouched.</li>
+            </ul>
+            <pre><code>MESSAGE="line one\nline two"   # value contains a real newline
+REGEX='^\d+$'                  # value is exactly ^\d+$  (no escape processing)
+LITERAL='$HOME is not expanded'
+PASSWORD="p@$$w0rd"            # risky: $$ and $w may be expansion syntax
+PASSWORD='p@$$w0rd'            # safe: single quotes keep it literal</code></pre>
+            <p><strong>Multiline values</strong> &mdash; private keys are the classic case &mdash; are supported by modern parsers in two forms, but support is far from universal:</p>
+            <pre><code># Modern dotenv (v15+), python-dotenv: a quoted value may span lines
+PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA7...
+-----END RSA PRIVATE KEY-----"
+
+# Maximum portability: keep it on one line with \n escapes
+PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7...\n-----END RSA PRIVATE KEY-----"
+
+# Often even better: Base64-encode the whole key and decode in app code
+PRIVATE_KEY_B64=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQ...</code></pre>
+
+            <h2>Variable Expansion: dotenv vs Docker Compose vs Shell</h2>
+            <p>Can one variable reference another, as in <code>API_URL=https://$HOST/api</code>? This is the sharpest difference between parsers, and the same file can produce three different values in three tools:</p>
+            <pre><code>HOST=localhost
+API_URL=https://$HOST/api</code></pre>
+            <ul>
+                <li><strong>Node <code>dotenv</code></strong> &mdash; no expansion at all. <code>API_URL</code> is the literal string <code>https://$HOST/api</code> unless you add the separate <code>dotenv-expand</code> package.</li>
+                <li><strong>Docker Compose</strong> &mdash; expands <code>$VAR</code> and <code>${VAR}</code> in the .env file and in <code>compose.yaml</code>, including shell-style defaults: <code>${PORT:-8080}</code> (default if unset or empty), <code>${PORT-8080}</code> (default only if unset), and <code>${PORT:?error message}</code> (fail if missing). A literal dollar sign must be doubled: <code>PRICE=$$5</code>.</li>
+                <li><strong>The shell (<code>source .env</code>)</strong> &mdash; full shell semantics: expansion, command substitution, the lot. Powerful, but it also means an unquoted special character is a syntax error and a malicious file is arbitrary code execution.</li>
+                <li><strong>python-dotenv</strong> &mdash; expands <code>${VAR}</code> (interpolation is on by default for the <code>load_dotenv</code> path), but not bare <code>$VAR</code>.</li>
+            </ul>
+            <p>Practical advice: if a file must be shared between tools (very common &mdash; the same .env feeding Compose <em>and</em> the app inside the container), avoid expansion syntax entirely, or single-quote any value containing a literal <code>$</code>.</p>
+
+            <h2>Precedence: The Real Environment Wins</h2>
+            <p>What happens when a variable is defined both in the shell and in the .env file? Almost universally, <strong>the real environment beats the file</strong>:</p>
+            <pre><code>$ cat .env
+NODE_ENV=development
+
+$ NODE_ENV=production node app.js
+# dotenv sees NODE_ENV already set and leaves it alone
+# app runs with NODE_ENV=production</code></pre>
+            <p>Node's <code>dotenv</code>, <code>python-dotenv</code>, and Docker Compose all behave this way by default; most offer an opt-in override flag (<code>dotenv.config({ override: true })</code>, <code>load_dotenv(override=True)</code>) to reverse it. This default is a feature, not a bug: it lets CI pipelines and production platforms inject real values while the .env file serves as the local fallback. Docker Compose adds its own layered precedence on top &mdash; from highest to lowest: <code>environment:</code> entries in <code>compose.yaml</code>, shell variables, <code>--env-file</code>/<code>.env</code>, and finally <code>ENV</code> defaults baked into the image. When a container sees a stale value, walk that chain from the top.</p>
+
+            <h2>Common Mistakes and Security Practices</h2>
+            <ul>
+                <li><strong>Committing secrets.</strong> The cardinal sin. Add <code>.env</code> (and <code>.env.*.local</code> variants) to <code>.gitignore</code> <em>before</em> the first commit, and commit a placeholder <code>.env.example</code> instead. If a real secret ever lands in git, <strong>rotate it immediately</strong> &mdash; deleting the file in a later commit leaves it fully recoverable in history, and bots scrape public repos for exactly this within minutes.</li>
+                <li><strong>Spaces around <code>=</code>.</strong> <code>KEY = value</code> silently fails or creates a malformed key in most parsers. If a variable is mysteriously undefined, check this first.</li>
+                <li><strong>A UTF-8 BOM.</strong> Some Windows editors prepend an invisible byte-order mark, turning the first key into <code>﻿DATABASE_URL</code>. Symptom: only the <em>first</em> variable in the file fails to load. Save as "UTF-8 without BOM". Stray CRLF line endings cause a similar invisible-trailing-<code>\r</code> bug.</li>
+                <li><strong>Unquoted special characters.</strong> Passwords containing <code>#</code>, <code>$</code>, or spaces get truncated or mangled. Quote any value that is not strictly alphanumeric.</li>
+                <li><strong>One .env for every environment.</strong> Use separate files (<code>.env.development</code>, <code>.env.production</code>) or, better, no file at all in production &mdash; inject variables through your platform's secret manager (Vault, AWS Secrets Manager, Kubernetes Secrets), which provides access control, auditing, and rotation that a plain file never can.</li>
+                <li><strong>Forgetting frontend exposure rules.</strong> Build tools ship prefixed variables (<code>VITE_</code>, <code>NEXT_PUBLIC_</code>, <code>REACT_APP_</code>) to the browser bundle. Anything with such a prefix is public; never put a server secret behind one.</li>
+            </ul>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/env-file-parser/">Env File Parser</a> gives you a fast sanity check before deployment:</p>
+            <ol>
+                <li><strong>Paste your .env content</strong> into the textarea and click <strong>Parse</strong>.</li>
+                <li><strong>Review the structured table</strong> of keys and values, with warnings for missing <code>=</code> signs, duplicate keys, unusual key names, and empty values &mdash; the exact issues that cause silent misconfiguration.</li>
+                <li><strong>Click Convert to JSON</strong> to turn the file into a JSON object for config systems or tests, and copy it with one click.</li>
+            </ol>
+            <p>Parsing happens entirely in your browser &mdash; nothing is uploaded. Still, treat production secrets with care anywhere you paste them.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Env File Parser:</p>
+            <ul>
+                <li><a href="/docker-compose-validator/">Docker Compose Validator</a> &mdash; validate the <code>compose.yaml</code> that consumes your .env values.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> &mdash; format and validate the JSON produced from your .env file.</li>
+                <li><a href="/password-generator/">Password Generator</a> &mdash; generate strong replacement secrets when rotating leaked credentials.</li>
+                <li><a href="/base64-encoder/">Base64 Encoder</a> &mdash; encode multiline values like private keys into single-line .env entries.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/json-formatter/">JSON guide</a>, <a href="/learn/password-generator/">Password security guide</a>, <a href="/learn/base64-encoder/">Base64 Encoding guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> &mdash; a wrong <code>DATABASE_URL</code> in .env is a frequent cause.</li>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> &mdash; mangled or truncated credentials from bad quoting produce auth failures.</li>
+                <li><a href="/errors/devops/">All DevOps Errors</a> &mdash; Docker, git, and package-manager troubleshooting guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/env-file-parser/" class="cta-btn-primary">Try Env File Parser</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

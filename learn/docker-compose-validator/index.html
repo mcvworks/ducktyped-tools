@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Docker Compose Files Explained","description":"Learn the structure of a docker-compose.yml file, how the Compose Specification differs from legacy version-keyed schemas, the most common validation errors, and YAML gotchas like unquoted ports.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/docker-compose-validator/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Docker Compose Validator"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I still need the version key in docker-compose.yml?","acceptedAnswer":{"@type":"Answer","text":"No. Docker Compose V2 follows the Compose Specification, which deprecates the top-level version key. Compose now ignores it (printing a warning) and validates against the unified spec instead of the old version-keyed 2.x/3.x schemas. You can safely delete it from new files."}},{"@type":"Question","name":"Why should ports be quoted in a Compose file?","acceptedAnswer":{"@type":"Answer","text":"YAML 1.1 parsers can interpret unquoted colon-separated numbers like 22:22 as base-60 (sexagesimal) integers, turning a port mapping into the number 1342. Always quote port mappings as strings, for example \"8080:80\", to guarantee they parse correctly."}},{"@type":"Question","name":"What causes most Docker Compose validation errors?","acceptedAnswer":{"@type":"Answer","text":"The vast majority are YAML problems rather than Docker problems: inconsistent indentation, tabs instead of spaces, a key placed at the wrong nesting level (so Compose reports it as an unknown key), wrong value types such as a mapping where a list is expected, and malformed port or volume short syntax."}},{"@type":"Question","name":"How do I debug a failing docker compose up?","acceptedAnswer":{"@type":"Answer","text":"Run docker compose config to validate and print the fully resolved file, check container logs with docker compose logs -f <service>, isolate one service with docker compose up <service>, and verify environment interpolation and port conflicts. Most failures are unset variables, bad indentation, or a host port already in use."}},{"@type":"Question","name":"What are the three main top-level sections of a Compose file?","acceptedAnswer":{"@type":"Answer","text":"services defines the containers to run and is the only required section; networks defines how containers communicate (every service joins a default network automatically); and volumes declares named volumes for data that must survive container restarts."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Compose Files Explained — Structure &amp; Validation — duckTyped</title>
+    <meta name="description" content="Learn docker-compose.yml structure, the Compose Spec vs legacy versions, common validation errors, YAML gotchas like unquoted ports, and debugging tips.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Docker Compose Files Explained — Structure &amp; Validation — duckTyped">
+    <meta property="og:description" content="docker-compose.yml structure, Compose Spec vs legacy versions, common validation errors, YAML gotchas, and debugging tips.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/docker-compose-validator/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Docker Compose Files Explained — Structure &amp; Validation — duckTyped">
+    <meta name="twitter:description" content="Compose file structure, common validation errors, YAML gotchas, and how to debug a failing compose up.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/docker-compose-validator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>Docker Compose Validator</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Docker Compose Files Explained</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand the structure of a docker-compose.yml file, how the modern Compose Specification replaced the version-keyed schemas, which validation errors trip people up most, and how to debug a failing <code>compose up</code>.</p>
+
+            <h2>Anatomy of a Compose File</h2>
+            <p>A Compose file is a YAML document that describes a multi-container application declaratively: which containers to run, how they talk to each other, and where their data lives. It has three main top-level sections:</p>
+            <ul>
+                <li><strong><code>services</code></strong> -- the containers themselves. Each key under <code>services</code> is a service name, and each service needs at minimum an <code>image</code> to pull or a <code>build</code> context to build from. Everything else -- <code>ports</code>, <code>environment</code>, <code>volumes</code>, <code>depends_on</code>, <code>restart</code> -- configures how that container runs.</li>
+                <li><strong><code>networks</code></strong> -- how services communicate. Compose creates a default network automatically and connects every service to it, so services can already reach each other by service name (<code>db:5432</code>, not <code>localhost:5432</code>). You only declare networks explicitly when you need isolation between groups of services.</li>
+                <li><strong><code>volumes</code></strong> -- named volumes for data that must survive container restarts, such as database files. Named volumes used by a service must also be declared at the top level.</li>
+            </ul>
+            <p>A minimal but complete two-service stack:</p>
+            <pre><code>services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:</code></pre>
+            <p>Note the structure: <code>web</code> and <code>db</code> are nested under <code>services</code>, <code>ports</code> and <code>volumes</code> are <em>lists</em> (each entry starts with <code>-</code>), <code>environment</code> here is a <em>mapping</em>, and the named volume <code>db_data</code> is declared at the bottom. Most validation errors are violations of exactly this shape.</p>
+
+            <h2>Compose Spec vs Legacy version Schemas</h2>
+            <p>Older Compose files start with a line like <code>version: "3.8"</code>. That number selected one of the legacy schemas: the <strong>2.x</strong> series (designed for standalone Compose, with features like <code>depends_on</code> conditions and resource limits) or the <strong>3.x</strong> series (designed for Docker Swarm, which dropped some 2.x features and added <code>deploy</code>). Picking a version meant picking which keys were legal, and plenty of confusion came from features existing in 2.4 but not 3.8.</p>
+            <p>Docker Compose V2 (the <code>docker compose</code> plugin, as opposed to the old <code>docker-compose</code> Python tool) replaced all of that with the unified <strong>Compose Specification</strong>:</p>
+            <ul>
+                <li>The top-level <code>version</code> key is <strong>deprecated and ignored</strong>. Modern Compose prints a warning ("the attribute <code>version</code> is obsolete") and validates against the spec regardless of what the key says.</li>
+                <li>The spec merges the useful parts of 2.x and 3.x -- <code>depends_on</code> with conditions, <code>deploy</code> resource limits, healthchecks, and profiles all coexist.</li>
+                <li><code>compose.yaml</code> is the preferred filename, though <code>docker-compose.yml</code> still works.</li>
+            </ul>
+            <p>Practical takeaway: for new files, omit <code>version</code> entirely. If you maintain old files, leaving it in is harmless with Compose V2 but misleading -- it no longer controls anything. Only legacy tooling pinned to the old <code>docker-compose</code> 1.x binary still enforces version-keyed schemas.</p>
+
+            <h2>Most Common Validation Errors</h2>
+            <p>Almost every "invalid compose file" report falls into one of four buckets:</p>
+            <ul>
+                <li><strong>Indentation mistakes.</strong> YAML nesting is defined purely by leading spaces. A service property indented at the wrong level silently becomes a top-level key (then fails as "unknown key") or attaches to the wrong service. Pick two spaces per level and never mix widths.</li>
+                <li><strong>Wrong value types.</strong> Each key expects a specific type. <code>ports</code> and <code>depends_on</code> (short form) expect lists; <code>environment</code> accepts a list <em>or</em> a mapping, but not a mix. A classic type error:
+<pre><code># Wrong: ports given as a mapping
+services:
+  web:
+    image: nginx
+    ports: "8080:80"
+
+# Right: ports is a list of strings
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"</code></pre></li>
+                <li><strong>Unknown keys.</strong> Usually a typo (<code>enviroment</code>, <code>depend_on</code>) or a key at the wrong level -- for example putting <code>volumes:</code> inside <code>ports:</code> because of an indentation slip. Compose reports these as <code>Additional property X is not allowed</code>.</li>
+                <li><strong>Port syntax errors.</strong> The short syntax is <code>"HOST:CONTAINER"</code>, optionally with an IP (<code>"127.0.0.1:8080:80"</code>) or protocol (<code>"53:53/udp"</code>). Reversing host and container ports, omitting quotes, or using a range incorrectly (<code>"8000-8010:8000"</code> maps a range to one port only in newer versions) all produce confusing failures.</li>
+            </ul>
+
+            <h2>YAML Gotchas</h2>
+            <p>Compose problems are often really YAML problems. The recurring traps:</p>
+            <ul>
+                <li><strong>Tabs are illegal.</strong> YAML forbids tab characters for indentation, full stop. A single tab pasted from a terminal yields <code>found character '\t' that cannot start any token</code>. Configure your editor to insert spaces.</li>
+                <li><strong>Unquoted port mappings.</strong> YAML 1.1 parsers treat colon-separated digit groups under 60 as <strong>base-60 (sexagesimal) numbers</strong>. An unquoted <code>22:22</code> can parse as the integer 1342 instead of a port mapping:
+<pre><code># Wrong: may parse as the number 1342
+ports:
+  - 22:22
+
+# Right: always quote port mappings
+ports:
+  - "22:22"</code></pre></li>
+                <li><strong>The Norway problem.</strong> Unquoted <code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>, <code>true</code>, <code>false</code> become booleans in YAML 1.1. An environment value of <code>no</code> arrives in your container as <code>False</code>. Quote any environment value that is not obviously a plain string: <code>DEBUG: "no"</code>.</li>
+                <li><strong>Version numbers become floats.</strong> <code>image_tag: 3.10</code> parses as the float <code>3.1</code>. Quote it.</li>
+                <li><strong>Duplicate keys.</strong> Defining <code>environment:</code> twice in one service is invalid YAML, but some parsers silently keep only the last occurrence -- your first block of variables vanishes without an error.</li>
+                <li><strong>Variable interpolation.</strong> <code>${DB_PASSWORD}</code> is substituted from the shell environment or a <code>.env</code> file at parse time. An unset variable becomes an empty string with only a warning. Use <code>${DB_PASSWORD:?error}</code> to make missing variables fail loudly.</li>
+            </ul>
+
+            <h2>Debugging a Failing compose up</h2>
+            <p>When <code>docker compose up</code> fails, work through it in this order:</p>
+            <ol>
+                <li><strong>Validate first:</strong> <code>docker compose config</code> parses the file, applies <code>.env</code> interpolation, and prints the fully resolved configuration -- or the exact line of the first error. <code>docker compose config --quiet</code> is a pure pass/fail check for CI.</li>
+                <li><strong>Read the actual error.</strong> A YAML parse error names a line number; a schema error names the offending key and service. Fix the first error and re-run -- later errors are often cascade effects.</li>
+                <li><strong>Check the logs:</strong> <code>docker compose logs -f web</code> shows why a container that started immediately exited. <code>docker compose ps</code> shows restart loops.</li>
+                <li><strong>Isolate one service:</strong> <code>docker compose up web</code> starts a single service (plus its <code>depends_on</code> chain) so you can find which container is at fault.</li>
+                <li><strong>Check port conflicts.</strong> <code>bind: address already in use</code> means another process owns the host port -- find it with <code>ss -tlnp | grep 8080</code> or change the host side of the mapping.</li>
+                <li><strong>Verify interpolation:</strong> compare <code>docker compose config</code> output against what you expected -- empty strings where secrets should be mean an unset variable or a <code>.env</code> file in the wrong directory.</li>
+                <li><strong>Rebuild when in doubt:</strong> <code>docker compose up --build --force-recreate</code> rules out stale images and containers holding old configuration.</li>
+            </ol>
+
+            <h2>How to Use the Tool</h2>
+            <p>The duckTyped <a href="/docker-compose-validator/">Docker Compose Validator</a> gives you a fast first-pass check without a Docker daemon:</p>
+            <ol>
+                <li><strong>Paste your docker-compose.yml</strong> into the input (or click Load Example for a working two-service stack).</li>
+                <li><strong>Click Validate</strong> to parse the YAML structure.</li>
+                <li><strong>Review the verdict</strong> -- syntax errors with line numbers, warnings such as a service missing both <code>image</code> and <code>build</code>, and a summary of the services found.</li>
+            </ol>
+            <p>Validation runs entirely in your browser -- your configuration, including any embedded credentials, is <strong>never sent to a server</strong>. For full schema validation against the Compose Specification, follow up with <code>docker compose config</code> locally.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the Docker Compose Validator:</p>
+            <ul>
+                <li><a href="/env-file-parser/">Env File Parser</a> -- validate the <code>.env</code> file Compose uses for variable interpolation.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> -- format and validate JSON config your services consume, or compare against <code>docker compose config --format json</code> output.</li>
+                <li><a href="/port-scanner/">Port Scanner</a> -- check which ports are open on a host when diagnosing published-port conflicts.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/json-formatter/">JSON guide</a>, <a href="/learn/port-scanner/">Port Scanner guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/docker-port-already-allocated">Docker port already allocated</a> -- the host port in your <code>ports</code> mapping is already in use.</li>
+                <li><a href="/errors/devops/docker-daemon-not-running">Docker daemon not running</a> -- <code>compose up</code> cannot connect to the Docker engine.</li>
+                <li><a href="/errors/devops/docker-image-pull-failed">Docker image pull failed</a> -- a service's <code>image</code> reference cannot be downloaded.</li>
+                <li><a href="/errors/devops/docker-network-not-found">Docker network not found</a> -- a service references a network that was removed or never declared.</li>
+                <li><a href="/errors/devops/">All DevOps Errors</a> -- browse all Docker, Git, and tooling error guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/docker-compose-validator/" class="cta-btn-primary">Try Docker Compose Validator</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When should I use 308 instead of 301?","acceptedAnswer":{"@type":"Answer","text":"Use 308 when you need to permanently redirect requests while ensuring the HTTP method is preserved. This is critical for API endpoints that accept POST, PUT, or DELETE. For simple page redirects, 301 is usually sufficient."}},{"@type":"Question","name":"Do search engines understand 308?","acceptedAnswer":{"@type":"Answer","text":"Major search engines treat 308 similarly to 301 for SEO purposes, transferring link equity to the new URL. However, 301 is more widely used and tested for SEO contexts."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"308 Permanent Redirect — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 308 Permanent Redirect","step":[{"@type":"HowToStep","position":1,"name":"Update client URLs to the new location","text":"Since 308 indicates a permanent move, update all references to point to the new URL provided in the Location header. This eliminates the redirect overhead."},{"@type":"HowToStep","position":2,"name":"Verify client support for 308","text":"Some older HTTP clients may not recognize 308. If you need to support legacy clients, consider using 301 for GET requests and 308 only for endpoints that accept other methods."},{"@type":"HowToStep","position":3,"name":"Configure the redirect on your server","text":"If you are setting up a permanent redirect for API endpoints, use 308 instead of 301 to prevent clients from changing the request method."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>308 Permanent Redirect — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 308 Permanent Redirect. Learn how it differs from 301, when to use it for APIs, and how it preserves request methods during permanent redirects.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 308, 308 Permanent Redirect, 308 status code, 308 vs 301, Permanent redirect POST">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="308 Permanent Redirect — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 308 Permanent Redirect. Learn how it differs from 301, when to use it for APIs, and how it preserves request methods during permanent redirects.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/308-permanent-redirect">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/308-permanent-redirect">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>308 Permanent Redirect</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>308 Permanent Redirect</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The resource has permanently moved, preserving the request method</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 308</code></li><li><code>308 Permanent Redirect</code></li><li><code>308 status code</code></li><li><code>308 vs 301</code></li><li><code>Permanent redirect POST</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 308 Permanent Redirect indicates that the resource has been permanently moved to a new URI and the client must not change the request method when following the redirect. It is the permanent counterpart to 307, just as 301 is the permanent counterpart to 302. This is primarily used for APIs where POST and PUT requests must retain their method after redirect.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Permanent API endpoint migration</strong> — An API endpoint has been permanently relocated and the server needs to ensure that all request methods (POST, PUT, DELETE) are preserved when clients follow the redirect.</li>
+                <li><strong>Domain migration for API services</strong> — The service has moved to a new domain and uses 308 instead of 301 to guarantee that non-GET requests from API clients retain their original method.</li>
+                <li><strong>URL restructuring with method safety</strong> — The URL scheme has been permanently changed and the server requires that POST form submissions and API calls are not downgraded to GET requests.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Update client URLs to the new location</h3>
+            <p>Since 308 indicates a permanent move, update all references to point to the new URL provided in the Location header. This eliminates the redirect overhead.</p>
+            <h3>2. Verify client support for 308</h3>
+            <p>Some older HTTP clients may not recognize 308. If you need to support legacy clients, consider using 301 for GET requests and 308 only for endpoints that accept other methods.</p>
+            <pre><code># Test if your client follows 308 correctly
+curl -X POST -d 'test=data' -L -v https://example.com/old-api</code></pre>
+            <h3>3. Configure the redirect on your server</h3>
+            <p>If you are setting up a permanent redirect for API endpoints, use 308 instead of 301 to prevent clients from changing the request method.</p>
+            <pre><code># Nginx
+location /old-api/ {
+    return 308 https://example.com/new-api$request_uri;
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>When should I use 308 instead of 301?</h3>
+            <p>Use 308 when you need to permanently redirect requests while ensuring the HTTP method is preserved. This is critical for API endpoints that accept POST, PUT, or DELETE. For simple page redirects, 301 is usually sufficient.</p>
+            <h3>Do search engines understand 308?</h3>
+            <p>Major search engines treat 308 similarly to 301 for SEO purposes, transferring link equity to the new URL. However, 301 is more widely used and tested for SEO contexts.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/301-moved-permanently">301 Moved Permanently</a> — Permanent redirect (may change method)</li>
+                <li><a href="/errors/http/307-temporary-redirect">307 Temporary Redirect</a> — Temporary redirect preserving request method</li>
+                <li><a href="/errors/http/302-found">302 Found</a> — Temporary redirect to another URL</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace redirect chains</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/redirect-checker/" class="cta-btn-primary">Try Redirect Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

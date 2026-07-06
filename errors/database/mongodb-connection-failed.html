@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between mongodb:// and mongodb+srv://?","acceptedAnswer":{"@type":"Answer","text":"mongodb:// is the standard connection string that requires explicit host:port pairs. mongodb+srv:// uses DNS SRV records to discover the cluster members, which is required for MongoDB Atlas and simplifies connection strings for replica sets."}},{"@type":"Question","name":"What is the authSource parameter?","acceptedAnswer":{"@type":"Answer","text":"authSource specifies the database that contains the user's credentials. It defaults to the database in the connection string, but users are often created in the 'admin' database, requiring authSource=admin."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"MongoDB Connection Failed — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix MongoDB Connection Failed","step":[{"@type":"HowToStep","position":1,"name":"Start MongoDB service","text":"Start the MongoDB server and check its status."},{"@type":"HowToStep","position":2,"name":"Verify connection string","text":"Test the connection string using the MongoDB shell."},{"@type":"HowToStep","position":3,"name":"Whitelist IP in MongoDB Atlas","text":"In the Atlas web console, go to Network Access and add your current IP address or use 0.0.0.0/0 for development (not recommended for production)."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Connection Failed — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix MongoDB connection failed error. Learn why MongoDB connections fail and how to fix authentication, network, and replica set configuration issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="MongoDB connection failed, MongoNetworkError, MongoServerSelectionError, connect ECONNREFUSED 27017, MongoDB connection refused">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MongoDB Connection Failed — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix MongoDB connection failed error. Learn why MongoDB connections fail and how to fix authentication, network, and replica set configuration issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mongodb-connection-failed">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mongodb-connection-failed">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>MongoDB Connection Failed</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MongoDB Connection Failed</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">MongoDB client could not connect to the server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>MongoDB connection failed</code></li><li><code>MongoNetworkError</code></li><li><code>MongoServerSelectionError</code></li><li><code>connect ECONNREFUSED 27017</code></li><li><code>MongoDB connection refused</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when the MongoDB client or driver cannot establish a connection to the MongoDB server. MongoDB connections can fail due to the server not running, authentication issues, network problems, or incorrect connection string format. MongoDB Atlas (cloud) connections have additional requirements like IP whitelisting.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>MongoDB server is not running</strong> — The mongod or mongos process has stopped. This can happen due to unclean shutdown, configuration errors, or insufficient disk space.</li>
+                <li><strong>Authentication failure</strong> — The username, password, or authentication database in the connection string is incorrect. MongoDB uses SCRAM authentication by default.</li>
+                <li><strong>IP not whitelisted (MongoDB Atlas)</strong> — When using MongoDB Atlas, the connecting client's IP address must be added to the Atlas IP Access List. Connections from non-whitelisted IPs are rejected.</li>
+                <li><strong>Incorrect connection string format</strong> — The MongoDB connection string has syntax errors, missing parameters, or incorrect formatting. The mongodb+srv:// and mongodb:// protocols have different requirements.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Start MongoDB service</h3>
+            <p>Start the MongoDB server and check its status.</p>
+            <pre><code>sudo systemctl start mongod
+sudo systemctl status mongod
+
+# Check MongoDB logs:
+sudo tail -n 50 /var/log/mongodb/mongod.log</code></pre>
+            <h3>2. Verify connection string</h3>
+            <p>Test the connection string using the MongoDB shell.</p>
+            <pre><code># Local connection:
+mongosh &quot;mongodb://localhost:27017/mydb&quot;
+
+# Authenticated connection:
+mongosh &quot;mongodb://user:password@localhost:27017/mydb?authSource=admin&quot;
+
+# Atlas connection:
+mongosh &quot;mongodb+srv://user:password@cluster.mongodb.net/mydb&quot;</code></pre>
+            <h3>3. Whitelist IP in MongoDB Atlas</h3>
+            <p>In the Atlas web console, go to Network Access and add your current IP address or use 0.0.0.0/0 for development (not recommended for production).</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between mongodb:// and mongodb+srv://?</h3>
+            <p>mongodb:// is the standard connection string that requires explicit host:port pairs. mongodb+srv:// uses DNS SRV records to discover the cluster members, which is required for MongoDB Atlas and simplifies connection strings for replica sets.</p>
+            <h3>What is the authSource parameter?</h3>
+            <p>authSource specifies the database that contains the user's credentials. It defaults to the database in the connection string, but users are often created in the 'admin' database, requiring authSource=admin.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/redis-connection-refused">Redis Connection Refused</a> — Redis refused the connection</li>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — Database connection timed out</li>
+                <li><a href="/errors/database/mysql-access-denied">MySQL Access Denied</a> — MySQL authentication failed</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between EPERM and EACCES?","acceptedAnswer":{"@type":"Answer","text":"EPERM means the operation is not permitted regardless of permissions (often due to file locking or OS-level restrictions). EACCES means access denied due to file ownership or permission bits. EPERM is more common on Windows; EACCES is more common on Unix systems."}},{"@type":"Question","name":"Why does antivirus cause EPERM errors?","acceptedAnswer":{"@type":"Answer","text":"Antivirus software scans files as they are created or modified. During npm install, thousands of files are being written rapidly. The antivirus may lock files for scanning at the exact moment npm tries to modify them, causing EPERM."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"npm ERR! code EPERM — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix npm ERR! code EPERM","step":[{"@type":"HowToStep","position":1,"name":"Close other applications and retry","text":"Close your editor, stop any running development servers, and temporarily disable antivirus real-time scanning, then retry."},{"@type":"HowToStep","position":2,"name":"Clear npm cache","text":"Force clear the npm cache which may contain corrupted or locked files."},{"@type":"HowToStep","position":3,"name":"Run as administrator (Windows)","text":"On Windows, open a terminal as Administrator. However, this is a temporary fix. The proper solution is to fix the underlying permission issue."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! code EPERM — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! EPERM permission error. Learn why npm cannot access files and how to fix file permission and locking issues on Windows, macOS, and Linux.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! EPERM, EPERM: operation not permitted, npm EPERM error Windows, Error: EPERM operation not permitted, npm cache clean EPERM">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! code EPERM — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! EPERM permission error. Learn why npm cannot access files and how to fix file permission and locking issues on Windows, macOS, and Linux.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/npm-err-eperm">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/npm-err-eperm">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>npm ERR! code EPERM</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! code EPERM</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">npm permission error on file operation</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! EPERM</code></li><li><code>EPERM: operation not permitted</code></li><li><code>npm EPERM error Windows</code></li><li><code>Error: EPERM operation not permitted</code></li><li><code>npm cache clean EPERM</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>EPERM (operation not permitted) occurs when npm tries to perform a file operation but is denied by the operating system. This is different from EACCES and is more common on Windows, where file locking by other processes (antivirus, editors, other npm instances) prevents npm from reading, writing, or deleting files in node_modules.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>File locked by another process</strong> — On Windows, antivirus software, file indexing services, or another npm instance may have locked files in node_modules, preventing npm from modifying them.</li>
+                <li><strong>Another npm process is running</strong> — A previous npm install that crashed or is still running in another terminal is holding locks on package files.</li>
+                <li><strong>Insufficient file system permissions</strong> — The user account does not have write permissions to the project directory or the global npm prefix directory.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Close other applications and retry</h3>
+            <p>Close your editor, stop any running development servers, and temporarily disable antivirus real-time scanning, then retry.</p>
+            <pre><code># Delete node_modules and retry:
+rm -rf node_modules package-lock.json
+npm install</code></pre>
+            <h3>2. Clear npm cache</h3>
+            <p>Force clear the npm cache which may contain corrupted or locked files.</p>
+            <pre><code>npm cache clean --force
+npm install</code></pre>
+            <h3>3. Run as administrator (Windows)</h3>
+            <p>On Windows, open a terminal as Administrator. However, this is a temporary fix. The proper solution is to fix the underlying permission issue.</p>
+            <pre><code># In PowerShell as Admin:
+npm install</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between EPERM and EACCES?</h3>
+            <p>EPERM means the operation is not permitted regardless of permissions (often due to file locking or OS-level restrictions). EACCES means access denied due to file ownership or permission bits. EPERM is more common on Windows; EACCES is more common on Unix systems.</p>
+            <h3>Why does antivirus cause EPERM errors?</h3>
+            <p>Antivirus software scans files as they are created or modified. During npm install, thousands of files are being written rapidly. The antivirus may lock files for scanning at the exact moment npm tries to modify them, causing EPERM.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/npm-err-eacces">npm ERR! EACCES</a> — npm permission denied</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/devops/npm-err-enotfound">npm ERR! ENOTFOUND</a> — npm registry unreachable</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

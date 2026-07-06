@@ -1,0 +1,5485 @@
+[
+  {
+    "type": "tool",
+    "title": "DNS Record Checker",
+    "url": "/dns-lookup/",
+    "description": "Look up A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, and DKIM records for any domain.",
+    "keywords": [
+      "dns",
+      "dns lookup",
+      "dns records",
+      "a record",
+      "mx record",
+      "txt record",
+      "ns record",
+      "cname",
+      "spf",
+      "dkim",
+      "dmarc",
+      "nameserver",
+      "domain records",
+      "dns checker"
+    ],
+    "category": "network",
+    "aliases": [
+      "dig",
+      "nslookup",
+      "domain lookup"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "SSL Certificate Checker",
+    "url": "/ssl-checker/",
+    "description": "Check SSL/TLS certificate validity, expiry date, and certificate chain for any domain.",
+    "keywords": [
+      "ssl",
+      "tls",
+      "certificate",
+      "https",
+      "ssl checker",
+      "cert expiry",
+      "ssl validation",
+      "ssl certificate",
+      "tls checker"
+    ],
+    "category": "security",
+    "aliases": [
+      "cert checker",
+      "https checker",
+      "certificate validator"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "WHOIS Lookup",
+    "url": "/whois-lookup/",
+    "description": "Look up domain registration details, registrar, expiry date, and ownership information.",
+    "keywords": [
+      "whois",
+      "domain registration",
+      "registrar",
+      "domain info",
+      "domain owner",
+      "domain expiry",
+      "whois lookup"
+    ],
+    "category": "lookup",
+    "aliases": [
+      "domain info",
+      "domain lookup",
+      "who is"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Port Scanner",
+    "url": "/port-scanner/",
+    "description": "Scan TCP ports on any host to check which ports are open, closed, or filtered.",
+    "keywords": [
+      "port scanner",
+      "port scan",
+      "tcp",
+      "open ports",
+      "firewall",
+      "port checker",
+      "network scan",
+      "port 80",
+      "port 443",
+      "port 22"
+    ],
+    "category": "network",
+    "aliases": [
+      "nmap",
+      "port check",
+      "open port check"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "HTTP Latency Checker",
+    "url": "/http-latency/",
+    "description": "Measure HTTP response times and check server reachability and performance.",
+    "keywords": [
+      "latency",
+      "ping",
+      "http response time",
+      "slow website",
+      "performance",
+      "http checker",
+      "response time",
+      "uptime check"
+    ],
+    "category": "network",
+    "aliases": [
+      "ping test",
+      "speed test",
+      "site speed",
+      "uptime"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "ISP / IP Lookup",
+    "url": "/isp-lookup/",
+    "description": "Identify the ISP, ASN, and approximate location of any IP address.",
+    "keywords": [
+      "isp",
+      "ip address",
+      "internet provider",
+      "geolocation",
+      "ip info",
+      "ip lookup",
+      "asn",
+      "autonomous system",
+      "ip location"
+    ],
+    "category": "lookup",
+    "aliases": [
+      "ip checker",
+      "my ip",
+      "ip info",
+      "what is my ip"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "MAC Address Lookup",
+    "url": "/mac-lookup/",
+    "description": "Look up the hardware manufacturer and vendor of any MAC address using the OUI database.",
+    "keywords": [
+      "mac address",
+      "vendor lookup",
+      "nic",
+      "hardware address",
+      "oui",
+      "mac lookup",
+      "network card",
+      "device manufacturer"
+    ],
+    "category": "lookup",
+    "aliases": [
+      "mac vendor",
+      "mac address checker",
+      "oui lookup"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Device Lookup",
+    "url": "/device-lookup/",
+    "description": "Identify device make and model from IMEI number, Apple serial number, or Dell service tag",
+    "keywords": [
+      "imei",
+      "serial number",
+      "device lookup",
+      "tac",
+      "apple serial",
+      "dell service tag",
+      "phone model",
+      "device identifier"
+    ],
+    "category": "lookup",
+    "aliases": [
+      "imei checker",
+      "serial checker",
+      "device identifier",
+      "tac lookup"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Password Generator",
+    "url": "/password-generator/",
+    "description": "Generate cryptographically secure random passwords with customizable length and character sets.",
+    "keywords": [
+      "password",
+      "password generator",
+      "secure password",
+      "random password",
+      "strong password",
+      "passphrase",
+      "password strength"
+    ],
+    "category": "security",
+    "aliases": [
+      "generate password",
+      "random password",
+      "strong password maker"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Hash Generator",
+    "url": "/hash-generator/",
+    "description": "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input.",
+    "keywords": [
+      "hash",
+      "md5",
+      "sha1",
+      "sha-1",
+      "sha256",
+      "sha-256",
+      "sha512",
+      "checksum",
+      "crypto hash",
+      "hash generator"
+    ],
+    "category": "dev",
+    "aliases": [
+      "md5 generator",
+      "sha generator",
+      "file hash",
+      "checksum tool"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Base64 Encoder / Decoder",
+    "url": "/base64-encoder/",
+    "description": "Encode and decode text to and from Base64 format.",
+    "keywords": [
+      "base64",
+      "encode",
+      "decode",
+      "base64 encoding",
+      "base64 decoder",
+      "base64 encoder",
+      "encoding"
+    ],
+    "category": "dev",
+    "aliases": [
+      "base64 tool",
+      "encode base64",
+      "decode base64"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "URL Encoder / Decoder",
+    "url": "/url-encoder/",
+    "description": "Encode and decode URLs using percent-encoding (RFC 3986).",
+    "keywords": [
+      "url encode",
+      "percent encoding",
+      "decode url",
+      "uri encoding",
+      "url decoder",
+      "url encoder",
+      "special characters"
+    ],
+    "category": "dev",
+    "aliases": [
+      "percent encode",
+      "urlencode",
+      "urldecode"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "JSON Formatter",
+    "url": "/json-formatter/",
+    "description": "Format, pretty-print, and validate JSON data with syntax highlighting.",
+    "keywords": [
+      "json",
+      "format json",
+      "validate json",
+      "pretty print",
+      "json formatter",
+      "json validator",
+      "json beautifier"
+    ],
+    "category": "dev",
+    "aliases": [
+      "json beautifier",
+      "json validator",
+      "json pretty print",
+      "json lint"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "JWT Decoder",
+    "url": "/jwt-decoder/",
+    "description": "Decode and inspect JSON Web Token (JWT) header, payload, and signature.",
+    "keywords": [
+      "jwt",
+      "json web token",
+      "token decoder",
+      "auth token",
+      "jwt decoder",
+      "bearer token",
+      "jwt payload"
+    ],
+    "category": "dev",
+    "aliases": [
+      "jwt parser",
+      "token inspector",
+      "jwt viewer"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Regex Tester",
+    "url": "/regex-tester/",
+    "description": "Test and debug regular expressions against sample text with match highlighting.",
+    "keywords": [
+      "regex",
+      "regular expression",
+      "pattern matching",
+      "regexp",
+      "regex tester",
+      "regex checker",
+      "match groups"
+    ],
+    "category": "dev",
+    "aliases": [
+      "regexp tester",
+      "regex debugger",
+      "pattern tester"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Timestamp Converter",
+    "url": "/timestamp-converter/",
+    "description": "Convert between Unix timestamps and human-readable date formats.",
+    "keywords": [
+      "timestamp",
+      "unix timestamp",
+      "date convert",
+      "epoch",
+      "timestamp converter",
+      "unix time",
+      "date format"
+    ],
+    "category": "dev",
+    "aliases": [
+      "epoch converter",
+      "unix time converter",
+      "date to timestamp"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Color Converter",
+    "url": "/color-converter/",
+    "description": "Convert colors between HEX, RGB, HSL, and other color formats.",
+    "keywords": [
+      "color",
+      "hex",
+      "rgb",
+      "hsl",
+      "color convert",
+      "color converter",
+      "color picker",
+      "hex color"
+    ],
+    "category": "dev",
+    "aliases": [
+      "hex to rgb",
+      "rgb to hex",
+      "color picker",
+      "colour converter"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Subnet Calculator",
+    "url": "/subnet-calculator/",
+    "description": "Calculate subnet masks, CIDR ranges, host counts, and network boundaries.",
+    "keywords": [
+      "subnet",
+      "cidr",
+      "ip range",
+      "network",
+      "subnet mask",
+      "subnet calculator",
+      "subnetting",
+      "network range",
+      "ipv4 subnet"
+    ],
+    "category": "network",
+    "aliases": [
+      "cidr calculator",
+      "ip calculator",
+      "network calculator"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Reverse DNS Lookup",
+    "url": "/reverse-dns/",
+    "description": "Perform reverse DNS lookups to find the hostname associated with an IP address.",
+    "keywords": [
+      "reverse dns",
+      "ptr record",
+      "ip to domain",
+      "rdns",
+      "reverse lookup",
+      "ip hostname",
+      "nslookup"
+    ],
+    "category": "network",
+    "aliases": [
+      "ptr lookup",
+      "ip to hostname",
+      "rdns lookup"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Email Address Validator",
+    "url": "/email-validator/",
+    "description": "Validate email addresses for RFC compliance and check MX records for deliverability.",
+    "keywords": [
+      "email validator",
+      "email verification",
+      "mx check",
+      "valid email",
+      "email validation",
+      "email format",
+      "email deliverability"
+    ],
+    "category": "email",
+    "aliases": [
+      "email checker",
+      "verify email",
+      "email tester"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Email Header Analyzer",
+    "url": "/email-header-analyzer/",
+    "description": "Analyze raw email headers to trace delivery path, diagnose spam, and check authentication.",
+    "keywords": [
+      "email headers",
+      "email trace",
+      "spam headers",
+      "dkim header",
+      "email header analyzer",
+      "email routing",
+      "spf header",
+      "dmarc header"
+    ],
+    "category": "email",
+    "aliases": [
+      "email trace",
+      "header parser",
+      "mail header"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "SMTP Checker",
+    "url": "/smtp-checker/",
+    "description": "Test SMTP server connectivity and check open email ports (25, 465, 587, 2525).",
+    "keywords": [
+      "smtp",
+      "email server",
+      "mail server test",
+      "smtp port",
+      "smtp checker",
+      "email port",
+      "smtp test",
+      "port 25",
+      "port 587"
+    ],
+    "category": "email",
+    "aliases": [
+      "mail server test",
+      "smtp test",
+      "email port test"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Blacklist / RBL Checker",
+    "url": "/blacklist-checker/",
+    "description": "Check if a domain or IP address appears on email blacklists and DNS blocklists.",
+    "keywords": [
+      "blacklist",
+      "rbl",
+      "dnsbl",
+      "spam blacklist",
+      "email reputation",
+      "blacklist checker",
+      "blocklist",
+      "ip blacklist"
+    ],
+    "category": "email",
+    "aliases": [
+      "rbl check",
+      "dnsbl check",
+      "spam list check",
+      "ip reputation"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Email Breach Checker",
+    "url": "/breach-checker/",
+    "description": "Check if an email address has appeared in known data breaches.",
+    "keywords": [
+      "breach",
+      "data breach",
+      "hibp",
+      "email breach",
+      "pwned",
+      "breach checker",
+      "have i been pwned",
+      "password breach"
+    ],
+    "category": "security",
+    "aliases": [
+      "pwned check",
+      "data leak checker",
+      "hibp check"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Security Headers Checker",
+    "url": "/security-headers/",
+    "description": "Inspect HTTP security headers for any URL including HSTS, CSP, X-Frame-Options, and more.",
+    "keywords": [
+      "security headers",
+      "hsts",
+      "csp",
+      "x-frame-options",
+      "http headers",
+      "security header checker",
+      "content security policy",
+      "referrer policy"
+    ],
+    "category": "security",
+    "aliases": [
+      "header check",
+      "hsts check",
+      "csp check"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Redirect Checker",
+    "url": "/redirect-checker/",
+    "description": "Trace the full redirect chain for any URL, showing each hop and status code.",
+    "keywords": [
+      "redirect",
+      "301 redirect",
+      "redirect chain",
+      "url redirect",
+      "redirect checker",
+      "302",
+      "redirect trace",
+      "permanent redirect"
+    ],
+    "category": "url",
+    "aliases": [
+      "redirect trace",
+      "301 checker",
+      "url hop tracer"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Link Checker",
+    "url": "/link-checker/",
+    "description": "Check a webpage for broken links, dead URLs, and HTTP error responses.",
+    "keywords": [
+      "broken links",
+      "link checker",
+      "dead links",
+      "404 links",
+      "link validation",
+      "url checker",
+      "broken url"
+    ],
+    "category": "url",
+    "aliases": [
+      "broken link finder",
+      "dead link checker",
+      "404 checker"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Robots.txt Analyzer",
+    "url": "/robots-analyzer/",
+    "description": "Fetch and analyze a site's robots.txt file to understand crawl rules and restrictions.",
+    "keywords": [
+      "robots.txt",
+      "crawl",
+      "seo",
+      "noindex",
+      "disallow",
+      "robots analyzer",
+      "googlebot",
+      "crawler rules",
+      "sitemap"
+    ],
+    "category": "url",
+    "aliases": [
+      "robots txt viewer",
+      "crawl checker",
+      "seo checker"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Tech Stack Detector",
+    "url": "/tech-detector/",
+    "description": "Detect the technologies, frameworks, and CMS used by any website.",
+    "keywords": [
+      "tech stack",
+      "technology detector",
+      "cms",
+      "framework detection",
+      "tech detector",
+      "wordpress",
+      "react",
+      "nginx",
+      "server detection"
+    ],
+    "category": "url",
+    "aliases": [
+      "wappalyzer",
+      "builtwith",
+      "site tech",
+      "stack detector"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "URL Safety Checker",
+    "url": "/url-safety/",
+    "description": "Check any URL for malware, phishing threats, and safety issues.",
+    "keywords": [
+      "url safety",
+      "phishing",
+      "malware",
+      "safe url",
+      "virus check",
+      "url checker",
+      "safe browsing",
+      "phishing check"
+    ],
+    "category": "security",
+    "aliases": [
+      "virus check",
+      "malware check",
+      "safe link checker"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "QR Code Generator",
+    "url": "/qr-generator/",
+    "description": "Generate QR codes from any text, URL, or data.",
+    "keywords": [
+      "qr code",
+      "qr generator",
+      "barcode",
+      "qr create",
+      "generate qr",
+      "qr code maker"
+    ],
+    "category": "qr",
+    "aliases": [
+      "create qr",
+      "make qr code",
+      "qr maker"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "QR Code Scanner",
+    "url": "/qr-scanner/",
+    "description": "Scan and decode QR codes from images or your camera.",
+    "keywords": [
+      "qr scanner",
+      "decode qr",
+      "qr reader",
+      "scan qr code",
+      "qr decode",
+      "qr code reader"
+    ],
+    "category": "qr",
+    "aliases": [
+      "read qr",
+      "scan barcode",
+      "qr reader"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Traceroute",
+    "url": "/traceroute/",
+    "description": "Trace the network path from your device to any host, showing each hop.",
+    "keywords": [
+      "traceroute",
+      "tracert",
+      "network path",
+      "hops",
+      "network route",
+      "trace route",
+      "network diagnostic"
+    ],
+    "category": "network",
+    "aliases": [
+      "tracert",
+      "network trace",
+      "route trace"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Metadata Extractor",
+    "url": "/metadata-extractor/",
+    "description": "Extract metadata from files including EXIF data, file properties, and embedded information.",
+    "keywords": [
+      "metadata",
+      "file metadata",
+      "exif",
+      "image metadata",
+      "exif viewer",
+      "file info",
+      "photo metadata"
+    ],
+    "category": "dev",
+    "aliases": [
+      "exif reader",
+      "file info",
+      "image metadata viewer"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Encrypted Note",
+    "url": "/secure-note/",
+    "description": "Create password-protected encrypted notes for secure one-time sharing.",
+    "keywords": [
+      "encrypted note",
+      "secure note",
+      "password protected note",
+      "share secret",
+      "private note",
+      "encrypted message"
+    ],
+    "category": "security",
+    "aliases": [
+      "private message",
+      "secret note",
+      "self destructing note"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Plain Notes",
+    "url": "/plain-notes/",
+    "description": "Quick browser-based notepad with auto-save using localStorage.",
+    "keywords": [
+      "notes",
+      "notepad",
+      "local notes",
+      "text editor",
+      "browser notes",
+      "scratch pad",
+      "quick notes"
+    ],
+    "category": "dev",
+    "aliases": [
+      "notepad",
+      "scratch pad",
+      "text editor",
+      "quick note"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "ASCII Table",
+    "url": "/ascii-table/",
+    "description": "Complete ASCII table with decimal, hexadecimal, octal, and binary values. Search and filter ASCII characters.",
+    "keywords": [
+      "ascii",
+      "ascii table",
+      "character codes",
+      "decimal",
+      "hexadecimal",
+      "octal",
+      "binary"
+    ],
+    "category": "dev",
+    "aliases": [
+      "ascii chart",
+      "character codes",
+      "ascii reference"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Base32 Encoder / Decoder",
+    "url": "/base32-encoder/",
+    "description": "Encode text to Base32 or decode Base32 strings back to text.",
+    "keywords": [
+      "base32",
+      "base32 encoder",
+      "base32 decoder",
+      "encoding"
+    ],
+    "category": "dev",
+    "aliases": [
+      "base32 tool",
+      "encode base32"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Character Counter",
+    "url": "/character-counter/",
+    "description": "Count characters, words, sentences, lines, and paragraphs in any text.",
+    "keywords": [
+      "character counter",
+      "word counter",
+      "line counter",
+      "text statistics"
+    ],
+    "category": "dev",
+    "aliases": [
+      "word counter",
+      "text counter",
+      "char count"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Cron Expression Parser",
+    "url": "/cron-parser/",
+    "description": "Parse, build, and understand cron expressions with human-readable descriptions.",
+    "keywords": [
+      "cron",
+      "cron parser",
+      "cron expression",
+      "crontab",
+      "cron job"
+    ],
+    "category": "dev",
+    "aliases": [
+      "crontab editor",
+      "cron builder",
+      "cron schedule"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "CSR Decoder",
+    "url": "/csr-decoder/",
+    "description": "Decode and inspect PEM-encoded Certificate Signing Requests (CSR).",
+    "keywords": [
+      "csr",
+      "certificate signing request",
+      "csr decoder",
+      "pem"
+    ],
+    "category": "security",
+    "aliases": [
+      "csr reader",
+      "certificate request"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "DNS Propagation Checker",
+    "url": "/dns-propagation/",
+    "description": "Check how DNS records have propagated across different DNS servers worldwide.",
+    "keywords": [
+      "dns propagation",
+      "dns checker",
+      "global dns",
+      "dns spread"
+    ],
+    "category": "network",
+    "aliases": [
+      "dns spread",
+      "dns status",
+      "global dns check"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Docker Compose Validator",
+    "url": "/docker-compose-validator/",
+    "description": "Validate Docker Compose YAML files for syntax errors and common issues.",
+    "keywords": [
+      "docker",
+      "docker compose",
+      "yaml validator",
+      "compose"
+    ],
+    "category": "dev",
+    "aliases": [
+      "docker validator",
+      "compose checker",
+      "yaml lint"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Env File Parser",
+    "url": "/env-file-parser/",
+    "description": "Parse .env files into key-value pairs, validate syntax, and convert between formats.",
+    "keywords": [
+      "env",
+      "dotenv",
+      "env parser",
+      "environment variables"
+    ],
+    "category": "dev",
+    "aliases": [
+      "dotenv parser",
+      "env reader",
+      ".env tool"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "HMAC Generator",
+    "url": "/hmac-generator/",
+    "description": "Generate HMAC signatures using SHA-256, SHA-384, SHA-512, and SHA-1.",
+    "keywords": [
+      "hmac",
+      "hmac generator",
+      "hmac sha256",
+      "message authentication"
+    ],
+    "category": "dev",
+    "aliases": [
+      "hmac tool",
+      "hmac hash",
+      "message auth code"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "HTTP Request Builder",
+    "url": "/http-request-builder/",
+    "description": "Build HTTP requests visually and generate curl, fetch, and Python code.",
+    "keywords": [
+      "http request",
+      "curl",
+      "fetch",
+      "api tester",
+      "rest client"
+    ],
+    "category": "dev",
+    "aliases": [
+      "api tester",
+      "rest client",
+      "curl builder",
+      "postman"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "IP Range Generator",
+    "url": "/ip-range-generator/",
+    "description": "Generate a list of IP addresses from a CIDR block or start/end IP range.",
+    "keywords": [
+      "ip range",
+      "cidr",
+      "ip list",
+      "ip generator",
+      "ip enumeration"
+    ],
+    "category": "network",
+    "aliases": [
+      "cidr to ip",
+      "ip list generator",
+      "ip enumeration tool"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "JWT Generator",
+    "url": "/jwt-generator/",
+    "description": "Generate JSON Web Tokens (JWT) with custom claims and signing.",
+    "keywords": [
+      "jwt",
+      "jwt generator",
+      "json web token",
+      "token generator"
+    ],
+    "category": "dev",
+    "aliases": [
+      "create jwt",
+      "token maker",
+      "jwt builder"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Line Tools",
+    "url": "/line-tools/",
+    "description": "Sort lines, remove duplicates, reverse order, filter blank lines, and more.",
+    "keywords": [
+      "line sort",
+      "deduplicate",
+      "line tools",
+      "remove duplicates"
+    ],
+    "category": "dev",
+    "aliases": [
+      "sort lines",
+      "dedupe lines",
+      "text lines"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Password Entropy Calculator",
+    "url": "/password-entropy/",
+    "description": "Calculate the entropy and estimated crack time of any password.",
+    "keywords": [
+      "password entropy",
+      "password strength",
+      "crack time",
+      "entropy"
+    ],
+    "category": "security",
+    "aliases": [
+      "password strength",
+      "password tester",
+      "crack time"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Public Key Decoder",
+    "url": "/public-key-decoder/",
+    "description": "Decode and inspect PEM-encoded public keys. View key type, size, and algorithm.",
+    "keywords": [
+      "public key",
+      "pem decoder",
+      "rsa key",
+      "key decoder"
+    ],
+    "category": "security",
+    "aliases": [
+      "pem viewer",
+      "rsa decoder",
+      "key inspector"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Query String Parser",
+    "url": "/query-string-parser/",
+    "description": "Parse URL query strings into key-value pairs or build query strings from parameters.",
+    "keywords": [
+      "query string",
+      "url params",
+      "query parser",
+      "url parameters"
+    ],
+    "category": "dev",
+    "aliases": [
+      "url params parser",
+      "query builder"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Text Diff Tool",
+    "url": "/text-diff/",
+    "description": "Compare two texts and see the differences highlighted.",
+    "keywords": [
+      "text diff",
+      "diff",
+      "compare text",
+      "text comparison"
+    ],
+    "category": "dev",
+    "aliases": [
+      "compare files",
+      "diff checker",
+      "text compare"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Timezone Converter",
+    "url": "/timezone-converter/",
+    "description": "Convert date and time between different time zones.",
+    "keywords": [
+      "timezone",
+      "time zone",
+      "timezone converter",
+      "utc",
+      "gmt"
+    ],
+    "category": "dev",
+    "aliases": [
+      "time convert",
+      "utc converter",
+      "world clock"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "URL Parser",
+    "url": "/url-parser/",
+    "description": "Parse URLs into their components: protocol, host, port, path, query, and fragment.",
+    "keywords": [
+      "url parser",
+      "url breakdown",
+      "url components",
+      "parse url"
+    ],
+    "category": "url",
+    "aliases": [
+      "url breakdown",
+      "url analyzer",
+      "parse link"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "UUID Generator",
+    "url": "/uuid-generator/",
+    "description": "Generate random UUIDs (v4) and validate existing UUIDs.",
+    "keywords": [
+      "uuid",
+      "uuid generator",
+      "guid",
+      "uuid v4",
+      "unique id"
+    ],
+    "category": "dev",
+    "aliases": [
+      "guid generator",
+      "unique id",
+      "uuid v4"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Webhook Payload Builder",
+    "url": "/webhook-tester/",
+    "description": "Build webhook payloads for GitHub, Stripe, Slack, and Discord.",
+    "keywords": [
+      "webhook",
+      "webhook tester",
+      "webhook payload",
+      "github webhook"
+    ],
+    "category": "dev",
+    "aliases": [
+      "webhook builder",
+      "payload builder"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "Device Lookup Explained — IMEI, Apple Serial & Dell Service Tag",
+    "url": "/learn/device-lookup/",
+    "description": "Learn how IMEI numbers, Apple serial numbers, and Dell service tags work. Understand TAC codes, Luhn validation, and how to identify any device.",
+    "keywords": [
+      "imei explained",
+      "what is imei",
+      "tac code",
+      "apple serial format",
+      "dell service tag",
+      "device identification",
+      "luhn algorithm"
+    ],
+    "category": "lookup"
+  },
+  {
+    "type": "learn",
+    "title": "How DNS Records Work",
+    "url": "/learn/dns-lookup/",
+    "description": "Learn about DNS record types, resolution process, and how to troubleshoot DNS issues.",
+    "keywords": [
+      "dns",
+      "dns records",
+      "how dns works",
+      "dns resolution",
+      "dns tutorial",
+      "a record explained",
+      "mx record explained"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "Understanding SSL/TLS Certificates",
+    "url": "/learn/ssl-checker/",
+    "description": "Learn how SSL certificates work, their types, validity periods, and how to validate them.",
+    "keywords": [
+      "ssl",
+      "tls",
+      "certificate",
+      "https",
+      "ssl tutorial",
+      "certificate chain",
+      "ca",
+      "certificate authority"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "learn",
+    "title": "What is WHOIS?",
+    "url": "/learn/whois-lookup/",
+    "description": "Learn how WHOIS works, what data it exposes, and how domain registration records are managed.",
+    "keywords": [
+      "whois",
+      "domain registration",
+      "icann",
+      "registrar",
+      "rdap",
+      "whois tutorial"
+    ],
+    "category": "lookup"
+  },
+  {
+    "type": "learn",
+    "title": "TCP Port Scanning Explained",
+    "url": "/learn/port-scanner/",
+    "description": "Learn how port scanning works, what common port numbers mean, and how firewalls affect scanning.",
+    "keywords": [
+      "port scanner",
+      "tcp ports",
+      "port scanning",
+      "firewall",
+      "common ports",
+      "port 80",
+      "port 443"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Latency and Performance",
+    "url": "/learn/http-latency/",
+    "description": "Learn how to measure HTTP response time, understand latency, and diagnose slow web servers.",
+    "keywords": [
+      "latency",
+      "http latency",
+      "performance",
+      "response time",
+      "ttfb",
+      "time to first byte"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "IP Address and ISP Lookup",
+    "url": "/learn/isp-lookup/",
+    "description": "Learn how IP addresses map to ISPs and geographic locations using WHOIS and GeoIP databases.",
+    "keywords": [
+      "isp",
+      "ip address",
+      "geolocation",
+      "asn",
+      "internet provider",
+      "ip lookup tutorial"
+    ],
+    "category": "lookup"
+  },
+  {
+    "type": "learn",
+    "title": "MAC Address and OUI Lookup",
+    "url": "/learn/mac-lookup/",
+    "description": "Learn how MAC addresses are structured and how OUI lookup identifies device manufacturers.",
+    "keywords": [
+      "mac address",
+      "oui",
+      "vendor lookup",
+      "ieee",
+      "hardware address",
+      "nic"
+    ],
+    "category": "lookup"
+  },
+  {
+    "type": "learn",
+    "title": "Password Security Best Practices",
+    "url": "/learn/password-generator/",
+    "description": "Learn what makes a strong password, how entropy works, and how random generation is secure.",
+    "keywords": [
+      "password",
+      "password security",
+      "entropy",
+      "strong password",
+      "passphrase",
+      "password best practices"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "learn",
+    "title": "Cryptographic Hash Functions",
+    "url": "/learn/hash-generator/",
+    "description": "Learn about MD5, SHA-1, SHA-256, and how cryptographic hashing is used for data integrity.",
+    "keywords": [
+      "hash",
+      "md5",
+      "sha256",
+      "cryptographic hash",
+      "checksum",
+      "data integrity",
+      "hash tutorial"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "Base64 Encoding Explained",
+    "url": "/learn/base64-encoder/",
+    "description": "Learn how Base64 encoding works, its use cases in email, URLs, and data transmission.",
+    "keywords": [
+      "base64",
+      "encoding",
+      "base64 tutorial",
+      "data encoding",
+      "binary to text"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "URL Encoding (Percent-Encoding)",
+    "url": "/learn/url-encoder/",
+    "description": "Learn how percent-encoding works in URLs, which characters need encoding, and the RFC 3986 standard.",
+    "keywords": [
+      "url encoding",
+      "percent encoding",
+      "uri encoding",
+      "url encoding tutorial",
+      "special characters url"
+    ],
+    "category": "url"
+  },
+  {
+    "type": "learn",
+    "title": "JSON Formatting and Validation",
+    "url": "/learn/json-formatter/",
+    "description": "Learn JSON syntax, data types, formatting conventions, and how to validate JSON.",
+    "keywords": [
+      "json",
+      "json syntax",
+      "json validation",
+      "json tutorial",
+      "json schema"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "Stripe Webhook Signature Verification",
+    "url": "/learn/stripe-webhook-signature-verification/",
+    "description": "Verify Stripe webhook signatures: the Stripe-Signature header, raw-body handling, constructEvent vs manual HMAC, and fixing signature verification failures.",
+    "keywords": [
+      "stripe webhook signature verification",
+      "stripe-signature header",
+      "no signatures found matching the expected signature",
+      "stripe webhook secret",
+      "constructevent",
+      "verify stripe webhook",
+      "whsec_"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "GitHub Webhook Signature Verification",
+    "url": "/learn/github-webhook-signature-verification/",
+    "description": "Verify GitHub webhook signatures with HMAC-SHA256: the X-Hub-Signature-256 header, raw-body handling, Node and Python examples, and fixing signature mismatches.",
+    "keywords": [
+      "github webhook signature verification",
+      "x-hub-signature-256",
+      "github webhook hmac",
+      "verify github webhook",
+      "github webhook secret",
+      "hmac sha256 github",
+      "github signature mismatch"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "JSON Web Tokens (JWT) Explained",
+    "url": "/learn/jwt-decoder/",
+    "description": "Learn how JWTs work, their three-part structure, signing algorithms, and security considerations.",
+    "keywords": [
+      "jwt",
+      "json web token",
+      "jwt tutorial",
+      "bearer token",
+      "jwt security",
+      "jwt claims"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "Regular Expressions Guide",
+    "url": "/learn/regex-tester/",
+    "description": "Learn regex syntax, patterns, character classes, quantifiers, and how to match common data formats.",
+    "keywords": [
+      "regex",
+      "regular expression",
+      "pattern matching",
+      "regex tutorial",
+      "regexp guide"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "Unix Timestamps Explained",
+    "url": "/learn/timestamp-converter/",
+    "description": "Learn how Unix timestamps work, how to convert dates, and timezone considerations.",
+    "keywords": [
+      "timestamp",
+      "unix timestamp",
+      "epoch",
+      "date format",
+      "timezone",
+      "datetime"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "Color Format Conversion",
+    "url": "/learn/color-converter/",
+    "description": "Learn how HEX, RGB, HSL, and other color models work and how to convert between them.",
+    "keywords": [
+      "color",
+      "hex color",
+      "rgb",
+      "hsl",
+      "color models",
+      "color space"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "IP Subnetting and CIDR",
+    "url": "/learn/subnet-calculator/",
+    "description": "Learn how subnet masks, CIDR notation, and IP ranges work for network design.",
+    "keywords": [
+      "subnet",
+      "cidr",
+      "subnetting",
+      "ip range",
+      "network mask",
+      "subnet tutorial"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "Reverse DNS (PTR Records)",
+    "url": "/learn/reverse-dns/",
+    "description": "Learn how reverse DNS lookups work, PTR records, and their role in email and network security.",
+    "keywords": [
+      "reverse dns",
+      "ptr record",
+      "rdns",
+      "ip to hostname",
+      "reverse lookup"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "Email Address Validation",
+    "url": "/learn/email-validator/",
+    "description": "Learn how email address validation works, RFC 5321 standards, and MX record checking.",
+    "keywords": [
+      "email validation",
+      "email format",
+      "mx records",
+      "email rfc",
+      "valid email address"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "learn",
+    "title": "Reading Email Headers",
+    "url": "/learn/email-header-analyzer/",
+    "description": "Learn how to read raw email headers, trace delivery hops, and detect spoofing.",
+    "keywords": [
+      "email headers",
+      "email trace",
+      "received header",
+      "dkim",
+      "spf",
+      "dmarc",
+      "email spoofing"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "learn",
+    "title": "How SMTP Works",
+    "url": "/learn/smtp-checker/",
+    "description": "Learn how SMTP protocol works, common port numbers, and how to test email server connectivity.",
+    "keywords": [
+      "smtp",
+      "email protocol",
+      "smtp port",
+      "mail server",
+      "smtp tutorial",
+      "port 25 port 587"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "DNS Blacklists and Email Reputation",
+    "url": "/learn/blacklist-checker/",
+    "description": "Learn how DNS-based blocklists (DNSBL) work and how they affect email deliverability.",
+    "keywords": [
+      "blacklist",
+      "dnsbl",
+      "rbl",
+      "email reputation",
+      "spam blacklist",
+      "ip reputation"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "Data Breaches and Account Security",
+    "url": "/learn/breach-checker/",
+    "description": "Learn what data breaches are, how breach databases are compiled, and how to protect yourself.",
+    "keywords": [
+      "data breach",
+      "breach",
+      "hibp",
+      "account security",
+      "pwned",
+      "credential stuffing"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Security Headers",
+    "url": "/learn/security-headers/",
+    "description": "Learn about HSTS, Content Security Policy, X-Frame-Options, and other HTTP security headers.",
+    "keywords": [
+      "security headers",
+      "hsts",
+      "csp",
+      "content security policy",
+      "x-frame-options",
+      "cors",
+      "http security"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Redirects and Redirect Chains",
+    "url": "/learn/redirect-checker/",
+    "description": "Learn how 301, 302, 307, and 308 redirects work and how redirect chains affect SEO.",
+    "keywords": [
+      "redirect",
+      "301",
+      "302",
+      "redirect chain",
+      "seo redirects",
+      "permanent redirect"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "Broken Links and Link Checking",
+    "url": "/learn/link-checker/",
+    "description": "Learn how to detect broken links, their impact on SEO, and how to fix them.",
+    "keywords": [
+      "broken links",
+      "404 links",
+      "link checking",
+      "dead links",
+      "seo links"
+    ],
+    "category": "url"
+  },
+  {
+    "type": "learn",
+    "title": "robots.txt and Crawler Control",
+    "url": "/learn/robots-analyzer/",
+    "description": "Learn how robots.txt works, disallow rules, sitemap declarations, and crawler directives.",
+    "keywords": [
+      "robots.txt",
+      "noindex",
+      "disallow",
+      "crawl",
+      "googlebot",
+      "seo crawler"
+    ],
+    "category": "url"
+  },
+  {
+    "type": "learn",
+    "title": "Web Technology Detection",
+    "url": "/learn/tech-detector/",
+    "description": "Learn how to identify the CMS, frameworks, and server software powering any website.",
+    "keywords": [
+      "tech detection",
+      "cms detection",
+      "framework detection",
+      "server technology",
+      "wappalyzer"
+    ],
+    "category": "url"
+  },
+  {
+    "type": "learn",
+    "title": "URL Safety and Phishing Detection",
+    "url": "/learn/url-safety/",
+    "description": "Learn how URL safety scanners detect malware, phishing sites, and malicious domains.",
+    "keywords": [
+      "url safety",
+      "phishing",
+      "malware",
+      "safe browsing",
+      "google safe browsing"
+    ],
+    "category": "url"
+  },
+  {
+    "type": "learn",
+    "title": "QR Code Generation",
+    "url": "/learn/qr-generator/",
+    "description": "Learn how QR codes encode data, error correction levels, and their common use cases.",
+    "keywords": [
+      "qr code",
+      "qr generation",
+      "qr encoding",
+      "qr error correction"
+    ],
+    "category": "qr"
+  },
+  {
+    "type": "learn",
+    "title": "QR Code Scanning and Decoding",
+    "url": "/learn/qr-scanner/",
+    "description": "Learn how QR code scanners work and how to decode QR images.",
+    "keywords": [
+      "qr scanner",
+      "qr decode",
+      "qr reader",
+      "scan qr"
+    ],
+    "category": "qr"
+  },
+  {
+    "type": "learn",
+    "title": "Network Traceroute Explained",
+    "url": "/learn/traceroute/",
+    "description": "Learn how traceroute works using TTL, ICMP, and UDP packets to map network paths.",
+    "keywords": [
+      "traceroute",
+      "tracert",
+      "network path",
+      "ttl",
+      "icmp",
+      "hops"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "File Metadata and EXIF Data",
+    "url": "/learn/metadata-extractor/",
+    "description": "Learn what metadata is embedded in files and images and how to extract or remove it.",
+    "keywords": [
+      "metadata",
+      "exif",
+      "file metadata",
+      "image metadata",
+      "privacy metadata"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "Encrypted Notes and Secure Sharing",
+    "url": "/learn/encrypted-note/",
+    "description": "Learn how client-side AES encryption enables secure, one-time note sharing.",
+    "keywords": [
+      "encrypted note",
+      "aes encryption",
+      "secure sharing",
+      "password protected",
+      "one-time note"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "learn",
+    "title": "Local Browser Notes",
+    "url": "/learn/plain-notes/",
+    "description": "Learn about browser-local note storage using localStorage and auto-save patterns.",
+    "keywords": [
+      "local notes",
+      "localstorage",
+      "browser notes",
+      "offline notes"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "learn",
+    "title": "What Is DNS Propagation?",
+    "url": "/learn/dns-propagation/",
+    "description": "Learn what DNS propagation is, why DNS changes take time to spread globally, and how TTL affects propagation speed.",
+    "keywords": [
+      "dns propagation",
+      "dns ttl",
+      "dns changes",
+      "dns delay",
+      "dns cache",
+      "propagation time"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "What Causes DNS_PROBE_FINISHED_NXDOMAIN?",
+    "url": "/learn/dns-probe-finished-nxdomain/",
+    "description": "Understand why the DNS_PROBE_FINISHED_NXDOMAIN error occurs, what NXDOMAIN means, and how to diagnose it.",
+    "keywords": [
+      "nxdomain",
+      "dns probe",
+      "dns_probe_finished_nxdomain",
+      "domain not found",
+      "dns error explained"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "What Is SPF (Sender Policy Framework)?",
+    "url": "/learn/what-is-spf/",
+    "description": "Learn what SPF records are, how they authorize email senders, SPF syntax, and common configuration mistakes.",
+    "keywords": [
+      "spf",
+      "sender policy framework",
+      "spf record",
+      "email authentication",
+      "spf syntax",
+      "spf lookup limit"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "learn",
+    "title": "What Is DKIM (DomainKeys Identified Mail)?",
+    "url": "/learn/what-is-dkim/",
+    "description": "Learn what DKIM is, how DKIM signatures verify email integrity, selectors, and DNS key records.",
+    "keywords": [
+      "dkim",
+      "domainkeys",
+      "dkim signature",
+      "email signing",
+      "dkim selector",
+      "dkim dns"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "What Is DMARC?",
+    "url": "/learn/what-is-dmarc/",
+    "description": "Learn what DMARC is, how DMARC policies work, domain alignment, and how to deploy DMARC to prevent spoofing.",
+    "keywords": [
+      "dmarc",
+      "dmarc policy",
+      "email spoofing",
+      "dmarc alignment",
+      "dmarc reject",
+      "dmarc reports"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "How Email Authentication Works",
+    "url": "/learn/email-authentication/",
+    "description": "Learn how SPF, DKIM, and DMARC work together to authenticate email and prevent spoofing.",
+    "keywords": [
+      "email authentication",
+      "spf dkim dmarc",
+      "email security",
+      "email spoofing prevention",
+      "email deliverability"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "learn",
+    "title": "What Is HTTP 502 Bad Gateway?",
+    "url": "/learn/http-502-bad-gateway/",
+    "description": "Learn what HTTP 502 Bad Gateway means, how reverse proxies cause it, and how to diagnose 502 errors.",
+    "keywords": [
+      "502",
+      "bad gateway",
+      "http 502",
+      "reverse proxy error",
+      "nginx 502",
+      "upstream error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "What Causes HTTP 429 Too Many Requests?",
+    "url": "/learn/http-429-too-many-requests/",
+    "description": "Learn what HTTP 429 means, how rate limiting works, and how to handle 429 errors in APIs.",
+    "keywords": [
+      "429",
+      "too many requests",
+      "rate limiting",
+      "http 429",
+      "retry-after",
+      "api rate limit"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "learn",
+    "title": "How SSL/TLS Handshakes Work",
+    "url": "/learn/ssl-tls-handshake/",
+    "description": "A deep dive into TLS handshakes: TLS 1.2 vs 1.3, cipher suites, forward secrecy, and 0-RTT resumption.",
+    "keywords": [
+      "tls handshake",
+      "ssl handshake",
+      "tls 1.3",
+      "tls 1.2",
+      "cipher suite",
+      "forward secrecy",
+      "0-rtt"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "learn",
+    "title": "What Causes ERR_SSL_PROTOCOL_ERROR?",
+    "url": "/learn/err-ssl-protocol-error/",
+    "description": "Learn what ERR_SSL_PROTOCOL_ERROR means, why TLS handshakes fail, and how to diagnose the problem.",
+    "keywords": [
+      "err_ssl_protocol_error",
+      "ssl error",
+      "tls failure",
+      "ssl protocol error",
+      "handshake failed"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_FINISHED_NXDOMAIN",
+    "url": "/errors/browser/dns_probe_finished_nxdomain",
+    "description": "Domain name could not be resolved — DNS lookup returned no results.",
+    "keywords": [
+      "nxdomain",
+      "dns probe",
+      "domain not found",
+      "chrome dns error",
+      "dns_probe_finished_nxdomain"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Blocked by CORS Policy",
+    "url": "/errors/browser/blocked_by_cors_policy",
+    "description": "The browser blocked a cross-origin request because the server did not return an Access-Control-Allow-Origin header.",
+    "keywords": [
+      "blocked by cors policy",
+      "no access-control-allow-origin header",
+      "cors error",
+      "access-control-allow-origin",
+      "cors preflight",
+      "cross-origin request blocked"
+    ],
+    "category": "dev"
+  },
+  {
+    "type": "error",
+    "title": "MX Record Not Found",
+    "url": "/errors/dns/mx-record-not-found",
+    "description": "A domain has no MX record, so sending mail servers have nowhere to deliver email and messages bounce.",
+    "keywords": [
+      "mx record not found",
+      "no mx record",
+      "mx record missing",
+      "email not delivering no mx",
+      "querymx enodata",
+      "domain has no mx record"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CONNECTION_RESET",
+    "url": "/errors/browser/err_connection_reset",
+    "description": "The connection was interrupted while loading the page.",
+    "keywords": [
+      "connection reset",
+      "err_connection_reset",
+      "chrome error",
+      "connection interrupted"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CONNECTION_REFUSED",
+    "url": "/errors/browser/err_connection_refused",
+    "description": "The server actively refused the connection request.",
+    "keywords": [
+      "connection refused",
+      "err_connection_refused",
+      "port blocked",
+      "server refused"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_TOO_MANY_REDIRECTS",
+    "url": "/errors/browser/err_too_many_redirects",
+    "description": "The page entered a redirect loop and could not load.",
+    "keywords": [
+      "redirect loop",
+      "too many redirects",
+      "err_too_many_redirects",
+      "redirect cycle"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_NAME_NOT_RESOLVED",
+    "url": "/errors/browser/err_name_not_resolved",
+    "description": "The browser could not resolve the domain name — DNS lookup failed.",
+    "keywords": [
+      "name not resolved",
+      "dns failed",
+      "err_name_not_resolved",
+      "domain resolution failed"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+    "url": "/errors/browser/err_ssl_version_or_cipher_mismatch",
+    "description": "The browser and server could not agree on a TLS version or cipher suite.",
+    "keywords": [
+      "ssl version",
+      "cipher mismatch",
+      "tls version",
+      "ssl cipher",
+      "err_ssl_version_or_cipher_mismatch"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CERT_COMMON_NAME_INVALID",
+    "url": "/errors/browser/err_cert_common_name_invalid",
+    "description": "The SSL certificate does not match the domain name being visited.",
+    "keywords": [
+      "cert common name",
+      "certificate mismatch",
+      "ssl hostname",
+      "err_cert_common_name_invalid"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "ERR_INTERNET_DISCONNECTED",
+    "url": "/errors/browser/err_internet_disconnected",
+    "description": "Your device has no internet connection.",
+    "keywords": [
+      "internet disconnected",
+      "no internet",
+      "offline",
+      "err_internet_disconnected"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_NETWORK_CHANGED",
+    "url": "/errors/browser/err_network_changed",
+    "description": "The network configuration changed while a page was loading.",
+    "keywords": [
+      "network changed",
+      "err_network_changed",
+      "wifi switched",
+      "network interrupt"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CACHE_MISS",
+    "url": "/errors/browser/err_cache_miss",
+    "description": "The page requires form data to be resubmitted but the cache is missing.",
+    "keywords": [
+      "cache miss",
+      "form resubmit",
+      "post request",
+      "err_cache_miss",
+      "browser cache"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_BLOCKED_BY_CLIENT",
+    "url": "/errors/browser/err_blocked_by_client",
+    "description": "A browser extension blocked the request before it reached the server.",
+    "keywords": [
+      "blocked by client",
+      "ad blocker",
+      "extension blocked",
+      "err_blocked_by_client"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_TIMED_OUT",
+    "url": "/errors/browser/err_timed_out",
+    "description": "Chrome waited too long for the server to respond and gave up.",
+    "keywords": [
+      "timed out",
+      "connection timeout",
+      "err_timed_out",
+      "server slow",
+      "timeout"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "400 Bad Request",
+    "url": "/errors/http/400-bad-request",
+    "description": "The server could not process the request due to malformed syntax.",
+    "keywords": [
+      "400",
+      "bad request",
+      "malformed request",
+      "invalid request",
+      "http 400"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "401 Unauthorized",
+    "url": "/errors/http/401-unauthorized",
+    "description": "Authentication is required and the request did not provide valid credentials.",
+    "keywords": [
+      "401",
+      "unauthorized",
+      "authentication failed",
+      "login required",
+      "http 401"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "403 Forbidden",
+    "url": "/errors/http/403-forbidden",
+    "description": "The server refuses to authorize access to the requested resource.",
+    "keywords": [
+      "403",
+      "forbidden",
+      "access denied",
+      "not authorized",
+      "http 403"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "404 Not Found",
+    "url": "/errors/http/404-not-found",
+    "description": "The requested resource could not be found on the server.",
+    "keywords": [
+      "404",
+      "not found",
+      "page not found",
+      "missing page",
+      "http 404"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "405 Method Not Allowed",
+    "url": "/errors/http/405-method-not-allowed",
+    "description": "The HTTP method used is not allowed for the requested resource.",
+    "keywords": [
+      "405",
+      "method not allowed",
+      "http method",
+      "delete not allowed",
+      "http 405"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "408 Request Timeout",
+    "url": "/errors/http/408-request-timeout",
+    "description": "The server closed the connection because the client took too long to send the request.",
+    "keywords": [
+      "408",
+      "request timeout",
+      "server timeout",
+      "slow upload",
+      "http 408"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "409 Conflict",
+    "url": "/errors/http/409-conflict",
+    "description": "The request conflicts with the current state of the resource.",
+    "keywords": [
+      "409",
+      "conflict",
+      "duplicate resource",
+      "version conflict",
+      "http 409"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "410 Gone",
+    "url": "/errors/http/410-gone",
+    "description": "The requested resource has been permanently removed.",
+    "keywords": [
+      "410",
+      "gone",
+      "permanently removed",
+      "deleted page",
+      "http 410"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "415 Unsupported Media Type",
+    "url": "/errors/http/415-unsupported-media-type",
+    "description": "The server refuses to accept the request because the Content-Type is not supported.",
+    "keywords": [
+      "415",
+      "unsupported media type",
+      "content-type",
+      "wrong format",
+      "http 415"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "422 Unprocessable Entity",
+    "url": "/errors/http/422-unprocessable-entity",
+    "description": "The request syntax is valid but the content fails semantic validation.",
+    "keywords": [
+      "422",
+      "unprocessable entity",
+      "validation error",
+      "invalid data",
+      "http 422"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "429 Too Many Requests",
+    "url": "/errors/http/429-too-many-requests",
+    "description": "The client has sent too many requests and hit the server's rate limit.",
+    "keywords": [
+      "429",
+      "too many requests",
+      "rate limit",
+      "throttled",
+      "http 429"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "500 Internal Server Error",
+    "url": "/errors/http/500-internal-server-error",
+    "description": "The server encountered an unexpected error while processing the request.",
+    "keywords": [
+      "500",
+      "internal server error",
+      "server crash",
+      "server error",
+      "http 500"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "501 Not Implemented",
+    "url": "/errors/http/501-not-implemented",
+    "description": "The server does not support the HTTP method used in the request.",
+    "keywords": [
+      "501",
+      "not implemented",
+      "unsupported method",
+      "http 501"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "502 Bad Gateway",
+    "url": "/errors/http/502-bad-gateway",
+    "description": "The upstream server returned an invalid response.",
+    "keywords": [
+      "502",
+      "bad gateway",
+      "nginx error",
+      "proxy error",
+      "http 502"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "503 Service Unavailable",
+    "url": "/errors/http/503-service-unavailable",
+    "description": "The server is temporarily unable to handle requests.",
+    "keywords": [
+      "503",
+      "service unavailable",
+      "server down",
+      "maintenance",
+      "http 503"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "504 Gateway Timeout",
+    "url": "/errors/http/504-gateway-timeout",
+    "description": "The gateway timed out waiting for an upstream server to respond.",
+    "keywords": [
+      "504",
+      "gateway timeout",
+      "upstream timeout",
+      "nginx timeout",
+      "http 504"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "507 Insufficient Storage",
+    "url": "/errors/http/507-insufficient-storage",
+    "description": "The server cannot store the data needed to complete the request.",
+    "keywords": [
+      "507",
+      "insufficient storage",
+      "disk full",
+      "storage quota",
+      "http 507"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS Server Not Responding",
+    "url": "/errors/dns/dns-server-not-responding",
+    "description": "The configured DNS server is offline or not responding to queries.",
+    "keywords": [
+      "dns server not responding",
+      "dns offline",
+      "dns server down",
+      "dns not responding"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS Lookup Failed",
+    "url": "/errors/dns/dns-lookup-failed",
+    "description": "The DNS query returned no usable result for the domain.",
+    "keywords": [
+      "dns lookup failed",
+      "dns error",
+      "domain resolution failed",
+      "dns failure"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_STARTED",
+    "url": "/errors/dns/dns-probe-started",
+    "description": "Chrome is running its DNS diagnostic probe after a failed lookup.",
+    "keywords": [
+      "dns probe started",
+      "dns diagnostic",
+      "chrome dns probe",
+      "dns_probe_started"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_FINISHED_BAD_CONFIG",
+    "url": "/errors/dns/dns-probe-finished-bad-config",
+    "description": "Chrome detected a DNS misconfiguration on your device or network.",
+    "keywords": [
+      "dns bad config",
+      "dns misconfiguration",
+      "dns probe bad config",
+      "dns_probe_finished_bad_config"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_FINISHED_NO_INTERNET",
+    "url": "/errors/dns/dns-probe-finished-no-internet",
+    "description": "Chrome's DNS probe confirmed there is no internet connection.",
+    "keywords": [
+      "dns no internet",
+      "no internet connection",
+      "offline dns probe",
+      "dns_probe_finished_no_internet"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS SERVFAIL",
+    "url": "/errors/dns/servfail",
+    "description": "The DNS server returned a server failure response code.",
+    "keywords": [
+      "servfail",
+      "dns server failure",
+      "dnssec failure",
+      "dns rcode 2"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "NXDOMAIN",
+    "url": "/errors/dns/nxdomain",
+    "description": "The DNS server confirmed the queried domain does not exist.",
+    "keywords": [
+      "nxdomain",
+      "domain not found",
+      "dns rcode 3",
+      "non-existent domain",
+      "domain does not exist"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 421 — Service Temporarily Unavailable",
+    "url": "/errors/email/smtp-421",
+    "description": "The receiving mail server closed the connection temporarily.",
+    "keywords": [
+      "smtp 421",
+      "mail server unavailable",
+      "email temporary error",
+      "smtp 4xx"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 450 — Mailbox Temporarily Unavailable",
+    "url": "/errors/email/smtp-450",
+    "description": "The recipient mailbox is temporarily unavailable; delivery will be retried.",
+    "keywords": [
+      "smtp 450",
+      "mailbox unavailable",
+      "greylisting",
+      "email retry"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 451 — Local Processing Error",
+    "url": "/errors/email/smtp-451",
+    "description": "The mail server encountered a local error processing the message.",
+    "keywords": [
+      "smtp 451",
+      "local error",
+      "spam filter deferral",
+      "email processing error"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 452 — Insufficient System Storage",
+    "url": "/errors/email/smtp-452",
+    "description": "The receiving mail server does not have enough disk space.",
+    "keywords": [
+      "smtp 452",
+      "mail server full",
+      "disk space email",
+      "insufficient storage email"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 521 — Server Does Not Accept Mail",
+    "url": "/errors/email/smtp-521",
+    "description": "The receiving server is configured to never accept incoming email.",
+    "keywords": [
+      "smtp 521",
+      "server no mail",
+      "null mx",
+      "email rejected"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 535 — Authentication Failed",
+    "url": "/errors/email/smtp-535",
+    "description": "SMTP authentication failed — username or password was rejected.",
+    "keywords": [
+      "smtp 535",
+      "authentication failed",
+      "smtp login failed",
+      "wrong password email"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 550 — Mailbox Unavailable",
+    "url": "/errors/email/smtp-550",
+    "description": "The recipient address was rejected by the mail server.",
+    "keywords": [
+      "smtp 550",
+      "mailbox unavailable",
+      "email rejected",
+      "user unknown",
+      "smtp 550"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 553 — Mailbox Name Not Allowed",
+    "url": "/errors/email/smtp-553",
+    "description": "The email address is invalid or violates the server's naming policy.",
+    "keywords": [
+      "smtp 553",
+      "mailbox name invalid",
+      "email address invalid",
+      "relay restriction"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 554 — Transaction Failed",
+    "url": "/errors/email/smtp-554",
+    "description": "The mail server rejected the message, often due to spam filters.",
+    "keywords": [
+      "smtp 554",
+      "transaction failed",
+      "spam rejected",
+      "email blocked"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "Mailbox Unavailable",
+    "url": "/errors/email/mailbox-unavailable",
+    "description": "The recipient's email account cannot receive messages.",
+    "keywords": [
+      "mailbox unavailable",
+      "email bounce",
+      "delivery failed",
+      "inbox full"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "ERR_SSL_PROTOCOL_ERROR",
+    "url": "/errors/ssl/err_ssl_protocol_error",
+    "description": "The SSL handshake failed due to a protocol mismatch or configuration error.",
+    "keywords": [
+      "ssl protocol error",
+      "err_ssl_protocol_error",
+      "ssl handshake",
+      "https error"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Handshake Failed",
+    "url": "/errors/ssl/ssl-handshake-failed",
+    "description": "The browser and server could not complete TLS negotiation.",
+    "keywords": [
+      "ssl handshake failed",
+      "tls handshake",
+      "ssl negotiation failed",
+      "ssl handshake"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Expired",
+    "url": "/errors/ssl/ssl-certificate-expired",
+    "description": "The site's SSL certificate has passed its validity end date.",
+    "keywords": [
+      "ssl expired",
+      "certificate expired",
+      "ssl expiry",
+      "renew certificate"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Revoked",
+    "url": "/errors/ssl/ssl-certificate-revoked",
+    "description": "The certificate authority revoked this certificate before expiry.",
+    "keywords": [
+      "ssl revoked",
+      "certificate revoked",
+      "ocsp",
+      "crl revocation"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Invalid",
+    "url": "/errors/ssl/ssl-certificate-invalid",
+    "description": "The SSL certificate failed browser validation for one or more reasons.",
+    "keywords": [
+      "ssl invalid",
+      "certificate invalid",
+      "ssl error",
+      "https invalid"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "NET::ERR_CERT_DATE_INVALID",
+    "url": "/errors/ssl/net-err-cert-date-invalid",
+    "description": "The certificate's validity dates do not match the current date.",
+    "keywords": [
+      "cert date invalid",
+      "certificate date",
+      "net::err_cert_date_invalid",
+      "ssl date error"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "NET::ERR_CERT_AUTHORITY_INVALID",
+    "url": "/errors/ssl/net-err-cert-authority-invalid",
+    "description": "The certificate was issued by a Certificate Authority the browser does not trust.",
+    "keywords": [
+      "cert authority invalid",
+      "untrusted ca",
+      "self signed certificate",
+      "net::err_cert_authority_invalid"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM",
+    "url": "/errors/ssl/net-err-cert-weak-signature-algorithm",
+    "description": "The certificate uses a deprecated weak signature algorithm such as SHA-1.",
+    "keywords": [
+      "weak signature",
+      "sha-1 certificate",
+      "sha1 deprecated",
+      "net::err_cert_weak_signature_algorithm"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "category",
+    "title": "Network Tools",
+    "url": "/tools/network-tools/",
+    "description": "DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, HTTP latency checker, ISP lookup, and MAC address lookup.",
+    "keywords": [
+      "network tools",
+      "dns",
+      "whois",
+      "port scanner",
+      "subnet calculator",
+      "traceroute",
+      "reverse dns",
+      "http latency",
+      "isp lookup",
+      "mac address",
+      "network utilities"
+    ]
+  },
+  {
+    "type": "category",
+    "title": "Email Tools",
+    "url": "/tools/email-tools/",
+    "description": "Email validator, email header analyzer, SMTP checker, blacklist checker, breach checker, and SPF/DKIM/DMARC DNS lookup.",
+    "keywords": [
+      "email tools",
+      "email validator",
+      "smtp checker",
+      "email header analyzer",
+      "blacklist checker",
+      "breach checker",
+      "spf",
+      "dkim",
+      "dmarc",
+      "email deliverability"
+    ]
+  },
+  {
+    "type": "category",
+    "title": "Security Tools",
+    "url": "/tools/security-tools/",
+    "description": "SSL certificate checker, HTTP security headers inspector, password generator, hash generator, URL safety checker, breach checker, and encrypted note sender.",
+    "keywords": [
+      "security tools",
+      "ssl checker",
+      "security headers",
+      "password generator",
+      "hash generator",
+      "url safety",
+      "breach checker",
+      "encrypted note",
+      "csp",
+      "hsts"
+    ]
+  },
+  {
+    "type": "category",
+    "title": "Data Tools",
+    "url": "/tools/data-tools/",
+    "description": "Base64 encoder/decoder, URL encoder/decoder, JSON formatter, Unix timestamp converter, color converter, QR code generator, QR scanner, and metadata extractor.",
+    "keywords": [
+      "data tools",
+      "base64",
+      "url encoder",
+      "json formatter",
+      "timestamp converter",
+      "color converter",
+      "qr code generator",
+      "qr scanner",
+      "metadata extractor",
+      "encoding"
+    ]
+  },
+  {
+    "type": "category",
+    "title": "Dev Tools",
+    "url": "/tools/dev-tools/",
+    "description": "JWT decoder, JSON formatter, regex tester, redirect checker, broken link checker, robots.txt analyzer, tech stack detector, security headers checker, and plain notes.",
+    "keywords": [
+      "dev tools",
+      "developer tools",
+      "jwt decoder",
+      "regex tester",
+      "redirect checker",
+      "link checker",
+      "robots.txt",
+      "tech detector",
+      "security headers",
+      "plain notes"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "ERR_HTTP2_PROTOCOL_ERROR",
+    "url": "/errors/browser/err_http2_protocol_error",
+    "description": "HTTP/2 protocol error encountered by the browser",
+    "keywords": [
+      "ERR_HTTP2_PROTOCOL_ERROR",
+      "http2 error",
+      "http/2 protocol error",
+      "chrome http2 error",
+      "net::ERR_HTTP2_PROTOCOL_ERROR",
+      "http2 stream error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_SSL_BAD_RECORD_MAC_ALERT",
+    "url": "/errors/browser/err_ssl_bad_record_mac_alert",
+    "description": "SSL/TLS record has an incorrect MAC (message authentication code)",
+    "keywords": [
+      "ERR_SSL_BAD_RECORD_MAC_ALERT",
+      "ssl bad record mac",
+      "tls mac error",
+      "bad mac alert",
+      "ssl record error",
+      "net::ERR_SSL_BAD_RECORD_MAC_ALERT"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "ERR_INVALID_RESPONSE",
+    "url": "/errors/browser/err_invalid_response",
+    "description": "Server sent a response the browser cannot parse",
+    "keywords": [
+      "ERR_INVALID_RESPONSE",
+      "invalid response",
+      "server invalid response",
+      "chrome invalid response",
+      "net::ERR_INVALID_RESPONSE",
+      "malformed response"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CONTENT_LENGTH_MISMATCH",
+    "url": "/errors/browser/err_content_length_mismatch",
+    "description": "Content-Length header does not match the actual response body size",
+    "keywords": [
+      "ERR_CONTENT_LENGTH_MISMATCH",
+      "content length mismatch",
+      "content-length header",
+      "response size mismatch",
+      "net::ERR_CONTENT_LENGTH_MISMATCH"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_EMPTY_RESPONSE",
+    "url": "/errors/browser/err_empty_response",
+    "description": "Server closed the connection without sending any data",
+    "keywords": [
+      "ERR_EMPTY_RESPONSE",
+      "empty response",
+      "no data received",
+      "server no response",
+      "net::ERR_EMPTY_RESPONSE",
+      "blank response error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_INSECURE_RESPONSE",
+    "url": "/errors/browser/err_insecure_response",
+    "description": "Response was delivered over an insecure connection",
+    "keywords": [
+      "ERR_INSECURE_RESPONSE",
+      "insecure response",
+      "ssl insecure",
+      "https insecure",
+      "net::ERR_INSECURE_RESPONSE",
+      "insecure connection blocked"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "ERR_ADDRESS_UNREACHABLE",
+    "url": "/errors/browser/err_address_unreachable",
+    "description": "IP address of the server is unreachable from the client",
+    "keywords": [
+      "ERR_ADDRESS_UNREACHABLE",
+      "address unreachable",
+      "ip unreachable",
+      "server unreachable",
+      "net::ERR_ADDRESS_UNREACHABLE",
+      "cannot reach server"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_CONNECTION_TIMED_OUT",
+    "url": "/errors/browser/err_connection_timed_out",
+    "description": "Connection attempt to the server timed out before completing",
+    "keywords": [
+      "ERR_CONNECTION_TIMED_OUT",
+      "connection timed out",
+      "server timeout",
+      "connection timeout",
+      "net::ERR_CONNECTION_TIMED_OUT",
+      "browser timeout"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_QUIC_PROTOCOL_ERROR",
+    "url": "/errors/browser/err_quic_protocol_error",
+    "description": "QUIC protocol error during connection to the server",
+    "keywords": [
+      "ERR_QUIC_PROTOCOL_ERROR",
+      "quic error",
+      "quic protocol error",
+      "http3 error",
+      "net::ERR_QUIC_PROTOCOL_ERROR",
+      "chrome quic error",
+      "udp connection error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_PROXY_CONNECTION_FAILED",
+    "url": "/errors/browser/err_proxy_connection_failed",
+    "description": "Browser could not establish a connection to the proxy server",
+    "keywords": [
+      "ERR_PROXY_CONNECTION_FAILED",
+      "proxy connection failed",
+      "proxy error",
+      "cannot connect to proxy",
+      "net::ERR_PROXY_CONNECTION_FAILED",
+      "proxy not responding"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_TUNNEL_CONNECTION_FAILED",
+    "url": "/errors/browser/err_tunnel_connection_failed",
+    "description": "Failed to establish an HTTPS tunnel through a proxy server",
+    "keywords": [
+      "ERR_TUNNEL_CONNECTION_FAILED",
+      "tunnel connection failed",
+      "proxy tunnel error",
+      "CONNECT method failed",
+      "net::ERR_TUNNEL_CONNECTION_FAILED",
+      "https proxy error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_ABORTED",
+    "url": "/errors/browser/err_aborted",
+    "description": "Network request was aborted before completion",
+    "keywords": [
+      "ERR_ABORTED",
+      "request aborted",
+      "net::ERR_ABORTED",
+      "cancelled request",
+      "aborted request",
+      "request cancelled"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_FAILED",
+    "url": "/errors/browser/err_failed",
+    "description": "Generic network failure with no specific error code",
+    "keywords": [
+      "ERR_FAILED",
+      "net::ERR_FAILED",
+      "generic network error",
+      "network failure",
+      "request failed",
+      "chrome err_failed"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "ERR_UNSAFE_PORT",
+    "url": "/errors/browser/err_unsafe_port",
+    "description": "Connection blocked because the port number is restricted by the browser",
+    "keywords": [
+      "ERR_UNSAFE_PORT",
+      "unsafe port",
+      "restricted port",
+      "blocked port",
+      "net::ERR_UNSAFE_PORT",
+      "chrome unsafe port",
+      "port blocked by browser"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "301 Moved Permanently",
+    "url": "/errors/http/301-moved-permanently",
+    "description": "The requested resource has been permanently moved to a new URL",
+    "keywords": [
+      "301 moved permanently",
+      "permanent redirect",
+      "301 redirect",
+      "http 301",
+      "url redirect",
+      "moved permanently"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "302 Found",
+    "url": "/errors/http/302-found",
+    "description": "The requested resource temporarily resides at a different URL",
+    "keywords": [
+      "302 found",
+      "temporary redirect",
+      "302 redirect",
+      "http 302",
+      "302 vs 301",
+      "found redirect"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "304 Not Modified",
+    "url": "/errors/http/304-not-modified",
+    "description": "The resource has not been modified since the last request",
+    "keywords": [
+      "304 not modified",
+      "http 304",
+      "browser cache",
+      "etag",
+      "if-modified-since",
+      "conditional request",
+      "cache validation"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "307 Temporary Redirect",
+    "url": "/errors/http/307-temporary-redirect",
+    "description": "The resource temporarily resides at a different URL, preserving the request method",
+    "keywords": [
+      "307 temporary redirect",
+      "http 307",
+      "method preserving redirect",
+      "307 vs 302",
+      "hsts redirect",
+      "temporary redirect"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "308 Permanent Redirect",
+    "url": "/errors/http/308-permanent-redirect",
+    "description": "The resource has permanently moved, preserving the request method",
+    "keywords": [
+      "308 permanent redirect",
+      "http 308",
+      "permanent redirect method",
+      "308 vs 301",
+      "api redirect",
+      "method preserving permanent redirect"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "406 Not Acceptable",
+    "url": "/errors/http/406-not-acceptable",
+    "description": "The server cannot produce a response matching the client's Accept headers",
+    "keywords": [
+      "406 not acceptable",
+      "http 406",
+      "accept header",
+      "content negotiation",
+      "not acceptable error",
+      "media type negotiation"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "407 Proxy Authentication Required",
+    "url": "/errors/http/407-proxy-authentication-required",
+    "description": "The client must authenticate with the proxy before the request can proceed",
+    "keywords": [
+      "407 proxy authentication required",
+      "http 407",
+      "proxy auth",
+      "proxy authentication",
+      "proxy credentials",
+      "proxy-authenticate header"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "411 Length Required",
+    "url": "/errors/http/411-length-required",
+    "description": "The server requires a Content-Length header in the request",
+    "keywords": [
+      "411 length required",
+      "http 411",
+      "content-length header",
+      "length required error",
+      "missing content length"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "412 Precondition Failed",
+    "url": "/errors/http/412-precondition-failed",
+    "description": "One or more precondition headers evaluated to false on the server",
+    "keywords": [
+      "412 precondition failed",
+      "http 412",
+      "if-match",
+      "etag mismatch",
+      "conditional request",
+      "optimistic concurrency",
+      "precondition headers"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "413 Payload Too Large",
+    "url": "/errors/http/413-payload-too-large",
+    "description": "The request body exceeds the server's size limit",
+    "keywords": [
+      "413 payload too large",
+      "http 413",
+      "request entity too large",
+      "upload limit",
+      "client_max_body_size",
+      "file upload error",
+      "body size limit"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "414 URI Too Long",
+    "url": "/errors/http/414-uri-too-long",
+    "description": "The request URL is longer than the server is willing to process",
+    "keywords": [
+      "414 uri too long",
+      "http 414",
+      "request uri too large",
+      "url too long",
+      "query string too long",
+      "url length limit"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "416 Range Not Satisfiable",
+    "url": "/errors/http/416-range-not-satisfiable",
+    "description": "The requested byte range cannot be fulfilled by the server",
+    "keywords": [
+      "416 range not satisfiable",
+      "http 416",
+      "byte range error",
+      "range header",
+      "partial content error",
+      "requested range not satisfiable"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "417 Expectation Failed",
+    "url": "/errors/http/417-expectation-failed",
+    "description": "The server cannot meet the requirements of the Expect header",
+    "keywords": [
+      "417 expectation failed",
+      "http 417",
+      "expect header",
+      "100-continue",
+      "expectation failed error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "418 I'm a Teapot",
+    "url": "/errors/http/418-im-a-teapot",
+    "description": "The server refuses to brew coffee because it is a teapot",
+    "keywords": [
+      "418 im a teapot",
+      "http 418",
+      "teapot error",
+      "rfc 2324",
+      "htcpcp",
+      "i'm a teapot",
+      "joke status code"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "421 Misdirected Request",
+    "url": "/errors/http/421-misdirected-request",
+    "description": "The request was directed to a server that cannot produce a response",
+    "keywords": [
+      "421 misdirected request",
+      "http 421",
+      "connection coalescing",
+      "http2 misdirected",
+      "tls certificate mismatch",
+      "misdirected request"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "423 Locked",
+    "url": "/errors/http/423-locked",
+    "description": "The resource is locked and cannot be modified",
+    "keywords": [
+      "423 locked",
+      "http 423",
+      "webdav locked",
+      "resource locked",
+      "locked error",
+      "webdav lock"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "424 Failed Dependency",
+    "url": "/errors/http/424-failed-dependency",
+    "description": "The request failed because it depended on another request that also failed",
+    "keywords": [
+      "424 failed dependency",
+      "http 424",
+      "webdav failed dependency",
+      "dependent request failed",
+      "batch operation error",
+      "cascading failure"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "425 Too Early",
+    "url": "/errors/http/425-too-early",
+    "description": "The server is unwilling to process a request that might be replayed",
+    "keywords": [
+      "425 too early",
+      "http 425",
+      "tls 1.3 early data",
+      "0-rtt",
+      "replay attack",
+      "early data rejected",
+      "too early error"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "426 Upgrade Required",
+    "url": "/errors/http/426-upgrade-required",
+    "description": "The server requires the client to upgrade to a different protocol",
+    "keywords": [
+      "426 upgrade required",
+      "http 426",
+      "upgrade header",
+      "protocol upgrade",
+      "websocket upgrade",
+      "https upgrade required"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "428 Precondition Required",
+    "url": "/errors/http/428-precondition-required",
+    "description": "The server requires the request to be conditional",
+    "keywords": [
+      "428 precondition required",
+      "http 428",
+      "conditional request required",
+      "if-match required",
+      "optimistic concurrency",
+      "precondition required error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "431 Request Header Fields Too Large",
+    "url": "/errors/http/431-request-header-fields-too-large",
+    "description": "The request headers are too large for the server to process",
+    "keywords": [
+      "431 request header fields too large",
+      "http 431",
+      "header too large",
+      "cookie too large",
+      "request headers too big",
+      "header size limit"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "451 Unavailable For Legal Reasons",
+    "url": "/errors/http/451-unavailable-for-legal-reasons",
+    "description": "The resource is unavailable due to legal demands",
+    "keywords": [
+      "451 unavailable for legal reasons",
+      "http 451",
+      "legal takedown",
+      "censorship",
+      "content blocked",
+      "dmca",
+      "fahrenheit 451",
+      "geo-blocking"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "506 Variant Also Negotiates",
+    "url": "/errors/http/506-variant-also-negotiates",
+    "description": "The server has a circular reference in content negotiation",
+    "keywords": [
+      "506 variant also negotiates",
+      "http 506",
+      "content negotiation error",
+      "transparent negotiation",
+      "circular reference error",
+      "variant negotiation"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "508 Loop Detected",
+    "url": "/errors/http/508-loop-detected",
+    "description": "The server detected an infinite loop while processing the request",
+    "keywords": [
+      "508 loop detected",
+      "http 508",
+      "infinite loop",
+      "webdav loop",
+      "recursive loop error",
+      "binding loop",
+      "depth infinity loop"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "510 Not Extended",
+    "url": "/errors/http/510-not-extended",
+    "description": "The request requires an HTTP extension that the server does not support",
+    "keywords": [
+      "510 not extended",
+      "http 510",
+      "http extension",
+      "extension required",
+      "rfc 2774",
+      "not extended error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "511 Network Authentication Required",
+    "url": "/errors/http/511-network-authentication-required",
+    "description": "The client needs to authenticate to gain network access",
+    "keywords": [
+      "511 network authentication required",
+      "http 511",
+      "captive portal",
+      "wifi login",
+      "network login required",
+      "captive portal login",
+      "public wifi authentication"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_FINISHED_BAD_SECURE_CONFIG",
+    "url": "/errors/dns/dns-probe-finished-bad-secure-config",
+    "description": "DNSSEC validation failure prevented DNS resolution",
+    "keywords": [
+      "DNS_PROBE_FINISHED_BAD_SECURE_CONFIG",
+      "DNSSEC validation failure",
+      "DNSSEC error",
+      "bad secure config DNS",
+      "DNSSEC signature expired",
+      "DS record mismatch",
+      "chrome DNSSEC error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_POSSIBLE",
+    "url": "/errors/dns/dns-probe-possible",
+    "description": "Chrome is investigating a possible DNS resolution issue",
+    "keywords": [
+      "DNS_PROBE_POSSIBLE",
+      "dns probe possible chrome",
+      "possible DNS issue",
+      "chrome DNS error",
+      "intermittent DNS failure",
+      "DNS probe diagnostic"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_TIMEOUT",
+    "url": "/errors/dns/dns-probe-timeout",
+    "description": "DNS probe timed out while testing connectivity",
+    "keywords": [
+      "DNS_PROBE_TIMEOUT",
+      "dns probe timeout chrome",
+      "DNS timeout error",
+      "DNS not responding timeout",
+      "chrome DNS probe timed out",
+      "DNS query timeout"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS_PROBE_NETWORK_CHANGE",
+    "url": "/errors/dns/dns-probe-network-change",
+    "description": "DNS probe detected a network change during resolution",
+    "keywords": [
+      "DNS_PROBE_NETWORK_CHANGE",
+      "dns probe network change chrome",
+      "network changed DNS error",
+      "VPN DNS error",
+      "Wi-Fi switch DNS error",
+      "DNS error after network change"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS REFUSED",
+    "url": "/errors/dns/refused",
+    "description": "DNS server refused to answer the query",
+    "keywords": [
+      "DNS REFUSED",
+      "RCODE 5",
+      "dns query refused",
+      "dns server refused",
+      "dns access denied",
+      "allow-query",
+      "allow-recursion",
+      "DNS ACL"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS FORMERR",
+    "url": "/errors/dns/formerr",
+    "description": "DNS format error in the query",
+    "keywords": [
+      "DNS FORMERR",
+      "RCODE 1",
+      "dns format error",
+      "malformed DNS query",
+      "EDNS0 error",
+      "dns query format error",
+      "dns parsing error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "DNS Query Timeout",
+    "url": "/errors/dns/dns-query-timeout",
+    "description": "DNS query timed out before receiving a response",
+    "keywords": [
+      "DNS query timeout",
+      "DNS timeout",
+      "DNS not responding",
+      "DNS resolution timeout",
+      "dns timed out",
+      "port 53 blocked",
+      "DNS server unreachable"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Relay Access Denied",
+    "url": "/errors/email/relay-access-denied",
+    "description": "Mail server rejected the message because relay is not permitted",
+    "keywords": [
+      "relay access denied",
+      "SMTP relay denied",
+      "open relay",
+      "relay not permitted",
+      "550 relay not permitted",
+      "SMTP authentication required",
+      "mail relay error"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "Message Rejected",
+    "url": "/errors/email/message-rejected",
+    "description": "Email message was rejected by the receiving server",
+    "keywords": [
+      "message rejected",
+      "email rejected",
+      "mail rejected by server",
+      "email blocked",
+      "spam filter rejection",
+      "DMARC rejection",
+      "SPF fail rejection",
+      "email bounce"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 455 — Server Unable to Accommodate",
+    "url": "/errors/email/smtp-455",
+    "description": "SMTP server temporarily unable to accommodate the request",
+    "keywords": [
+      "SMTP 455",
+      "server unable to accommodate",
+      "SMTP temporary failure",
+      "4.7.5 SMTP",
+      "SMTP retry",
+      "mail server overloaded",
+      "TLS negotiation failure SMTP"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 500 — Syntax Error",
+    "url": "/errors/email/smtp-500",
+    "description": "SMTP command not recognized due to syntax error",
+    "keywords": [
+      "SMTP 500",
+      "SMTP syntax error",
+      "command not recognized SMTP",
+      "500 unrecognized command",
+      "SMTP protocol error",
+      "EHLO error",
+      "SMTP command error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 501 — Syntax Error in Parameters",
+    "url": "/errors/email/smtp-501",
+    "description": "SMTP command parameters contain a syntax error",
+    "keywords": [
+      "SMTP 501",
+      "syntax error in parameters",
+      "SMTP parameter error",
+      "501 malformed address",
+      "SMTP address format",
+      "RCPT TO error",
+      "MAIL FROM error"
+    ],
+    "category": "email"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 502 — Command Not Implemented",
+    "url": "/errors/email/smtp-502",
+    "description": "SMTP command is recognized but not implemented on this server",
+    "keywords": [
+      "SMTP 502",
+      "command not implemented",
+      "VRFY not implemented",
+      "EXPN disabled",
+      "SMTP extension not supported",
+      "502 command not implemented",
+      "AUTH mechanism not supported"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 503 — Bad Sequence of Commands",
+    "url": "/errors/email/smtp-503",
+    "description": "SMTP commands were sent in an incorrect order",
+    "keywords": [
+      "SMTP 503",
+      "bad sequence of commands",
+      "SMTP command order",
+      "503 bad sequence",
+      "SMTP protocol sequence",
+      "EHLO before MAIL FROM",
+      "SMTP state error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SMTP 504 — Command Parameter Not Implemented",
+    "url": "/errors/email/smtp-504",
+    "description": "SMTP command parameter is not implemented on this server",
+    "keywords": [
+      "SMTP 504",
+      "command parameter not implemented",
+      "504 SMTP error",
+      "AUTH mechanism not supported",
+      "SMTP extension parameter",
+      "unsupported SMTP parameter"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Unknown",
+    "url": "/errors/ssl/ssl-certificate-unknown",
+    "description": "Browser does not recognize or trust the SSL certificate",
+    "keywords": [
+      "SSL certificate unknown",
+      "unknown certificate error",
+      "untrusted certificate",
+      "certificate not recognized",
+      "missing intermediate certificate",
+      "self-signed certificate error",
+      "TLS unknown CA"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Verify Failed",
+    "url": "/errors/ssl/ssl-certificate-verify-failed",
+    "description": "SSL certificate verification failed during the TLS handshake",
+    "keywords": [
+      "SSL certificate verify failed",
+      "certificate verification error",
+      "CERTIFICATE_VERIFY_FAILED",
+      "SSL verify error",
+      "Python SSL error",
+      "Node.js certificate error",
+      "curl certificate error",
+      "unable to verify certificate"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "TLS Version Not Supported",
+    "url": "/errors/ssl/tls-version-unsupported",
+    "description": "The TLS protocol version is not supported by the server or client",
+    "keywords": [
+      "TLS version not supported",
+      "unsupported TLS version",
+      "TLS 1.0 deprecated",
+      "TLS 1.1 deprecated",
+      "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+      "TLS version mismatch",
+      "upgrade TLS version"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "Certificate Chain Invalid",
+    "url": "/errors/ssl/certificate-chain-invalid",
+    "description": "SSL certificate chain validation failed",
+    "keywords": [
+      "certificate chain invalid",
+      "incomplete certificate chain",
+      "missing intermediate certificate",
+      "SSL chain error",
+      "certificate chain broken",
+      "unable to verify certificate chain",
+      "chain of trust error"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Wrong Version Number",
+    "url": "/errors/ssl/ssl-wrong-version-number",
+    "description": "Unexpected SSL/TLS version number in the server response",
+    "keywords": [
+      "SSL wrong version number",
+      "wrong version number error",
+      "SSL version mismatch",
+      "HTTPS on HTTP port",
+      "TLS handshake wrong version",
+      "SSL_ERROR_RX_RECORD_TOO_LONG",
+      "STARTTLS required"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Cipher Suite Not Supported",
+    "url": "/errors/ssl/ssl-cipher-suite-not-supported",
+    "description": "No common cipher suite between client and server",
+    "keywords": [
+      "cipher suite not supported",
+      "no common cipher suite",
+      "SSL cipher mismatch",
+      "ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+      "TLS cipher negotiation failed",
+      "ECDHE cipher",
+      "AES-GCM cipher",
+      "cipher suite configuration"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "SSL Certificate Not Yet Valid",
+    "url": "/errors/ssl/ssl-certificate-not-yet-valid",
+    "description": "SSL certificate's start date is in the future",
+    "keywords": [
+      "certificate not yet valid",
+      "SSL not yet valid",
+      "certificate future date",
+      "notBefore date error",
+      "certificate validity period",
+      "system clock SSL error",
+      "certificate start date",
+      "X.509 not yet valid"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "error",
+    "title": "Docker Daemon Not Running",
+    "url": "/errors/devops/docker-daemon-not-running",
+    "description": "Cannot connect to the Docker daemon",
+    "keywords": [
+      "docker daemon not running",
+      "cannot connect to docker daemon",
+      "docker not starting",
+      "dockerd not running",
+      "docker service failed",
+      "docker socket error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Docker Network Not Found",
+    "url": "/errors/devops/docker-network-not-found",
+    "description": "Docker network does not exist",
+    "keywords": [
+      "docker network not found",
+      "network not found docker",
+      "docker network error",
+      "docker compose network missing",
+      "docker network create"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Docker Image Pull Failed",
+    "url": "/errors/devops/docker-image-pull-failed",
+    "description": "Failed to pull a Docker image from the registry",
+    "keywords": [
+      "docker pull failed",
+      "docker image not found",
+      "docker pull error",
+      "docker registry authentication",
+      "docker pull timeout",
+      "manifest not found"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Docker Port Already Allocated",
+    "url": "/errors/devops/docker-port-already-allocated",
+    "description": "Port is already allocated by another container or process",
+    "keywords": [
+      "docker port already allocated",
+      "bind address already in use",
+      "docker port conflict",
+      "port already in use docker",
+      "docker port binding error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Docker No Space Left on Device",
+    "url": "/errors/devops/docker-no-space-left",
+    "description": "Docker ran out of disk space",
+    "keywords": [
+      "docker no space left",
+      "docker disk full",
+      "docker space error",
+      "docker system prune",
+      "docker cleanup",
+      "no space left on device docker"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Docker Container Name Already in Use",
+    "url": "/errors/devops/docker-container-already-exists",
+    "description": "A container with the specified name already exists",
+    "keywords": [
+      "docker container already exists",
+      "container name already in use",
+      "docker name conflict",
+      "docker rm container",
+      "docker container name error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "fatal: repository not found",
+    "url": "/errors/devops/git-repository-not-found",
+    "description": "Git cannot find the remote repository",
+    "keywords": [
+      "fatal repository not found",
+      "git repo not found",
+      "git clone not found",
+      "github repository not found",
+      "git remote not found"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "fatal: remote origin already exists",
+    "url": "/errors/devops/git-remote-origin-already-exists",
+    "description": "Git remote named 'origin' is already configured",
+    "keywords": [
+      "remote origin already exists",
+      "git remote add error",
+      "fatal remote origin",
+      "git origin error",
+      "git remote set-url"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Git Merge Conflict",
+    "url": "/errors/devops/git-merge-conflict",
+    "description": "Conflicting changes prevent automatic merge",
+    "keywords": [
+      "git merge conflict",
+      "merge conflict resolution",
+      "git conflict markers",
+      "CONFLICT merge",
+      "git resolve conflict",
+      "automatic merge failed"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Git Detached HEAD State",
+    "url": "/errors/devops/git-detached-head",
+    "description": "Git HEAD is not pointing to a branch",
+    "keywords": [
+      "git detached head",
+      "detached HEAD state",
+      "HEAD detached at",
+      "git checkout commit",
+      "git reattach head",
+      "not currently on any branch"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code ERESOLVE",
+    "url": "/errors/devops/npm-err-eresolve",
+    "description": "npm dependency resolution conflict",
+    "keywords": [
+      "npm ERESOLVE",
+      "npm peer dependency conflict",
+      "npm dependency resolution",
+      "could not resolve dependency",
+      "npm install error",
+      "peer dep conflict"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code ENOTFOUND",
+    "url": "/errors/devops/npm-err-enotfound",
+    "description": "npm cannot reach the registry",
+    "keywords": [
+      "npm ENOTFOUND",
+      "npm registry unreachable",
+      "npm network error",
+      "npm cannot connect",
+      "npm dns error",
+      "npm offline"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code ECONNRESET",
+    "url": "/errors/devops/npm-err-econnreset",
+    "description": "npm connection to registry was reset",
+    "keywords": [
+      "npm ECONNRESET",
+      "npm connection reset",
+      "npm network error",
+      "npm install connection",
+      "npm timeout error"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code EPERM",
+    "url": "/errors/devops/npm-err-eperm",
+    "description": "npm permission error on file operation",
+    "keywords": [
+      "npm EPERM",
+      "npm permission error",
+      "npm operation not permitted",
+      "npm windows permission",
+      "npm file locked",
+      "EPERM unlink"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code EACCES",
+    "url": "/errors/devops/npm-err-eacces",
+    "description": "npm permission denied error",
+    "keywords": [
+      "npm EACCES",
+      "npm permission denied",
+      "npm global install permission",
+      "npm sudo error",
+      "npm access denied",
+      "EACCES mkdir"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Kubernetes CrashLoopBackOff",
+    "url": "/errors/devops/kubernetes-crashloopbackoff",
+    "description": "Pod is crashing repeatedly and Kubernetes is backing off restarts",
+    "keywords": [
+      "CrashLoopBackOff",
+      "kubernetes crash loop",
+      "pod crashing",
+      "k8s crashloopbackoff",
+      "container restart loop",
+      "pod restart backoff"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Kubernetes ImagePullBackOff",
+    "url": "/errors/devops/kubernetes-imagepullbackoff",
+    "description": "Kubernetes cannot pull the container image",
+    "keywords": [
+      "ImagePullBackOff",
+      "ErrImagePull",
+      "kubernetes image pull",
+      "k8s image error",
+      "imagePullSecrets",
+      "docker image pull kubernetes"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python ModuleNotFoundError",
+    "url": "/errors/devops/python-modulenotfounderror",
+    "description": "Python cannot find the specified module",
+    "keywords": [
+      "ModuleNotFoundError",
+      "python import error",
+      "no module named",
+      "python module not found",
+      "ImportError",
+      "pip install module"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Java ClassNotFoundException",
+    "url": "/errors/devops/java-classnotfoundexception",
+    "description": "Java cannot find the specified class at runtime",
+    "keywords": [
+      "ClassNotFoundException",
+      "java class not found",
+      "java classpath error",
+      "Class.forName error",
+      "missing JAR",
+      "java dependency missing"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "pip Install Failed",
+    "url": "/errors/devops/pip-install-failed",
+    "description": "pip package installation failed with error",
+    "keywords": [
+      "pip install failed",
+      "pip error",
+      "failed building wheel",
+      "pip install error",
+      "python package install",
+      "pip build failed"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Yarn Integrity Check Failed",
+    "url": "/errors/devops/yarn-integrity-check-failed",
+    "description": "Yarn detected a mismatch between node_modules and yarn.lock",
+    "keywords": [
+      "yarn integrity check failed",
+      "yarn install error",
+      "yarn node_modules mismatch",
+      "yarn lockfile",
+      "yarn cache clean",
+      "integrity check failed"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Permission Denied (publickey)",
+    "url": "/errors/devops/permission-denied-publickey",
+    "description": "SSH authentication failed using public key",
+    "keywords": [
+      "permission denied publickey",
+      "ssh key denied",
+      "git ssh error",
+      "ssh authentication failed",
+      "ssh public key error",
+      "github ssh denied"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "MySQL Access Denied for User",
+    "url": "/errors/database/mysql-access-denied",
+    "description": "MySQL authentication failed for the specified user",
+    "keywords": [
+      "MySQL access denied",
+      "MySQL authentication failed",
+      "MySQL login error",
+      "access denied for user",
+      "mysql password error",
+      "mysql grant privileges"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "PostgreSQL Connection Refused",
+    "url": "/errors/database/postgresql-connection-refused",
+    "description": "PostgreSQL server refused the connection",
+    "keywords": [
+      "postgresql connection refused",
+      "postgres connection error",
+      "psql connection refused",
+      "postgresql not running",
+      "pg_hba.conf",
+      "postgresql listen_addresses"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Database Connection Timeout",
+    "url": "/errors/database/database-connection-timeout",
+    "description": "Database connection attempt timed out",
+    "keywords": [
+      "database connection timeout",
+      "db timeout error",
+      "connection timed out database",
+      "database unreachable",
+      "database firewall",
+      "database security group"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Too Many Database Connections",
+    "url": "/errors/database/database-too-many-connections",
+    "description": "Database connection limit has been reached",
+    "keywords": [
+      "too many connections",
+      "database connection limit",
+      "max connections",
+      "connection pool",
+      "connection leak",
+      "database connections exhausted"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Redis Connection Refused",
+    "url": "/errors/database/redis-connection-refused",
+    "description": "Redis server refused the connection",
+    "keywords": [
+      "redis connection refused",
+      "redis not running",
+      "redis connection error",
+      "redis bind address",
+      "redis protected mode",
+      "cannot connect to redis"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "MongoDB Connection Failed",
+    "url": "/errors/database/mongodb-connection-failed",
+    "description": "MongoDB client could not connect to the server",
+    "keywords": [
+      "mongodb connection failed",
+      "mongodb connection error",
+      "mongod not running",
+      "mongodb atlas connection",
+      "mongodb authentication failed",
+      "mongodb connection string"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "SQLite Database is Locked",
+    "url": "/errors/database/sqlite-database-locked",
+    "description": "SQLite database file is locked by another process",
+    "keywords": [
+      "sqlite database locked",
+      "sqlite locked error",
+      "sqlite concurrent access",
+      "sqlite WAL mode",
+      "database is locked",
+      "sqlite busy timeout"
+    ],
+    "category": "network"
+  },
+  {
+    "type": "error",
+    "title": "Database Deadlock Detected",
+    "url": "/errors/database/database-deadlock-detected",
+    "description": "Two or more transactions are waiting for each other's locks",
+    "keywords": [
+      "database deadlock",
+      "deadlock detected",
+      "transaction deadlock",
+      "deadlock victim",
+      "lock conflict database",
+      "deadlock prevention"
+    ]
+  },
+  {
+    "type": "tool",
+    "title": "Suggest & Feedback",
+    "url": "/feedback/",
+    "description": "Suggest new tools, error pages, guides, or report issues to help improve duckTyped.",
+    "keywords": [
+      "feedback",
+      "suggest",
+      "suggestion",
+      "report",
+      "contact",
+      "request",
+      "improve"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Status Codes Reference",
+    "url": "/learn/http-status-codes/",
+    "description": "Complete HTTP status code reference: every 1xx, 2xx, 3xx, 4xx, and 5xx code explained with descriptions, causes, and fixes.",
+    "keywords": [
+      "http status codes",
+      "http response codes",
+      "200 ok",
+      "301 redirect",
+      "302 found",
+      "400 bad request",
+      "401 unauthorized",
+      "403 forbidden",
+      "404 not found",
+      "429 too many requests",
+      "500 internal server error",
+      "502 bad gateway",
+      "503 service unavailable",
+      "504 gateway timeout",
+      "rest api status codes",
+      "http error codes"
+    ],
+    "category": "reference",
+    "aliases": [
+      "http codes",
+      "status code cheat sheet",
+      "response codes"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "Regex Cheat Sheet",
+    "url": "/learn/regex-cheat-sheet/",
+    "description": "Complete regular expression reference: character classes, quantifiers, anchors, groups, lookaround, flags, and common patterns.",
+    "keywords": [
+      "regex",
+      "regular expression",
+      "regex cheat sheet",
+      "regex reference",
+      "regex patterns",
+      "regex syntax",
+      "character class",
+      "quantifier",
+      "lookahead",
+      "lookbehind",
+      "capture group",
+      "regex flags",
+      "regex examples"
+    ],
+    "category": "reference",
+    "aliases": [
+      "regexp",
+      "regular expressions",
+      "regex guide"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "DNS Records Cheat Sheet",
+    "url": "/learn/dns-cheat-sheet/",
+    "description": "Quick reference for all DNS record types: A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, SRV, PTR, SPF, DKIM, DMARC.",
+    "keywords": [
+      "dns records",
+      "dns cheat sheet",
+      "a record",
+      "aaaa record",
+      "cname record",
+      "mx record",
+      "txt record",
+      "ns record",
+      "soa record",
+      "caa record",
+      "srv record",
+      "ptr record",
+      "spf record",
+      "dkim record",
+      "dmarc record",
+      "dns reference",
+      "ttl guide"
+    ],
+    "category": "reference",
+    "aliases": [
+      "dns reference",
+      "dns quick reference",
+      "dns types"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "Common Ports Reference",
+    "url": "/learn/common-ports/",
+    "description": "Quick reference for 40+ well-known network ports: FTP, SSH, SMTP, DNS, HTTP, HTTPS, MySQL, PostgreSQL, Redis, MongoDB. Port ranges and firewall rules.",
+    "keywords": [
+      "common ports",
+      "network ports",
+      "well-known ports",
+      "port numbers",
+      "FTP 21",
+      "SSH 22",
+      "SMTP 25",
+      "DNS 53",
+      "HTTP 80",
+      "HTTPS 443",
+      "MySQL 3306",
+      "PostgreSQL 5432",
+      "Redis 6379",
+      "MongoDB 27017",
+      "port reference",
+      "firewall rules"
+    ],
+    "category": "reference"
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Redirect Codes — 301 vs 302 vs 307 vs 308",
+    "url": "/learn/301-vs-302-vs-307-vs-308/",
+    "description": "Comparison of HTTP redirect status codes: 301 (permanent), 302 (temporary), 307 (preserve method), 308 (permanent preserve). Decision flowchart and common mistakes.",
+    "keywords": [
+      "301 redirect",
+      "302 redirect",
+      "307 redirect",
+      "308 redirect",
+      "HTTP status codes",
+      "redirect comparison",
+      "permanent redirect",
+      "temporary redirect",
+      "method preservation",
+      "SEO redirect",
+      "redirect loop"
+    ],
+    "category": "reference"
+  },
+  {
+    "type": "learn",
+    "title": "HTTP Methods — GET vs POST vs PUT vs PATCH vs DELETE",
+    "url": "/learn/get-vs-post-vs-put-vs-delete/",
+    "description": "Comparison of HTTP request methods: GET, POST, PUT, PATCH, DELETE. Safe, idempotent, cacheable properties. API design best practices and common mistakes.",
+    "keywords": [
+      "HTTP methods",
+      "GET vs POST",
+      "PUT vs PATCH",
+      "DELETE method",
+      "idempotent",
+      "safe methods",
+      "REST API",
+      "HTTP request methods",
+      "API design",
+      "HTTP verbs"
+    ],
+    "category": "reference"
+  },
+  {
+    "type": "error",
+    "title": "Temporary failure in name resolution",
+    "url": "/errors/dns/temporary-failure-in-name-resolution",
+    "description": "A Linux system error meaning the resolver could not translate a hostname into an IP address — usually because no DNS server is configured or reachable.",
+    "keywords": [
+      "temporary failure in name resolution",
+      "linux dns not working",
+      "resolv.conf empty",
+      "systemd-resolved not resolving",
+      "socket.gaierror errno -3",
+      "wsl2 dns not working"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "getaddrinfo ENOTFOUND",
+    "url": "/errors/dns/getaddrinfo-enotfound",
+    "description": "A Node.js error thrown when a hostname cannot be resolved to an IP address — the DNS lookup returned no result for the name your code tried to connect to.",
+    "keywords": [
+      "getaddrinfo enotfound",
+      "node.js enotfound",
+      "error getaddrinfo enotfound undefined",
+      "enotfound localhost",
+      "node dns lookup failed",
+      "axios enotfound"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "getaddrinfo EAI_AGAIN",
+    "url": "/errors/dns/getaddrinfo-eai-again",
+    "description": "A temporary DNS resolution failure in Node.js and other applications — the resolver could not get an answer in time, often inside Docker containers or CI environments.",
+    "keywords": [
+      "getaddrinfo eai_again",
+      "eai_again docker",
+      "npm install eai_again",
+      "node eai_again",
+      "dns temporary failure docker",
+      "kubernetes dns timeout ndots"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Could not resolve host",
+    "url": "/errors/dns/could-not-resolve-host",
+    "description": "The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.",
+    "keywords": [
+      "could not resolve host",
+      "curl 6 could not resolve host",
+      "git could not resolve host github.com",
+      "wget unable to resolve host address",
+      "curl exit code 6"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "No servers could be reached",
+    "url": "/errors/dns/no-servers-could-be-reached",
+    "description": "The dig and nslookup error ';; connection timed out; no servers could be reached' — the tool could not contact any DNS server at all.",
+    "keywords": [
+      "no servers could be reached",
+      "dig connection timed out",
+      "nslookup no response from server",
+      "dns port 53 blocked",
+      "dig timeout all servers"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "nodename nor servname provided, or not known",
+    "url": "/errors/dns/nodename-nor-servname-provided",
+    "description": "A macOS and BSD error meaning the system could not resolve a hostname (or service name) — the Mac equivalent of 'unknown host'.",
+    "keywords": [
+      "nodename nor servname provided or not known",
+      "macos dns error",
+      "ping cannot resolve mac",
+      "ssh could not resolve hostname mac",
+      "dscacheutil flush cache"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "DNSSEC Validation Failure",
+    "url": "/errors/dns/dnssec-validation-failure",
+    "description": "A domain fails to resolve on validating resolvers because its DNSSEC chain of trust is broken — typically expired signatures or a stale DS record.",
+    "keywords": [
+      "dnssec validation failure",
+      "broken trust chain",
+      "servfail dnssec",
+      "ds record mismatch",
+      "rrsig expired",
+      "domain works on some dns servers not others"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "DNS NOTIMP",
+    "url": "/errors/dns/notimp",
+    "description": "DNS response code 4 (Not Implemented) — the server understood the query but does not support the requested operation or query type.",
+    "keywords": [
+      "dns notimp",
+      "rcode 4 not implemented",
+      "dig any notimp",
+      "dns query type not supported",
+      "rfc 8482 any query"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "DNS YXDOMAIN",
+    "url": "/errors/dns/yxdomain",
+    "description": "DNS response code 6 — a name exists when it should not. Seen in dynamic DNS updates with failed prerequisites and in DNAME/CNAME expansion overflows.",
+    "keywords": [
+      "dns yxdomain",
+      "rcode 6",
+      "nsupdate yxdomain",
+      "dhcp dns registration failed",
+      "name exists when it should not",
+      "dname yxdomain"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "DNS NOTAUTH",
+    "url": "/errors/dns/notauth",
+    "description": "DNS response code 9 — the server is not authoritative for the zone, or the request was not properly authorized. Common in zone transfers and dynamic updates.",
+    "keywords": [
+      "dns notauth",
+      "rcode 9",
+      "nsupdate notauth",
+      "zone transfer notauth",
+      "lame delegation",
+      "tsig badkey"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "DNS Response Truncated",
+    "url": "/errors/dns/dns-response-truncated",
+    "description": "A DNS answer was too large for UDP and was cut short (TC flag set) — and the fallback to TCP failed, so clients see incomplete or missing records.",
+    "keywords": [
+      "dns response truncated",
+      "tc flag dns",
+      "dig truncated retrying in tcp mode",
+      "tcp port 53 blocked",
+      "edns buffer size 1232",
+      "dns udp size limit"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "MySQL Server Has Gone Away",
+    "url": "/errors/database/mysql-server-has-gone-away",
+    "description": "MySQL error 2006 — the connection to the server was lost mid-use, typically because an idle connection timed out or a packet exceeded max_allowed_packet.",
+    "keywords": [
+      "mysql server has gone away",
+      "mysql error 2006",
+      "max_allowed_packet",
+      "wait_timeout mysql",
+      "mysql connection dropped",
+      "mysql import fails gone away"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Can't Connect to Local MySQL Server Through Socket",
+    "url": "/errors/database/mysql-cant-connect-through-socket",
+    "description": "MySQL error 2002 — the client looked for the Unix socket file (usually /var/run/mysqld/mysqld.sock) and found nothing listening.",
+    "keywords": [
+      "mysql error 2002",
+      "can't connect to local mysql server through socket",
+      "mysqld.sock missing",
+      "mysql socket vs tcp",
+      "mysql docker localhost",
+      "mariadb socket error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "MySQL Lock Wait Timeout Exceeded",
+    "url": "/errors/database/mysql-lock-wait-timeout-exceeded",
+    "description": "MySQL error 1205 — a transaction waited longer than innodb_lock_wait_timeout for row locks held by another transaction and gave up.",
+    "keywords": [
+      "lock wait timeout exceeded",
+      "mysql error 1205",
+      "innodb_lock_wait_timeout",
+      "find blocking transaction mysql",
+      "innodb_trx",
+      "mysql transaction stuck"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "MySQL Incorrect String Value",
+    "url": "/errors/database/mysql-incorrect-string-value",
+    "description": "MySQL error 1366 — an INSERT or UPDATE contained bytes the column's character set cannot store, most famously emoji into a 'utf8' column.",
+    "keywords": [
+      "mysql incorrect string value",
+      "error 1366",
+      "mysql emoji error",
+      "utf8mb4 vs utf8",
+      "\\xf0\\x9f mysql",
+      "convert table to utf8mb4"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "PostgreSQL Password Authentication Failed",
+    "url": "/errors/database/postgres-password-authentication-failed",
+    "description": "PostgreSQL error 28P01 — 'FATAL: password authentication failed for user'. The server rejected the supplied password for that role.",
+    "keywords": [
+      "password authentication failed for user postgres",
+      "28p01",
+      "pg_hba.conf",
+      "scram-sha-256 md5",
+      "reset postgres password",
+      "psql fatal password"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "PostgreSQL Role Does Not Exist",
+    "url": "/errors/database/postgres-role-does-not-exist",
+    "description": "PostgreSQL error 28000 — 'FATAL: role \"username\" does not exist'. The role you tried to connect as has never been created on this cluster.",
+    "keywords": [
+      "role does not exist postgres",
+      "fatal role postgres does not exist",
+      "createuser postgres",
+      "psql default username",
+      "homebrew postgres role",
+      "28000 postgresql"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "PostgreSQL Database Does Not Exist",
+    "url": "/errors/database/postgres-database-does-not-exist",
+    "description": "PostgreSQL error 3D000 — 'FATAL: database \"name\" does not exist'. The cluster you reached has no database by that name.",
+    "keywords": [
+      "database does not exist postgres",
+      "3d000",
+      "createdb postgres",
+      "psql default database",
+      "postgres wrong port 5433",
+      "brew postgres database missing"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "PostgreSQL Remaining Connection Slots Are Reserved",
+    "url": "/errors/database/postgres-connection-slots-reserved",
+    "description": "PostgreSQL error 53300 — 'FATAL: remaining connection slots are reserved for non-replication superuser connections'. The cluster hit max_connections.",
+    "keywords": [
+      "remaining connection slots are reserved",
+      "postgres 53300",
+      "max_connections postgres",
+      "pgbouncer setup",
+      "idle in transaction timeout",
+      "postgres connection pool exhausted"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Redis NOAUTH Authentication Required",
+    "url": "/errors/database/redis-noauth-authentication-required",
+    "description": "The Redis error returned when the server requires a password (requirepass or ACLs) but the client sent commands without authenticating first.",
+    "keywords": [
+      "noauth authentication required",
+      "redis auth error",
+      "redis-cli password",
+      "redis url password format",
+      "redis acl auth",
+      "requirepass"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Redis MISCONF — Unable to Persist to Disk",
+    "url": "/errors/database/redis-misconf-rdb-snapshots",
+    "description": "The Redis error 'MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk' — writes are blocked until persistence recovers.",
+    "keywords": [
+      "misconf redis is configured to save rdb snapshots",
+      "redis unable to persist on disk",
+      "stop-writes-on-bgsave-error",
+      "redis bgsave failed",
+      "vm.overcommit_memory redis",
+      "redis disk full"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Redis OOM Command Not Allowed",
+    "url": "/errors/database/redis-oom-command-not-allowed",
+    "description": "The Redis error 'OOM command not allowed when used memory is greater than maxmemory' — the memory limit is reached and the eviction policy refuses to free space.",
+    "keywords": [
+      "oom command not allowed",
+      "redis maxmemory",
+      "maxmemory-policy allkeys-lru",
+      "redis bigkeys",
+      "redis eviction policy",
+      "redis memory full"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "MongoDB Authentication Failed",
+    "url": "/errors/database/mongodb-authentication-failed",
+    "description": "MongoDB error code 18 — 'Authentication failed' (Atlas reports 'bad auth'). The credentials, authentication database, or mechanism did not match.",
+    "keywords": [
+      "mongodb authentication failed",
+      "code 18 mongodb",
+      "bad auth atlas",
+      "authsource admin",
+      "mongodb password special characters",
+      "scram-sha-256 mongodb"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "SQLite Attempt to Write a Readonly Database",
+    "url": "/errors/database/sqlite-readonly-database",
+    "description": "The SQLite error raised when a write is attempted but the database file — or, just as often, its directory — is not writable by the process.",
+    "keywords": [
+      "attempt to write a readonly database",
+      "sqlite readonly error",
+      "sqlite journal permission",
+      "www-data sqlite permission",
+      "docker sqlite readonly",
+      "sqlite wal readonly"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "SQLite No Such Table",
+    "url": "/errors/database/sqlite-no-such-table",
+    "description": "The SQLite error 'no such table: name' — the table does not exist in the database file the connection actually opened, which is often not the file you intended.",
+    "keywords": [
+      "sqlite no such table",
+      "sqlite creates empty database",
+      "sqlite relative path",
+      "sqlite_master list tables",
+      "django no such table",
+      "prisma sqlite no such table"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx bind() Failed — Address Already in Use",
+    "url": "/errors/nginx/address-already-in-use",
+    "description": "The startup error 'nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)' — another process already owns the port nginx wants.",
+    "keywords": [
+      "nginx bind failed address already in use",
+      "98 address already in use",
+      "nginx emerg bind 0.0.0.0:80",
+      "nginx won't start port 80",
+      "nginx port conflict apache"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Unknown Directive",
+    "url": "/errors/nginx/unknown-directive",
+    "description": "The config-test error 'nginx: [emerg] unknown directive' — a directive is misspelled, belongs to a module that is not loaded, or is not an nginx directive at all.",
+    "keywords": [
+      "nginx unknown directive",
+      "nginx emerg unknown directive",
+      "load_module nginx",
+      "nginx directive is not allowed here",
+      "nginx -t failed",
+      "headers-more nginx"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Connection Refused While Connecting to Upstream",
+    "url": "/errors/nginx/connection-refused-while-connecting-to-upstream",
+    "description": "The error-log line 'connect() failed (111: Connection refused) while connecting to upstream' — nginx reached the backend host, but nothing was listening. Visitors see a 502.",
+    "keywords": [
+      "connect failed 111 connection refused while connecting to upstream",
+      "nginx upstream connection refused",
+      "nginx 502 connection refused",
+      "proxy_pass connection refused",
+      "fastcgi_pass connection refused",
+      "docker nginx localhost upstream"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Upstream Timed Out",
+    "url": "/errors/nginx/upstream-timed-out",
+    "description": "The error-log line 'upstream timed out (110: Connection timed out) while reading response header from upstream' — the backend took longer than nginx was willing to wait. Visitors see a 504.",
+    "keywords": [
+      "nginx upstream timed out 110",
+      "upstream timed out while reading response header",
+      "proxy_read_timeout",
+      "fastcgi_read_timeout",
+      "nginx 504 upstream timeout",
+      "nginx timeout while connecting to upstream"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx No Live Upstreams",
+    "url": "/errors/nginx/no-live-upstreams",
+    "description": "The error-log line 'no live upstreams while connecting to upstream' — every server in the upstream block is currently marked failed, so nginx has nowhere to send the request.",
+    "keywords": [
+      "no live upstreams while connecting to upstream",
+      "nginx no live upstreams",
+      "max_fails fail_timeout",
+      "nginx upstream all down",
+      "nginx 502 no live upstreams",
+      "nginx backup server"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Cannot Load Certificate",
+    "url": "/errors/nginx/cannot-load-certificate",
+    "description": "Startup/reload errors like 'nginx: [emerg] cannot load certificate' or 'SSL_CTX_use_PrivateKey_file failed (key values mismatch)' — the TLS files are missing, unreadable, or mismatched.",
+    "keywords": [
+      "nginx cannot load certificate",
+      "ssl_ctx_use_privatekey_file failed",
+      "key values mismatch nginx",
+      "nginx emerg pem routines",
+      "fullchain.pem nginx",
+      "certbot nginx certificate error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Too Many Open Files",
+    "url": "/errors/nginx/too-many-open-files",
+    "description": "Error-log lines like 'socket() failed (24: Too many open files)' or 'accept4() failed' — nginx hit its file-descriptor limit and is dropping connections.",
+    "keywords": [
+      "nginx too many open files",
+      "socket failed 24 too many open files",
+      "worker_rlimit_nofile",
+      "nginx ulimit",
+      "LimitNOFILE nginx systemd",
+      "worker_connections limit"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Directory Index Forbidden",
+    "url": "/errors/nginx/directory-index-forbidden",
+    "description": "The error-log line 'directory index of \"/var/www/html/\" is forbidden' — a request hit a directory, no index file matched, and autoindex is off, so nginx returned 403.",
+    "keywords": [
+      "directory index of is forbidden",
+      "nginx 403 directory index",
+      "nginx autoindex",
+      "try_files nginx",
+      "nginx index directive",
+      "nginx 403 forbidden folder"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Primary Script Unknown (PHP-FPM)",
+    "url": "/errors/nginx/primary-script-unknown",
+    "description": "The error-log line 'FastCGI sent in stderr: \"Primary script unknown\"' — PHP-FPM could not find the script nginx asked it to run. Browsers show a bare 'File not found.'",
+    "keywords": [
+      "primary script unknown nginx",
+      "fastcgi sent in stderr primary script unknown",
+      "php-fpm file not found",
+      "script_filename nginx",
+      "nginx php docker file not found",
+      "fastcgi-php.conf"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Conflicting Server Name",
+    "url": "/errors/nginx/conflicting-server-name",
+    "description": "The warning 'nginx: [warn] conflicting server name \"example.com\" on 0.0.0.0:80, ignored' — two server blocks claim the same name, and nginx is silently ignoring one of them.",
+    "keywords": [
+      "conflicting server name nginx",
+      "nginx warn conflicting server name ignored",
+      "duplicate server block nginx",
+      "nginx server_name duplicate",
+      "nginx -T effective config",
+      "sites-enabled duplicate"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Upstream Sent Too Big Header",
+    "url": "/errors/nginx/upstream-sent-too-big-header",
+    "description": "The error-log line 'upstream sent too big header while reading response header from upstream' — the backend's response headers overflowed nginx's buffer. Visitors see a 502.",
+    "keywords": [
+      "upstream sent too big header",
+      "nginx too big header 502",
+      "proxy_buffer_size",
+      "fastcgi_buffer_size",
+      "nginx oauth 502",
+      "set-cookie too large nginx"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Nginx Permission Denied While Connecting to Upstream",
+    "url": "/errors/nginx/permission-denied-while-connecting-to-upstream",
+    "description": "The error-log line 'connect() to ... failed (13: Permission denied) while connecting to upstream' — the OS blocked nginx's connection to the backend, classically SELinux.",
+    "keywords": [
+      "nginx permission denied while connecting to upstream",
+      "13 permission denied nginx",
+      "httpd_can_network_connect",
+      "selinux nginx proxy",
+      "php-fpm socket permission denied",
+      "setsebool nginx"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00558 — Could Not Reliably Determine FQDN",
+    "url": "/errors/apache/ah00558-could-not-reliably-determine-fqdn",
+    "description": "The startup message 'AH00558: apache2: Could not reliably determine the server's fully qualified domain name' — Apache has no ServerName and is guessing.",
+    "keywords": [
+      "ah00558",
+      "could not reliably determine the server's fully qualified domain name",
+      "apache servername",
+      "apache2 fqdn warning",
+      "set servername apache",
+      "127.0.1.1 apache"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00072 — make_sock: Could Not Bind to Address",
+    "url": "/errors/apache/ah00072-could-not-bind-to-address",
+    "description": "The startup failure '(98)Address already in use: AH00072: make_sock: could not bind to address [::]:80' — another process holds Apache's port, or Apache is fighting itself.",
+    "keywords": [
+      "ah00072",
+      "make_sock could not bind to address",
+      "98 address already in use apache",
+      "ah00451 no listening sockets",
+      "apache port 80 in use",
+      "apache won't start port conflict"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache Invalid Command 'RewriteEngine'",
+    "url": "/errors/apache/invalid-command-rewriteengine",
+    "description": "The error \"Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration\" — mod_rewrite (or another module) is not enabled.",
+    "keywords": [
+      "invalid command rewriteengine",
+      "perhaps misspelled or defined by a module not included",
+      "a2enmod rewrite",
+      "apache mod_rewrite not working",
+      "htaccess 500 invalid command",
+      "apache invalid command header"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH01630 — Client Denied by Server Configuration",
+    "url": "/errors/apache/ah01630-client-denied-by-server-configuration",
+    "description": "The error-log line 'AH01630: client denied by server configuration' — an authorization rule (usually Require directives) rejected the request. Visitors see 403 Forbidden.",
+    "keywords": [
+      "ah01630",
+      "client denied by server configuration",
+      "apache 403 forbidden fix",
+      "require all granted",
+      "order allow deny apache 2.4",
+      "ah01797"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00035 — Search Permissions Missing on a Component of the Path",
+    "url": "/errors/apache/ah00035-access-denied-search-permissions",
+    "description": "The error-log line 'AH00035: access to / denied ... because search permissions are missing on a component of the path' — the Apache user cannot traverse a directory above the docroot.",
+    "keywords": [
+      "ah00035",
+      "search permissions are missing on a component of the path",
+      "apache 403 home directory",
+      "namei -l",
+      "www-data permission denied",
+      "apache docroot permissions"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00161 — MaxRequestWorkers Reached",
+    "url": "/errors/apache/ah00161-maxrequestworkers-reached",
+    "description": "The warning 'AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting' — Apache is out of workers and queueing or refusing requests.",
+    "keywords": [
+      "ah00161",
+      "server reached maxrequestworkers setting",
+      "apache maxrequestworkers",
+      "mpm_event tuning",
+      "apache slow under load",
+      "prefork to event php-fpm"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH01071 — Got Error 'Primary Script Unknown' (PHP-FPM)",
+    "url": "/errors/apache/primary-script-unknown-php-fpm",
+    "description": "The error-log line 'AH01071: Got error \\'Primary script unknown\\'' — Apache proxied a request to PHP-FPM, which could not find the script. Browsers show 'File not found.'",
+    "keywords": [
+      "ah01071",
+      "got error primary script unknown apache",
+      "apache php-fpm file not found",
+      "sethandler proxy fcgi",
+      "proxypassmatch php-fpm",
+      "mod_proxy_fcgi primary script"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH02565 — Certificate and Private Key Do Not Match",
+    "url": "/errors/apache/ah02565-certificate-key-mismatch",
+    "description": "The startup failure 'AH02565: Certificate and private key ... from ... and ... do not match' — SSLCertificateFile and SSLCertificateKeyFile are not a pair.",
+    "keywords": [
+      "ah02565",
+      "certificate and private key do not match apache",
+      "sslcertificatefile key mismatch",
+      "apache ssl won't start",
+      "openssl modulus compare",
+      "certbot apache certificate"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00898 — Error Reading from Remote Server (mod_proxy)",
+    "url": "/errors/apache/ah00898-error-reading-from-remote-server",
+    "description": "The error-log line 'AH00898: Error reading from remote server' (with AH01102 'error reading status line') — Apache's reverse proxy lost the backend mid-request. Visitors see 502.",
+    "keywords": [
+      "ah00898",
+      "error reading from remote server apache",
+      "ah01102 error reading status line",
+      "apache mod_proxy 502",
+      "proxytimeout apache",
+      "proxypass timeout"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00023 — No Space Left on Device (Mutex/Semaphore)",
+    "url": "/errors/apache/ah00023-no-space-left-on-device",
+    "description": "The startup failure 'No space left on device: AH00023: Couldn't create the mpm-accept mutex' — usually exhausted semaphores, not an actually full disk.",
+    "keywords": [
+      "ah00023",
+      "no space left on device apache mutex",
+      "couldn't create the mpm-accept mutex",
+      "ipcs ipcrm semaphores apache",
+      "apache semaphore leak",
+      "kernel.sem"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH00526 — Syntax Error in Configuration",
+    "url": "/errors/apache/ah00526-syntax-error",
+    "description": "The configtest/startup failure 'AH00526: Syntax error on line N of file' — Apache cannot parse the configuration and refuses to start or reload until it is fixed.",
+    "keywords": [
+      "ah00526",
+      "syntax error on line apache",
+      "apachectl configtest",
+      "apache won't start syntax error",
+      "apache unclosed virtualhost",
+      "apache2ctl dump_includes"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache Threaded MPM vs PHP Module Conflict",
+    "url": "/errors/apache/threaded-mpm-php-not-threadsafe",
+    "description": "The error 'Apache is running a threaded MPM, but your PHP Module is not compiled to be threadsafe. You need to recompile PHP.' — mod_php demands the prefork MPM.",
+    "keywords": [
+      "apache is running a threaded mpm but your php module is not compiled to be threadsafe",
+      "mpm_event php",
+      "mod_php vs php-fpm",
+      "a2enmod php mpm_prefork",
+      "apache php threadsafe error",
+      "switch apache to php-fpm"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Apache AH01276 — Cannot Serve Directory",
+    "url": "/errors/apache/ah01276-cannot-serve-directory",
+    "description": "The error-log line 'AH01276: Cannot serve directory ...: No matching DirectoryIndex ... found, and server-generated directory index forbidden by Options directive' — visitors see 403.",
+    "keywords": [
+      "ah01276",
+      "cannot serve directory apache",
+      "no matching directoryindex",
+      "directory index forbidden by options directive",
+      "apache 403 directory",
+      "directoryindex index.php"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js Cannot Find Module",
+    "url": "/errors/node/cannot-find-module",
+    "description": "The crash \"Error: Cannot find module 'x'\" (code MODULE_NOT_FOUND) — Node's resolver could not locate a package or file your code requires or imports.",
+    "keywords": [
+      "cannot find module node",
+      "module_not_found",
+      "error cannot find module express",
+      "node require cannot find module",
+      "cannot find module docker",
+      "case sensitive import linux"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cannot Use Import Statement Outside a Module",
+    "url": "/errors/node/cannot-use-import-statement-outside-a-module",
+    "description": "The crash \"SyntaxError: Cannot use import statement outside a module\" — ES-module syntax ran in a CommonJS context, in Node, Jest, or a browser script tag.",
+    "keywords": [
+      "cannot use import statement outside a module",
+      "syntaxerror import node",
+      "type module package.json",
+      "jest cannot use import statement",
+      "mjs vs cjs",
+      "es modules node"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js ERR_REQUIRE_ESM",
+    "url": "/errors/node/err-require-esm",
+    "description": "The crash 'Error [ERR_REQUIRE_ESM]: require() of ES Module ... not supported' — CommonJS code tried to require() a package that ships only as an ES module.",
+    "keywords": [
+      "err_require_esm",
+      "require() of es module not supported",
+      "chalk 5 require error",
+      "node-fetch 3 esm",
+      "dynamic import commonjs",
+      "node 22 require esm"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "JavaScript Heap Out of Memory",
+    "url": "/errors/node/javascript-heap-out-of-memory",
+    "description": "The crash 'FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory' — the Node process hit V8's heap ceiling and aborted.",
+    "keywords": [
+      "javascript heap out of memory",
+      "reached heap limit allocation failed",
+      "max-old-space-size",
+      "node build out of memory",
+      "node_options heap",
+      "node memory leak heap snapshot"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js EADDRINUSE — Address Already in Use",
+    "url": "/errors/node/eaddrinuse-address-already-in-use",
+    "description": "The crash 'Error: listen EADDRINUSE: address already in use :::3000' — another process (often a previous instance of the same app) already listens on the port.",
+    "keywords": [
+      "eaddrinuse",
+      "listen eaddrinuse address already in use 3000",
+      "node port already in use",
+      "kill process on port 3000",
+      "nodemon eaddrinuse",
+      "lsof port node"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js error:0308010C — Digital Envelope Routines Unsupported",
+    "url": "/errors/node/digital-envelope-routines-unsupported",
+    "description": "The build crash 'Error: error:0308010C:digital envelope routines::unsupported' — Node 17+ (OpenSSL 3) rejects legacy hash usage in older webpack toolchains.",
+    "keywords": [
+      "error:0308010c",
+      "digital envelope routines unsupported",
+      "openssl-legacy-provider",
+      "node 17 webpack error",
+      "react-scripts openssl error",
+      "err_ossl_evp_unsupported"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "node-gyp Build Failed",
+    "url": "/errors/node/node-gyp-build-failed",
+    "description": "Install failures full of 'gyp ERR! build error' and 'gyp ERR! stack' — a package with native C/C++ code could not compile on your machine.",
+    "keywords": [
+      "gyp err build error",
+      "node-gyp rebuild failed",
+      "node gyp python not found",
+      "distutils node-gyp",
+      "node_module_version mismatch",
+      "npm install gyp error"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js Unhandled Promise Rejection",
+    "url": "/errors/node/unhandled-promise-rejection",
+    "description": "The crash 'Error [ERR_UNHANDLED_REJECTION]: This error originated either by throwing inside of an async function without a catch block...' — a rejected promise had no handler, and Node 15+ exits.",
+    "keywords": [
+      "unhandled promise rejection",
+      "err_unhandled_rejection",
+      "node crash unhandledrejection",
+      "no-floating-promises",
+      "promise rejection was not handled",
+      "node 15 unhandled rejection"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! code ELIFECYCLE",
+    "url": "/errors/node/npm-err-elifecycle",
+    "description": "The npm failure 'npm ERR! code ELIFECYCLE, npm ERR! errno 1' — the package.json script npm ran exited with a non-zero code. npm is the messenger, not the culprit.",
+    "keywords": [
+      "npm err code elifecycle",
+      "elifecycle errno 1",
+      "npm run build failed",
+      "npm start elifecycle",
+      "postinstall failed npm",
+      "npm err errno 137"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "npm ERR! ENOENT — Could Not Read package.json",
+    "url": "/errors/node/npm-enoent-package-json",
+    "description": "The failure 'npm ERR! code ENOENT ... Could not read package.json' — npm ran in a directory that has no package.json to read.",
+    "keywords": [
+      "npm err enoent package.json",
+      "could not read package.json",
+      "enoent no such file or directory open package.json",
+      "npm init",
+      "npm workspaces -w",
+      "docker workdir npm"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Node.js UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
+    "url": "/errors/node/unable-to-get-issuer-cert-locally",
+    "description": "TLS failures like 'npm ERR! UNABLE_TO_GET_ISSUER_CERT_LOCALLY' or fetch failing with 'unable to get local issuer certificate' — Node cannot verify the server's certificate chain, typically behind a corporate proxy.",
+    "keywords": [
+      "unable_to_get_issuer_cert_locally",
+      "unable to get local issuer certificate",
+      "node_extra_ca_certs",
+      "npm cafile corporate proxy",
+      "zscaler npm error",
+      "self signed certificate in certificate chain"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Maximum Call Stack Size Exceeded",
+    "url": "/errors/node/maximum-call-stack-size-exceeded",
+    "description": "The crash 'RangeError: Maximum call stack size exceeded' — function calls nested deeper than the stack allows, almost always runaway recursion.",
+    "keywords": [
+      "maximum call stack size exceeded",
+      "rangeerror call stack",
+      "infinite recursion javascript",
+      "node stack overflow",
+      "recursion base case",
+      "call stack exceeded fix"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python error: externally-managed-environment",
+    "url": "/errors/python/externally-managed-environment",
+    "description": "The pip refusal 'error: externally-managed-environment' — the system Python (Debian 12+, Ubuntu 23.04+, Fedora 38+, Homebrew) blocks pip installs outside a virtual environment.",
+    "keywords": [
+      "externally-managed-environment",
+      "pip error externally managed environment",
+      "pep 668",
+      "break-system-packages",
+      "ubuntu pip install blocked",
+      "pipx vs venv"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python ImportError: Attempted Relative Import",
+    "url": "/errors/python/attempted-relative-import",
+    "description": "The crash 'ImportError: attempted relative import with no known parent package' — relative imports only work inside a package, and this file was run as a plain script.",
+    "keywords": [
+      "attempted relative import with no known parent package",
+      "importerror relative import",
+      "python -m module",
+      "relative import python script",
+      "beyond top-level package"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "python: command not found",
+    "url": "/errors/python/command-python-not-found",
+    "description": "Shell errors 'python: command not found' or Windows opening the Microsoft Store — the python command is missing from PATH, or only python3 exists.",
+    "keywords": [
+      "python command not found",
+      "python was not found run without arguments",
+      "python vs python3",
+      "windows python microsoft store",
+      "app execution aliases python",
+      "add python to path"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python UnicodeDecodeError",
+    "url": "/errors/python/unicodedecodeerror",
+    "description": "The crash \"UnicodeDecodeError: 'utf-8' codec can't decode byte 0x.. in position ..\" — bytes were decoded with the wrong encoding, or binary data was opened as text.",
+    "keywords": [
+      "unicodedecodeerror",
+      "utf-8 codec can't decode byte",
+      "0xe9 invalid continuation byte",
+      "python open encoding",
+      "cp1252 vs utf-8",
+      "charset detection python"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "AttributeError: 'NoneType' Object Has No Attribute",
+    "url": "/errors/python/attributeerror-nonetype",
+    "description": "The most common Python traceback — a variable is None where code expected a real object, usually because some earlier call returned None.",
+    "keywords": [
+      "nonetype object has no attribute",
+      "attributeerror nonetype",
+      "python none error",
+      "dict.get returns none",
+      "list sort returns none",
+      "optional none mypy"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python RecursionError: Maximum Recursion Depth Exceeded",
+    "url": "/errors/python/maximum-recursion-depth",
+    "description": "The crash 'RecursionError: maximum recursion depth exceeded' — function calls nested past Python's limit (default 1000), almost always runaway recursion.",
+    "keywords": [
+      "recursionerror maximum recursion depth exceeded",
+      "python recursion limit",
+      "sys.setrecursionlimit",
+      "getattr infinite recursion",
+      "python stack overflow",
+      "recursion depth exceeded in comparison"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python IndentationError",
+    "url": "/errors/python/indentationerror",
+    "description": "Crashes like 'IndentationError: unexpected indent', 'expected an indented block', and 'unindent does not match any outer indentation level' — whitespace that Python cannot parse as structure.",
+    "keywords": [
+      "indentationerror unexpected indent",
+      "expected an indented block",
+      "unindent does not match any outer indentation level",
+      "taberror inconsistent use of tabs",
+      "python tabs vs spaces",
+      "invisible character python paste"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "pip: TLS/SSL Module Not Available",
+    "url": "/errors/python/pip-ssl-module-not-available",
+    "description": "The failure 'pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available' — this Python was built without OpenSSL support.",
+    "keywords": [
+      "ssl module in python is not available",
+      "pip tls/ssl error",
+      "pyenv ssl module missing",
+      "no module named _ssl",
+      "libssl-dev python build",
+      "python built without openssl"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python: No Module Named pip",
+    "url": "/errors/python/no-module-named-pip",
+    "description": "The failure 'ModuleNotFoundError: No module named pip' (or '/usr/bin/python3: No module named pip') — this interpreter has no pip installed at all.",
+    "keywords": [
+      "no module named pip",
+      "usr/bin/python3 no module named pip",
+      "ensurepip",
+      "apt install python3-pip",
+      "venv without pip",
+      "python -m pip"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "error: Microsoft Visual C++ 14.0 or Greater Is Required",
+    "url": "/errors/python/microsoft-visual-c-required",
+    "description": "The pip build failure 'error: Microsoft Visual C++ 14.0 or greater is required. Get it with Microsoft C++ Build Tools' — a package needs compiling and Windows has no compiler.",
+    "keywords": [
+      "microsoft visual c++ 14.0 or greater is required",
+      "pip build tools error",
+      "error microsoft visual c++ required",
+      "python wheel windows",
+      "vs build tools pip",
+      "desktop development with c++"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "venv Activate: Running Scripts Is Disabled on This System",
+    "url": "/errors/python/venv-activate-scripts-disabled",
+    "description": "The PowerShell failure 'Activate.ps1 cannot be loaded because running scripts is disabled on this system' — Windows' execution policy blocks the venv activation script.",
+    "keywords": [
+      "activate.ps1 cannot be loaded because running scripts is disabled",
+      "set-executionpolicy remotesigned",
+      "venv activate powershell error",
+      "execution policy python venv",
+      "running scripts is disabled on this system"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Python SSLCertVerificationError — Certificate Verify Failed",
+    "url": "/errors/python/certificate-verify-failed",
+    "description": "The failure 'ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate' in requests, urllib, or pip.",
+    "keywords": [
+      "ssl certificate_verify_failed python",
+      "unable to get local issuer certificate python",
+      "install certificates.command",
+      "requests_ca_bundle",
+      "python requests ssl error",
+      "pip certificate verify failed"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 520 — Web Server Returns an Unknown Error",
+    "url": "/errors/cloudflare/error-520",
+    "description": "Cloudflare reached the origin server, but the response was empty, malformed, or cut off — something Cloudflare could not interpret as valid HTTP.",
+    "keywords": [
+      "cloudflare error 520",
+      "web server returns an unknown error",
+      "error 520 fix",
+      "cloudflare 520 origin",
+      "ray id 520",
+      "520 vs 502"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 521 — Web Server Is Down",
+    "url": "/errors/cloudflare/error-521",
+    "description": "Cloudflare tried to connect to the origin server and the connection was actively refused — nothing is accepting connections on the origin's port.",
+    "keywords": [
+      "cloudflare error 521",
+      "web server is down cloudflare",
+      "error 521 fix",
+      "cloudflare ip ranges firewall",
+      "origin refusing connections",
+      "521 vs 522"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 522 — Connection Timed Out",
+    "url": "/errors/cloudflare/error-522",
+    "description": "Cloudflare's attempt to open a TCP connection to the origin produced no answer at all within the timeout — packets are being dropped, or the origin is too overloaded to accept.",
+    "keywords": [
+      "cloudflare error 522",
+      "connection timed out cloudflare",
+      "error 522 fix",
+      "cloudflare 522 firewall",
+      "origin ip cloudflare dns",
+      "522 intermittent"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 523 — Origin Is Unreachable",
+    "url": "/errors/cloudflare/error-523",
+    "description": "Cloudflare has no network route to the origin at all — typically because the DNS record points at a private, wrong, or no-longer-routed IP address.",
+    "keywords": [
+      "cloudflare error 523",
+      "origin is unreachable",
+      "error 523 fix",
+      "private ip cloudflare dns",
+      "origin ip wrong cloudflare",
+      "523 vs 522"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 524 — A Timeout Occurred",
+    "url": "/errors/cloudflare/error-524",
+    "description": "Cloudflare connected to the origin and delivered the request, but the origin did not complete an HTTP response within 100 seconds — long jobs and slow queries are the usual story.",
+    "keywords": [
+      "cloudflare error 524",
+      "a timeout occurred cloudflare",
+      "error 524 fix",
+      "cloudflare 100 second timeout",
+      "524 long running request",
+      "524 vs 504"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 525 — SSL Handshake Failed",
+    "url": "/errors/cloudflare/error-525",
+    "description": "Cloudflare tried to establish a TLS connection to the origin (Full or Full-strict SSL mode) and the handshake failed — usually no certificate is being served on port 443.",
+    "keywords": [
+      "cloudflare error 525",
+      "ssl handshake failed cloudflare",
+      "error 525 fix",
+      "cloudflare origin certificate",
+      "full strict ssl 525",
+      "525 vs 526"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 526 — Invalid SSL Certificate",
+    "url": "/errors/cloudflare/error-526",
+    "description": "Under Full (strict) SSL mode, the origin presented a certificate that failed validation — expired, self-signed, untrusted, or issued for a different hostname.",
+    "keywords": [
+      "cloudflare error 526",
+      "invalid ssl certificate cloudflare",
+      "error 526 fix",
+      "full strict invalid certificate",
+      "origin certificate expired cloudflare",
+      "526 self signed"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned",
+    "url": "/errors/cloudflare/error-1006",
+    "description": "The page 'Access denied: the owner of this website has banned your IP address' — an IP Access Rule on the site explicitly blocks your address or range.",
+    "keywords": [
+      "cloudflare error 1006",
+      "error 1007",
+      "error 1008",
+      "owner of this website has banned your ip address",
+      "cloudflare ip access rules",
+      "banned ip cloudflare fix"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 1015 — You Are Being Rate Limited",
+    "url": "/errors/cloudflare/error-1015",
+    "description": "The request tripped a Rate Limiting rule configured by the site's owner — too many requests from your IP inside the rule's time window.",
+    "keywords": [
+      "cloudflare error 1015",
+      "you are being rate limited",
+      "error 1015 fix",
+      "cloudflare rate limiting rule",
+      "1015 how long",
+      "1015 vs 429"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 1016 — Origin DNS Error",
+    "url": "/errors/cloudflare/error-1016",
+    "description": "Cloudflare could not resolve the origin's address: the DNS record behind the proxy points at a hostname that does not resolve — a broken CNAME target is the classic cause.",
+    "keywords": [
+      "cloudflare error 1016",
+      "origin dns error",
+      "error 1016 fix",
+      "cname target nxdomain cloudflare",
+      "cloudflare load balancer 1016",
+      "1016 vs 523"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Error 1020 — Access Denied",
+    "url": "/errors/cloudflare/error-1020",
+    "description": "The request matched a firewall or WAF rule on the site — country, network, user-agent, path, or bot-score conditions the owner configured (or a managed rule).",
+    "keywords": [
+      "cloudflare error 1020",
+      "access denied error 1020",
+      "error 1020 fix",
+      "cloudflare waf rule blocked",
+      "ray id security events",
+      "1020 vs 1006"
+    ]
+  },
+  {
+    "type": "error",
+    "title": "Cloudflare Redirect Loop (ERR_TOO_MANY_REDIRECTS)",
+    "url": "/errors/cloudflare/redirect-loop",
+    "description": "The browser reports ERR_TOO_MANY_REDIRECTS on a site behind Cloudflare — almost always Flexible SSL mode fighting an origin that redirects HTTP to HTTPS.",
+    "keywords": [
+      "cloudflare too many redirects",
+      "err_too_many_redirects cloudflare",
+      "flexible ssl redirect loop",
+      "cloudflare redirect loop fix",
+      "full strict redirect loop",
+      "x-forwarded-proto redirect"
+    ]
+  }
+]

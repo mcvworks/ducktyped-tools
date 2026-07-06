@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is NoneType exactly?","acceptedAnswer":{"@type":"Answer","text":"The type of the single value None. The message \"'NoneType' object has no attribute 'x'\" is Python saying: this variable is None, and None has no attributes — a wrong-value error dressed as an attribute error."}},{"@type":"Question","name":"Why is the traceback pointing at a line that looks correct?","acceptedAnswer":{"@type":"Answer","text":"Because that line only USED the None. The producer is earlier — sometimes another file entirely (config loading, an API client). repr()-print the operands of the crashing expression; whichever is None, trace where it was assigned."}},{"@type":"Question","name":"Is there a safe-navigation operator like ?. in Python?","acceptedAnswer":{"@type":"Answer","text":"No — deliberately. The idiomatic forms are the conditional expression (x.y if x else default), try/except AttributeError for duck-typed cases, and getattr(x, 'y', default). Type annotations plus a checker give the compile-time version of the safety."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"AttributeError: 'NoneType' Object Has No Attribute — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttributeError: 'NoneType' Object Has No Attribute — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix AttributeError 'NoneType' object has no attribute. Find where None came from: functions returning None, dict.get, regex misses, and guarding patterns.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AttributeError: &#39;NoneType&#39; object has no attribute, nonetype object has no attribute, nonetype has no attribute get, python none attribute error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AttributeError: 'NoneType' Object Has No Attribute — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix AttributeError 'NoneType' object has no attribute. Find where None came from: functions returning None, dict.get, regex misses, and guarding patterns.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/attributeerror-nonetype">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/attributeerror-nonetype">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>AttributeError: 'NoneType' Object Has No Attribute</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>AttributeError: 'NoneType' Object Has No Attribute</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The most common Python traceback — a variable is None where code expected a real object, usually because some earlier call returned None.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AttributeError: &#39;NoneType&#39; object has no attribute</code></li><li><code>nonetype object has no attribute</code></li><li><code>nonetype has no attribute get</code></li><li><code>python none attribute error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Something evaluated to None, and the code then did none_thing.attribute. The traceback line shows where the None was USED — the bug is where it was PRODUCED, one or more steps earlier. Python is full of functions that return None on 'not found' rather than raising: dict.get, re.match without a hit, find() on XML, ORM .first(), functions with a missing return. The craft is tracing the None to its source and deciding there whether to raise, default, or branch.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>A lookup that found nothing</strong> — dict.get(key), re.match(...), soup.find(...), queryset.first() — all return None on a miss, and the very next attribute access explodes.</li>
+                <li><strong>A function missing a return</strong> — A code path (often an else or exception branch) that falls off the end returns None implicitly; callers get None only for certain inputs — the intermittent flavor.</li>
+                <li><strong>In-place methods used as expressions</strong> — list.sort(), list.append(), random.shuffle() return None by design; 'data = data.sort()' assigns None and detonates later.</li>
+                <li><strong>Optional values crossing layers unchecked</strong> — None from a config default, an API's null, or an unset field travels deep into code that assumed it could not be missing.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Find the producer, not just the crash line</h3>
+            <p>Work upward from the traceback: which expression produced the variable that is None? Print or debug one step earlier.</p>
+            <pre><code>user = get_user(user_id)
+print(repr(user))         # None? the bug is inside/into get_user
+profile = user.profile    # &lt;- crash line, not bug line</code></pre>
+            <h3>2. Guard at the boundary where None is meaningful</h3>
+            <p>Handle the miss where it happens — raise a clear error or take the alternate path.</p>
+            <pre><code>user = get_user(user_id)
+if user is None:
+    raise LookupError(f'no user with id {user_id!r}')
+# or branch:
+name = user.name if user else 'anonymous'</code></pre>
+            <h3>3. Fix the None-returning pattern itself</h3>
+            <p>Watch the two classics: implicit returns and in-place methods.</p>
+            <pre><code># implicit None:
+def pick(items):
+    if items:
+        return items[0]
+    return None   # make it explicit — or raise
+
+# in-place method:
+data.sort()               # right
+# data = data.sort()      # wrong: assigns None
+ordered = sorted(data)    # expression form when you want a new list</code></pre>
+            <h3>4. Let type checkers catch it before runtime</h3>
+            <p>Annotate optionals and run mypy/pyright — they flag attribute access on possibly-None values at edit time.</p>
+            <pre><code>def get_user(user_id: int) -&gt; &quot;User | None&quot;: ...
+
+# mypy error: Item &quot;None&quot; of &quot;User | None&quot; has no attribute &quot;profile&quot;
+pip install mypy &amp;&amp; mypy src/</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is NoneType exactly?</h3>
+            <p>The type of the single value None. The message "'NoneType' object has no attribute 'x'" is Python saying: this variable is None, and None has no attributes — a wrong-value error dressed as an attribute error.</p>
+            <h3>Why is the traceback pointing at a line that looks correct?</h3>
+            <p>Because that line only USED the None. The producer is earlier — sometimes another file entirely (config loading, an API client). repr()-print the operands of the crashing expression; whichever is None, trace where it was assigned.</p>
+            <h3>Is there a safe-navigation operator like ?. in Python?</h3>
+            <p>No — deliberately. The idiomatic forms are the conditional expression (x.y if x else default), try/except AttributeError for duck-typed cases, and getattr(x, 'y', default). Type annotations plus a checker give the compile-time version of the safety.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/unicodedecodeerror">UnicodeDecodeError</a> — another everyday traceback.</li>
+                <li><a href="/errors/python/maximum-recursion-depth">RecursionError</a> — runaway-logic crashes.</li>
+                <li><a href="/errors/node/unhandled-promise-rejection">Unhandled Promise Rejection</a> — unchecked failure values in Node.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Spot null fields in API payloads</span>
+                </a>
+        <a href="/regex-tester/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Regex Tester</span>
+                    <span class="recommended-tool-desc">Check why re.match returned None</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

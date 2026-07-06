@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it safe to bind Redis to 0.0.0.0?","acceptedAnswer":{"@type":"Answer","text":"Only if you set a strong password with 'requirepass' and use firewall rules to limit which IPs can connect. Exposing Redis to the internet without authentication is extremely dangerous and is a common attack vector."}},{"@type":"Question","name":"What is Redis protected mode?","acceptedAnswer":{"@type":"Answer","text":"Protected mode is a security feature in Redis 3.2+ that rejects connections from non-loopback addresses when no password is configured. It prevents accidentally exposing an unsecured Redis instance to the network."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Redis Connection Refused — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Redis Connection Refused","step":[{"@type":"HowToStep","position":1,"name":"Start Redis service","text":"Start the Redis server and enable it for automatic startup."},{"@type":"HowToStep","position":2,"name":"Configure Redis for remote access","text":"Update redis.conf to accept connections from other hosts and set a password for security."},{"@type":"HowToStep","position":3,"name":"Test connectivity","text":"Verify that Redis is listening and responding on the expected port."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis Connection Refused — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Redis connection refused error. Learn why Redis rejects connections and how to fix configuration, binding, and firewall issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Redis connection refused, connect ECONNREFUSED 6379, Could not connect to Redis, Redis server not running, Error: connect ECONNREFUSED 127.0.0.1:6379">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Redis Connection Refused — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Redis connection refused error. Learn why Redis rejects connections and how to fix configuration, binding, and firewall issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/redis-connection-refused">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/redis-connection-refused">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Redis Connection Refused</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Redis Connection Refused</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Redis server refused the connection</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Redis connection refused</code></li><li><code>connect ECONNREFUSED 6379</code></li><li><code>Could not connect to Redis</code></li><li><code>Redis server not running</code></li><li><code>Error: connect ECONNREFUSED 127.0.0.1:6379</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when a client cannot establish a TCP connection to the Redis server. Redis is either not running, not listening on the expected interface or port, or a firewall is blocking the connection. Redis defaults to binding only to localhost (127.0.0.1), so remote connections are refused unless explicitly configured.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Redis server is not running</strong> — The Redis service has stopped or was never started. This can happen after a reboot if Redis is not configured to start automatically.</li>
+                <li><strong>Redis bound to localhost only</strong> — Redis defaults to binding to 127.0.0.1, which only accepts connections from the local machine. Remote clients cannot connect unless the bind address is changed.</li>
+                <li><strong>Protected mode is enabled</strong> — Redis 3.2+ enables protected mode by default, which rejects connections from non-loopback addresses when no password is set.</li>
+                <li><strong>Firewall blocking port 6379</strong> — A firewall is blocking connections on Redis's default port (6379) or the custom port configured in redis.conf.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Start Redis service</h3>
+            <p>Start the Redis server and enable it for automatic startup.</p>
+            <pre><code>sudo systemctl start redis
+sudo systemctl enable redis
+sudo systemctl status redis</code></pre>
+            <h3>2. Configure Redis for remote access</h3>
+            <p>Update redis.conf to accept connections from other hosts and set a password for security.</p>
+            <pre><code># In redis.conf:
+bind 0.0.0.0
+protected-mode no
+requirepass your_strong_password
+
+# Restart Redis:
+sudo systemctl restart redis</code></pre>
+            <h3>3. Test connectivity</h3>
+            <p>Verify that Redis is listening and responding on the expected port.</p>
+            <pre><code>redis-cli ping
+# Should return: PONG
+
+# For remote server:
+redis-cli -h server-ip -p 6379 -a password ping</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is it safe to bind Redis to 0.0.0.0?</h3>
+            <p>Only if you set a strong password with 'requirepass' and use firewall rules to limit which IPs can connect. Exposing Redis to the internet without authentication is extremely dangerous and is a common attack vector.</p>
+            <h3>What is Redis protected mode?</h3>
+            <p>Protected mode is a security feature in Redis 3.2+ that rejects connections from non-loopback addresses when no password is configured. It prevents accidentally exposing an unsecured Redis instance to the network.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — PostgreSQL refused the connection</li>
+                <li><a href="/errors/database/mongodb-connection-failed">MongoDB Connection Failed</a> — MongoDB connection failed</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Connection refused by server</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 426 commonly used for HTTP to HTTPS redirects?","acceptedAnswer":{"@type":"Answer","text":"No. Most servers use 301 or 307 redirects for HTTP to HTTPS enforcement. The 426 status is technically more correct but much less commonly used in practice."}},{"@type":"Question","name":"What protocols can be specified in the Upgrade header?","acceptedAnswer":{"@type":"Answer","text":"Common values include TLS/1.0 (for HTTPS upgrade), websocket (for WebSocket), h2c (for HTTP/2 cleartext), and HTTP/2.0. The server specifies which protocol it requires."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"426 Upgrade Required — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 426 Upgrade Required","step":[{"@type":"HowToStep","position":1,"name":"Use the protocol specified in the Upgrade header","text":"Check the Upgrade header in the 426 response to see which protocol the server requires, and reconnect using that protocol."},{"@type":"HowToStep","position":2,"name":"Switch to HTTPS","text":"If the server requires HTTPS, change your URL scheme from http:// to https:// and retry the request."},{"@type":"HowToStep","position":3,"name":"Use a WebSocket client for WebSocket endpoints","text":"If the endpoint requires WebSocket, use a WebSocket client library instead of a regular HTTP client."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>426 Upgrade Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 426 Upgrade Required errors. Learn what causes protocol upgrade requirements and how to switch from HTTP to HTTPS, WebSocket, or newer HTTP versions.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 426, 426 Upgrade Required, 426 error, Upgrade required, Protocol upgrade needed, WebSocket upgrade">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="426 Upgrade Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 426 Upgrade Required errors. Learn what causes protocol upgrade requirements and how to switch from HTTP to HTTPS, WebSocket, or newer HTTP versions.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/426-upgrade-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/426-upgrade-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>426 Upgrade Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>426 Upgrade Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server requires the client to upgrade to a different protocol</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 426</code></li><li><code>426 Upgrade Required</code></li><li><code>426 error</code></li><li><code>Upgrade required</code></li><li><code>Protocol upgrade needed</code></li><li><code>WebSocket upgrade</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 426 Upgrade Required response indicates that the server refuses to process the request using the current protocol and requires the client to upgrade to a different protocol specified in the Upgrade header. This is commonly used to enforce HTTPS, require WebSocket connections, or transition to newer HTTP versions.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>HTTP to HTTPS upgrade required</strong> — The server requires a secure connection and is responding with 426 to indicate the client must switch to HTTPS. This is less common than 301 redirects for HTTPS enforcement.</li>
+                <li><strong>WebSocket upgrade expected</strong> — The endpoint expects a WebSocket connection but received a regular HTTP request. WebSocket connections start as HTTP requests with an Upgrade: websocket header.</li>
+                <li><strong>Protocol version too old</strong> — The server requires a newer version of the HTTP protocol than the client is using, such as requiring HTTP/2 or HTTP/3.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Use the protocol specified in the Upgrade header</h3>
+            <p>Check the Upgrade header in the 426 response to see which protocol the server requires, and reconnect using that protocol.</p>
+            <pre><code># Check which protocol is required
+curl -I http://example.com/ws-endpoint
+# Look for: Upgrade: websocket, TLS/1.3, h2c</code></pre>
+            <h3>2. Switch to HTTPS</h3>
+            <p>If the server requires HTTPS, change your URL scheme from http:// to https:// and retry the request.</p>
+            <h3>3. Use a WebSocket client for WebSocket endpoints</h3>
+            <p>If the endpoint requires WebSocket, use a WebSocket client library instead of a regular HTTP client.</p>
+            <pre><code>// JavaScript WebSocket connection
+const ws = new WebSocket('wss://example.com/ws-endpoint');</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 426 commonly used for HTTP to HTTPS redirects?</h3>
+            <p>No. Most servers use 301 or 307 redirects for HTTP to HTTPS enforcement. The 426 status is technically more correct but much less commonly used in practice.</p>
+            <h3>What protocols can be specified in the Upgrade header?</h3>
+            <p>Common values include TLS/1.0 (for HTTPS upgrade), websocket (for WebSocket), h2c (for HTTP/2 cleartext), and HTTP/2.0. The server specifies which protocol it requires.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — Server refuses to authorize the request</li>
+                <li><a href="/learn/http-status-codes/">HTTP status codes reference</a> — including 505 HTTP Version Not Supported</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check ports</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Try Security Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

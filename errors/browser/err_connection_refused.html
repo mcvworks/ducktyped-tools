@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_CONNECTION_REFUSED mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_CONNECTION_REFUSED means the server at the target IP address actively refused the TCP connection. This happens when nothing is listening on the requested port, or a firewall is configured to reject (not just drop) incoming connections."}},{"@type":"Question","name":"Why am I getting ERR_CONNECTION_REFUSED on localhost?","acceptedAnswer":{"@type":"Answer","text":"If you see this on localhost, it usually means your development server is not running or is listening on a different port than the one you typed. Start your dev server and confirm the port it is using."}},{"@type":"Question","name":"Is ERR_CONNECTION_REFUSED a server or client problem?","acceptedAnswer":{"@type":"Answer","text":"It is almost always a server-side or network issue. The server (or firewall) actively rejected the connection. Client-side causes include using the wrong port number or a proxy configuration that is pointing to an unreachable server."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_CONNECTION_REFUSED — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_CONNECTION_REFUSED","step":[{"@type":"HowToStep","position":1,"name":"Check Whether the Site Is Down for Everyone","text":"Use the HTTP Latency Checker to test whether the server is responding at all. If it times out or refuses from our side too, the server is down."},{"@type":"HowToStep","position":2,"name":"Verify the Port Number","text":"If you are working with a local dev server or connecting to a custom port, confirm you are using the correct port. For example, a React dev server typically runs on port 3000, not 80."},{"@type":"HowToStep","position":3,"name":"Check Proxy Settings","text":"An incorrectly configured proxy causes this error for all sites. Check your browser's proxy settings:"},{"@type":"HowToStep","position":4,"name":"For Local Development (localhost errors)","text":"If you see this on localhost or 127.0.0.1, your development server is not running. Start the server and ensure it is listening on the port you are connecting to. Check the terminal output for the port number."},{"@type":"HowToStep","position":5,"name":"Check the Server Firewall","text":"If you manage the server, verify that the firewall allows inbound traffic on the relevant port. On Linux with UFW:"},{"@type":"HowToStep","position":6,"name":"Restart the Web Server","text":"If you have server access, restart the web server process:"},{"@type":"HowToStep","position":7,"name":"Disable Browser Proxy or VPN","text":"If a VPN or proxy is active, it may be routing your requests to an unreachable endpoint. Disable it and retry."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_CONNECTION_REFUSED — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_CONNECTION_REFUSED means and how to fix it. Step-by-step solutions for port issues, firewalls, down servers, and localhost development errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_CONNECTION_REFUSED, ERR_CONNECTION_REFUSED Chrome, localhost refused to connect, This site can&#39;t be reached, Connection refused, 127.0.0.1 refused to connect, ECONNREFUSED">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_CONNECTION_REFUSED — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_CONNECTION_REFUSED errors with step-by-step solutions covering server status, ports, firewalls, and proxy settings.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_connection_refused">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_connection_refused">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_CONNECTION_REFUSED</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_CONNECTION_REFUSED</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the server actively rejected the connection attempt. Nothing is listening on the requested port, or a firewall is blocking access. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_CONNECTION_REFUSED</code></li><li><code>ERR_CONNECTION_REFUSED Chrome</code></li><li><code>localhost refused to connect</code></li><li><code>This site can&#39;t be reached</code></li><li><code>Connection refused</code></li><li><code>127.0.0.1 refused to connect</code></li><li><code>ECONNREFUSED</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When your browser tries to connect to a server, it initiates a TCP connection to the server's IP address on a specific port (usually port 80 for HTTP or 443 for HTTPS). <strong>ERR_CONNECTION_REFUSED</strong> means the server responded with a TCP RST (reset) packet immediately — it is not listening on that port, or a firewall has been configured to explicitly refuse connections rather than silently drop them.</p>
+            <p>This is different from a timeout (no response at all) and different from a connection reset after a connection has been established. A refusal happens before any data is exchanged.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Web server is down</strong> — the application (nginx, Apache, Node.js, etc.) has crashed or is not running.</li>
+                <li><strong>Wrong port number</strong> — you are connecting to a port where nothing is listening. Common mistake with dev servers.</li>
+                <li><strong>Firewall blocking the port</strong> — a server-side or network-level firewall is rejecting inbound connections on that port.</li>
+                <li><strong>Service not started</strong> — common in local development when the development server has not been started yet.</li>
+                <li><strong>Proxy misconfiguration</strong> — your browser or system proxy settings are pointing to an unreachable proxy server.</li>
+                <li><strong>Server overloaded</strong> — in extreme cases, an overloaded server may refuse new connections to protect existing ones.</li>
+                <li><strong>IP address blocked</strong> — the server may have blocked your IP address due to security rules or rate limiting.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check Whether the Site Is Down for Everyone</h3>
+            <p>Use the <a href="/http-latency/">HTTP Latency Checker</a> to test whether the server is responding at all. If it times out or refuses from our side too, the server is down.</p>
+
+            <h3>2. Verify the Port Number</h3>
+            <p>If you are working with a local dev server or connecting to a custom port, confirm you are using the correct port. For example, a React dev server typically runs on port <code>3000</code>, not <code>80</code>.</p>
+            <p>Use the <a href="/port-scanner/">Port Scanner</a> to check whether the expected port is open on the target host.</p>
+
+            <h3>3. Check Proxy Settings</h3>
+            <p>An incorrectly configured proxy causes this error for all sites. Check your browser's proxy settings:</p>
+            <ul>
+                <li><strong>Chrome/Edge:</strong> Settings → System → Open your computer's proxy settings</li>
+                <li><strong>Windows:</strong> Settings → Network &amp; Internet → Proxy → disable if not needed</li>
+            </ul>
+
+            <h3>4. For Local Development (localhost errors)</h3>
+            <p>If you see this on <code>localhost</code> or <code>127.0.0.1</code>, your development server is not running. Start the server and ensure it is listening on the port you are connecting to. Check the terminal output for the port number.</p>
+
+            <h3>5. Check the Server Firewall</h3>
+            <p>If you manage the server, verify that the firewall allows inbound traffic on the relevant port. On Linux with UFW:</p>
+            <pre><code>sudo ufw status
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp</code></pre>
+
+            <h3>6. Restart the Web Server</h3>
+            <p>If you have server access, restart the web server process:</p>
+            <pre><code># nginx
+sudo systemctl restart nginx
+
+# Apache
+sudo systemctl restart apache2</code></pre>
+
+            <h3>7. Disable Browser Proxy or VPN</h3>
+            <p>If a VPN or proxy is active, it may be routing your requests to an unreachable endpoint. Disable it and retry.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/port-scanner/">Port Scanner</a> — check whether a specific port is open on a host.</li>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — verify whether the server is responding at all.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — confirm the domain resolves to the correct IP address.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does ERR_CONNECTION_REFUSED appear on localhost?</h3>
+            <p>This is the most common scenario for developers. It means your local development server is not running, or it is running on a different port than the one you typed in the browser. Check your terminal for the server's actual port number.</p>
+
+            <h3>Can a firewall cause ERR_CONNECTION_REFUSED?</h3>
+            <p>Yes, but only if the firewall is configured to <em>reject</em> (actively deny) connections rather than <em>drop</em> (silently ignore) them. A dropping firewall causes a timeout, while a rejecting firewall causes a refused connection.</p>
+
+            <h3>How is this different from ERR_CONNECTION_RESET?</h3>
+            <p>A refused connection happens immediately during the TCP handshake — the server sends a RST before accepting the connection. A reset (<strong>ERR_CONNECTION_RESET</strong>) occurs after the connection was already established and the server (or something in between) forcibly closed it mid-session.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — connection established but then abruptly closed.</li>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain could not be resolved before a connection was even attempted.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server is running but not able to handle requests.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

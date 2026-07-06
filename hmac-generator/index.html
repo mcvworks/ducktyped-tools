@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HMAC Generator","url":"https://ducktyped.xyz/hmac-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Generate HMAC signatures using SHA-256, SHA-384, SHA-512, and SHA-1. Free browser-based HMAC tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is HMAC?","acceptedAnswer":{"@type":"Answer","text":"HMAC (Hash-based Message Authentication Code) combines a cryptographic hash function with a secret key to verify both data integrity and authentication. Unlike a plain hash, HMAC requires a secret key, so only parties with the key can generate or verify it."}},{"@type":"Question","name":"What is the difference between a hash and HMAC?","acceptedAnswer":{"@type":"Answer","text":"A hash function only ensures data integrity — anyone can compute it. HMAC adds a secret key, providing both integrity and authentication. Only someone with the key can create a valid HMAC."}},{"@type":"Question","name":"Where is HMAC used?","acceptedAnswer":{"@type":"Answer","text":"HMAC is used in API authentication (webhook signatures), JWT token signing, TLS/SSL handshakes, and any protocol that needs to verify message integrity and authenticity."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMAC Generator — Generate HMAC Signatures — duckTyped</title>
+    <meta name="description" content="Generate HMAC signatures using SHA-256, SHA-384, SHA-512, and SHA-1. Free browser-based HMAC tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="HMAC Generator — duckTyped">
+    <meta property="og:description" content="Generate HMAC signatures with SHA-256, SHA-384, SHA-512, SHA-1.">
+    <meta property="og:url" content="https://ducktyped.xyz/hmac-generator/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/hmac-generator.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="HMAC Generator — duckTyped">
+    <meta name="twitter:description" content="Generate HMAC signatures with SHA-256, SHA-384, SHA-512.">
+    <link rel="canonical" href="https://ducktyped.xyz/hmac-generator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>HMAC Generator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Generate HMAC (Hash-based Message Authentication Code) signatures for message authentication. Supports SHA-256, SHA-384, SHA-512, and SHA-1.</p><div class="example-box"><strong>Example uses:</strong><p>Verifying webhook signatures, implementing API authentication, testing HMAC-based security mechanisms, validating message integrity.</p></div>
+            <a href="/learn/hmac-generator/" class="learn-more-link">Learn how HMAC works and when to use it</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>HMAC Generator</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a secret key and message to generate an HMAC signature.</p>
+            <div class="input-group"><label>Algorithm:</label><select id="hmacAlgo" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+                <option value="SHA-256">SHA-256</option><option value="SHA-384">SHA-384</option><option value="SHA-512">SHA-512</option><option value="SHA-1">SHA-1</option>
+            </select></div>
+            <div class="input-group"><label>Secret Key:</label><input type="text" id="hmacKey" placeholder="your-secret-key"></div>
+            <div class="input-group"><label>Message:</label><textarea id="hmacMsg" rows="4" placeholder="The message to authenticate" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div style="margin-bottom:12px;"><label style="font-weight:600;color:var(--text-primary);margin-right:15px;">Output Format:</label>
+                <label style="color:var(--text-secondary);margin-right:15px;cursor:pointer;"><input type="radio" name="hmacFmt" value="hex" checked> Hex</label>
+                <label style="color:var(--text-secondary);cursor:pointer;"><input type="radio" name="hmacFmt" value="base64"> Base64</label>
+            </div>
+            <button onclick="generateHMAC()">Generate HMAC</button>
+            <div id="hmacResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/hash-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Hash Generator</a>
+            <a href="/jwt-decoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JWT Decoder</a>
+            <a href="/jwt-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JWT Generator</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/hmac-generator/">HMAC Generator — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    async function generateHMAC() {
+        var algo = document.getElementById('hmacAlgo').value;
+        var key = document.getElementById('hmacKey').value;
+        var msg = document.getElementById('hmacMsg').value;
+        var fmt = document.querySelector('input[name="hmacFmt"]:checked').value;
+        var r = document.getElementById('hmacResult');
+        if (!key || !msg) { r.innerHTML = '<p style="color:var(--text-secondary);margin-top:10px;">Enter both a secret key and message.</p>'; return; }
+        try {
+            var enc = new TextEncoder();
+            var cryptoKey = await crypto.subtle.importKey('raw', enc.encode(key), {name:'HMAC',hash:algo}, false, ['sign']);
+            var sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(msg));
+            var bytes = new Uint8Array(sig);
+            var result;
+            if (fmt === 'hex') { result = Array.from(bytes).map(function(b){return b.toString(16).padStart(2,'0');}).join(''); }
+            else { result = btoa(String.fromCharCode.apply(null, bytes)); }
+            r.innerHTML = '<div style="margin-top:15px;padding:15px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><p style="color:var(--primary-color);font-weight:600;margin-bottom:8px;">HMAC-'+algo+' ('+fmt+'):</p><code style="color:var(--text-primary);word-break:break-all;font-size:0.95em;">'+result+'</code><br><button onclick="navigator.clipboard.writeText(\''+result+'\')" style="margin-top:10px;padding:6px 14px;font-size:0.85em;">Copy</button></div>';
+        } catch(e) { r.innerHTML = '<p style="color:#ef4444;margin-top:10px;">Error: '+e.message+'</p>'; }
+    }
+    </script>
+</body>
+</html>

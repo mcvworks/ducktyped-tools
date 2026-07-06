@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Docker Compose Validator","url":"https://ducktyped.xyz/docker-compose-validator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Validate Docker Compose YAML files for syntax errors and common issues.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does a Docker Compose validator do?","acceptedAnswer":{"@type":"Answer","text":"It validates the syntax and structure of your docker-compose.yml file, checking for YAML errors, invalid service configurations, undefined references, and common mistakes before you run docker-compose up."}},{"@type":"Question","name":"What version of Docker Compose is supported?","acceptedAnswer":{"@type":"Answer","text":"This validator supports Docker Compose file format versions 2.x and 3.x, including the latest Compose Specification format used by Docker Compose V2."}},{"@type":"Question","name":"Is my Docker Compose file sent to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All validation happens in your browser. Your configuration file never leaves your device, keeping your infrastructure details private."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Compose Validator — Validate docker-compose.yml — duckTyped</title>
+    <meta name="description" content="Validate Docker Compose YAML files for syntax errors and common issues. Free Docker Compose checker.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Docker Compose Validator — duckTyped">
+    <meta property="og:description" content="Validate Docker Compose YAML for syntax errors and common issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/docker-compose-validator/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/docker-compose-validator.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Docker Compose Validator — duckTyped">
+    <meta name="twitter:description" content="Validate Docker Compose YAML files for syntax and structure.">
+    <link rel="canonical" href="https://ducktyped.xyz/docker-compose-validator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Docker Compose Validator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Validate your docker-compose.yml files for YAML syntax errors and common Docker Compose configuration issues.</p><div class="example-box"><strong>Example uses:</strong><p>Checking docker-compose.yml before deployment, finding configuration issues in multi-service setups, learning Docker Compose structure.</p></div>
+            <a href="/learn/docker-compose-validator/" class="learn-more-link">Learn Docker Compose structure and common errors</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Docker Compose Validator</h2>
+            <div style="display:flex;gap:10px;margin-bottom:12px;"><button onclick="loadExample()">Load Example</button></div>
+            <div class="input-group"><label>docker-compose.yml:</label><textarea id="composeInput" rows="18" placeholder="version: '3.8'&#10;services:&#10;  web:&#10;    image: nginx:latest&#10;    ports:&#10;      - '80:80'" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <button onclick="validateCompose()">Validate</button>
+            <div id="composeResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/env-file-parser/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Env File Parser</a>
+            <a href="/json-formatter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JSON Formatter</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/docker-compose-validator/">Docker Compose Validator — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function loadExample() {
+        document.getElementById('composeInput').value = "version: '3.8'\nservices:\n  web:\n    image: nginx:latest\n    ports:\n      - '80:80'\n    volumes:\n      - ./html:/usr/share/nginx/html\n    restart: unless-stopped\n  db:\n    image: postgres:15\n    environment:\n      POSTGRES_DB: mydb\n      POSTGRES_USER: admin\n      POSTGRES_PASSWORD: secret\n    ports:\n      - '5432:5432'\n    volumes:\n      - db_data:/var/lib/postgresql/data\nvolumes:\n  db_data:";
+    }
+    function simpleYAMLParse(text) {
+        var result = {}, lines = text.split('\n'), stack = [{obj:result,indent:-1}], errors = [];
+        for (var i = 0; i < lines.length; i++) {
+            var raw = lines[i], trimmed = raw.trimEnd();
+            if (!trimmed || trimmed.trim().startsWith('#')) continue;
+            var indent = raw.search(/\S/);
+            if (indent === -1) continue;
+            while (stack.length > 1 && stack[stack.length-1].indent >= indent) stack.pop();
+            var parent = stack[stack.length-1].obj;
+            var line = trimmed.trim();
+            if (line.startsWith('- ')) {
+                var val = line.substring(2).trim();
+                if (Array.isArray(parent)) { parent.push(val); }
+                else { var lastKey = Object.keys(parent).pop(); if (lastKey && !Array.isArray(parent[lastKey])) parent[lastKey] = []; if (lastKey) parent[lastKey].push(val); }
+                continue;
+            }
+            var colonIdx = line.indexOf(':');
+            if (colonIdx === -1) { errors.push('Line '+(i+1)+': Missing colon'); continue; }
+            var key = line.substring(0, colonIdx).trim().replace(/^['"]|['"]$/g,'');
+            var val = line.substring(colonIdx+1).trim().replace(/^['"]|['"]$/g,'');
+            if (!val) { parent[key] = {}; stack.push({obj:parent[key],indent:indent}); }
+            else { parent[key] = val; }
+        }
+        return {data:result, errors:errors};
+    }
+    function validateCompose() {
+        var input = document.getElementById('composeInput').value, r = document.getElementById('composeResult');
+        if (!input.trim()) { r.innerHTML = ''; return; }
+        var parsed = simpleYAMLParse(input), errors = parsed.errors.slice(), warnings = [], info = [];
+        var data = parsed.data;
+        if (!data.services && !data.version) errors.push('Missing "services" or "version" key');
+        if (data.services && typeof data.services === 'object') {
+            var svcNames = Object.keys(data.services);
+            info.push('Found '+svcNames.length+' service(s): '+svcNames.map(function(n){return escapeHtml(n);}).join(', '));
+            svcNames.forEach(function(name) {
+                var svc = data.services[name];
+                var safeName = escapeHtml(name);
+                if (typeof svc !== 'object') { errors.push('Service "'+safeName+'": invalid configuration'); return; }
+                if (!svc.image && !svc.build) warnings.push('Service "'+safeName+'": missing "image" or "build"');
+            });
+        }
+        var valid = errors.length === 0;
+        var html = '<div style="margin-top:15px;padding:15px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;">';
+        html += '<p style="font-size:1.2em;font-weight:600;color:'+(valid?'#22c55e':'#ef4444')+';">'+(valid?'Valid':'Invalid')+' Docker Compose File</p>';
+        if (errors.length) { html += '<div style="margin-top:10px;">'; errors.forEach(function(e){html += '<p style="color:#ef4444;margin:4px 0;">&#10060; '+e+'</p>';}); html += '</div>'; }
+        if (warnings.length) { html += '<div style="margin-top:10px;">'; warnings.forEach(function(w){html += '<p style="color:#f59e0b;margin:4px 0;">&#9888; '+w+'</p>';}); html += '</div>'; }
+        if (info.length) { html += '<div style="margin-top:10px;">'; info.forEach(function(i){html += '<p style="color:var(--text-secondary);margin:4px 0;">&#8505; '+i+'</p>';}); html += '</div>'; }
+        html += '</div>';
+        r.innerHTML = html;
+    }
+    </script>
+</body>
+</html>

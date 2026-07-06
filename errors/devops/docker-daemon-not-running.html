@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Docker daemon stop after a reboot?","acceptedAnswer":{"@type":"Answer","text":"Docker is not always enabled to start at boot by default. Run 'sudo systemctl enable docker' on Linux to ensure it starts automatically. On macOS/Windows, enable 'Start Docker Desktop when you log in' in Docker Desktop settings."}},{"@type":"Question","name":"Can I run Docker without the daemon?","acceptedAnswer":{"@type":"Answer","text":"Standard Docker requires the daemon. However, Podman is a daemonless alternative that can run containers without a background service. For Docker, the daemon is required for all operations."}},{"@type":"Question","name":"Is this error related to Docker Compose too?","acceptedAnswer":{"@type":"Answer","text":"Yes. Docker Compose relies on the Docker daemon. If the daemon is not running, both docker and docker-compose commands will fail with the same error."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Docker Daemon Not Running — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Docker Daemon Not Running","step":[{"@type":"HowToStep","position":1,"name":"Start the Docker service on Linux","text":"Use systemctl to start the Docker daemon and enable it to start on boot automatically."},{"@type":"HowToStep","position":2,"name":"Launch Docker Desktop","text":"On macOS or Windows, open Docker Desktop from the Applications folder or Start menu. Wait for the whale icon in the system tray to indicate the daemon is ready."},{"@type":"HowToStep","position":3,"name":"Add your user to the docker group","text":"On Linux, add your user to the docker group so you can run Docker commands without sudo. You need to log out and back in for the change to take effect."},{"@type":"HowToStep","position":4,"name":"Check Docker daemon status and logs","text":"Inspect the daemon status and logs to identify why it failed to start. Common issues include port conflicts, storage driver problems, or configuration errors."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Daemon Not Running — 7 Fixes for Linux, Mac &amp; Windows — duckTyped</title>
+    <meta name="description" content="Seeing 'Cannot connect to the Docker daemon at unix:///var/run/docker.sock'? 7 fixes: start the service, repair socket permissions, restart Docker Desktop, and more.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Docker daemon not running, Cannot connect to the Docker daemon, Is the docker daemon running?, docker.sock: connect: permission denied, Error: Cannot connect to the Docker daemon">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Docker Daemon Not Running — 7 Fixes for Linux, Mac &amp; Windows">
+    <meta property="og:description" content="Seeing 'Cannot connect to the Docker daemon at unix:///var/run/docker.sock'? 7 fixes: start the service, repair socket permissions, restart Docker Desktop, and more.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/docker-daemon-not-running">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/docker-daemon-not-running">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Docker Daemon Not Running</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Docker Daemon Not Running</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Cannot connect to the Docker daemon</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Docker daemon not running</code></li><li><code>Cannot connect to the Docker daemon</code></li><li><code>Is the docker daemon running?</code></li><li><code>docker.sock: connect: permission denied</code></li><li><code>Error: Cannot connect to the Docker daemon</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when the Docker CLI cannot communicate with the Docker daemon (dockerd). The daemon is the background service that manages containers, images, networks, and volumes. Without a running daemon, no Docker commands will work.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Docker service is not started</strong> — The Docker daemon service has not been started after a system reboot or was manually stopped. On Linux, systemd manages the service; on macOS and Windows, Docker Desktop must be running.</li>
+                <li><strong>Docker Desktop is not running</strong> — On macOS and Windows, Docker Desktop must be launched before using Docker CLI commands. The daemon runs inside Docker Desktop's managed VM.</li>
+                <li><strong>Permission denied on Docker socket</strong> — The current user does not have permission to access /var/run/docker.sock. This typically happens when the user is not in the 'docker' group on Linux.</li>
+                <li><strong>Docker socket file is missing or corrupted</strong> — The Unix socket file at /var/run/docker.sock may have been accidentally deleted or the daemon crashed without cleaning up properly.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Start the Docker service on Linux</h3>
+            <p>Use systemctl to start the Docker daemon and enable it to start on boot automatically.</p>
+            <pre><code>sudo systemctl start docker
+sudo systemctl enable docker</code></pre>
+            <h3>2. Launch Docker Desktop</h3>
+            <p>On macOS or Windows, open Docker Desktop from the Applications folder or Start menu. Wait for the whale icon in the system tray to indicate the daemon is ready.</p>
+            <h3>3. Add your user to the docker group</h3>
+            <p>On Linux, add your user to the docker group so you can run Docker commands without sudo. You need to log out and back in for the change to take effect.</p>
+            <pre><code>sudo usermod -aG docker $USER
+newgrp docker</code></pre>
+            <h3>4. Check Docker daemon status and logs</h3>
+            <p>Inspect the daemon status and logs to identify why it failed to start. Common issues include port conflicts, storage driver problems, or configuration errors.</p>
+            <pre><code>sudo systemctl status docker
+sudo journalctl -u docker.service --no-pager -n 50</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does Docker daemon stop after a reboot?</h3>
+            <p>Docker is not always enabled to start at boot by default. Run 'sudo systemctl enable docker' on Linux to ensure it starts automatically. On macOS/Windows, enable 'Start Docker Desktop when you log in' in Docker Desktop settings.</p>
+            <h3>Can I run Docker without the daemon?</h3>
+            <p>Standard Docker requires the daemon. However, Podman is a daemonless alternative that can run containers without a background service. For Docker, the daemon is required for all operations.</p>
+            <h3>Is this error related to Docker Compose too?</h3>
+            <p>Yes. Docker Compose relies on the Docker daemon. If the daemon is not running, both docker and docker-compose commands will fail with the same error.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — Port is already in use by another container or process</li>
+                <li><a href="/errors/devops/docker-no-space-left">Docker No Space Left</a> — No disk space left for Docker operations</li>
+                <li><a href="/errors/devops/permission-denied-publickey">Permission Denied (publickey)</a> — SSH authentication failure</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

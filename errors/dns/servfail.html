@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is SERVFAIL in DNS?","acceptedAnswer":{"@type":"Answer","text":"SERVFAIL (Server Failure) is a DNS response code meaning the DNS server encountered an internal error and could not complete the query. It indicates a problem with the authoritative nameserver or the resolver, not necessarily with the domain itself."}},{"@type":"Question","name":"What causes a DNS SERVFAIL error?","acceptedAnswer":{"@type":"Answer","text":"Common causes include DNSSEC validation failure, the authoritative nameserver being down or misconfigured, a resolver timeout when contacting the authoritative nameserver, and zone configuration errors on the domain."}},{"@type":"Question","name":"How do I fix a SERVFAIL error?","acceptedAnswer":{"@type":"Answer","text":"First, try a different DNS resolver to determine if the issue is with your resolver or the authoritative nameserver. Use the DNS Lookup tool to check if the domain resolves from multiple servers. If you own the domain, check your authoritative nameserver configuration and DNSSEC settings."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS SERVFAIL — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS SERVFAIL — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a DNS SERVFAIL error means and how to fix it. Covers DNSSEC failures, authoritative nameserver issues, and resolver errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SERVFAIL, Server Failure, RCODE 2, DNS server failure, DNS SERVFAIL, Server failed to complete the DNS request">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS SERVFAIL — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS SERVFAIL errors by diagnosing DNSSEC issues, authoritative nameserver problems, and resolver failures.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/servfail">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/servfail">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>SERVFAIL</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS SERVFAIL (Server Failure)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SERVFAIL is a DNS response code meaning the server encountered an internal error and could not complete your query. It can stem from DNSSEC failures, nameserver problems, or resolver timeouts.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SERVFAIL</code></li><li><code>Server Failure</code></li><li><code>RCODE 2</code></li><li><code>DNS server failure</code></li><li><code>DNS SERVFAIL</code></li><li><code>Server failed to complete the DNS request</code></li></ul>
+            </div>
+
+            <h2>What Does SERVFAIL Mean?</h2>
+            <p>DNS response codes (RCODEs) communicate the result of a DNS query. SERVFAIL (RCODE 2) means the DNS server could not process the query due to an internal failure. Unlike <a href="/errors/dns/nxdomain">NXDOMAIN</a> — which definitively says the domain does not exist — SERVFAIL is an error condition that may be temporary.</p>
+            <p>The key question with SERVFAIL is: did the <em>resolver</em> fail (your ISP's or Cloudflare's DNS) or did the <em>authoritative nameserver</em> for the domain fail?</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>DNSSEC validation failure</strong> — the DNS record signature is invalid or expired, and the resolver enforces DNSSEC. This is the most common cause.</li>
+                <li><strong>Authoritative nameserver is down</strong> — the domain's authoritative nameservers are unreachable or offline.</li>
+                <li><strong>Resolver timeout</strong> — the recursive resolver timed out trying to reach the authoritative nameserver.</li>
+                <li><strong>Zone configuration error</strong> — malformed DNS zone data on the authoritative nameserver.</li>
+                <li><strong>Nameserver delegation mismatch</strong> — the DNS registrar and the authoritative server have conflicting NS records.</li>
+                <li><strong>Resolver internal error</strong> — a bug or overload in the recursive resolver itself.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+
+            <h4>1. Try a Different DNS Resolver</h4>
+            <p>Test whether the issue is with your current resolver. Switch to Cloudflare (1.1.1.1) or Google (8.8.8.8) and retry. If one resolver returns SERVFAIL but another resolves successfully, the issue is with that specific resolver.</p>
+
+            <h4>2. Check with a DNS Tool</h4>
+            <p>Use the <a href="/dns-lookup/">DNS Lookup tool</a> to query the domain. Alternatively, use nslookup:</p>
+            <pre><code>nslookup example.com 1.1.1.1
+nslookup example.com 8.8.8.8</code></pre>
+
+            <h3>For Domain Owners</h3>
+
+            <h4>3. Check DNSSEC Configuration</h4>
+            <p>A mismatched or expired DNSSEC key is the most common cause of SERVFAIL on validating resolvers. Check your DNSSEC key status at your registrar and ensure DS records match your authoritative nameserver's DNSKEY records.</p>
+
+            <h4>4. Verify Nameserver Availability</h4>
+            <p>Confirm all authoritative nameservers listed in your zone delegation are online and responding correctly.</p>
+
+            <h4>5. Check Zone File for Errors</h4>
+            <p>Validate your zone file for syntax errors. Most DNS server software (BIND, PowerDNS) has a zone file check command.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — query DNS records from multiple resolvers.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> — check nameserver delegation.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is SERVFAIL permanent?</h3>
+            <p>Not necessarily. SERVFAIL can be transient (resolver overload, temporary nameserver issue) or persistent (DNSSEC misconfiguration). If it persists across multiple resolvers and time periods, it indicates a configuration problem on the domain's nameservers.</p>
+
+            <h3>Can SERVFAIL affect DNSSEC-enabled resolvers but not others?</h3>
+            <p>Yes. If a domain has invalid DNSSEC signatures, resolvers that enforce DNSSEC validation (like Cloudflare 1.1.1.1) will return SERVFAIL, while resolvers that do not validate DNSSEC (some ISP resolvers) may still resolve the domain successfully. This is intentional — DNSSEC validation prevents accepting potentially tampered responses.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — domain definitively does not exist.</li>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — DNS server offline.</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — generic DNS failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Check domain registration and expiry</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup Tool</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

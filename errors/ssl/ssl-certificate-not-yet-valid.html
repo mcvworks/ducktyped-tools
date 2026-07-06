@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why would a CA issue a certificate with a future start date?","acceptedAnswer":{"@type":"Answer","text":"CAs sometimes issue certificates with a 'Not Before' date slightly in the future to prevent issues with clock skew or to allow time for deployment. Some enterprise CAs allow custom validity periods for planned certificate rotations."}},{"@type":"Question","name":"How is this different from an expired certificate error?","acceptedAnswer":{"@type":"Answer","text":"An expired certificate has passed its 'Not After' date — its validity period is over. A 'not yet valid' certificate has not reached its 'Not Before' date — its validity period has not started yet. Both are validity window errors but in opposite directions."}},{"@type":"Question","name":"Can CMOS battery failure cause this error?","acceptedAnswer":{"@type":"Answer","text":"Yes. If the CMOS battery on a desktop or server dies, the system clock resets to a default date (often in the past), which can cause certificates to appear not yet valid. Replacing the battery and setting the correct time resolves this."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Certificate Not Yet Valid — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SSL Certificate Not Yet Valid","step":[{"@type":"HowToStep","position":1,"name":"Fix the system clock","text":"Synchronize your system clock with an NTP time server to ensure the correct date and time."},{"@type":"HowToStep","position":2,"name":"Check the certificate validity dates","text":"Inspect the certificate to see its exact validity window."},{"@type":"HowToStep","position":3,"name":"Wait for the validity period to begin","text":"If the certificate genuinely has a future start date and your clock is correct, wait until the 'Not Before' date passes. Contact the CA or server administrator if the start date seems incorrect."},{"@type":"HowToStep","position":4,"name":"Reissue the certificate with correct dates","text":"If you control the server, reissue the certificate with a 'Not Before' date of now or slightly in the past to account for clock skew across different clients."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificate Not Yet Valid — 7 Fixes for Clock &amp; Date Errors — duckTyped</title>
+    <meta name="description" content="'Certificate is not yet valid' usually means a wrong system clock — not a bad certificate. Fix system time, time zone, a dead CMOS battery, or a just-issued cert.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL certificate not yet valid, Certificate not yet valid, Future certificate date, Certificate start date in future">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificate Not Yet Valid — 7 Fixes for Clock &amp; Date Errors">
+    <meta property="og:description" content="'Certificate is not yet valid' usually means a wrong system clock — not a bad certificate. Fix system time, time zone, a dead CMOS battery, or a just-issued cert.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-certificate-not-yet-valid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-certificate-not-yet-valid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Certificate Not Yet Valid</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificate Not Yet Valid</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSL certificate's start date is in the future</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL certificate not yet valid</code></li><li><code>Certificate not yet valid</code></li><li><code>Future certificate date</code></li><li><code>Certificate start date in future</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SSL Certificate Not Yet Valid occurs when the client's current date is before the certificate's 'Not Before' date, meaning the certificate is not yet within its validity period. Every X.509 certificate has a validity window defined by two dates: 'Not Before' (the earliest date the certificate is valid) and 'Not After' (the expiration date). If the client checks the certificate before the 'Not Before' date, validation fails.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Client system clock is wrong</strong> — The most common cause is an incorrect system clock on the client. If the clock is set to a date in the past, a perfectly valid certificate will appear to have a future start date.</li>
+                <li><strong>Certificate installed before its validity period</strong> — The server administrator installed a new certificate before its validity period has started. This can happen when certificates are issued with a future start date to coordinate with planned deployments.</li>
+                <li><strong>Time zone or daylight saving time issues</strong> — Incorrect time zone settings combined with a clock near the certificate's start date boundary can cause the system to believe the certificate is not yet valid.</li>
+                <li><strong>Certificate was just issued</strong> — Some Certificate Authorities set the 'Not Before' date a few minutes or hours after issuance to account for clock skew. If the certificate is deployed immediately after issuance, clients with accurate clocks may see it as not yet valid for a brief period.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Fix the system clock</h3>
+            <p>Synchronize your system clock with an NTP time server to ensure the correct date and time.</p>
+            <pre><code># Windows
+w32tm /resync
+
+# Linux
+sudo timedatectl set-ntp true
+sudo systemctl restart systemd-timesyncd
+
+# macOS
+sudo sntp -sS time.apple.com</code></pre>
+            <h3>2. Check the certificate validity dates</h3>
+            <p>Inspect the certificate to see its exact validity window.</p>
+            <pre><code># Check certificate dates
+openssl s_client -connect example.com:443 2&gt;/dev/null | openssl x509 -noout -dates
+
+# Output:
+# notBefore=Mar  1 00:00:00 2026 GMT
+# notAfter=Mar  1 00:00:00 2027 GMT</code></pre>
+            <h3>3. Wait for the validity period to begin</h3>
+            <p>If the certificate genuinely has a future start date and your clock is correct, wait until the 'Not Before' date passes. Contact the CA or server administrator if the start date seems incorrect.</p>
+            <h3>4. Reissue the certificate with correct dates</h3>
+            <p>If you control the server, reissue the certificate with a 'Not Before' date of now or slightly in the past to account for clock skew across different clients.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why would a CA issue a certificate with a future start date?</h3>
+            <p>CAs sometimes issue certificates with a 'Not Before' date slightly in the future to prevent issues with clock skew or to allow time for deployment. Some enterprise CAs allow custom validity periods for planned certificate rotations.</p>
+            <h3>How is this different from an expired certificate error?</h3>
+            <p>An expired certificate has passed its 'Not After' date — its validity period is over. A 'not yet valid' certificate has not reached its 'Not Before' date — its validity period has not started yet. Both are validity window errors but in opposite directions.</p>
+            <h3>Can CMOS battery failure cause this error?</h3>
+            <p>Yes. If the CMOS battery on a desktop or server dies, the system clock resets to a default date (often in the past), which can cause certificates to appear not yet valid. Replacing the battery and setting the correct time resolves this.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — Certificate has passed its expiration date</li>
+                <li><a href="/errors/ssl/net-err-cert-date-invalid">NET::ERR_CERT_DATE_INVALID</a> — Certificate date is outside valid range</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — Certificate failed validation checks</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate validity dates</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

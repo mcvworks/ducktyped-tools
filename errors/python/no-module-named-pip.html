@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why doesn't Ubuntu ship pip with Python?","acceptedAnswer":{"@type":"Answer","text":"Debian policy separates the interpreter from the installer so the distro's own Python tooling stays under apt's control (the same philosophy that later became externally-managed-environment). One apt install adds pip; venvs you create then carry their own."}},{"@type":"Question","name":"ensurepip says it is disabled — what now?","acceptedAnswer":{"@type":"Answer","text":"Debian/Ubuntu disable ensurepip in the system interpreter and direct you to apt ('ensurepip is disabled in Debian/Ubuntu for the system python'). Use 'apt install python3-pip', or work inside a venv where ensurepip runs normally."}},{"@type":"Question","name":"pip works but installs packages my python cannot see — related?","acceptedAnswer":{"@type":"Answer","text":"Same root cause, opposite symptom: pip belongs to interpreter A, your script runs interpreter B. Compare 'pip --version' (shows its python) with 'which python3'. Then use 'python3 -m pip' — or activate the venv you actually meant."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python: No Module Named pip — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: No Module Named pip — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'No module named pip'. ensurepip, python3-pip on Debian/Ubuntu, broken venvs, and matching pip to the right interpreter with python -m pip.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="No module named pip, ModuleNotFoundError: No module named pip, /usr/bin/python3: No module named pip, ensurepip">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python: No Module Named pip — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'No module named pip'. ensurepip, python3-pip on Debian/Ubuntu, broken venvs, and matching pip to the right interpreter with python -m pip.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/no-module-named-pip">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/no-module-named-pip">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>Python: No Module Named pip</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python: No Module Named pip</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The failure 'ModuleNotFoundError: No module named pip' (or '/usr/bin/python3: No module named pip') — this interpreter has no pip installed at all.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>No module named pip</code></li><li><code>ModuleNotFoundError: No module named pip</code></li><li><code>/usr/bin/python3: No module named pip</code></li><li><code>ensurepip</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>pip is a package that lives inside a specific interpreter's environment — and some interpreters legitimately do not have it: Debian/Ubuntu split it into the separate python3-pip package, embedded/minimal Pythons omit it, and a venv created with --without-pip stays empty. The other flavor is mismatch rather than absence: pip exists in one interpreter while your command runs another. Running pip as 'python3 -m pip' pins it to the interpreter you name and dissolves half of these cases.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Debian/Ubuntu without python3-pip</strong> — The distro intentionally ships python3 without pip; it arrives via 'apt install python3-pip'.</li>
+                <li><strong>A venv created without pip</strong> — python3 -m venv --without-pip, or venv creation that failed halfway (missing python3-venv produces exactly this).</li>
+                <li><strong>Multiple interpreters, pip in the other one</strong> — pyenv/conda/system Pythons side by side — 'pip' on PATH belongs to one; 'python3' runs another.</li>
+                <li><strong>Embedded or minimal distributions</strong> — The Windows embeddable zip, some IoT builds, and stripped containers exclude pip by design.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Bootstrap pip with ensurepip</h3>
+            <p>The standard library carries a pip installer for exactly this situation.</p>
+            <pre><code>python3 -m ensurepip --upgrade
+python3 -m pip --version</code></pre>
+            <h3>2. On Debian/Ubuntu, install the packages</h3>
+            <p>python3-pip for pip, python3-venv so venvs come with pip included.</p>
+            <pre><code>sudo apt update &amp;&amp; sudo apt install -y python3-pip python3-venv
+python3 -m pip --version</code></pre>
+            <h3>3. Recreate broken venvs</h3>
+            <p>Faster and cleaner than repairing one.</p>
+            <pre><code>rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip --version</code></pre>
+            <h3>4. Always call pip through the interpreter</h3>
+            <p>'python3 -m pip' guarantees pip and python agree; a bare 'pip' obeys PATH and can point anywhere.</p>
+            <pre><code>python3 -m pip install requests
+# which interpreter is this pip tied to?
+pip --version    # prints the python path it belongs to</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why doesn't Ubuntu ship pip with Python?</h3>
+            <p>Debian policy separates the interpreter from the installer so the distro's own Python tooling stays under apt's control (the same philosophy that later became externally-managed-environment). One apt install adds pip; venvs you create then carry their own.</p>
+            <h3>ensurepip says it is disabled — what now?</h3>
+            <p>Debian/Ubuntu disable ensurepip in the system interpreter and direct you to apt ('ensurepip is disabled in Debian/Ubuntu for the system python'). Use 'apt install python3-pip', or work inside a venv where ensurepip runs normally.</p>
+            <h3>pip works but installs packages my python cannot see — related?</h3>
+            <p>Same root cause, opposite symptom: pip belongs to interpreter A, your script runs interpreter B. Compare 'pip --version' (shows its python) with 'which python3'. Then use 'python3 -m pip' — or activate the venv you actually meant.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/externally-managed-environment">externally-managed-environment</a> — the guardrail you meet right after.</li>
+                <li><a href="/errors/python/pip-ssl-module-not-available">pip TLS/SSL Not Available</a> — interpreters missing the ssl module.</li>
+                <li><a href="/errors/devops/pip-install-failed">pip Install Failed</a> — failures once pip exists.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Untangle PATH and env configuration</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/env-file-parser/" class="cta-btn-primary">Try Env File Parser</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

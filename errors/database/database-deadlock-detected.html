@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the database choose which transaction to roll back?","acceptedAnswer":{"@type":"Answer","text":"The deadlock victim is chosen based on database-specific heuristics. PostgreSQL typically rolls back the transaction that would be cheapest to abort. MySQL/InnoDB rolls back the transaction that has modified the fewest rows. You should not rely on a specific selection policy."}},{"@type":"Question","name":"Are deadlocks always a bug?","acceptedAnswer":{"@type":"Answer","text":"Not necessarily. Deadlocks can occur in any concurrent system and are not always avoidable. The important thing is that your application handles them gracefully with retry logic. However, frequent deadlocks indicate a design issue that should be addressed."}},{"@type":"Question","name":"Can I prevent all deadlocks?","acceptedAnswer":{"@type":"Answer","text":"In theory, yes, by always acquiring locks in a consistent global order. In practice, this is difficult in complex applications. The pragmatic approach is to minimize deadlocks through consistent ordering and short transactions, and handle the remaining ones with retry logic."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Database Deadlock Detected — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Database Deadlock Detected","step":[{"@type":"HowToStep","position":1,"name":"Implement retry logic","text":"When a transaction is rolled back due to a deadlock, catch the error and retry the transaction."},{"@type":"HowToStep","position":2,"name":"Use consistent lock ordering","text":"Always access tables and rows in the same order across all transactions. If you need to update rows 1 and 2, always update the lower ID first."},{"@type":"HowToStep","position":3,"name":"Reduce transaction scope and duration","text":"Keep transactions as short as possible. Do non-database work (API calls, file I/O, calculations) outside the transaction."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Deadlock Detected — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix database deadlock detected error. Learn what causes deadlocks, how databases resolve them, and how to prevent deadlocks in your application code.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Deadlock detected, Database deadlock, InnoDB deadlock, Deadlock found when trying to get lock, ERROR 1213 (40001): Deadlock">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Database Deadlock Detected — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix database deadlock detected error. Learn what causes deadlocks, how databases resolve them, and how to prevent deadlocks in your application code.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/database-deadlock-detected">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/database-deadlock-detected">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Database Deadlock Detected</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Database Deadlock Detected</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Two or more transactions are waiting for each other's locks</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Deadlock detected</code></li><li><code>Database deadlock</code></li><li><code>InnoDB deadlock</code></li><li><code>Deadlock found when trying to get lock</code></li><li><code>ERROR 1213 (40001): Deadlock</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A deadlock occurs when two or more transactions each hold locks that the other transactions need, creating a circular dependency where none can proceed. The database detects this cycle and forcibly rolls back one of the transactions (the 'victim') so the others can continue. The rolled-back transaction must be retried by the application.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Inconsistent lock ordering</strong> — Transactions acquire locks on resources in different orders. Transaction A locks row 1 then tries to lock row 2, while Transaction B locks row 2 then tries to lock row 1.</li>
+                <li><strong>Long-running transactions with many locks</strong> — Transactions that hold locks for extended periods and touch many rows increase the probability of deadlocks with other concurrent transactions.</li>
+                <li><strong>High concurrency on the same rows</strong> — Multiple transactions frequently updating the same rows or related rows with foreign key constraints, especially in high-traffic applications.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Implement retry logic</h3>
+            <p>When a transaction is rolled back due to a deadlock, catch the error and retry the transaction.</p>
+            <pre><code># Python/PostgreSQL example:
+import psycopg2
+
+max_retries = 3
+for attempt in range(max_retries):
+    try:
+        cursor.execute(&quot;UPDATE accounts SET balance = balance - 100 WHERE id = 1&quot;)
+        cursor.execute(&quot;UPDATE accounts SET balance = balance + 100 WHERE id = 2&quot;)
+        conn.commit()
+        break
+    except psycopg2.extensions.TransactionRollbackError:
+        conn.rollback()
+        if attempt == max_retries - 1:
+            raise</code></pre>
+            <h3>2. Use consistent lock ordering</h3>
+            <p>Always access tables and rows in the same order across all transactions. If you need to update rows 1 and 2, always update the lower ID first.</p>
+            <pre><code>-- Always lock in order of primary key:
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+-- Never reverse this order in other transactions</code></pre>
+            <h3>3. Reduce transaction scope and duration</h3>
+            <p>Keep transactions as short as possible. Do non-database work (API calls, file I/O, calculations) outside the transaction.</p>
+            <pre><code>-- Bad: long transaction
+BEGIN;
+SELECT ... FOR UPDATE;
+-- expensive computation in application
+UPDATE ...;
+COMMIT;
+
+-- Better: minimal transaction
+-- do computation first, then:
+BEGIN;
+UPDATE ...;
+COMMIT;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How does the database choose which transaction to roll back?</h3>
+            <p>The deadlock victim is chosen based on database-specific heuristics. PostgreSQL typically rolls back the transaction that would be cheapest to abort. MySQL/InnoDB rolls back the transaction that has modified the fewest rows. You should not rely on a specific selection policy.</p>
+            <h3>Are deadlocks always a bug?</h3>
+            <p>Not necessarily. Deadlocks can occur in any concurrent system and are not always avoidable. The important thing is that your application handles them gracefully with retry logic. However, frequent deadlocks indicate a design issue that should be addressed.</p>
+            <h3>Can I prevent all deadlocks?</h3>
+            <p>In theory, yes, by always acquiring locks in a consistent global order. In practice, this is difficult in complex applications. The pragmatic approach is to minimize deadlocks through consistent ordering and short transactions, and handle the remaining ones with retry logic.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/sqlite-database-locked">SQLite Database Locked</a> — SQLite database file is locked</li>
+                <li><a href="/errors/database/database-too-many-connections">Too Many Connections</a> — Database connection limit reached</li>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — Database connection timed out</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

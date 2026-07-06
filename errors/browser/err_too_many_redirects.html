@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_TOO_MANY_REDIRECTS mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_TOO_MANY_REDIRECTS means the browser followed a chain of HTTP redirects that looped back on itself, creating an infinite loop. After a threshold (usually 20 redirects), the browser gives up and shows this error to prevent endless looping."}},{"@type":"Question","name":"What causes a redirect loop?","acceptedAnswer":{"@type":"Answer","text":"Common causes include misconfigured SSL/HTTPS redirect rules (HTTP redirects to HTTPS which redirects back to HTTP), WordPress or CMS settings conflicts, CDN or proxy redirect rules that conflict with the origin server, and cookies or session data that trigger redirect logic."}},{"@type":"Question","name":"How do I fix ERR_TOO_MANY_REDIRECTS?","acceptedAnswer":{"@type":"Answer","text":"Start by clearing your browser cookies for the affected site. Then check your web server redirect rules (e.g., .htaccess, nginx config) for circular redirect logic. If using WordPress, check the WordPress Address and Site Address settings. For SSL issues, ensure your CDN is configured to use Full SSL mode."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_TOO_MANY_REDIRECTS — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_TOO_MANY_REDIRECTS","step":[{"@type":"HowToStep","position":1,"name":"Clear Browser Cookies for the Site","text":"Stale cookies can cause redirect loops. Clear them specifically for the affected domain:"},{"@type":"HowToStep","position":2,"name":"Inspect the Redirect Chain","text":"Use the Redirect Checker tool to trace the exact redirect chain. This will show you every hop and reveal where the loop occurs."},{"@type":"HowToStep","position":3,"name":"Fix Cloudflare SSL Mode (Most Common CDN Cause)","text":"If you use Cloudflare and have HTTPS forced on your origin server, set Cloudflare's SSL mode to Full (Strict) rather than \"Flexible\":"},{"@type":"HowToStep","position":4,"name":"Fix WordPress URL Settings","text":"If you manage a WordPress site, check and align these settings:"},{"@type":"HowToStep","position":5,"name":"Review .htaccess Rules","text":"Check your Apache .htaccess file for conflicting redirect rules. A common mistake is having both a redirect-to-HTTPS rule and another rule that catches all HTTPS traffic and redirects again:"},{"@type":"HowToStep","position":6,"name":"Check nginx Configuration","text":"In nginx, look for conflicting return or rewrite directives across server blocks that redirect to each other."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_TOO_MANY_REDIRECTS — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_TOO_MANY_REDIRECTS means and how to fix redirect loops. Solutions for WordPress, Cloudflare, nginx, Apache, and general redirect loop debugging.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ERR_TOO_MANY_REDIRECTS, This page isn&#39;t working, Redirected you too many times, Too many redirects, Redirect loop, Infinite redirect loop">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_TOO_MANY_REDIRECTS — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix redirect loop errors with step-by-step solutions for WordPress, nginx, Apache, Cloudflare, and general browser cookie issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_too_many_redirects">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_too_many_redirects">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_TOO_MANY_REDIRECTS</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_TOO_MANY_REDIRECTS</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the page entered an infinite redirect loop. The browser followed too many redirects without reaching a final destination and stopped to prevent endless looping.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ERR_TOO_MANY_REDIRECTS</code></li><li><code>This page isn&#39;t working</code></li><li><code>Redirected you too many times</code></li><li><code>Too many redirects</code></li><li><code>Redirect loop</code></li><li><code>Infinite redirect loop</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>An HTTP redirect (status codes 301, 302, 307, 308) sends the browser from one URL to another. This is normal for HTTP-to-HTTPS redirects, trailing slash normalization, or domain canonicalization. However, when redirect rules are misconfigured, they can create a loop — URL A redirects to URL B, which redirects back to URL A, which redirects to URL B, and so on.</p>
+            <p>Browsers allow a maximum number of redirects (typically 20) before giving up and displaying <strong>ERR_TOO_MANY_REDIRECTS</strong>. This protects against infinite loops consuming bandwidth and server resources.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>HTTPS redirect loop</strong> — the server redirects HTTP to HTTPS, but the CDN or proxy sends HTTPS requests back as HTTP to the origin, creating a loop.</li>
+                <li><strong>WordPress misconfiguration</strong> — the WordPress Address (URL) and Site Address (URL) settings do not match, causing login or page redirect loops.</li>
+                <li><strong>Cloudflare SSL mode mismatch</strong> — using Cloudflare's "Flexible" SSL while the origin server also forces HTTPS creates an infinite loop.</li>
+                <li><strong>Browser cookies</strong> — stale cookies may contain redirect logic or session data that triggers incorrect redirects.</li>
+                <li><strong>Conflicting .htaccess rules</strong> — multiple redirect rules in Apache's <code>.htaccess</code> file that conflict with each other.</li>
+                <li><strong>Plugin conflicts</strong> — WordPress or CMS plugins that add redirect logic can conflict with server-level redirects.</li>
+                <li><strong>Load balancer or reverse proxy misconfiguration</strong> — redirect rules at the load balancer level that conflict with the origin server's rules.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Clear Browser Cookies for the Site</h3>
+            <p>Stale cookies can cause redirect loops. Clear them specifically for the affected domain:</p>
+            <ul>
+                <li><strong>Chrome:</strong> Open DevTools → Application tab → Cookies → right-click the domain → Clear</li>
+                <li>Or open an Incognito window to test without cookies</li>
+            </ul>
+
+            <h3>2. Inspect the Redirect Chain</h3>
+            <p>Use the <a href="/redirect-checker/">Redirect Checker</a> tool to trace the exact redirect chain. This will show you every hop and reveal where the loop occurs.</p>
+
+            <h3>3. Fix Cloudflare SSL Mode (Most Common CDN Cause)</h3>
+            <p>If you use Cloudflare and have HTTPS forced on your origin server, set Cloudflare's SSL mode to <strong>Full (Strict)</strong> rather than "Flexible":</p>
+            <ol>
+                <li>Go to Cloudflare Dashboard → SSL/TLS</li>
+                <li>Change the SSL mode from <strong>Flexible</strong> to <strong>Full</strong> or <strong>Full (Strict)</strong></li>
+            </ol>
+            <p>Flexible SSL means Cloudflare connects to your origin over HTTP, but your server redirects that to HTTPS — creating a loop.</p>
+
+            <h3>4. Fix WordPress URL Settings</h3>
+            <p>If you manage a WordPress site, check and align these settings:</p>
+            <ol>
+                <li>Log in to wp-admin → Settings → General</li>
+                <li>Ensure <strong>WordPress Address (URL)</strong> and <strong>Site Address (URL)</strong> both use the same protocol (both <code>https://</code>)</li>
+                <li>Or set them directly in <code>wp-config.php</code>:</li>
+            </ol>
+            <pre><code>define('WP_HOME','https://yourdomain.com');
+define('WP_SITEURL','https://yourdomain.com');</code></pre>
+
+            <h3>5. Review .htaccess Rules</h3>
+            <p>Check your Apache <code>.htaccess</code> file for conflicting redirect rules. A common mistake is having both a redirect-to-HTTPS rule and another rule that catches all HTTPS traffic and redirects again:</p>
+            <pre><code># Ensure this condition prevents looping:
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
+
+            <h3>6. Check nginx Configuration</h3>
+            <p>In nginx, look for conflicting <code>return</code> or <code>rewrite</code> directives across server blocks that redirect to each other.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/redirect-checker/">Redirect Checker</a> — trace the full redirect chain to identify where the loop occurs.</li>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — verify your SSL certificate is valid and correctly configured.</li>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — check response codes and headers.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does this only happen in my browser but not for others?</h3>
+            <p>Cookies are the most common reason. The redirect loop is being triggered by a stale session cookie in your browser. Clear cookies for the site or test in a private/incognito window.</p>
+
+            <h3>Why does clearing cache not fix it?</h3>
+            <p>Clearing the browser cache removes cached files but not cookies. Redirect loops are almost always caused by redirect rules or cookies, not cached page content. Clear cookies separately.</p>
+
+            <h3>Can plugins cause redirect loops?</h3>
+            <p>Yes. WordPress plugins that handle SSL, caching, or SEO redirects can conflict with server-level redirect rules. Try disabling plugins one by one (especially SSL or redirect plugins) to identify the conflict.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — page does not exist (redirect destination missing).</li>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> — SSL issue that sometimes accompanies HTTPS redirect problems.</li>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — connection dropped instead of redirected.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace URL redirects and redirect chains</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/redirect-checker/" class="cta-btn-primary">Try Redirect Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

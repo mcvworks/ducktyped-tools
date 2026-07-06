@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an MX record?","acceptedAnswer":{"@type":"Answer","text":"An MX (Mail Exchanger) record is a DNS record that tells sending mail servers which host is responsible for receiving email for a domain. Each MX record has a priority number — lower numbers are tried first — and points to a hostname, which must itself have an A or AAAA record."}},{"@type":"Question","name":"Does a domain need an MX record to receive email?","acceptedAnswer":{"@type":"Answer","text":"In practice, yes. If no MX record exists, RFC 5321 allows senders to fall back to the domain's A/AAAA record (an implicit MX), but many providers do not, so mail is likely to bounce. To receive email reliably, publish an explicit MX record pointing to your mail host."}},{"@type":"Question","name":"Why does mail bounce with 'no MX record' when the website works fine?","acceptedAnswer":{"@type":"Answer","text":"A website is served from the domain's A/AAAA record, while email delivery uses the separate MX record. A domain can have a working A record for the web and no MX record for mail at the same time, so the site loads but email bounces."}},{"@type":"Question","name":"Can an MX record point to an IP address?","acceptedAnswer":{"@type":"Answer","text":"No. An MX record must point to a hostname, and that hostname must resolve to an A or AAAA record. Pointing an MX record at an IP address, or at a CNAME, is invalid and will cause delivery failures."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"MX Record Not Found — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix MX Record Not Found","step":[{"@type":"HowToStep","position":1,"name":"Check the current MX records","text":"Query the domain's MX records from multiple resolvers with a DNS lookup tool, or run dig MX example.com. Confirm whether any MX record is returned at all."},{"@type":"HowToStep","position":2,"name":"Add an MX record at your DNS host","text":"If none exists, create an MX record pointing to your mail provider's host with a priority number. Use the exact values your email provider specifies."},{"@type":"HowToStep","position":3,"name":"Ensure the MX target has an A or AAAA record","text":"The hostname an MX record points to must resolve to an IP via an A or AAAA record, and must not be a CNAME. Verify the target resolves."},{"@type":"HowToStep","position":4,"name":"Wait for DNS propagation and re-check","text":"MX changes take time to propagate to all resolvers. Re-query from several resolvers until the new record is visible everywhere before testing mail again."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MX Record Not Found — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'MX record not found' errors that stop email delivery. What MX records do, why mail bounces when one is missing, and how to add and verify the right MX record.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="MX record not found, no MX record, MX record missing, domain not found MX, email not delivering no MX, queryMx ENODATA, Host or domain name not found type=MX, recipient domain has no MX">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MX Record Not Found — Causes &amp; Fixes">
+    <meta property="og:description" content="Why email bounces when a domain has no MX record, and how to add and verify the correct MX record so mail can be delivered.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/mx-record-not-found">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/mx-record-not-found">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>MX Record Not Found</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MX Record Not Found</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">This error means a sending mail server looked up a domain's MX (Mail Exchanger) records to find out where to deliver email — and found none. Without an MX record telling senders which host accepts mail, delivery fails and the message bounces. Note that the website can work perfectly while this happens: web traffic and email use different DNS records.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>no MX record found for domain</code></li><li><code>Host or domain name not found. Name service error for name=example.com type=MX</code></li><li><code>queryMx ENODATA example.com</code></li><li><code>Recipient address rejected: Domain not found</code></li><li><code>550 5.1.2 ... unable to route to recipient domain</code></li><li><code>DNS type 'MX' lookup responded with no data</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When a mail server has a message for <code>user@example.com</code>, it asks DNS for the <strong>MX records</strong> of <code>example.com</code>. Each MX record names a mail host and a priority; the sender tries the lowest-priority number first. If DNS returns no MX records, the sender has nowhere to deliver the message.</p>
+            <p>There is one nuance. RFC 5321 defines an <strong>implicit MX</strong> rule: if a domain has no MX record but does have an <code>A</code> or <code>AAAA</code> record, a sender <em>may</em> deliver to that address instead. In practice many providers do not honor this, so a missing MX record almost always results in a bounce. The reliable answer is to publish an explicit MX record.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No MX record was ever configured</strong> — the domain has web DNS set up but no mail records.</li>
+                <li><strong>The MX target has no A/AAAA record</strong> — the MX record exists but points to a hostname that does not resolve, which fails the same way.</li>
+                <li><strong>MX points to a CNAME</strong> — an MX record must reference a hostname with an address record, not a CNAME; this is invalid and breaks delivery.</li>
+                <li><strong>DNS not yet propagated</strong> — a newly added MX record has not reached all resolvers.</li>
+                <li><strong>Typo or wrong domain</strong> — mail sent to a mistyped or expired domain, which returns <a href="/errors/dns/nxdomain">NXDOMAIN</a> rather than an MX answer.</li>
+                <li><strong>A CNAME at the domain apex</strong> — putting a CNAME on the root domain suppresses other records, including MX.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the Current MX Records</h3>
+            <p>First confirm what DNS actually returns. Query from several resolvers with the <a href="/dns-lookup/">DNS Lookup tool</a>, or from a terminal:</p>
+            <pre><code>dig MX example.com +short
+# or
+nslookup -type=mx example.com</code></pre>
+            <p>If this returns nothing, no MX record is published and you need to add one.</p>
+
+            <h3>2. Add an MX Record at Your DNS Host</h3>
+            <p>In your DNS provider's dashboard, add an MX record pointing to your mail host with a priority. A zone-file view of a self-hosted setup looks like this:</p>
+            <pre><code>; name          TTL   class type priority  target
+example.com.     3600  IN    MX   10        mail.example.com.
+mail.example.com. 3600 IN    A              203.0.113.10</code></pre>
+            <p>If you use a hosted email provider, enter their exact values instead — for example, Google Workspace uses a single MX host:</p>
+            <pre><code>example.com.     3600  IN    MX   1         ASPMX.L.GOOGLE.COM.</code></pre>
+
+            <h3>3. Make Sure the MX Target Resolves</h3>
+            <p>The hostname your MX record points to must have its own <code>A</code> or <code>AAAA</code> record and must not be a CNAME. Look up the target directly to confirm it returns an IP address.</p>
+
+            <h3>4. Wait for Propagation, Then Verify</h3>
+            <p>MX changes can take minutes to hours to reach every resolver. Re-check from multiple locations until the record is consistent, then send a test message. You can confirm the receiving server is reachable with the <a href="/smtp-checker/">SMTP Checker</a>.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — query a domain's MX records from multiple resolvers to confirm what is published.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — once MX resolves, verify the mail host accepts connections.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> — rule out an expired or unregistered domain behind the failure.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is an MX record?</h3>
+            <p>An MX (Mail Exchanger) record is a DNS record naming the host that receives email for a domain, along with a priority. Lower priority numbers are preferred, letting you list backup mail servers.</p>
+
+            <h3>Does a domain really need an MX record to receive email?</h3>
+            <p>Almost always. RFC 5321 permits a fallback to the domain's <code>A</code>/<code>AAAA</code> record when no MX exists, but many senders ignore that, so mail is likely to bounce. Publish an explicit MX record to receive email reliably.</p>
+
+            <h3>Why does mail bounce when the website loads fine?</h3>
+            <p>The website is served from the domain's <code>A</code>/<code>AAAA</code> record; email uses the separate MX record. One can be configured without the other, so the site works while mail has nowhere to go.</p>
+
+            <h3>Can an MX record point to an IP address?</h3>
+            <p>No. An MX record must point to a hostname that resolves via an <code>A</code> or <code>AAAA</code> record. Pointing it at an IP address or a CNAME is invalid.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — the recipient domain does not exist at all, so no MX lookup is possible.</li>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — the bounce code a sender often returns when the recipient domain cannot be routed.</li>
+                <li><a href="/errors/dns/servfail">SERVFAIL</a> — the MX lookup failed due to a resolver or DNSSEC error rather than a missing record.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/email-not-delivering/">Why email is not delivering</a>, <a href="/learn/what-is-spf/">What is SPF?</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query MX and other records for any domain</span>
+                </a>
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Verify a mail server accepts connections</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Check MX Records</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

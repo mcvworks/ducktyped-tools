@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Webhook Payload Builder","url":"https://ducktyped.xyz/webhook-tester/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Build webhook payloads for common services like GitHub, Stripe, and Slack. Generate test payloads with correct structure.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a webhook tester?","acceptedAnswer":{"@type":"Answer","text":"A webhook tester provides a temporary URL endpoint that captures and displays incoming HTTP requests. It is used to debug and test webhook integrations from services like GitHub, Stripe, and Slack."}},{"@type":"Question","name":"How do I test webhooks?","acceptedAnswer":{"@type":"Answer","text":"Generate a test URL with this tool, configure it as the webhook endpoint in your service, trigger the webhook, and inspect the captured request including headers, body, and method."}},{"@type":"Question","name":"Are webhook payloads stored?","acceptedAnswer":{"@type":"Answer","text":"Webhook data is only held temporarily in your browser session and is not persisted to any server or database. Close the tab and the data is gone."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Payload Builder — Build and Test Webhook Payloads — duckTyped</title>
+    <meta name="description" content="Build webhook payloads for GitHub, Stripe, Slack, and Discord. Generate test payloads with correct structure.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Webhook Payload Builder — duckTyped">
+    <meta property="og:description" content="Generate webhook payloads for GitHub, Stripe, Slack, and Discord.">
+    <meta property="og:url" content="https://ducktyped.xyz/webhook-tester/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/webhook-tester.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Webhook Payload Builder — duckTyped">
+    <meta name="twitter:description" content="Generate webhook payloads for popular services.">
+    <link rel="canonical" href="https://ducktyped.xyz/webhook-tester/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Webhook Payload Builder</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Generate correctly structured webhook payloads for popular services. Use these payloads to test your webhook handlers locally.</p><div class="example-box"><strong>Example uses:</strong><p>Testing GitHub webhook handlers, building Stripe event payloads for local development, creating Slack notification payloads.</p></div>
+            <a href="/learn/webhook-tester/" class="learn-more-link">Learn about webhooks and signature verification</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Webhook Payload Builder</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                <div class="input-group"><label>Service:</label><select id="whService" onchange="updateEvents()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+                    <option value="github">GitHub</option><option value="stripe">Stripe</option><option value="slack">Slack</option><option value="discord">Discord</option><option value="generic">Generic</option>
+                </select></div>
+                <div class="input-group"><label>Event:</label><select id="whEvent" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
+            </div>
+            <button onclick="generatePayload()">Generate Payload</button>
+            <div class="input-group" style="margin-top:12px;"><label>Payload (editable):</label><textarea id="whOutput" rows="18" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.85em;resize:vertical;"></textarea></div>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('whOutput').value)">Copy Payload</button>
+            <hr style="border:none;border-top:1px solid var(--border-color);margin:20px 0;">
+            <h3 style="margin-bottom:10px;">Generate HMAC Signature</h3>
+            <div class="input-group"><label>Secret Key:</label><input type="text" id="hmacSecret" placeholder="your-webhook-secret"></div>
+            <button onclick="generateSig()">Generate Signature</button>
+            <div id="sigResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/http-request-builder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">HTTP Request Builder</a>
+            <a href="/json-formatter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JSON Formatter</a>
+            <a href="/hmac-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">HMAC Generator</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/webhook-tester/">Webhook Payload Builder — Learn Guide</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var events = {
+        github: ['push','pull_request','issues','release'],
+        stripe: ['payment_intent.succeeded','charge.succeeded','invoice.paid','customer.created'],
+        slack: ['message','app_mention','reaction_added'],
+        discord: ['MESSAGE_CREATE','INTERACTION_CREATE'],
+        generic: ['custom']
+    };
+    var payloads = {
+        'github:push': {ref:"refs/heads/main",before:"0000000000000000000000000000000000000000",after:"abc123def456",repository:{id:12345,name:"my-repo",full_name:"user/my-repo",html_url:"https://github.com/user/my-repo"},pusher:{name:"username",email:"user@example.com"},commits:[{id:"abc123def456",message:"Update README.md",timestamp:new Date().toISOString(),author:{name:"User",email:"user@example.com"}}]},
+        'github:pull_request': {action:"opened",number:1,pull_request:{id:1,title:"Add new feature",state:"open",user:{login:"username"},head:{ref:"feature-branch"},base:{ref:"main"},html_url:"https://github.com/user/my-repo/pull/1"}},
+        'github:issues': {action:"opened",issue:{id:1,number:1,title:"Bug report",body:"Something is broken",user:{login:"username"},labels:[],state:"open"}},
+        'github:release': {action:"published",release:{id:1,tag_name:"v1.0.0",name:"Release v1.0.0",body:"First release",draft:false,prerelease:false}},
+        'stripe:payment_intent.succeeded': {id:"evt_"+Date.now(),object:"event",type:"payment_intent.succeeded",data:{object:{id:"pi_"+Date.now(),object:"payment_intent",amount:2000,currency:"usd",status:"succeeded",payment_method:"pm_card_visa"}}},
+        'stripe:charge.succeeded': {id:"evt_"+Date.now(),object:"event",type:"charge.succeeded",data:{object:{id:"ch_"+Date.now(),amount:2000,currency:"usd",paid:true,status:"succeeded"}}},
+        'stripe:invoice.paid': {id:"evt_"+Date.now(),object:"event",type:"invoice.paid",data:{object:{id:"in_"+Date.now(),amount_paid:2000,currency:"usd",status:"paid",customer:"cus_123"}}},
+        'stripe:customer.created': {id:"evt_"+Date.now(),object:"event",type:"customer.created",data:{object:{id:"cus_"+Date.now(),email:"customer@example.com",name:"John Doe"}}},
+        'slack:message': {token:"xoxb-test",team_id:"T12345",event:{type:"message",user:"U12345",text:"Hello from Slack!",channel:"C12345",ts:String(Date.now()/1000)}},
+        'slack:app_mention': {token:"xoxb-test",team_id:"T12345",event:{type:"app_mention",user:"U12345",text:"<@U_BOT> help",channel:"C12345",ts:String(Date.now()/1000)}},
+        'slack:reaction_added': {token:"xoxb-test",team_id:"T12345",event:{type:"reaction_added",user:"U12345",reaction:"thumbsup",item:{type:"message",channel:"C12345",ts:String(Date.now()/1000)}}},
+        'discord:MESSAGE_CREATE': {t:"MESSAGE_CREATE",d:{id:"123456",content:"Hello from Discord!",channel_id:"789",author:{id:"111",username:"testuser",discriminator:"0001"}}},
+        'discord:INTERACTION_CREATE': {t:"INTERACTION_CREATE",d:{id:"123456",type:2,data:{name:"test-command"},channel_id:"789",member:{user:{id:"111",username:"testuser"}}}},
+        'generic:custom': {event:"test",timestamp:new Date().toISOString(),data:{message:"Test webhook payload",id:Math.random().toString(36).substr(2,9)}}
+    };
+    function updateEvents() {
+        var svc = document.getElementById('whService').value, sel = document.getElementById('whEvent');
+        sel.innerHTML = ''; events[svc].forEach(function(e) { sel.innerHTML += '<option value="'+e+'">'+e+'</option>'; });
+    }
+    function generatePayload() {
+        var svc = document.getElementById('whService').value, evt = document.getElementById('whEvent').value;
+        var key = svc + ':' + evt, payload = payloads[key] || payloads['generic:custom'];
+        document.getElementById('whOutput').value = JSON.stringify(payload, null, 2);
+    }
+    async function generateSig() {
+        var secret = document.getElementById('hmacSecret').value, payload = document.getElementById('whOutput').value;
+        if (!secret || !payload) { document.getElementById('sigResult').innerHTML = '<p style="color:var(--text-secondary);margin-top:10px;">Enter a secret key and generate a payload first.</p>'; return; }
+        var enc = new TextEncoder();
+        var key = await crypto.subtle.importKey('raw', enc.encode(secret), {name:'HMAC',hash:'SHA-256'}, false, ['sign']);
+        var sig = await crypto.subtle.sign('HMAC', key, enc.encode(payload));
+        var hex = Array.from(new Uint8Array(sig)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+        document.getElementById('sigResult').innerHTML = '<div style="margin-top:12px;padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><p style="color:var(--primary-color);font-weight:600;margin-bottom:6px;">HMAC-SHA256 Signature:</p><code style="color:var(--text-primary);word-break:break-all;">sha256='+hex+'</code><br><button onclick="navigator.clipboard.writeText(\'sha256='+hex+'\')" style="margin-top:8px;padding:4px 12px;font-size:0.8em;">Copy</button></div>';
+    }
+    updateEvents(); generatePayload();
+    </script>
+</body>
+</html>

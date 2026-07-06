@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an open relay and why do servers prevent it?","acceptedAnswer":{"@type":"Answer","text":"An open relay is a mail server that forwards email from any sender to any recipient without authentication. Spammers exploit open relays to send bulk email. Modern mail servers are configured to reject unauthorized relay attempts to prevent abuse."}},{"@type":"Question","name":"Why did this suddenly stop working?","acceptedAnswer":{"@type":"Answer","text":"Your mail server may have been updated to require authentication, your IP address may have changed and is no longer in the relay allow list, or your email client settings may have been reset to not include authentication credentials."}},{"@type":"Question","name":"Can I fix this without server access?","acceptedAnswer":{"@type":"Answer","text":"Yes. The most common fix is to enable SMTP authentication in your email client settings. Ensure you have the correct username, password, server address, and port configured."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"Relay Access Denied — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Relay Access Denied","step":[{"@type":"HowToStep","position":1,"name":"Enable SMTP authentication","text":"Configure your email client to authenticate with the SMTP server using a username and password. Ensure the authentication method matches what the server supports."},{"@type":"HowToStep","position":2,"name":"Verify SMTP server settings","text":"Ensure you are using the correct SMTP server for your email provider. Using the wrong server will result in relay denials because the server does not recognize your account."},{"@type":"HowToStep","position":3,"name":"Check relay permissions on the server","text":"If you manage the mail server, review the relay configuration to ensure legitimate senders are permitted. For Postfix, check mynetworks and smtpd_relay_restrictions."},{"@type":"HowToStep","position":4,"name":"Use the correct sending port","text":"Ensure your client is connecting on port 587 (submission) with STARTTLS rather than port 25 (relay). Port 587 is designed for authenticated mail submission."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relay Access Denied — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Relay Access Denied email errors. Learn why mail servers reject relay attempts, how open relay protection works, and how to configure SMTP authentication.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Relay access denied, 554 Relay access denied, Relaying denied, SMTP relay not allowed, This server does not relay">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Relay Access Denied — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Relay Access Denied email errors. Learn why mail servers reject relay attempts, how open relay protection works, and how to configure SMTP authentication.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/relay-access-denied">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/relay-access-denied">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>Relay Access Denied</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Relay Access Denied</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Mail server rejected the message because relay is not permitted</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Relay access denied</code></li><li><code>554 Relay access denied</code></li><li><code>Relaying denied</code></li><li><code>SMTP relay not allowed</code></li><li><code>This server does not relay</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Relay Access Denied occurs when an SMTP server refuses to forward an email because the sender is not authorized to use the server as a relay. Mail servers are configured to accept mail only for their own domains or from authenticated users. When a server receives mail destined for a domain it does not host from an unauthenticated sender, it rejects the message to prevent being used as an open relay, which would enable spam distribution.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing SMTP authentication</strong> — The email client is not authenticating with the SMTP server before attempting to send. Modern SMTP servers require authentication (SMTP AUTH) to relay mail for non-local domains.</li>
+                <li><strong>Incorrect SMTP server for the sending domain</strong> — The email client is configured to use an SMTP server that does not recognize the sender's domain. Each email provider typically requires you to use their specific SMTP server.</li>
+                <li><strong>IP address not in the relay allow list</strong> — The SMTP server is configured to allow relaying only from specific IP addresses or networks, and the sender's IP is not in the permitted list.</li>
+                <li><strong>Sending to an external domain through a local server</strong> — The email is addressed to a recipient outside the server's local domains, and the server is correctly configured to refuse relaying for unauthenticated senders.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Enable SMTP authentication</h3>
+            <p>Configure your email client to authenticate with the SMTP server using a username and password. Ensure the authentication method matches what the server supports.</p>
+            <pre><code># Common SMTP settings requiring authentication
+# Port 587 (STARTTLS) — recommended
+# Port 465 (SSL/TLS)
+# Authentication: Login or PLAIN</code></pre>
+            <h3>2. Verify SMTP server settings</h3>
+            <p>Ensure you are using the correct SMTP server for your email provider. Using the wrong server will result in relay denials because the server does not recognize your account.</p>
+            <h3>3. Check relay permissions on the server</h3>
+            <p>If you manage the mail server, review the relay configuration to ensure legitimate senders are permitted. For Postfix, check mynetworks and smtpd_relay_restrictions.</p>
+            <pre><code># Postfix relay configuration
+smtpd_relay_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_unauth_destination</code></pre>
+            <h3>4. Use the correct sending port</h3>
+            <p>Ensure your client is connecting on port 587 (submission) with STARTTLS rather than port 25 (relay). Port 587 is designed for authenticated mail submission.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is an open relay and why do servers prevent it?</h3>
+            <p>An open relay is a mail server that forwards email from any sender to any recipient without authentication. Spammers exploit open relays to send bulk email. Modern mail servers are configured to reject unauthorized relay attempts to prevent abuse.</p>
+            <h3>Why did this suddenly stop working?</h3>
+            <p>Your mail server may have been updated to require authentication, your IP address may have changed and is no longer in the relay allow list, or your email client settings may have been reset to not include authentication credentials.</p>
+            <h3>Can I fix this without server access?</h3>
+            <p>Yes. The most common fix is to enable SMTP authentication in your email client settings. Ensure you have the correct username, password, server address, and port configured.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — Requested action not taken — mailbox unavailable</li>
+                <li><a href="/errors/email/smtp-535">SMTP 535</a> — Authentication failed</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554</a> — Transaction failed permanently</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP connections and authentication</span>
+                </a>
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

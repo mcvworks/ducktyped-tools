@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did Node start crashing instead of warning?","acceptedAnswer":{"@type":"Answer","text":"Silently swallowed rejections hid real failures — half-completed writes, lost jobs — and the warning was ignored in practice. Crashing makes the bug undeniable and lets a supervisor restart from a clean state. You can revert with --unhandled-rejections=warn, but that re-hides the bugs."}},{"@type":"Question","name":"unhandledRejection vs uncaughtException — what is the difference?","acceptedAnswer":{"@type":"Answer","text":"unhandledRejection fires for promise rejections nobody handled; uncaughtException for synchronous throws that escaped everything. Both mean the app lost control of an error path; both handlers should log and exit rather than attempt to continue."}},{"@type":"Question","name":"Is exiting on every unhandled rejection too harsh for a web server?","acceptedAnswer":{"@type":"Answer","text":"The alternative is running with unknown corrupted state. The robust pattern is: per-request error handling catches expected failures (so they never reach the process handler), and the process handler is strictly for bugs — where restart-on-crash plus a fix is safer than limping on."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Node.js Unhandled Promise Rejection — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Unhandled Promise Rejection — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Node ERR_UNHANDLED_REJECTION crashes. Missing awaits and catches, floating promises, safe process-level logging, and lint rules that prevent them.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="UnhandledPromiseRejectionWarning, ERR_UNHANDLED_REJECTION, unhandled promise rejection, This error originated either by throwing inside of an async function">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Node.js Unhandled Promise Rejection — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Node ERR_UNHANDLED_REJECTION crashes. Missing awaits and catches, floating promises, safe process-level logging, and lint rules that prevent them.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/unhandled-promise-rejection">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/unhandled-promise-rejection">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Node.js Unhandled Promise Rejection</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Node.js Unhandled Promise Rejection</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The crash 'Error [ERR_UNHANDLED_REJECTION]: This error originated either by throwing inside of an async function without a catch block...' — a rejected promise had no handler, and Node 15+ exits.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>UnhandledPromiseRejectionWarning</code></li><li><code>ERR_UNHANDLED_REJECTION</code></li><li><code>unhandled promise rejection</code></li><li><code>This error originated either by throwing inside of an async function</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Since Node 15, a promise rejection with no .catch() (and no rejection handler installed) crashes the process — previously it only printed a warning. The error means some async path in your code can fail without anyone listening: a floating promise called without await, an async function invoked from a callback, or a rejection thrown after the caller stopped waiting. The stack trace names the original rejection; the work is finding the call site that dropped the promise.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>A promise called without await or .catch()</strong> — someAsyncFn(); as a statement — errors inside it have nowhere to go. Common in event handlers, timers, and 'fire and forget' calls that were not supposed to be.</li>
+                <li><strong>async callbacks passed where none is expected</strong> — forEach(async ...), an async function as an EventEmitter listener, or setTimeout(async ...) — the caller ignores the returned promise, so rejections are orphaned.</li>
+                <li><strong>Errors thrown outside the awaited window</strong> — A rejection that happens after the code that would catch it already resolved (e.g. multiple concurrent promises where only the first is awaited).</li>
+                <li><strong>Upgrade from Node 14 or earlier</strong> — Code that 'worked' for years — with warnings nobody read — starts crashing on modern Node because the default became throw.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Handle rejections at every call site</h3>
+            <p>await inside try/catch for sequential code; explicit .catch for intentional fire-and-forget.</p>
+            <pre><code>// sequential:
+try {
+  await sendEmail(user);
+} catch (err) {
+  log.error({ err }, 'email failed');
+}
+
+// intentional fire-and-forget:
+sendAnalytics(event).catch(err =&gt; log.warn({ err }, 'analytics failed'));</code></pre>
+            <h3>2. Collect concurrent work safely</h3>
+            <p>Promise.allSettled never rejects; use it when partial failure is acceptable, and Promise.all + try/catch when it is not.</p>
+            <pre><code>const results = await Promise.allSettled(jobs.map(run));
+for (const r of results) {
+  if (r.status === 'rejected') log.error({ err: r.reason }, 'job failed');
+}</code></pre>
+            <h3>3. Add a last-resort process handler — for logging, not for ignoring</h3>
+            <p>Log rich context, then exit: after an unhandled rejection the process state is suspect, and supervisors restart it cleanly.</p>
+            <pre><code>process.on('unhandledRejection', (reason) =&gt; {
+  log.fatal({ err: reason }, 'unhandled rejection');
+  process.exit(1);   // let systemd/pm2/k8s restart us
+});</code></pre>
+            <h3>4. Prevent the class with lint rules</h3>
+            <p>typescript-eslint's no-floating-promises flags every dropped promise at review time.</p>
+            <pre><code>// .eslintrc
+{
+  &quot;rules&quot;: {
+    &quot;@typescript-eslint/no-floating-promises&quot;: &quot;error&quot;,
+    &quot;@typescript-eslint/no-misused-promises&quot;: &quot;error&quot;
+  }
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why did Node start crashing instead of warning?</h3>
+            <p>Silently swallowed rejections hid real failures — half-completed writes, lost jobs — and the warning was ignored in practice. Crashing makes the bug undeniable and lets a supervisor restart from a clean state. You can revert with --unhandled-rejections=warn, but that re-hides the bugs.</p>
+            <h3>unhandledRejection vs uncaughtException — what is the difference?</h3>
+            <p>unhandledRejection fires for promise rejections nobody handled; uncaughtException for synchronous throws that escaped everything. Both mean the app lost control of an error path; both handlers should log and exit rather than attempt to continue.</p>
+            <h3>Is exiting on every unhandled rejection too harsh for a web server?</h3>
+            <p>The alternative is running with unknown corrupted state. The robust pattern is: per-request error handling catches expected failures (so they never reach the process handler), and the process handler is strictly for bugs — where restart-on-crash plus a fix is safer than limping on.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/maximum-call-stack-size-exceeded">Maximum Call Stack Exceeded</a> — another runtime crash class.</li>
+                <li><a href="/errors/node/javascript-heap-out-of-memory">Heap Out of Memory</a> — process-fatal resource errors.</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — what users see when servers crash.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/json-formatter/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">JSON Formatter</span>
+                    <span class="recommended-tool-desc">Inspect structured logs</span>
+                </a>
+        <a href="/regex-tester/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Regex Tester</span>
+                    <span class="recommended-tool-desc">Grep crash patterns from logs</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/json-formatter/" class="cta-btn-primary">Try JSON Formatter</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

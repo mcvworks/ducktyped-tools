@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 503 Service Unavailable mean?","acceptedAnswer":{"@type":"Answer","text":"A 503 Service Unavailable error means the server is currently unable to handle the request. This is usually temporary — the server may be overloaded, undergoing maintenance, or experiencing a resource exhaustion event. Unlike a 502, the problem is in the server itself, not an upstream it is proxying to."}},{"@type":"Question","name":"Is 503 permanent or temporary?","acceptedAnswer":{"@type":"Answer","text":"503 is intended to be a temporary condition. Servers often include a Retry-After header indicating when they expect to be available. If you are seeing a persistent 503 over many hours, the server may have a deeper issue such as a crashed process or infrastructure failure."}},{"@type":"Question","name":"How do I fix a 503 error on my own server?","acceptedAnswer":{"@type":"Answer","text":"Check that your web server process (nginx, Apache) is running, verify the application server (PHP-FPM, Node.js, etc.) is healthy, check server resource usage (CPU, memory, disk), review error logs for crash or overload indicators, and scale resources if the server is consistently at capacity."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"503 Service Unavailable — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>503 Service Unavailable — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 503 Service Unavailable error means and how to fix it. Covers server overload, maintenance mode, nginx, Apache, and cloud infrastructure.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 503, 503 Service Unavailable, Error 503, 503 error, Service unavailable, 503 server overloaded, Maintenance mode 503, 503 temporarily unavailable, Retry-After 503">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="503 Service Unavailable — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 503 Service Unavailable errors with solutions covering server overload, maintenance mode, and infrastructure issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/503-service-unavailable">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/503-service-unavailable">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>503 Service Unavailable</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>503 Service Unavailable</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 503 error means the server is temporarily unable to handle your request — usually due to overload, maintenance, or a crashed service. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 503</code></li><li><code>503 Service Unavailable</code></li><li><code>Error 503</code></li><li><code>503 error</code></li><li><code>Service unavailable</code></li><li><code>503 server overloaded</code></li><li><code>Maintenance mode 503</code></li><li><code>503 temporarily unavailable</code></li><li><code>Retry-After 503</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Failure Happens</h2>
+                <div class="dt-diagram" data-diagram="http" data-error="503"></div>
+            </div>
+
+            <h2>What Does 503 Service Unavailable Mean?</h2>
+            <p>The HTTP <strong>503 Service Unavailable</strong> status code indicates that the server is currently unable to handle the request. This is typically a <em>temporary</em> condition — the server is overloaded, undergoing scheduled maintenance, or experiencing a resource exhaustion event.</p>
+            <p>Unlike a <strong>502 Bad Gateway</strong> (where a proxy received a bad response from an upstream), a 503 comes directly from the server itself. It is a self-reported error: "I'm here, but I can't help you right now."</p>
+            <p>Servers may include a <code>Retry-After</code> HTTP header specifying when they expect to be available again.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server overload</strong> — too many simultaneous requests are consuming all available CPU, memory, or connection slots.</li>
+                <li><strong>Scheduled maintenance</strong> — the site is intentionally offline for updates or database migrations.</li>
+                <li><strong>Application crash</strong> — the web application or worker processes have crashed and need to be restarted.</li>
+                <li><strong>Rate limiting</strong> — some servers return 503 when a client exceeds request limits.</li>
+                <li><strong>Resource exhaustion</strong> — the server ran out of file descriptors, database connections, or memory.</li>
+                <li><strong>Deployment failure</strong> — a broken release caused the application to fail to start during a deployment.</li>
+                <li><strong>Upstream database unavailable</strong> — the application depends on a database that is down or unreachable.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+            <p>A 503 is nearly always a server-side issue. As a visitor:</p>
+            <ol>
+                <li><strong>Wait and retry</strong> — 503s caused by overload or maintenance usually resolve within minutes. Refresh the page after a short wait.</li>
+                <li><strong>Check the site's status page</strong> — many services maintain a public status page (e.g., <code>status.example.com</code>) that announces maintenance or incidents.</li>
+                <li><strong>Use the <a href="/http-latency/">HTTP Latency Checker</a></strong> — confirm the site is down for everyone, not just you.</li>
+            </ol>
+
+            <h3>For Site Owners</h3>
+
+            <h4>1. Check Web Server Status</h4>
+            <pre><code>sudo systemctl status nginx
+sudo systemctl status apache2</code></pre>
+            <p>If the web server is stopped, restart it and check the error log for the cause.</p>
+
+            <h4>2. Check Application Server Status</h4>
+            <pre><code>sudo systemctl status php8.1-fpm
+pm2 status            # Node.js with PM2
+sudo systemctl status gunicorn  # Python</code></pre>
+
+            <h4>3. Check Server Resource Usage</h4>
+            <pre><code>free -h    # Memory usage
+df -h     # Disk space
+top       # CPU and process overview
+ulimit -n # File descriptor limits</code></pre>
+            <p>If memory is exhausted, identify and restart the memory-consuming processes or add swap space.</p>
+
+            <h4>4. Review Error Logs</h4>
+            <pre><code>sudo tail -100 /var/log/nginx/error.log
+sudo journalctl -u php8.1-fpm -n 50</code></pre>
+
+            <h4>5. Implement a Maintenance Page</h4>
+            <p>If taking the server down intentionally, serve a proper 503 with a <code>Retry-After</code> header so search engines and clients know to try again:</p>
+            <pre><code># nginx example
+location / {
+    return 503;
+}
+error_page 503 /maintenance.html;</code></pre>
+
+            <h4>6. Scale Resources</h4>
+            <p>If the server is consistently hitting resource limits, consider:</p>
+            <ul>
+                <li>Increasing PHP-FPM worker count</li>
+                <li>Adding more application instances behind the load balancer</li>
+                <li>Upgrading server CPU/RAM</li>
+                <li>Implementing a CDN to offload static asset traffic</li>
+            </ul>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — verify server response status and measure latency.</li>
+                <li><a href="/port-scanner/">Port Scanner</a> — check if the server's ports are open and accepting connections.</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> — inspect response headers including Retry-After.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does a 503 affect SEO?</h3>
+            <p>Temporary 503s are handled gracefully by Google — if Googlebot encounters a 503, it will retry the page later and not immediately drop it from the index. However, a site that returns 503 for extended periods will eventually lose its rankings. Set up monitoring alerts to detect 503s quickly.</p>
+
+            <h3>What is the difference between 503 and 504?</h3>
+            <p>A <strong>504 Gateway Timeout</strong> is similar — a gateway or proxy did not receive a response in time from the upstream. A 503 means the server is explicitly declaring it cannot serve requests right now. Both are server-side issues, but they come from different layers in the architecture.</p>
+
+            <h3>Can visitors trigger a 503 themselves?</h3>
+            <p>Not usually. A single visitor's requests cannot overload a properly configured server. However, traffic spikes, scrapers, or DDoS attacks can cause legitimate 503s if the server lacks rate limiting or capacity to handle the volume.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — gateway received a bad response from upstream.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — server is up but the resource does not exist.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server not reachable at all.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open and listening</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Check HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I raise the 100-second limit?","acceptedAnswer":{"@type":"Answer","text":"Only on Enterprise plans (proxy_read_timeout is configurable there). On free/pro/business the window is fixed — the practical answers are background jobs or a DNS-only route for the slow endpoints."}},{"@type":"Question","name":"Why do I get 524 on WebSocket or long-poll endpoints?","acceptedAnswer":{"@type":"Answer","text":"The 100-second rule applies to the initial HTTP response. Established WebSockets are exempt, but a server that takes too long to complete the upgrade handshake, or long-polling that holds the first response beyond the window, will trip 524. Send headers/heartbeats early, or move the endpoint off-proxy."}},{"@type":"Question","name":"Is 524 the same as 504 Gateway Timeout?","acceptedAnswer":{"@type":"Answer","text":"Conceptually yes — a proxy giving up on a slow upstream. 504 is the standard code any proxy uses; 524 is Cloudflare's specific 'origin exceeded my response window' page, which tells you exactly which layer timed out and what the budget was."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 524 — A Timeout Occurred — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 524 — A Timeout Occurred — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 524. The 100-second response window, slow endpoints, moving long work to background jobs, and grey-clouding slow routes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 524, a timeout occurred cloudflare, error 524, cloudflare 100 second timeout, http 524">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 524 — A Timeout Occurred — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 524. The 100-second response window, slow endpoints, moving long work to background jobs, and grey-clouding slow routes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-524">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-524">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 524 — A Timeout Occurred</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 524 — A Timeout Occurred</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare connected to the origin and delivered the request, but the origin did not complete an HTTP response within 100 seconds — long jobs and slow queries are the usual story.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 524</code></li><li><code>a timeout occurred cloudflare</code></li><li><code>error 524</code></li><li><code>cloudflare 100 second timeout</code></li><li><code>http 524</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 524 means everything network-level worked — connection, request delivery — and then the origin took longer than Cloudflare's proxy read window (100 seconds on free/pro/business plans) to return a response. It is the signature error of long-running synchronous work behind Cloudflare: report generation, big exports, admin bulk actions, slow database queries. The options are the classic three: make the endpoint faster, move the work out of the request/response cycle, or take that route out from behind Cloudflare's proxy.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Endpoints that legitimately run long</strong> — Report/exports/imports executing inside one HTTP request — anything that can exceed 100 seconds under real data volumes.</li>
+                <li><strong>Slow database queries or external calls</strong> — An unindexed query or a hanging third-party API pushes an ordinarily fast endpoint past the window under certain inputs.</li>
+                <li><strong>Origin worker starvation</strong> — The response would be fast, but the request waits in a saturated worker queue longer than the window — a capacity symptom rather than an endpoint bug.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Time the slow endpoint directly at the origin</h3>
+            <p>Measure without Cloudflare to see the true duration and find the budget you must get under.</p>
+            <pre><code>time curl -sk https://ORIGIN_IP/admin/export -H 'Host: example.com' -o /dev/null</code></pre>
+            <h3>2. Move long work to background jobs</h3>
+            <p>The robust fix: the request enqueues the work and returns immediately; the client polls or gets notified. HTTP requests measured in minutes are fragile everywhere, not just behind Cloudflare.</p>
+            <pre><code># pattern:
+# POST /exports        -&gt; 202 Accepted, {&quot;job&quot;:&quot;abc123&quot;}
+# GET  /exports/abc123 -&gt; {&quot;status&quot;:&quot;running|done&quot;,&quot;url&quot;:...}</code></pre>
+            <h3>3. Fix the query/dependency behind unexpected slowness</h3>
+            <p>For endpoints that should be fast: EXPLAIN the queries, add timeouts to outbound API calls, and check worker saturation during 524 bursts.</p>
+            <h3>4. Take unavoidable long routes out of the proxy</h3>
+            <p>Serve them from a grey-clouded (DNS-only) subdomain so Cloudflare's window does not apply — accepting that this exposes the origin IP for that hostname. Enterprise plans can raise the timeout instead.</p>
+            <pre><code># dashboard: DNS record e.g. jobs.example.com -&gt; grey cloud (DNS only)
+# then run the slow endpoints on jobs.example.com</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can I raise the 100-second limit?</h3>
+            <p>Only on Enterprise plans (proxy_read_timeout is configurable there). On free/pro/business the window is fixed — the practical answers are background jobs or a DNS-only route for the slow endpoints.</p>
+            <h3>Why do I get 524 on WebSocket or long-poll endpoints?</h3>
+            <p>The 100-second rule applies to the initial HTTP response. Established WebSockets are exempt, but a server that takes too long to complete the upgrade handshake, or long-polling that holds the first response beyond the window, will trip 524. Send headers/heartbeats early, or move the endpoint off-proxy.</p>
+            <h3>Is 524 the same as 504 Gateway Timeout?</h3>
+            <p>Conceptually yes — a proxy giving up on a slow upstream. 504 is the standard code any proxy uses; 524 is Cloudflare's specific 'origin exceeded my response window' page, which tells you exactly which layer timed out and what the budget was.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — the generic upstream timeout.</li>
+                <li><a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a> — the same pattern at the origin's own proxy.</li>
+                <li><a href="/errors/cloudflare/error-522">Cloudflare Error 522</a> — timeouts at the connection stage.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure endpoint response times</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Reproduce slow requests precisely</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

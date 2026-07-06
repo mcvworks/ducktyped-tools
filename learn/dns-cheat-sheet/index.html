@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DNS Records Cheat Sheet","description":"Quick reference for all DNS record types: A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, SRV, PTR, and more. Includes SPF, DKIM, DMARC syntax, TTL guide, and common configurations.","datePublished":"2026-03-11","dateModified":"2026-03-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/dns-cheat-sheet/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"DNS Records Cheat Sheet"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the most important DNS record types?","acceptedAnswer":{"@type":"Answer","text":"The most important DNS record types are: A (maps domain to IPv4), AAAA (maps to IPv6), CNAME (alias to another domain), MX (mail server), TXT (text data for SPF/DKIM/verification), NS (nameserver delegation), and CAA (certificate authority authorization)."}},{"@type":"Question","name":"What is the difference between A and CNAME records?","acceptedAnswer":{"@type":"Answer","text":"An A record maps a domain directly to an IP address (e.g., example.com → 93.184.216.34). A CNAME record maps a domain to another domain name (e.g., www.example.com → example.com). CNAMEs cannot be used at the zone apex (root domain)."}},{"@type":"Question","name":"What TTL should I use for DNS records?","acceptedAnswer":{"@type":"Answer","text":"For stable records that rarely change, use 3600-86400 seconds (1-24 hours). For records you plan to change soon, lower the TTL to 300 seconds (5 minutes) beforehand. MX records and NS records should use longer TTLs (3600+) for reliability."}},{"@type":"Question","name":"How do SPF, DKIM, and DMARC work together?","acceptedAnswer":{"@type":"Answer","text":"SPF verifies the sending server IP is authorized. DKIM cryptographically signs messages to prove they were not altered. DMARC ties SPF and DKIM together with a policy telling receivers what to do when checks fail (none, quarantine, reject). All three are TXT records."}},{"@type":"Question","name":"What is a PTR record?","acceptedAnswer":{"@type":"Answer","text":"A PTR (Pointer) record maps an IP address back to a hostname — the reverse of an A record. PTR records are stored in the in-addr.arpa zone and are essential for email deliverability, as many mail servers reject messages from IPs without valid reverse DNS."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Records Cheat Sheet — Quick Reference for All Record Types — duckTyped</title>
+    <meta name="description" content="DNS records cheat sheet: A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, SRV, PTR, SPF, DKIM, DMARC syntax and examples. Quick reference for domain configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS records cheat sheet, DNS record types, A record, AAAA record, CNAME, MX record, TXT record, SPF record, DKIM record, DMARC record, DNS reference">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS Records Cheat Sheet — Quick Reference — duckTyped">
+    <meta property="og:description" content="All DNS record types explained: A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, SRV, PTR, SPF, DKIM, DMARC.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/dns-cheat-sheet/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DNS Records Cheat Sheet — duckTyped">
+    <meta name="twitter:description" content="Quick reference for all DNS record types with examples and common configurations.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/dns-cheat-sheet/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>DNS Records Cheat Sheet</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS Records Cheat Sheet</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-11">March 11, 2026</time></p>
+            <p class="standalone-intro">Quick reference for every DNS record type. Bookmark this page for fast lookups when configuring domains, setting up email, or troubleshooting DNS issues.</p>
+
+            <p>For an in-depth explanation of how DNS works, see <a href="/learn/dns-lookup/">DNS Records Explained</a>. To check your records live, use the <a href="/dns-lookup/">DNS Record Checker</a>.</p>
+
+            <h2>All DNS Record Types</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Type</th><th>Purpose</th><th>Example Value</th><th>Common Use</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>A</strong></td><td>Maps domain to IPv4 address</td><td><code>93.184.216.34</code></td><td>Website hosting, server routing</td></tr>
+                        <tr><td><strong>AAAA</strong></td><td>Maps domain to IPv6 address</td><td><code>2606:2800:220:1:248:1893:25c8:1946</code></td><td>IPv6 website hosting</td></tr>
+                        <tr><td><strong>CNAME</strong></td><td>Alias to another domain</td><td><code>www.example.com → example.com</code></td><td>Subdomains, CDNs, SaaS services</td></tr>
+                        <tr><td><strong>MX</strong></td><td>Mail server for the domain</td><td><code>10 mail.example.com</code></td><td>Email routing (Google, Microsoft, etc.)</td></tr>
+                        <tr><td><strong>TXT</strong></td><td>Arbitrary text data</td><td><code>"v=spf1 include:_spf.google.com ~all"</code></td><td>SPF, DKIM, DMARC, domain verification</td></tr>
+                        <tr><td><strong>NS</strong></td><td>Nameserver delegation</td><td><code>ns1.example.com</code></td><td>Delegating DNS to a provider</td></tr>
+                        <tr><td><strong>SOA</strong></td><td>Start of Authority</td><td><code>ns1.example.com admin.example.com 2024010101 ...</code></td><td>Zone metadata, serial number, refresh intervals</td></tr>
+                        <tr><td><strong>CAA</strong></td><td>Certificate Authority Authorization</td><td><code>0 issue "letsencrypt.org"</code></td><td>Restricting which CAs can issue SSL certs</td></tr>
+                        <tr><td><strong>SRV</strong></td><td>Service location</td><td><code>10 5 5060 sip.example.com</code></td><td>SIP, XMPP, game servers, autodiscovery</td></tr>
+                        <tr><td><strong>PTR</strong></td><td>Reverse DNS (IP → hostname)</td><td><code>mail.example.com</code></td><td>Email deliverability, logging</td></tr>
+                        <tr><td><strong>NAPTR</strong></td><td>Naming Authority Pointer</td><td><code>100 10 "u" "sip+E2U" "!^.*$!sip:info@example.com!"</code></td><td>ENUM, SIP, DDDS applications</td></tr>
+                        <tr><td><strong>DNSKEY</strong></td><td>DNSSEC public key</td><td>(base64 key data)</td><td>DNSSEC zone signing</td></tr>
+                        <tr><td><strong>DS</strong></td><td>Delegation Signer</td><td><code>12345 8 2 (digest)</code></td><td>DNSSEC chain of trust</td></tr>
+                        <tr><td><strong>TLSA</strong></td><td>TLS certificate association</td><td><code>3 1 1 (cert hash)</code></td><td>DANE — pin TLS certificates via DNS</td></tr>
+                        <tr><td><strong>SSHFP</strong></td><td>SSH fingerprint</td><td><code>1 1 (fingerprint)</code></td><td>Verify SSH host keys via DNS</td></tr>
+                        <tr><td><strong>LOC</strong></td><td>Geographic location</td><td><code>37 46 30.000 N 122 25 10.000 W</code></td><td>Geolocation of servers (rarely used)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Email DNS Records — SPF, DKIM, DMARC</h2>
+
+            <h3>SPF (Sender Policy Framework)</h3>
+            <p>SPF declares which servers are allowed to send email for your domain. It is a TXT record at the root domain.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Mechanism</th><th>Syntax</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td>Include</td><td><code>include:_spf.google.com</code></td><td>Allow Google's mail servers</td></tr>
+                        <tr><td>IP4</td><td><code>ip4:203.0.113.0/24</code></td><td>Allow this IP range</td></tr>
+                        <tr><td>IP6</td><td><code>ip6:2001:db8::/32</code></td><td>Allow this IPv6 range</td></tr>
+                        <tr><td>A</td><td><code>a</code></td><td>Allow IPs from domain's A record</td></tr>
+                        <tr><td>MX</td><td><code>mx</code></td><td>Allow IPs from domain's MX records</td></tr>
+                        <tr><td>All (soft fail)</td><td><code>~all</code></td><td>Soft-fail everything else (recommended)</td></tr>
+                        <tr><td>All (hard fail)</td><td><code>-all</code></td><td>Reject everything else (strict)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Example SPF record:</strong></p>
+            <p><code>v=spf1 include:_spf.google.com include:sendgrid.net ip4:203.0.113.5 ~all</code></p>
+
+            <h3>DKIM (DomainKeys Identified Mail)</h3>
+            <p>DKIM adds a cryptographic signature to outgoing email. The public key is published as a TXT record at <code>selector._domainkey.example.com</code>.</p>
+            <p><strong>Example DKIM record:</strong></p>
+            <p><code>v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNA...</code></p>
+            <p>Common selectors: <code>google._domainkey</code> (Google Workspace), <code>selector1._domainkey</code> (Microsoft 365), <code>s1._domainkey</code> (generic).</p>
+
+            <h3>DMARC (Domain-based Message Authentication)</h3>
+            <p>DMARC ties SPF and DKIM together and tells receivers what to do when checks fail. It is a TXT record at <code>_dmarc.example.com</code>.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Tag</th><th>Values</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>v</code></td><td><code>DMARC1</code></td><td>Version (required)</td></tr>
+                        <tr><td><code>p</code></td><td><code>none</code> / <code>quarantine</code> / <code>reject</code></td><td>Policy for failures (required)</td></tr>
+                        <tr><td><code>rua</code></td><td><code>mailto:dmarc@example.com</code></td><td>Send aggregate reports to this address</td></tr>
+                        <tr><td><code>ruf</code></td><td><code>mailto:forensics@example.com</code></td><td>Send forensic (failure) reports</td></tr>
+                        <tr><td><code>pct</code></td><td><code>100</code></td><td>Percentage of messages to apply policy to</td></tr>
+                        <tr><td><code>sp</code></td><td><code>none</code> / <code>quarantine</code> / <code>reject</code></td><td>Policy for subdomains</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Example DMARC record:</strong></p>
+            <p><code>v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com; pct=100</code></p>
+
+            <h2>Common DNS Configurations</h2>
+
+            <h3>New Domain Setup</h3>
+            <pre><code>; A record — point domain to your server
+example.com.    A       203.0.113.10
+
+; AAAA record — IPv6
+example.com.    AAAA    2001:db8::1
+
+; www subdomain — alias to root
+www             CNAME   example.com.
+
+; Email — Google Workspace
+@               MX  1   ASPMX.L.GOOGLE.COM.
+@               MX  5   ALT1.ASPMX.L.GOOGLE.COM.
+@               MX  10  ALT2.ASPMX.L.GOOGLE.COM.
+
+; SPF
+@               TXT     "v=spf1 include:_spf.google.com ~all"
+
+; DMARC
+_dmarc          TXT     "v=DMARC1; p=none; rua=mailto:dmarc@example.com"
+
+; CAA — only Let's Encrypt can issue certs
+@               CAA  0  issue "letsencrypt.org"</code></pre>
+
+            <h3>Microsoft 365 Email</h3>
+            <pre><code>; MX
+@               MX  0   example-com.mail.protection.outlook.com.
+
+; SPF
+@               TXT     "v=spf1 include:spf.protection.outlook.com ~all"
+
+; DKIM (two selectors)
+selector1._domainkey    CNAME   selector1-example-com._domainkey.example.onmicrosoft.com.
+selector2._domainkey    CNAME   selector2-example-com._domainkey.example.onmicrosoft.com.
+
+; Autodiscover
+autodiscover    CNAME   autodiscover.outlook.com.</code></pre>
+
+            <h3>CDN Setup (Cloudflare example)</h3>
+            <pre><code>; Proxy through CDN
+@               A       104.26.10.1    (proxied)
+www             CNAME   example.com.   (proxied)
+
+; Direct — bypass CDN
+api             A       203.0.113.20   (DNS only)</code></pre>
+
+            <h2>TTL Guide</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>TTL Value</th><th>Duration</th><th>Use Case</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>300</code></td><td>5 minutes</td><td>Records you are about to change, failover, dynamic DNS</td></tr>
+                        <tr><td><code>900</code></td><td>15 minutes</td><td>Records that may change occasionally</td></tr>
+                        <tr><td><code>3600</code></td><td>1 hour</td><td>Standard for most records (MX, A, CNAME)</td></tr>
+                        <tr><td><code>14400</code></td><td>4 hours</td><td>Stable records (NS delegation)</td></tr>
+                        <tr><td><code>86400</code></td><td>24 hours</td><td>Very stable records that rarely change</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Pro tip:</strong> Before making DNS changes, lower the TTL to 300 seconds 24-48 hours in advance. After the change propagates and is verified, raise it back to 3600+.</p>
+
+            <h2>Troubleshooting Quick Reference</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Problem</th><th>Records to Check</th><th>Tool</th></tr></thead>
+                    <tbody>
+                        <tr><td>Website not loading</td><td>A, AAAA, CNAME</td><td><a href="/dns-lookup/">DNS Lookup</a></td></tr>
+                        <tr><td>Email not delivering</td><td>MX, SPF (TXT), DKIM (TXT)</td><td><a href="/smtp-checker/">SMTP Checker</a></td></tr>
+                        <tr><td>Email going to spam</td><td>SPF, DKIM, DMARC (all TXT)</td><td><a href="/email-header-analyzer/">Header Analyzer</a></td></tr>
+                        <tr><td>SSL certificate error</td><td>CAA, A (ensure correct IP)</td><td><a href="/ssl-checker/">SSL Checker</a></td></tr>
+                        <tr><td>DNS changes not working</td><td>Check propagation status</td><td><a href="/dns-propagation/">DNS Propagation</a></td></tr>
+                        <tr><td>Reverse DNS missing</td><td>PTR record (set by ISP/host)</td><td><a href="/reverse-dns/">Reverse DNS</a></td></tr>
+                        <tr><td>Subdomain not resolving</td><td>A, AAAA, or CNAME for subdomain</td><td><a href="/dns-lookup/">DNS Lookup</a></td></tr>
+                        <tr><td>IP blacklisted</td><td>PTR, SPF, DKIM, DMARC</td><td><a href="/blacklist-checker/">Blacklist Checker</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can I use a CNAME at the zone apex (root domain)?</h3>
+            <p>No, the DNS specification (RFC 1034) prohibits CNAME records at the zone apex because they conflict with other required records (SOA, NS). Many DNS providers offer a workaround called ALIAS or ANAME records that flatten the CNAME at query time.</p>
+
+            <h3>What happens if I have conflicting DNS records?</h3>
+            <p>If you have both an A record and a CNAME for the same name, behavior is undefined and varies by DNS resolver. Always use one or the other, never both. Multiple A records for the same name is valid (round-robin load balancing).</p>
+
+            <h3>How do I verify my DNS changes propagated?</h3>
+            <p>Use the <a href="/dns-propagation/">DNS Propagation Checker</a> to query your domain from multiple DNS servers worldwide. If all servers return the updated records, propagation is complete.</p>
+
+            <h3>What is DNSSEC?</h3>
+            <p>DNSSEC (DNS Security Extensions) adds cryptographic signatures to DNS records to prevent spoofing and cache poisoning. It uses DNSKEY, DS, RRSIG, and NSEC record types to create a chain of trust from the root zone to your domain.</p>
+
+            <h2>Related Resources</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — look up any DNS record</li>
+                <li><a href="/dns-propagation/">DNS Propagation Checker</a> — verify changes propagated globally</li>
+                <li><a href="/reverse-dns/">Reverse DNS Lookup</a> — check PTR records</li>
+                <li><a href="/learn/dns-lookup/">DNS Records Explained</a> — deep dive into how DNS works</li>
+                <li><a href="/learn/dns-propagation/">DNS Propagation Guide</a> — understanding propagation delays</li>
+                <li><a href="/learn/what-is-spf/">What is SPF?</a> — email authentication guide</li>
+                <li><a href="/learn/what-is-dkim/">What is DKIM?</a> — email signing guide</li>
+                <li><a href="/learn/what-is-dmarc/">What is DMARC?</a> — email policy guide</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-auth-cheat-sheet/">Email auth cheat sheet</a></p>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Record Checker</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

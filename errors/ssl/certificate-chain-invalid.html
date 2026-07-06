@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why doesn't the server need to send the root CA certificate?","acceptedAnswer":{"@type":"Answer","text":"Root CA certificates are already embedded in the client's trust store. Sending the root certificate wastes bandwidth and adds nothing to the trust validation. The chain should include the server certificate and all intermediates, but stop before the root."}},{"@type":"Question","name":"Why does my site work in Chrome but not in other applications?","acceptedAnswer":{"@type":"Answer","text":"Chrome and some browsers can automatically download missing intermediate certificates using the Authority Information Access (AIA) extension in the server certificate. Other browsers and applications (curl, Python, mobile apps) do not perform AIA fetching and require the complete chain from the server."}},{"@type":"Question","name":"How do I know which intermediate certificates I need?","acceptedAnswer":{"@type":"Answer","text":"Your CA provides the intermediate certificate(s) when you purchase or obtain your SSL certificate. You can also find them by examining the Authority Information Access (AIA) field in your server certificate, which contains a URL to download the issuing CA's certificate."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"Certificate Chain Invalid — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Certificate Chain Invalid","step":[{"@type":"HowToStep","position":1,"name":"Install the complete certificate chain","text":"Download the correct intermediate certificates from your CA and configure the server to send the full chain."},{"@type":"HowToStep","position":2,"name":"Verify chain order","text":"Check the certificate chain order using OpenSSL to ensure certificates are in the correct sequence."},{"@type":"HowToStep","position":3,"name":"Check intermediate certificate expiration","text":"Verify that all certificates in the chain are within their validity period."},{"@type":"HowToStep","position":4,"name":"Use an online chain checker","text":"Use the SSL Checker tool to verify your complete certificate chain configuration and identify any missing or invalid intermediate certificates."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Chain Invalid — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix certificate chain invalid errors. Learn how certificate chains work, why validation fails, and how to properly configure intermediate certificates.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Certificate chain invalid, SSL certificate chain error, Incomplete certificate chain, Unable to verify certificate chain, SSL chain verification failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Certificate Chain Invalid — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix certificate chain invalid errors. Learn how certificate chains work, why validation fails, and how to properly configure intermediate certificates.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/certificate-chain-invalid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/certificate-chain-invalid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>Certificate Chain Invalid</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Certificate Chain Invalid</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSL certificate chain validation failed</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Certificate chain invalid</code></li><li><code>SSL certificate chain error</code></li><li><code>Incomplete certificate chain</code></li><li><code>Unable to verify certificate chain</code></li><li><code>SSL chain verification failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Certificate Chain Invalid occurs when the TLS client cannot build a valid trust path from the server's certificate through intermediate Certificate Authorities up to a trusted root CA. Every SSL certificate is part of a chain: the server certificate is signed by an intermediate CA, which is signed by another intermediate or the root CA. If any link in this chain is missing, expired, or uses an untrusted signer, the entire chain validation fails.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing intermediate certificate</strong> — The server is not sending one or more intermediate certificates. The server certificate is valid, but the client cannot trace the trust path because the intermediate CA certificate that signed it is missing from the handshake.</li>
+                <li><strong>Certificates in wrong order</strong> — The certificate chain is sent with certificates in the wrong order. The correct order is: server certificate first, followed by intermediate certificates in order, up to (but not including) the root CA.</li>
+                <li><strong>Expired intermediate certificate</strong> — An intermediate CA certificate in the chain has expired. Even if the server certificate is still valid, an expired intermediate invalidates the entire chain.</li>
+                <li><strong>Cross-signed certificate path issue</strong> — The certificate relies on a cross-signed intermediate that has expired or been removed from trust stores, and the server is not providing the alternative valid chain.</li>
+                <li><strong>Root CA removed from trust store</strong> — The root CA that anchors the certificate chain has been removed from the client's trust store, typically due to security incidents or policy changes.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install the complete certificate chain</h3>
+            <p>Download the correct intermediate certificates from your CA and configure the server to send the full chain.</p>
+            <pre><code># Create the full chain file
+cat server-cert.pem intermediate-cert.pem &gt; fullchain.pem
+
+# Nginx
+ssl_certificate /etc/ssl/fullchain.pem;
+ssl_certificate_key /etc/ssl/private.key;
+
+# Apache
+SSLCertificateFile /etc/ssl/server-cert.pem
+SSLCertificateChainFile /etc/ssl/intermediate-cert.pem</code></pre>
+            <h3>2. Verify chain order</h3>
+            <p>Check the certificate chain order using OpenSSL to ensure certificates are in the correct sequence.</p>
+            <pre><code># Check chain order
+openssl s_client -connect example.com:443 -showcerts 2&gt;/dev/null | grep 's:' 
+
+# Should show:
+# 0 s:CN = example.com (server cert)
+# 1 s:CN = Intermediate CA (intermediate)
+# 2 s:CN = Root CA (optional root)</code></pre>
+            <h3>3. Check intermediate certificate expiration</h3>
+            <p>Verify that all certificates in the chain are within their validity period.</p>
+            <pre><code># Check each certificate's dates
+openssl x509 -in intermediate.pem -noout -dates
+
+# Check remotely
+openssl s_client -connect example.com:443 2&gt;/dev/null | openssl x509 -noout -dates</code></pre>
+            <h3>4. Use an online chain checker</h3>
+            <p>Use the SSL Checker tool to verify your complete certificate chain configuration and identify any missing or invalid intermediate certificates.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why doesn't the server need to send the root CA certificate?</h3>
+            <p>Root CA certificates are already embedded in the client's trust store. Sending the root certificate wastes bandwidth and adds nothing to the trust validation. The chain should include the server certificate and all intermediates, but stop before the root.</p>
+            <h3>Why does my site work in Chrome but not in other applications?</h3>
+            <p>Chrome and some browsers can automatically download missing intermediate certificates using the Authority Information Access (AIA) extension in the server certificate. Other browsers and applications (curl, Python, mobile apps) do not perform AIA fetching and require the complete chain from the server.</p>
+            <h3>How do I know which intermediate certificates I need?</h3>
+            <p>Your CA provides the intermediate certificate(s) when you purchase or obtain your SSL certificate. You can also find them by examining the Authority Information Access (AIA) field in your server certificate, which contains a URL to download the issuing CA's certificate.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — Certificate authority is not trusted</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — Certificate failed validation</li>
+                <li><a href="/errors/ssl/ssl-certificate-unknown">SSL Certificate Unknown</a> — Certificate not recognized by browser</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate chain configuration</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check HSTS and security configuration</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

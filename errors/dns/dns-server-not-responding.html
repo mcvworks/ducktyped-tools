@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does DNS Server Not Responding mean?","acceptedAnswer":{"@type":"Answer","text":"DNS Server Not Responding means the DNS resolver your device is configured to use is not accepting or responding to DNS queries. Your device can reach the network but cannot translate domain names into IP addresses."}},{"@type":"Question","name":"How do I fix a DNS server that is not responding?","acceptedAnswer":{"@type":"Answer","text":"Try switching to a public DNS server like Cloudflare (1.1.1.1) or Google (8.8.8.8). Restart your router, flush your DNS cache, and check that your network adapter settings are correct. If the problem only affects one DNS server, your ISP's DNS may be experiencing an outage."}},{"@type":"Question","name":"Can my ISP's DNS server go down?","acceptedAnswer":{"@type":"Answer","text":"Yes. ISP DNS servers can experience outages, maintenance windows, or be temporarily overloaded. Switching to a public DNS server like 1.1.1.1 is the quickest workaround during an ISP DNS outage."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS Server Not Responding — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix DNS Server Not Responding","step":[{"@type":"HowToStep","position":1,"name":"Switch to a Public DNS Server","text":"The fastest fix is to change your DNS server to a reliable public resolver:"},{"@type":"HowToStep","position":2,"name":"Restart Your Router","text":"Power cycle your router to reset its DNS forwarder. Wait 30 seconds before turning it back on."},{"@type":"HowToStep","position":3,"name":"Check Firewall Rules","text":"Verify that UDP port 53 is not blocked by your firewall. DNS queries use UDP 53 by default (TCP 53 for large responses)."},{"@type":"HowToStep","position":4,"name":"Test DNS with nslookup","text":"Test DNS resolution directly:"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Server Not Responding — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what DNS Server Not Responding means and how to fix it. Covers switching DNS servers, flushing cache, router reboots, and ISP DNS outages.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DNS server not responding, DNS server is not responding, Cannot reach DNS server, DNS server unreachable, DNS server down">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS Server Not Responding — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS Server Not Responding by switching to public DNS, flushing cache, and restarting your router.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/dns-server-not-responding">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/dns-server-not-responding">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS Server Not Responding</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS Server Not Responding</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means your device can reach the network but the DNS server it is configured to use is offline, unreachable, or not responding to queries.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>DNS server not responding</code></li><li><code>DNS server is not responding</code></li><li><code>Cannot reach DNS server</code></li><li><code>DNS server unreachable</code></li><li><code>DNS server down</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When you type a domain name into your browser, your device contacts a DNS resolver to translate it into an IP address. "DNS Server Not Responding" means that resolver is not answering. Your internet connection itself may be fine — you might even be able to reach sites by IP address directly — but domain name resolution is broken.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>ISP DNS server outage</strong> — your ISP's DNS servers are experiencing downtime or maintenance.</li>
+                <li><strong>Router DNS cache corruption</strong> — the router's DNS forwarder has a corrupt state.</li>
+                <li><strong>Misconfigured DNS settings</strong> — the DNS server IP in your network adapter settings is wrong or unreachable.</li>
+                <li><strong>Firewall blocking DNS port</strong> — UDP port 53 is being blocked by a local or network firewall.</li>
+                <li><strong>VPN DNS configuration</strong> — VPN overriding DNS with a server that is unreachable when VPN disconnects.</li>
+                <li><strong>DNS service stopped on router</strong> — the router's DNS forwarder process has crashed.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Switch to a Public DNS Server</h3>
+            <p>The fastest fix is to change your DNS server to a reliable public resolver:</p>
+            <ul>
+                <li><strong>Cloudflare:</strong> <code>1.1.1.1</code> and <code>1.0.0.1</code></li>
+                <li><strong>Google:</strong> <code>8.8.8.8</code> and <code>8.8.4.4</code></li>
+                <li><strong>Quad9:</strong> <code>9.9.9.9</code></li>
+            </ul>
+            <p>On Windows: Settings → Network &amp; Internet → Change adapter options → your connection → Properties → IPv4 → Use the following DNS server addresses.</p>
+
+            <h3>2. Restart Your Router</h3>
+            <p>Power cycle your router to reset its DNS forwarder. Wait 30 seconds before turning it back on.</p>
+
+            <h3>3. Flush DNS Cache</h3>
+            <ul>
+                <li><strong>Windows:</strong> <code>ipconfig /flushdns</code></li>
+                <li><strong>macOS:</strong> <code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+                <li><strong>Linux:</strong> <code>sudo systemd-resolve --flush-caches</code></li>
+            </ul>
+
+            <h3>4. Check Firewall Rules</h3>
+            <p>Verify that UDP port 53 is not blocked by your firewall. DNS queries use UDP 53 by default (TCP 53 for large responses).</p>
+
+            <h3>5. Test DNS with nslookup</h3>
+            <p>Test DNS resolution directly:</p>
+            <pre><code>nslookup example.com 1.1.1.1</code></pre>
+            <p>If this works but normal browsing does not, your configured DNS server is the problem.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — check DNS records for any domain.</li>
+                <li><a href="/isp-lookup/">ISP Lookup</a> — identify your current DNS resolver and ISP.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can I use a DNS server other than my ISP's?</h3>
+            <p>Yes, and it is often beneficial. Public DNS servers like Cloudflare (1.1.1.1) and Google (8.8.8.8) are typically faster and more reliable than ISP DNS servers, and they support DNSSEC and DNS-over-HTTPS for better privacy.</p>
+
+            <h3>How do I know if my ISP's DNS is down?</h3>
+            <p>Try pinging your ISP's DNS server directly: <code>ping your-dns-server-ip</code>. If it does not respond, the server is down or unreachable. Switching to a public DNS server is the fastest workaround.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolution failure in Chrome.</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — generic DNS lookup failure.</li>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain does not exist.</li>
+                <li><a href="/errors/dns/dns-probe-finished-bad-config">DNS_PROBE_FINISHED_BAD_CONFIG</a> — DNS misconfiguration detected.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Lookup</span>
+                    <span class="recommended-tool-desc">Identify your ISP and current IP details</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup Tool</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

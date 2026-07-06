@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do worker_connections and the descriptor limit relate?","acceptedAnswer":{"@type":"Answer","text":"worker_connections caps concurrent connections per worker; each connection needs at least one descriptor, two when proxying, plus nginx's own files. Rule of thumb: worker_rlimit_nofile at least 2× worker_connections, with headroom. The effective client capacity of the server is worker_processes × worker_connections (halved when proxying)."}},{"@type":"Question","name":"Why did changing /etc/security/limits.conf not help?","acceptedAnswer":{"@type":"Answer","text":"limits.conf applies to PAM login sessions. Services started by systemd never pass through PAM, so nginx ignores it entirely. Use worker_rlimit_nofile in nginx.conf or LimitNOFILE in the systemd unit."}},{"@type":"Question","name":"Clients see errors — what does this look like from outside?","acceptedAnswer":{"@type":"Answer","text":"A mix of refused/reset connections and 500s while established connections keep working — capacity exhaustion rather than a hard outage. The error log correlates exactly: bursts of '(24: Too many open files)' during traffic peaks."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Too Many Open Files — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Too Many Open Files — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx '(24: Too many open files)'. Set worker_rlimit_nofile, systemd LimitNOFILE, and size worker_connections correctly for proxying.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="socket() failed (24: Too many open files), accept4() failed (24: Too many open files), nginx too many open files, worker_connections exceed open file resource limit">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Too Many Open Files — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx '(24: Too many open files)'. Set worker_rlimit_nofile, systemd LimitNOFILE, and size worker_connections correctly for proxying.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/too-many-open-files">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/too-many-open-files">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Too Many Open Files</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Too Many Open Files</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Error-log lines like 'socket() failed (24: Too many open files)' or 'accept4() failed' — nginx hit its file-descriptor limit and is dropping connections.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>socket() failed (24: Too many open files)</code></li><li><code>accept4() failed (24: Too many open files)</code></li><li><code>nginx too many open files</code></li><li><code>worker_connections exceed open file resource limit</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Every client connection, upstream connection, open log file, and cached file costs nginx a file descriptor. When a worker reaches the per-process limit (ulimit -n, often a paltry 1024 from the OS default), new sockets fail with errno 24 and requests start erroring under load. The trap: worker_connections promises capacity that the descriptor limit silently cannot back — proxying needs roughly two descriptors per active connection (client side + upstream side), so worker_connections 4096 needs a limit comfortably above 8192.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Default 1024 descriptor limit</strong> — Distro defaults are made for shell sessions, not busy servers. The nginx service inherits the limit unless it is raised explicitly for the service.</li>
+                <li><strong>worker_connections exceeds the real limit</strong> — Setting worker_connections high without worker_rlimit_nofile means nginx will accept work it cannot open descriptors for — the mismatch only shows under real traffic.</li>
+                <li><strong>Proxying doubles descriptor usage</strong> — A reverse proxy holds the client socket and the upstream socket simultaneously. Keepalive pools to upstreams add more standing descriptors on top.</li>
+                <li><strong>Descriptor leaks from many log/cache files</strong> — Per-vhost access logs across hundreds of server blocks, open_file_cache with large limits, and proxy_cache activity all consume descriptors before the first client connects.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. See the limits nginx is actually running with</h3>
+            <p>Check the live process (not your shell — its ulimit is irrelevant to the service).</p>
+            <pre><code>cat /proc/$(pgrep -f 'nginx: master')/limits | grep 'open files'
+# current usage per worker:
+ls /proc/$(pgrep -f 'nginx: worker' | head -1)/fd | wc -l</code></pre>
+            <h3>2. Raise the limit in nginx itself</h3>
+            <p>worker_rlimit_nofile lets the master raise its workers' limit directly — the simplest reliable fix.</p>
+            <pre><code># /etc/nginx/nginx.conf (top level)
+worker_rlimit_nofile 65536;
+
+events {
+    worker_connections 16384;
+}
+sudo nginx -t &amp;&amp; sudo systemctl restart nginx</code></pre>
+            <h3>3. Raise the systemd service limit too</h3>
+            <p>Belt and braces for the master process and anything it opens before workers spawn.</p>
+            <pre><code>sudo systemctl edit nginx
+# add:
+[Service]
+LimitNOFILE=65536
+
+sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart nginx</code></pre>
+            <h3>4. Check the system-wide ceiling</h3>
+            <p>On very busy hosts, confirm the kernel-wide limit dwarfs the per-process one.</p>
+            <pre><code>cat /proc/sys/fs/file-max
+cat /proc/sys/fs/file-nr   # allocated vs max
+# raise if needed:
+echo 'fs.file-max = 2097152' | sudo tee /etc/sysctl.d/99-nginx.conf &amp;&amp; sudo sysctl -p /etc/sysctl.d/99-nginx.conf</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do worker_connections and the descriptor limit relate?</h3>
+            <p>worker_connections caps concurrent connections per worker; each connection needs at least one descriptor, two when proxying, plus nginx's own files. Rule of thumb: worker_rlimit_nofile at least 2× worker_connections, with headroom. The effective client capacity of the server is worker_processes × worker_connections (halved when proxying).</p>
+            <h3>Why did changing /etc/security/limits.conf not help?</h3>
+            <p>limits.conf applies to PAM login sessions. Services started by systemd never pass through PAM, so nginx ignores it entirely. Use worker_rlimit_nofile in nginx.conf or LimitNOFILE in the systemd unit.</p>
+            <h3>Clients see errors — what does this look like from outside?</h3>
+            <p>A mix of refused/reset connections and 500s while established connections keep working — capacity exhaustion rather than a hard outage. The error log correlates exactly: bursts of '(24: Too many open files)' during traffic peaks.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/address-already-in-use">Address Already in Use</a> — another resource-conflict startup error.</li>
+                <li><a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a> — backend-side saturation symptoms.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — capacity errors clients may see.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Observe error rates from outside</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check listener health</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

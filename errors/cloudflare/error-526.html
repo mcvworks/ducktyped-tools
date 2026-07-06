@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I downgrade to Full (non-strict) to fix 526?","acceptedAnswer":{"@type":"Answer","text":"It silences the error by skipping validation — meaning anyone able to intercept traffic between Cloudflare and your origin could present any certificate. Since a passing certificate is free (Origin CA) and quick, fixing the origin is strictly better. Keep strict."}},{"@type":"Question","name":"Why did my origin's certificate stop renewing after moving to Cloudflare?","acceptedAnswer":{"@type":"Answer","text":"HTTP-01 renewals need Let's Encrypt to fetch a challenge file from your domain; with the proxy, security features (or Always Use HTTPS rewrites) can break that fetch. DNS-01 challenges avoid the web path entirely — the Cloudflare DNS plugin makes them the natural choice for proxied domains."}},{"@type":"Question","name":"Does 526 affect visitors' browser padlock?","acceptedAnswer":{"@type":"Answer","text":"Visitors never see the origin certificate — their TLS terminates at Cloudflare's edge with Cloudflare's certificate. 526 is about the second leg (edge to origin). The visitor just sees the 526 error page; the padlock on working pages comes from the edge certificate either way."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 526 — Invalid SSL Certificate — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 526 — Invalid SSL Certificate — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 526 'Invalid SSL certificate'. Expired or self-signed origin certs under Full (strict) — Origin CA and Let's Encrypt fixes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 526, invalid ssl certificate cloudflare, error 526, http 526">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 526 — Invalid SSL Certificate — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 526 'Invalid SSL certificate'. Expired or self-signed origin certs under Full (strict) — Origin CA and Let's Encrypt fixes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-526">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-526">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 526 — Invalid SSL Certificate</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 526 — Invalid SSL Certificate</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Under Full (strict) SSL mode, the origin presented a certificate that failed validation — expired, self-signed, untrusted, or issued for a different hostname.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 526</code></li><li><code>invalid ssl certificate cloudflare</code></li><li><code>error 526</code></li><li><code>http 526</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Full (strict) means Cloudflare validates the origin's certificate the way a browser would: trusted issuer, matching hostname, valid dates. Error 526 is that validation failing. The classic sequence: a site runs Full (non-strict) with a self-signed origin cert for years, someone tightens the mode to strict, and 526 appears — or an origin's Let's Encrypt certificate silently expired because renewal broke after the site went behind Cloudflare (HTTP-01 challenges can fail through the proxy).</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Self-signed certificate under strict mode</strong> — Fine for Full (non-strict), rejected by Full (strict). Common on origins set up before the mode was tightened.</li>
+                <li><strong>Expired origin certificate</strong> — Renewal automation broke — often exactly because the domain moved behind Cloudflare and the ACME HTTP-01 challenge no longer reaches the origin the way it used to.</li>
+                <li><strong>Hostname mismatch</strong> — The certificate covers a different name than the one being requested (server default vhost cert, or a cert missing the www/subdomain variant).</li>
+                <li><strong>Incomplete chain from the origin</strong> — Leaf served without its intermediates — some validators tolerate it, strict validation does not.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Inspect what the origin actually serves</h3>
+            <p>Check issuer, dates, and names as Cloudflare sees them.</p>
+            <pre><code>openssl s_client -connect ORIGIN_IP:443 -servername example.com &lt;/dev/null 2&gt;/dev/null | openssl x509 -noout -subject -issuer -dates
+# full chain listing:
+openssl s_client -connect ORIGIN_IP:443 -servername example.com -showcerts &lt;/dev/null 2&gt;/dev/null | grep -c 'BEGIN CERT'</code></pre>
+            <h3>2. Install a Cloudflare Origin CA certificate</h3>
+            <p>The simplest permanent answer for origins behind Cloudflare: free, 15-year validity option, always passes Full (strict), no renewal automation to break.</p>
+            <pre><code># dashboard: SSL/TLS -&gt; Origin Server -&gt; Create Certificate
+# install like any cert:
+ssl_certificate     /etc/ssl/cf-origin/example.com.pem;
+ssl_certificate_key /etc/ssl/cf-origin/example.com.key;</code></pre>
+            <h3>3. Or repair Let's Encrypt renewal behind the proxy</h3>
+            <p>Switch the ACME challenge to DNS-01 (immune to the proxy) or ensure HTTP-01 paths pass through, then renew.</p>
+            <pre><code>sudo certbot renew --dry-run
+# DNS-01 with the Cloudflare plugin:
+sudo apt install python3-certbot-dns-cloudflare
+sudo certbot certonly --dns-cloudflare -d example.com -d '*.example.com'</code></pre>
+            <h3>4. Serve the full chain for the right hostname</h3>
+            <p>Point the vhost at fullchain.pem (not the leaf alone) and confirm the cert's SAN list covers every hostname Cloudflare requests.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Should I downgrade to Full (non-strict) to fix 526?</h3>
+            <p>It silences the error by skipping validation — meaning anyone able to intercept traffic between Cloudflare and your origin could present any certificate. Since a passing certificate is free (Origin CA) and quick, fixing the origin is strictly better. Keep strict.</p>
+            <h3>Why did my origin's certificate stop renewing after moving to Cloudflare?</h3>
+            <p>HTTP-01 renewals need Let's Encrypt to fetch a challenge file from your domain; with the proxy, security features (or Always Use HTTPS rewrites) can break that fetch. DNS-01 challenges avoid the web path entirely — the Cloudflare DNS plugin makes them the natural choice for proxied domains.</p>
+            <h3>Does 526 affect visitors' browser padlock?</h3>
+            <p>Visitors never see the origin certificate — their TLS terminates at Cloudflare's edge with Cloudflare's certificate. 526 is about the second leg (edge to origin). The visitor just sees the 526 error page; the padlock on working pages comes from the edge certificate either way.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-525">Cloudflare Error 525</a> — the handshake failing outright.</li>
+                <li><a href="/errors/ssl/ssl-certificate-not-yet-valid">SSL Certificate Not Yet Valid</a> — date-based validation failures.</li>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate Chain Invalid</a> — incomplete chains.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL certificates explained</a>, <a href="/learn/ssl-certificate-expired/">Expired SSL certificates</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Validate certificates and chains</span>
+                </a>
+        <a href="/csr-decoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">CSR Decoder</span>
+                    <span class="recommended-tool-desc">Inspect certificate contents</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

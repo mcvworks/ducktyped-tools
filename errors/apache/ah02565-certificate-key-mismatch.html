@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which openssl commands identify what a mystery file is?","acceptedAnswer":{"@type":"Answer","text":"'openssl x509 -noout -subject -dates -in file' works if it is a certificate; 'openssl pkey -noout -text -in file | head' if it is a private key; 'openssl crl2pkcs7 -nocrl -certfile file | openssl pkcs7 -print_certs -noout' lists every cert in a bundle. Sorting a directory of mystery PEMs takes minutes with these three."}},{"@type":"Question","name":"Where does the chain go in Apache?","acceptedAnswer":{"@type":"Answer","text":"Since Apache 2.4.8, SSLCertificateFile accepts the full chain (leaf first, then intermediates) — the same fullchain.pem Let's Encrypt produces. The old SSLCertificateChainFile directive is deprecated; using fullchain in one file is the current practice."}},{"@type":"Question","name":"Can I renew without changing the private key?","acceptedAnswer":{"@type":"Answer","text":"Yes — reuse the existing key by generating the CSR from it (certbot: --reuse-key). Some teams prefer key rotation each renewal for hygiene; either way, the installed cert and key must come from the same issuance flow."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH02565 — Certificate and Private Key Do Not Match — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH02565 — Certificate and Private Key Do Not Match — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH02565 'Certificate and private key do not match'. Verify the pair with openssl, fix renewal mix-ups, and Let's Encrypt path pitfalls.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH02565: Certificate and private key, certificate and private key do not match, ah02565, apache ssl key mismatch">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH02565 — Certificate and Private Key Do Not Match — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH02565 'Certificate and private key do not match'. Verify the pair with openssl, fix renewal mix-ups, and Let's Encrypt path pitfalls.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah02565-certificate-key-mismatch">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah02565-certificate-key-mismatch">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH02565 — Certificate and Private Key Do Not Match</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH02565 — Certificate and Private Key Do Not Match</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The startup failure 'AH02565: Certificate and private key ... from ... and ... do not match' — SSLCertificateFile and SSLCertificateKeyFile are not a pair.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH02565: Certificate and private key</code></li><li><code>certificate and private key do not match</code></li><li><code>ah02565</code></li><li><code>apache ssl key mismatch</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>mod_ssl checks at startup that the public key inside SSLCertificateFile matches the private key in SSLCertificateKeyFile. AH02565 means they are from different keypairs — the vhost fails to start (or the whole server, depending on config). It happens when a certificate is renewed or reissued with a new key while the config still points at the old one, when cert and key from different issuances get copied together, or when two vhosts' file sets get crossed during an edit.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Renewal replaced the key but not the cert (or vice versa)</strong> — A new CSR generates a new private key; installing the new certificate while keeping the old key path (or copying only one of the two files to the server) guarantees a mismatch.</li>
+                <li><strong>Files from different issuances mixed</strong> — Multiple example.com.crt/key files accumulate over the years; the config ends up pointing at a cert from 2025 and a key from 2023.</li>
+                <li><strong>Wrong file entirely</strong> — Pointing SSLCertificateFile at the chain/intermediate bundle instead of the leaf-containing file, or at another domain's certificate after a copy-paste between vhosts.</li>
+                <li><strong>Let's Encrypt paths not used consistently</strong> — Mixing a copied archive file with a live/ symlink means renewals update one and not the other, breaking the pair at the next renewal.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Prove the mismatch and find the right pair</h3>
+            <p>Compare public-key hashes: cert vs key. Then test other candidate files until the hashes match.</p>
+            <pre><code>openssl x509 -noout -pubkey -in /etc/ssl/certs/example.com.crt | openssl sha256
+openssl pkey  -noout -pubkey -in /etc/ssl/private/example.com.key | openssl sha256
+# identical output = matching pair</code></pre>
+            <h3>2. Point both directives at the matching pair</h3>
+            <p>Update the vhost and reload; with Let's Encrypt, always use the live/ symlinks.</p>
+            <pre><code>&lt;VirtualHost *:443&gt;
+    SSLEngine on
+    SSLCertificateFile    /etc/letsencrypt/live/example.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+&lt;/VirtualHost&gt;
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+            <h3>3. Reissue if the matching key is lost</h3>
+            <p>Certificates are replaceable; generate a fresh key + CSR (or run certbot again) and install the new pair.</p>
+            <pre><code>sudo certbot certonly --apache -d example.com -d www.example.com
+# or manual CSR:
+openssl req -new -newkey rsa:2048 -nodes -keyout new.key -out new.csr</code></pre>
+            <h3>4. Verify the served certificate afterwards</h3>
+            <p>Confirm from outside that the right certificate is live.</p>
+            <pre><code>echo | openssl s_client -connect example.com:443 -servername example.com 2&gt;/dev/null | openssl x509 -noout -subject -dates</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Which openssl commands identify what a mystery file is?</h3>
+            <p>'openssl x509 -noout -subject -dates -in file' works if it is a certificate; 'openssl pkey -noout -text -in file | head' if it is a private key; 'openssl crl2pkcs7 -nocrl -certfile file | openssl pkcs7 -print_certs -noout' lists every cert in a bundle. Sorting a directory of mystery PEMs takes minutes with these three.</p>
+            <h3>Where does the chain go in Apache?</h3>
+            <p>Since Apache 2.4.8, SSLCertificateFile accepts the full chain (leaf first, then intermediates) — the same fullchain.pem Let's Encrypt produces. The old SSLCertificateChainFile directive is deprecated; using fullchain in one file is the current practice.</p>
+            <h3>Can I renew without changing the private key?</h3>
+            <p>Yes — reuse the existing key by generating the CSR from it (certbot: --reuse-key). Some teams prefer key rotation each renewal for hygiene; either way, the installed cert and key must come from the same issuance flow.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/cannot-load-certificate">Nginx Cannot Load Certificate</a> — the nginx twin.</li>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate Chain Invalid</a> — chain problems clients see.</li>
+                <li><a href="/errors/ssl/ssl-certificate-verify-failed">SSL Verify Failed</a> — client-side verification failures.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL certificates explained</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Validate the live cert and chain</span>
+                </a>
+        <a href="/csr-decoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">CSR Decoder</span>
+                    <span class="recommended-tool-desc">Inspect CSRs before submitting them</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

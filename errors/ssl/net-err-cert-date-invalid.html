@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does NET::ERR_CERT_DATE_INVALID mean?","acceptedAnswer":{"@type":"Answer","text":"NET::ERR_CERT_DATE_INVALID means the SSL certificate's validity period does not match the current date. Either the certificate has expired (current date is after the Not After date) or the certificate is not yet valid (current date is before the Not Before date)."}},{"@type":"Question","name":"Can a wrong system clock cause NET::ERR_CERT_DATE_INVALID?","acceptedAnswer":{"@type":"Answer","text":"Yes. If your device's clock is significantly wrong (set to a past or future date), valid certificates will appear expired or not-yet-valid. Always check your system time first when you see this error on multiple sites."}},{"@type":"Question","name":"How do I fix NET::ERR_CERT_DATE_INVALID?","acceptedAnswer":{"@type":"Answer","text":"First, check your device's date and time settings. If the time is correct, the website's certificate has genuinely expired and the site owner needs to renew it. As a site owner, renew your certificate and ensure auto-renewal is configured."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"NET::ERR_CERT_DATE_INVALID — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET::ERR_CERT_DATE_INVALID — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what NET::ERR_CERT_DATE_INVALID means and how to fix it. Covers expired certificates, future-dated certificates, and system clock issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NET::ERR_CERT_DATE_INVALID, Certificate date invalid, SSL certificate expired Chrome, Your connection is not private, Certificate not yet valid">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NET::ERR_CERT_DATE_INVALID — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix NET::ERR_CERT_DATE_INVALID by checking your system clock and renewing expired SSL certificates.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/net-err-cert-date-invalid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/net-err-cert-date-invalid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>NET::ERR_CERT_DATE_INVALID</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>NET::ERR_CERT_DATE_INVALID</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the SSL certificate's validity dates do not match the current date — either the certificate has expired, or your device's clock is wrong.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NET::ERR_CERT_DATE_INVALID</code></li><li><code>Certificate date invalid</code></li><li><code>SSL certificate expired Chrome</code></li><li><code>Your connection is not private</code></li><li><code>Certificate not yet valid</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Every SSL certificate has a validity window: a <strong>Not Before</strong> date and a <strong>Not After</strong> date. Browsers check the current date against these values on every connection. <strong>NET::ERR_CERT_DATE_INVALID</strong> appears when the current date falls outside this window.</p>
+            <p>This most commonly means the certificate has expired, but it can also appear if your device's clock is set to the wrong date.</p>
+
+            <h2>Causes</h2>
+            <ul>
+                <li><strong>Certificate expired</strong> — the certificate's <em>Not After</em> date is in the past.</li>
+                <li><strong>Certificate not yet valid</strong> — the certificate's <em>Not Before</em> date is in the future (rare, but can happen with pre-issued certificates or a wrong system clock).</li>
+                <li><strong>Wrong system clock</strong> — the device's date/time is set incorrectly, making a valid certificate appear expired.</li>
+                <li><strong>Timezone issue</strong> — incorrect timezone causing the clock to be off by hours.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>Step 1: Check Your Device's Clock</h3>
+            <p>First, verify your system time is correct:</p>
+            <ul>
+                <li><strong>Windows:</strong> Settings → Time &amp; Language → Date &amp; Time → ensure "Set time automatically" is on</li>
+                <li><strong>macOS:</strong> System Settings → General → Date &amp; Time → enable "Set time and date automatically"</li>
+                <li><strong>Android/iOS:</strong> Settings → General → Date &amp; Time → enable automatic date/time</li>
+            </ul>
+            <p>If the clock was wrong and you corrected it, reload the page — the error should disappear if the certificate itself is valid.</p>
+
+            <h3>Step 2: Check the Certificate's Expiry Date</h3>
+            <p>If your clock is correct, the certificate has genuinely expired. Use the <a href="/ssl-checker/">SSL Checker</a> to confirm the certificate's <em>Not After</em> date and see how long ago it expired.</p>
+
+            <h3>Step 3: Renew the Certificate (Site Owners)</h3>
+            <p>If you own the site, renew the certificate immediately. For Let's Encrypt:</p>
+            <pre><code>sudo certbot renew --force-renewal</code></pre>
+            <p>After renewal, reload your web server to apply the new certificate.</p>
+
+            <h3>Step 4: Set Up Auto-Renewal</h3>
+            <p>Configure certbot's systemd timer or a cron job to automatically renew certificates before they expire. Let's Encrypt certificates expire every 90 days; auto-renewal should run every 60 days.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — check certificate validity dates and expiry.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Can an expired certificate affect all sites or just one?</h3>
+            <p>If the error only appears on specific sites, those certificates have expired. If the error appears on many or all HTTPS sites, your system clock is the more likely cause.</p>
+
+            <h3>How do I prevent certificate expiry in the future?</h3>
+            <p>Use automated certificate management (certbot with auto-renewal, Cloudflare managed certificates, or hosting provider auto-renewal). Set up expiry monitoring to alert you 30 days before expiry.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — detailed guide to expired certificates.</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — all types of certificate validation failures.</li>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — untrusted CA.</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS negotiation failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

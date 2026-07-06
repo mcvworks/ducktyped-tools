@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I use sudo with npm?","acceptedAnswer":{"@type":"Answer","text":"No. Using 'sudo npm install' is an anti-pattern that creates permission problems. Instead, fix the underlying permission issue using nvm, or by changing the global prefix to a user-owned directory."}},{"@type":"Question","name":"Does this affect local project installations?","acceptedAnswer":{"@type":"Answer","text":"Usually not. Local 'npm install' (without -g) writes to the project's node_modules directory, which is typically owned by the user. However, if someone previously ran 'sudo npm install' in the project, the permissions may be corrupted."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"npm ERR! code EACCES — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix npm ERR! code EACCES","step":[{"@type":"HowToStep","position":1,"name":"Change npm global directory to user-owned location","text":"Configure npm to install global packages in your home directory instead of /usr/local."},{"@type":"HowToStep","position":2,"name":"Use nvm to manage Node.js","text":"nvm installs Node.js in your home directory, avoiding system-level permission issues entirely."},{"@type":"HowToStep","position":3,"name":"Fix ownership of npm directories","text":"Correct the ownership of npm cache and global directories."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>npm ERR! code EACCES — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix npm ERR! EACCES permission denied. Learn how to fix npm global install permissions on Linux and macOS without using sudo.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="npm ERR! EACCES, EACCES: permission denied, npm permission error, Error: EACCES: permission denied, npm install permission denied">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="npm ERR! code EACCES — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix npm ERR! EACCES permission denied. Learn how to fix npm global install permissions on Linux and macOS without using sudo.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/npm-err-eacces">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/npm-err-eacces">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>npm ERR! code EACCES</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>npm ERR! code EACCES</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">npm permission denied error</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>npm ERR! EACCES</code></li><li><code>EACCES: permission denied</code></li><li><code>npm permission error</code></li><li><code>Error: EACCES: permission denied</code></li><li><code>npm install permission denied</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>EACCES (permission denied) occurs when npm tries to access a file or directory that the current user does not have permission to read or write. This most commonly happens when installing global packages on Linux or macOS, where the default global prefix (/usr/local/lib/node_modules) is owned by root.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Global prefix owned by root</strong> — The default npm global directory (/usr/local/lib/node_modules) requires root permissions. Running 'npm install -g' as a normal user fails because it cannot write to this directory.</li>
+                <li><strong>Previous sudo install corrupted ownership</strong> — Running 'sudo npm install' changed ownership of files in node_modules or npm cache to root, and now normal npm operations cannot modify those files.</li>
+                <li><strong>Incorrect npm cache permissions</strong> — The npm cache directory (~/.npm) has files owned by root from a previous sudo npm command.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Change npm global directory to user-owned location</h3>
+            <p>Configure npm to install global packages in your home directory instead of /usr/local.</p>
+            <pre><code>mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+# Add to ~/.bashrc or ~/.zshrc:
+export PATH=~/.npm-global/bin:$PATH</code></pre>
+            <h3>2. Use nvm to manage Node.js</h3>
+            <p>nvm installs Node.js in your home directory, avoiding system-level permission issues entirely.</p>
+            <pre><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install --lts
+nvm use --lts</code></pre>
+            <h3>3. Fix ownership of npm directories</h3>
+            <p>Correct the ownership of npm cache and global directories.</p>
+            <pre><code>sudo chown -R $(whoami) ~/.npm
+sudo chown -R $(whoami) /usr/local/lib/node_modules</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Should I use sudo with npm?</h3>
+            <p>No. Using 'sudo npm install' is an anti-pattern that creates permission problems. Instead, fix the underlying permission issue using nvm, or by changing the global prefix to a user-owned directory.</p>
+            <h3>Does this affect local project installations?</h3>
+            <p>Usually not. Local 'npm install' (without -g) writes to the project's node_modules directory, which is typically owned by the user. However, if someone previously ran 'sudo npm install' in the project, the permissions may be corrupted.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/npm-err-eperm">npm ERR! EPERM</a> — npm permission error</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+                <li><a href="/errors/devops/permission-denied-publickey">Permission Denied (publickey)</a> — SSH authentication failure</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

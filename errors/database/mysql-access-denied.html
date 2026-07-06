@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I reset the MySQL root password?","acceptedAnswer":{"@type":"Answer","text":"Stop MySQL, restart it with --skip-grant-tables, connect without a password, run ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password', then restart MySQL normally. The exact steps vary by OS."}},{"@type":"Question","name":"Why does 'user'@'localhost' work but 'user'@'%' does not?","acceptedAnswer":{"@type":"Answer","text":"MySQL treats localhost connections differently from TCP/IP connections, even on the same machine. Connecting via 127.0.0.1 uses TCP and matches '%', while connecting via localhost uses the Unix socket and matches 'localhost'."}},{"@type":"Question","name":"What does FLUSH PRIVILEGES do?","acceptedAnswer":{"@type":"Answer","text":"FLUSH PRIVILEGES reloads the grant tables from the mysql database. It is required after directly modifying the privilege tables. When using ALTER USER or GRANT statements, FLUSH PRIVILEGES is technically not needed but is good practice."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"MySQL Access Denied for User — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix MySQL Access Denied for User","step":[{"@type":"HowToStep","position":1,"name":"Reset user password","text":"Update the user's password from a MySQL root session."},{"@type":"HowToStep","position":2,"name":"Create user for the correct host","text":"Create the user account for the host from which connections are being made."},{"@type":"HowToStep","position":3,"name":"Change authentication plugin","text":"Switch to mysql_native_password if your client does not support caching_sha2_password."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Access Denied for User — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix MySQL 'Access denied for user' error. Learn how to reset passwords, fix user privileges, and resolve MySQL authentication issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="MySQL access denied, Access denied for user, ERROR 1045 (28000), Authentication failed MySQL, Access denied for user &#39;root&#39;@&#39;localhost&#39;">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL Access Denied for User — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix MySQL 'Access denied for user' error. Learn how to reset passwords, fix user privileges, and resolve MySQL authentication issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/mysql-access-denied">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/mysql-access-denied">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>MySQL Access Denied for User</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>MySQL Access Denied for User</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">MySQL authentication failed for the specified user</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>MySQL access denied</code></li><li><code>Access denied for user</code></li><li><code>ERROR 1045 (28000)</code></li><li><code>Authentication failed MySQL</code></li><li><code>Access denied for user &#39;root&#39;@&#39;localhost&#39;</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This error occurs when MySQL rejects a connection because the provided credentials are incorrect, the user does not exist, or the user does not have permission to access the specified database from the connecting host. MySQL's authentication is host-specific, meaning a user may be able to connect from localhost but not from a remote IP.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Incorrect password</strong> — The password provided does not match what MySQL has stored for the user. This includes typos, using an old password, or environment variables with the wrong value.</li>
+                <li><strong>User does not exist for the connecting host</strong> — MySQL user accounts are defined as 'user'@'host'. A user 'app'@'localhost' cannot authenticate when connecting from a remote IP. A separate 'app'@'%' or 'app'@'specific-ip' entry is needed.</li>
+                <li><strong>Authentication plugin mismatch</strong> — MySQL 8.0+ defaults to caching_sha2_password authentication, which older clients may not support. Clients expecting mysql_native_password will fail to authenticate.</li>
+                <li><strong>Database does not exist or user lacks privileges</strong> — The user exists but does not have GRANT privileges on the specified database. MySQL reports this as an access denied error.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Reset user password</h3>
+            <p>Update the user's password from a MySQL root session.</p>
+            <pre><code>ALTER USER 'username'@'localhost' IDENTIFIED BY 'new_password';
+FLUSH PRIVILEGES;</code></pre>
+            <h3>2. Create user for the correct host</h3>
+            <p>Create the user account for the host from which connections are being made.</p>
+            <pre><code>CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON database_name.* TO 'username'@'%';
+FLUSH PRIVILEGES;</code></pre>
+            <h3>3. Change authentication plugin</h3>
+            <p>Switch to mysql_native_password if your client does not support caching_sha2_password.</p>
+            <pre><code>ALTER USER 'username'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+FLUSH PRIVILEGES;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How do I reset the MySQL root password?</h3>
+            <p>Stop MySQL, restart it with --skip-grant-tables, connect without a password, run ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password', then restart MySQL normally. The exact steps vary by OS.</p>
+            <h3>Why does 'user'@'localhost' work but 'user'@'%' does not?</h3>
+            <p>MySQL treats localhost connections differently from TCP/IP connections, even on the same machine. Connecting via 127.0.0.1 uses TCP and matches '%', while connecting via localhost uses the Unix socket and matches 'localhost'.</p>
+            <h3>What does FLUSH PRIVILEGES do?</h3>
+            <p>FLUSH PRIVILEGES reloads the grant tables from the mysql database. It is required after directly modifying the privilege tables. When using ALTER USER or GRANT statements, FLUSH PRIVILEGES is technically not needed but is good practice.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/database-connection-timeout">Database Connection Timeout</a> — Database connection timed out</li>
+                <li><a href="/errors/database/database-too-many-connections">Too Many Connections</a> — Database connection limit reached</li>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — PostgreSQL refused the connection</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is HTTP/2 connection coalescing?","acceptedAnswer":{"@type":"Answer","text":"HTTP/2 allows clients to reuse a single TCP connection for multiple domains if they resolve to the same IP and share a TLS certificate. This optimization can cause 421 errors when the server cannot serve all domains on the certificate."}},{"@type":"Question","name":"Is 421 a client-side or server-side issue?","acceptedAnswer":{"@type":"Answer","text":"It is usually a server configuration issue. The server presents a certificate covering domains it cannot serve. The client correctly detects this when the server returns 421 and retries on a new connection."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"421 Misdirected Request — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 421 Misdirected Request","step":[{"@type":"HowToStep","position":1,"name":"Retry on a new connection","text":"When a client receives a 421, it should open a new TCP/TLS connection specifically for the target domain and retry the request, bypassing connection coalescing."},{"@type":"HowToStep","position":2,"name":"Configure all virtual hosts on the server","text":"Ensure the server has proper virtual host configurations for all domains covered by its TLS certificate so it can serve requests for any of them."},{"@type":"HowToStep","position":3,"name":"Use separate certificates per domain","text":"If the server should not handle requests for certain domains on its certificate, use separate TLS certificates for each domain to prevent connection coalescing."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>421 Misdirected Request — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 421 Misdirected Request errors. Learn about TLS and HTTP/2 connection coalescing issues and how to resolve misdirected request errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 421, 421 Misdirected Request, 421 error, Misdirected request, Wrong server">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="421 Misdirected Request — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 421 Misdirected Request errors. Learn about TLS and HTTP/2 connection coalescing issues and how to resolve misdirected request errors.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/421-misdirected-request">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/421-misdirected-request">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>421 Misdirected Request</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>421 Misdirected Request</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The request was directed to a server that cannot produce a response</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 421</code></li><li><code>421 Misdirected Request</code></li><li><code>421 error</code></li><li><code>Misdirected request</code></li><li><code>Wrong server</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 421 Misdirected Request response indicates that the request was directed at a server that is not able to produce a response for the requested URI. This typically occurs with HTTP/2 connection coalescing, where the client reuses an existing connection to a server that shares a TLS certificate but is not authoritative for the requested domain. The client should retry the request on a new connection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>HTTP/2 connection coalescing mismatch</strong> — The client is reusing an HTTP/2 connection to a server that shares a TLS certificate with another domain, but the server cannot serve content for the requested hostname.</li>
+                <li><strong>Wildcard or multi-domain certificate issues</strong> — A TLS certificate covers multiple domains (SAN or wildcard), and the client assumes any server presenting this certificate can serve all covered domains.</li>
+                <li><strong>CDN or load balancer misconfiguration</strong> — A CDN or load balancer is presenting a shared certificate but not all edge servers are configured to handle all domains covered by the certificate.</li>
+                <li><strong>Virtual host configuration mismatch</strong> — The server has a TLS certificate for multiple domains but only has virtual host configurations for some of them, causing it to reject requests for unconfigured domains.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Retry on a new connection</h3>
+            <p>When a client receives a 421, it should open a new TCP/TLS connection specifically for the target domain and retry the request, bypassing connection coalescing.</p>
+            <h3>2. Configure all virtual hosts on the server</h3>
+            <p>Ensure the server has proper virtual host configurations for all domains covered by its TLS certificate so it can serve requests for any of them.</p>
+            <h3>3. Use separate certificates per domain</h3>
+            <p>If the server should not handle requests for certain domains on its certificate, use separate TLS certificates for each domain to prevent connection coalescing.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is HTTP/2 connection coalescing?</h3>
+            <p>HTTP/2 allows clients to reuse a single TCP connection for multiple domains if they resolve to the same IP and share a TLS certificate. This optimization can cause 421 errors when the server cannot serve all domains on the certificate.</p>
+            <h3>Is 421 a client-side or server-side issue?</h3>
+            <p>It is usually a server configuration issue. The server presents a certificate covering domains it cannot serve. The client correctly detects this when the server returns 421 and retries on a new connection.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Invalid response from upstream server</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — Server is temporarily unavailable</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Try Security Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

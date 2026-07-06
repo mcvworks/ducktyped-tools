@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Visitors are reporting 1016 — is there anything they can do?","acceptedAnswer":{"@type":"Answer","text":"No — 1016 is entirely a site-configuration failure; no retry, VPN, or cache flush on the visitor's side changes it. The useful visitor action is telling the owner, ideally with the Ray ID."}},{"@type":"Question","name":"How is 1016 different from 523 (origin unreachable)?","acceptedAnswer":{"@type":"Answer","text":"523: Cloudflare had an IP but could not route to it. 1016: Cloudflare could not even obtain an IP — name resolution of the origin failed. 523 sends you to check the IP's validity; 1016 sends you to check the record's target hostname."}},{"@type":"Question","name":"Why did this appear right after we moved hosting?","acceptedAnswer":{"@type":"Answer","text":"Replatforming changes provider endpoints (herokuapp.com → new platform hostnames, new load balancer names). Any proxied CNAME still pointing at the old endpoint breaks the moment the provider deletes it — sometimes weeks after the migration, which hides the connection."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 1016 — Origin DNS Error — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 1016 — Origin DNS Error — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 1016 'Origin DNS error'. Broken CNAME targets, deleted origin records, load balancer misconfigurations — owner-side fixes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 1016, origin dns error, error 1016 cloudflare">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 1016 — Origin DNS Error — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 1016 'Origin DNS error'. Broken CNAME targets, deleted origin records, load balancer misconfigurations — owner-side fixes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-1016">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-1016">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 1016 — Origin DNS Error</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 1016 — Origin DNS Error</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">Cloudflare could not resolve the origin's address: the DNS record behind the proxy points at a hostname that does not resolve — a broken CNAME target is the classic cause.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 1016</code></li><li><code>origin dns error</code></li><li><code>error 1016 cloudflare</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Before connecting anywhere, Cloudflare must turn your DNS configuration into an origin IP. Error 1016 means that step failed: a proxied CNAME points at a hostname that returns NXDOMAIN (deleted Heroku/hosting endpoint, decommissioned load balancer, typo), or a Load Balancer references origins that no longer resolve. Unlike the 52x family — where an address existed but misbehaved — 1016 means there was never an address to try. It is purely an owner-side configuration problem.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>CNAME target no longer exists</strong> — The record points at something like old-app.herokuapp.com or an ELB hostname that was deleted — the target now returns NXDOMAIN.</li>
+                <li><strong>Typo in the target hostname</strong> — A misspelled CNAME content resolves nowhere from day one, or after an edit.</li>
+                <li><strong>Cloudflare Load Balancer with dead origins</strong> — Pools referencing origin hostnames that stopped resolving; the balancer has no address to hand to the proxy.</li>
+                <li><strong>Deleted A/AAAA record with a dangling reference</strong> — Internal record shuffles that leave the proxied name pointing at another record that was removed.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Resolve the CNAME target independently</h3>
+            <p>Take the record's content from the Cloudflare dashboard and test it from anywhere — if it does not resolve publicly, that is the whole bug.</p>
+            <pre><code>dig +short your-app.hosting-provider.com
+# empty/NXDOMAIN -&gt; fix or replace the target</code></pre>
+            <h3>2. Point the record at something that exists</h3>
+            <p>Update the CNAME to the hosting provider's current endpoint (they change after replatforming), or replace it with an A record to the server's IP.</p>
+            <h3>3. Audit Load Balancer pools if you use them</h3>
+            <p>Traffic → Load Balancing: every origin's hostname must resolve; health checks flag dead ones once the names work again.</p>
+            <h3>4. After hosting migrations, sweep all proxied records</h3>
+            <p>List every orange-cloud record and verify each target still resolves — migrations tend to orphan more than one.</p>
+            <pre><code># quick audit loop for CNAME targets you exported:
+while read host; do printf '%-40s %s\n' &quot;$host&quot; &quot;$(dig +short &quot;$host&quot; | head -1)&quot;; done &lt; targets.txt</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Visitors are reporting 1016 — is there anything they can do?</h3>
+            <p>No — 1016 is entirely a site-configuration failure; no retry, VPN, or cache flush on the visitor's side changes it. The useful visitor action is telling the owner, ideally with the Ray ID.</p>
+            <h3>How is 1016 different from 523 (origin unreachable)?</h3>
+            <p>523: Cloudflare had an IP but could not route to it. 1016: Cloudflare could not even obtain an IP — name resolution of the origin failed. 523 sends you to check the IP's validity; 1016 sends you to check the record's target hostname.</p>
+            <h3>Why did this appear right after we moved hosting?</h3>
+            <p>Replatforming changes provider endpoints (herokuapp.com → new platform hostnames, new load balancer names). Any proxied CNAME still pointing at the old endpoint breaks the moment the provider deletes it — sometimes weeks after the migration, which hides the connection.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-523">Cloudflare Error 523</a> — IP known but unroutable.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — what the broken target actually returns.</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — generic resolution failures.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Test whether hostnames resolve</span>
+                </a>
+        <a href="/dns-propagation/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Propagation Checker</span>
+                    <span class="recommended-tool-desc">Verify records across resolvers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

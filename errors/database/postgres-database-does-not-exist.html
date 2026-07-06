@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does psql look for a database named after me?","acceptedAnswer":{"@type":"Answer","text":"Convention: psql defaults the database to the connecting role's name. It made sense on classic setups where every user had a personal database. Use -d, PGDATABASE, or a full connection URL to be explicit."}},{"@type":"Question","name":"My databases vanished after a brew upgrade — are they gone?","acceptedAnswer":{"@type":"Answer","text":"Almost certainly not. Major-version upgrades create a fresh data directory; your old data still sits in the previous version's directory. Run 'brew postgresql-upgrade-database' or start the old version and dump/restore into the new cluster."}},{"@type":"Question","name":"Can I connect without naming any database?","acceptedAnswer":{"@type":"Answer","text":"No — every PostgreSQL connection attaches to exactly one database. For administration, connect to the built-in 'postgres' database. (template1 also exists, but avoid using it as a habitat: objects created there get copied into every future database.)"}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"PostgreSQL Database Does Not Exist — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Database Does Not Exist — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'FATAL: database does not exist' in PostgreSQL. Why psql assumes a database named after you, createdb usage, and the wrong-cluster trap.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="FATAL: database does not exist, database &quot;mydb&quot; does not exist, psql: error: FATAL: database, 3D000 postgres">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PostgreSQL Database Does Not Exist — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'FATAL: database does not exist' in PostgreSQL. Why psql assumes a database named after you, createdb usage, and the wrong-cluster trap.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/postgres-database-does-not-exist">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/postgres-database-does-not-exist">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>PostgreSQL Database Does Not Exist</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>PostgreSQL Database Does Not Exist</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">PostgreSQL error 3D000 — 'FATAL: database "name" does not exist'. The cluster you reached has no database by that name.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>FATAL: database does not exist</code></li><li><code>database &quot;mydb&quot; does not exist</code></li><li><code>psql: error: FATAL: database</code></li><li><code>3D000 postgres</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Authentication succeeded — then PostgreSQL looked for the requested database on the cluster and found nothing. Like the role error, the most common trigger is a default: psql (and many client libraries) default the database name to the username, so 'psql -U alice' looks for a database called alice. The other frequent case is connecting to a different cluster than intended: after a version upgrade or on a machine with several instances, port 5432 may belong to a fresh, empty cluster while your data lives on 5433.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The database name defaulted to the username</strong> — psql with no -d connects to a database named after the role. 'FATAL: database "alice" does not exist' means exactly that — no database was ever named alice.</li>
+                <li><strong>The database was never created</strong> — New environments where migrations create tables but nothing created the database itself; the app's configured name simply is not there.</li>
+                <li><strong>Connected to the wrong cluster</strong> — Multiple installed versions each run their own cluster on different ports. After upgrades (especially Homebrew's), the default port can point at a new empty cluster.</li>
+                <li><strong>The database was dropped or renamed</strong> — Cleanup scripts, environment resets, or a rename leave clients configured with the old name.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. List what actually exists on the cluster</h3>
+            <p>Connect to the always-present postgres maintenance database and list databases.</p>
+            <pre><code>psql -U postgres -d postgres -c '\l'
+# or:
+psql -U postgres -lqt | cut -d'|' -f1</code></pre>
+            <h3>2. Create the missing database</h3>
+            <p>Create it owned by the application role.</p>
+            <pre><code>createdb -U postgres -O appuser appdb
+-- or in SQL:
+CREATE DATABASE appdb OWNER appuser;</code></pre>
+            <h3>3. Check you are on the right cluster/port</h3>
+            <p>Compare running clusters and their ports; connect explicitly to each until you find your data.</p>
+            <pre><code>pg_lsclusters              # Debian/Ubuntu
+brew services list          # macOS
+psql -p 5433 -U postgres -l # try the other port</code></pre>
+            <h3>4. Specify the database explicitly everywhere</h3>
+            <p>Avoid the default-to-username behavior in scripts and CI by always passing -d (or the database in the connection URL).</p>
+            <pre><code>psql -U appuser -d appdb
+# URL form:
+postgres://appuser:pass@localhost:5432/appdb</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does psql look for a database named after me?</h3>
+            <p>Convention: psql defaults the database to the connecting role's name. It made sense on classic setups where every user had a personal database. Use -d, PGDATABASE, or a full connection URL to be explicit.</p>
+            <h3>My databases vanished after a brew upgrade — are they gone?</h3>
+            <p>Almost certainly not. Major-version upgrades create a fresh data directory; your old data still sits in the previous version's directory. Run 'brew postgresql-upgrade-database' or start the old version and dump/restore into the new cluster.</p>
+            <h3>Can I connect without naming any database?</h3>
+            <p>No — every PostgreSQL connection attaches to exactly one database. For administration, connect to the built-in 'postgres' database. (template1 also exists, but avoid using it as a habitat: objects created there get copied into every future database.)</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/postgres-role-does-not-exist">PostgreSQL Role Does Not Exist</a> — the role-level twin of this error.</li>
+                <li><a href="/errors/database/postgresql-connection-refused">PostgreSQL Connection Refused</a> — when the cluster is not reachable at all.</li>
+                <li><a href="/errors/database/postgres-password-authentication-failed">PostgreSQL Password Authentication Failed</a> — authentication-stage failures.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Discover which ports have listeners</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does NET::ERR_CERT_AUTHORITY_INVALID mean?","acceptedAnswer":{"@type":"Answer","text":"NET::ERR_CERT_AUTHORITY_INVALID means the certificate was issued by a Certificate Authority (CA) that the browser does not trust. This includes self-signed certificates, certificates from internal/private CAs, and certificates from CAs whose root is not in the browser's trusted root store."}},{"@type":"Question","name":"Is a self-signed certificate safe?","acceptedAnswer":{"@type":"Answer","text":"On development servers and internal tools you control, self-signed certificates are acceptable for encrypted connections — you just need to manually trust the certificate. On public-facing websites, self-signed certificates provide no trust guarantee to visitors and should be replaced with a certificate from a publicly trusted CA like Let's Encrypt."}},{"@type":"Question","name":"How do I fix NET::ERR_CERT_AUTHORITY_INVALID?","acceptedAnswer":{"@type":"Answer","text":"Replace the certificate with one from a publicly trusted CA. Let's Encrypt provides free, automatically trusted certificates. If using an internal CA for a private network, distribute and install the internal CA's root certificate on all client devices."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"NET::ERR_CERT_AUTHORITY_INVALID — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET::ERR_CERT_AUTHORITY_INVALID — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what NET::ERR_CERT_AUTHORITY_INVALID means and how to fix it. Covers self-signed certificates, internal CAs, and getting a trusted certificate.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NET::ERR_CERT_AUTHORITY_INVALID, Certificate authority invalid, Your connection is not private, Self-signed certificate, Untrusted certificate authority, CA not trusted">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NET::ERR_CERT_AUTHORITY_INVALID — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix NET::ERR_CERT_AUTHORITY_INVALID by replacing self-signed certificates with trusted CA certificates.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/net-err-cert-authority-invalid">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/net-err-cert-authority-invalid">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>NET::ERR_CERT_AUTHORITY_INVALID</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>NET::ERR_CERT_AUTHORITY_INVALID</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the certificate was signed by a Certificate Authority the browser does not trust — such as a self-signed cert, an internal CA, or a CA not in the browser's root store.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NET::ERR_CERT_AUTHORITY_INVALID</code></li><li><code>Certificate authority invalid</code></li><li><code>Your connection is not private</code></li><li><code>Self-signed certificate</code></li><li><code>Untrusted certificate authority</code></li><li><code>CA not trusted</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Handshake Fails</h2>
+                <div class="dt-diagram" data-diagram="ssl" data-error="authority"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Browsers maintain a list of trusted Certificate Authorities (called a root store). When a server presents an SSL certificate, the browser traces the certificate chain back to a root CA. If that root CA is not in the browser's trusted store, the connection is blocked with <strong>NET::ERR_CERT_AUTHORITY_INVALID</strong>.</p>
+            <p>This is different from <a href="/errors/ssl/ssl-certificate-expired">certificate expiry</a> or <a href="/errors/browser/err_cert_common_name_invalid">hostname mismatch</a> — the certificate may be otherwise valid, but the issuer is not trusted.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Self-signed certificate</strong> — the certificate was signed with its own private key, not by a CA. Commonly used in development.</li>
+                <li><strong>Internal/private CA</strong> — a certificate issued by a company's internal certificate authority, which is not in the public root store.</li>
+                <li><strong>Missing intermediate certificate</strong> — the server is only sending the leaf certificate without the intermediate CA certificates, breaking the chain.</li>
+                <li><strong>Expired root or intermediate CA</strong> — an intermediate CA in the chain has expired.</li>
+                <li><strong>Antivirus SSL inspection</strong> — security software intercepting HTTPS with its own certificate, which may not be trusted.</li>
+                <li><strong>Outdated OS/browser</strong> — older systems may not have the newest root CAs, causing newer certificates to appear untrusted.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Public Websites</h3>
+
+            <h4>1. Use a Certificate from a Trusted CA</h4>
+            <p>Replace self-signed certificates with one from a publicly trusted CA. Let's Encrypt provides free, automatically trusted DV certificates. Other trusted CAs include Sectigo, DigiCert, and GlobalSign.</p>
+
+            <h4>2. Install the Full Certificate Chain</h4>
+            <p>Configure your web server to send intermediate CA certificates. For nginx, use the <code>ssl_certificate</code> directive with the full chain file (leaf + intermediate). For Apache, use <code>SSLCertificateChainFile</code>.</p>
+
+            <h3>For Internal Networks</h3>
+
+            <h4>3. Distribute the Internal CA Certificate</h4>
+            <p>Push your internal CA's root certificate to all devices through MDM, Group Policy, or manual installation. Once installed, all certificates issued by your internal CA will be trusted.</p>
+
+            <h3>For Visitors</h3>
+
+            <h4>4. Check Antivirus HTTPS Inspection</h4>
+            <p>Some antivirus products intercept HTTPS. If this error appears on many sites, check whether your security software has an "SSL inspection" or "HTTPS scanning" feature that may be inserting its own certificate.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Checker</a> — verify certificate chain and CA trust.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does Chrome trust some CAs but not others?</h3>
+            <p>Chrome (and other browsers) include a root store — a list of CA root certificates that have been through an audit process and met industry-standard security requirements. CAs not in this list are not considered trusted for public use.</p>
+
+            <h3>Can I add my own CA to the browser's trust store?</h3>
+            <p>Yes. On Windows, you can add certificates to the Windows Certificate Store. On macOS, you can add them to the Keychain. Chrome on these platforms uses the OS trust store. Firefox has its own certificate store that must be configured separately.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — all certificate validation failures.</li>
+                <li><a href="/errors/ssl/ssl-certificate-expired">SSL Certificate Expired</a> — certificate past validity date.</li>
+                <li><a href="/errors/browser/err_cert_common_name_invalid">ERR_CERT_COMMON_NAME_INVALID</a> — hostname mismatch.</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS negotiation failure.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

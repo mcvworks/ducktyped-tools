@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_INTERNET_DISCONNECTED mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_INTERNET_DISCONNECTED means your device is not connected to the internet. The browser cannot reach any external servers because the network connection is unavailable."}},{"@type":"Question","name":"Why do I get ERR_INTERNET_DISCONNECTED even when Wi-Fi is connected?","acceptedAnswer":{"@type":"Answer","text":"Being connected to Wi-Fi does not guarantee internet access. Your router may be online but your ISP's connection could be down, you may have an IP address conflict, or the network may be using a captive portal that has not been authenticated."}},{"@type":"Question","name":"How do I fix ERR_INTERNET_DISCONNECTED?","acceptedAnswer":{"@type":"Answer","text":"Check your physical or Wi-Fi connection, restart your router and modem, flush your DNS cache, and reset your network adapter settings. If the problem persists, contact your ISP."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_INTERNET_DISCONNECTED — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_INTERNET_DISCONNECTED","step":[{"@type":"HowToStep","position":1,"name":"Check Your Connection","text":"Verify that your device shows it is connected to a network. On Windows, check the taskbar icon. On macOS, check the Wi-Fi menu. Try connecting to a different Wi-Fi network or switching to a mobile hotspot to isolate the issue."},{"@type":"HowToStep","position":2,"name":"Restart Your Router and Modem","text":"Power off your modem and router. Wait 30 seconds, then power on the modem first and wait for it to connect, then power on the router. This clears NAT tables, DHCP leases, and cached connection state."},{"@type":"HowToStep","position":3,"name":"Disable VPN","text":"If you use a VPN with a kill switch, the VPN connection may have dropped. Disable the VPN entirely and test your connection."},{"@type":"HowToStep","position":4,"name":"Check for Captive Portal","text":"If on public Wi-Fi, open your browser and navigate to any HTTP site (not HTTPS). A captive portal login page should appear. Complete authentication and then try again."},{"@type":"HowToStep","position":5,"name":"Check Firewall and Antivirus","text":"Temporarily disable your firewall or antivirus to see if it is blocking network access. Re-enable after testing and adjust rules as needed."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_INTERNET_DISCONNECTED — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_INTERNET_DISCONNECTED means and how to fix it. Step-by-step solutions for restoring your internet connection in Chrome and other browsers.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_INTERNET_DISCONNECTED, ERR_INTERNET_DISCONNECTED Chrome, No internet connection, You are offline, Chrome dinosaur game, Unable to connect to the internet">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_INTERNET_DISCONNECTED — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_INTERNET_DISCONNECTED with network troubleshooting steps for Windows, Mac, and mobile.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_internet_disconnected">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_internet_disconnected">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_INTERNET_DISCONNECTED</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_INTERNET_DISCONNECTED</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means your device has no internet connection. The browser cannot reach any servers because the network is unavailable.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_INTERNET_DISCONNECTED</code></li><li><code>ERR_INTERNET_DISCONNECTED Chrome</code></li><li><code>No internet connection</code></li><li><code>You are offline</code></li><li><code>Chrome dinosaur game</code></li><li><code>Unable to connect to the internet</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p><strong>ERR_INTERNET_DISCONNECTED</strong> is Chrome's way of telling you that your device is not connected to the internet at all. Unlike errors such as <a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — where DNS fails for a specific domain — this error means no network requests can succeed.</p>
+            <p>This could mean your Wi-Fi is off, your ethernet cable is unplugged, your ISP's service is down, or a software issue is blocking all outbound traffic.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No Wi-Fi or ethernet connection</strong> — your device is not connected to any network.</li>
+                <li><strong>Router or modem is offline</strong> — the router is on but has no upstream internet connectivity.</li>
+                <li><strong>ISP outage</strong> — your internet service provider has a service disruption.</li>
+                <li><strong>VPN blocking traffic</strong> — a misconfigured VPN may block all traffic when the VPN connection drops (kill switch).</li>
+                <li><strong>Firewall blocking all connections</strong> — overly aggressive firewall rules may prevent outbound traffic.</li>
+                <li><strong>Captive portal</strong> — on hotel or public Wi-Fi, you must authenticate through a portal before gaining internet access.</li>
+                <li><strong>IP address conflict</strong> — two devices on the same network assigned the same IP can cause connectivity failures.</li>
+                <li><strong>Corrupted network adapter settings</strong> — misconfigured TCP/IP stack or DNS settings on the device.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check Your Connection</h3>
+            <p>Verify that your device shows it is connected to a network. On Windows, check the taskbar icon. On macOS, check the Wi-Fi menu. Try connecting to a different Wi-Fi network or switching to a mobile hotspot to isolate the issue.</p>
+
+            <h3>2. Restart Your Router and Modem</h3>
+            <p>Power off your modem and router. Wait 30 seconds, then power on the modem first and wait for it to connect, then power on the router. This clears NAT tables, DHCP leases, and cached connection state.</p>
+
+            <h3>3. Disable VPN</h3>
+            <p>If you use a VPN with a kill switch, the VPN connection may have dropped. Disable the VPN entirely and test your connection.</p>
+
+            <h3>4. Reset Network Settings</h3>
+            <ul>
+                <li><strong>Windows:</strong> Open Command Prompt as administrator and run:
+                    <code>netsh int ip reset</code>, <code>netsh winsock reset</code>, then restart.</li>
+                <li><strong>macOS:</strong> Go to System Settings → Network → your connection → Renew DHCP Lease.</li>
+                <li><strong>Chrome:</strong> Try <code>chrome://net-internals/#sockets</code> → Flush socket pools.</li>
+            </ul>
+
+            <h3>5. Check for Captive Portal</h3>
+            <p>If on public Wi-Fi, open your browser and navigate to any HTTP site (not HTTPS). A captive portal login page should appear. Complete authentication and then try again.</p>
+
+            <h3>6. Check Firewall and Antivirus</h3>
+            <p>Temporarily disable your firewall or antivirus to see if it is blocking network access. Re-enable after testing and adjust rules as needed.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does Chrome show this error but my phone can browse the web?</h3>
+            <p>Your phone may be using mobile data while your computer uses Wi-Fi. The Wi-Fi network may have internet access issues even though the connection appears active. Try toggling Wi-Fi off and on, or connect your computer to mobile hotspot.</p>
+
+            <h3>What is the difference between ERR_INTERNET_DISCONNECTED and ERR_NETWORK_CHANGED?</h3>
+            <p><a href="/errors/browser/err_network_changed">ERR_NETWORK_CHANGED</a> occurs when the network configuration changed mid-request (e.g., you switched from Wi-Fi to ethernet). ERR_INTERNET_DISCONNECTED means there is no connection at all when the request starts.</p>
+
+            <h3>Does ERR_INTERNET_DISCONNECTED affect all browsers?</h3>
+            <p>Yes, but they show different messages. Chrome shows ERR_INTERNET_DISCONNECTED, Firefox shows "The server at [domain] can't be found", and Edge shows a similar "no internet" error. All indicate the same problem.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_network_changed">ERR_NETWORK_CHANGED</a> — network configuration changed during a request.</li>
+                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolution failed (may indicate partial connectivity).</li>
+                <li><a href="/errors/browser/err_timed_out">ERR_TIMED_OUT</a> — connection attempt timed out.</li>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — connection was interrupted.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Lookup</span>
+                    <span class="recommended-tool-desc">Identify your ISP and current IP details</span>
+                </a>
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/isp-lookup/" class="cta-btn-primary">Check Your ISP &amp; Connection</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

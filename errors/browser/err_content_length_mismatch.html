@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does ERR_CONTENT_LENGTH_MISMATCH only happen with certain files?","acceptedAnswer":{"@type":"Answer","text":"It typically affects files that go through compression or proxy rewriting. Static files served directly may work fine while dynamically generated or proxied responses trigger the error."}},{"@type":"Question","name":"Can this error cause partial page loads?","acceptedAnswer":{"@type":"Answer","text":"Yes. If the browser receives more data than expected, it truncates the response. If it receives less, the page may appear incomplete or broken before the error is shown."}},{"@type":"Question","name":"Is this error related to CORS?","acceptedAnswer":{"@type":"Answer","text":"No, this error is purely about the mismatch between the declared and actual response body size. CORS errors are related to cross-origin request permissions and produce different error messages."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_CONTENT_LENGTH_MISMATCH — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_CONTENT_LENGTH_MISMATCH","step":[{"@type":"HowToStep","position":1,"name":"Use chunked transfer encoding instead","text":"Configure the server to use Transfer-Encoding: chunked instead of Content-Length. This avoids the mismatch by not declaring the body size upfront."},{"@type":"HowToStep","position":2,"name":"Fix compression configuration","text":"Ensure that compression is applied before the Content-Length header is set, or remove the Content-Length header when compression is enabled. In Nginx, gzip automatically removes Content-Length when active."},{"@type":"HowToStep","position":3,"name":"Clear proxy and CDN caches","text":"Purge all cached responses from your reverse proxy and CDN to ensure stale Content-Length values from previous response versions are not being served."},{"@type":"HowToStep","position":4,"name":"Check for response body modifications","text":"Audit your reverse proxy configuration for any directives that modify the response body (sub_filter in Nginx, mod_substitute in Apache) and ensure they also update the Content-Length header."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_CONTENT_LENGTH_MISMATCH — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_CONTENT_LENGTH_MISMATCH in your browser. Learn why the Content-Length header doesn't match the body and how to resolve this common server configuration error.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_CONTENT_LENGTH_MISMATCH, ERR_CONTENT_LENGTH_MISMATCH, Content length mismatch, Incomplete response body">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_CONTENT_LENGTH_MISMATCH — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_CONTENT_LENGTH_MISMATCH in your browser. Learn why the Content-Length header doesn't match the body and how to resolve this common server configuration error.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_content_length_mismatch">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_content_length_mismatch">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_CONTENT_LENGTH_MISMATCH</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_CONTENT_LENGTH_MISMATCH</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Content-Length header does not match the actual response body size</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_CONTENT_LENGTH_MISMATCH</code></li><li><code>ERR_CONTENT_LENGTH_MISMATCH</code></li><li><code>Content length mismatch</code></li><li><code>Incomplete response body</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_CONTENT_LENGTH_MISMATCH occurs when the number of bytes in the response body does not match the value specified in the Content-Length header. The browser expects to receive exactly the number of bytes declared, and terminates the connection when there is a discrepancy. This usually indicates a server-side misconfiguration, particularly with compression, caching, or reverse proxy setups.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Compression applied after Content-Length was set</strong> — The server or a reverse proxy compresses the response body with gzip or Brotli after the Content-Length header was already calculated for the uncompressed body, creating a mismatch.</li>
+                <li><strong>Reverse proxy modifying the response body</strong> — A reverse proxy or CDN is rewriting parts of the response (such as injecting scripts or modifying URLs) without updating the Content-Length header to reflect the new body size.</li>
+                <li><strong>Server sending partial response</strong> — The server process terminates or crashes before sending the complete response body, resulting in fewer bytes delivered than the Content-Length header promised.</li>
+                <li><strong>Caching layer serving stale content</strong> — A caching layer is serving a cached response body with a Content-Length header from a different version of the content, where the sizes no longer match.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Use chunked transfer encoding instead</h3>
+            <p>Configure the server to use Transfer-Encoding: chunked instead of Content-Length. This avoids the mismatch by not declaring the body size upfront.</p>
+            <pre><code># Nginx: disable buffering to use chunked encoding
+proxy_buffering off;</code></pre>
+            <h3>2. Fix compression configuration</h3>
+            <p>Ensure that compression is applied before the Content-Length header is set, or remove the Content-Length header when compression is enabled. In Nginx, gzip automatically removes Content-Length when active.</p>
+            <h3>3. Clear proxy and CDN caches</h3>
+            <p>Purge all cached responses from your reverse proxy and CDN to ensure stale Content-Length values from previous response versions are not being served.</p>
+            <h3>4. Check for response body modifications</h3>
+            <p>Audit your reverse proxy configuration for any directives that modify the response body (sub_filter in Nginx, mod_substitute in Apache) and ensure they also update the Content-Length header.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does ERR_CONTENT_LENGTH_MISMATCH only happen with certain files?</h3>
+            <p>It typically affects files that go through compression or proxy rewriting. Static files served directly may work fine while dynamically generated or proxied responses trigger the error.</p>
+            <h3>Can this error cause partial page loads?</h3>
+            <p>Yes. If the browser receives more data than expected, it truncates the response. If it receives less, the page may appear incomplete or broken before the error is shown.</p>
+            <h3>Is this error related to CORS?</h3>
+            <p>No, this error is purely about the mismatch between the declared and actual response body size. CORS errors are related to cross-origin request permissions and produce different error messages.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — Connection was reset during communication</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Upstream server sent invalid response</li>
+                <li><a href="/errors/browser/err_timed_out">ERR_TIMED_OUT</a> — Connection timed out</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

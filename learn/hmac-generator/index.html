@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HMAC Explained: Keyed Hashing for Message Authentication","description":"Learn how HMAC works, why it beats a plain hash for authentication, how to choose between SHA-256, SHA-1, and MD5, and how HMAC secures API requests and webhooks.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/hmac-generator/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"HMAC Generator"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between HMAC and a plain hash?","acceptedAnswer":{"@type":"Answer","text":"A plain hash like SHA-256 proves only integrity: anyone can recompute it, so anyone can forge it. HMAC mixes a secret key into the hash computation, so only parties holding the key can produce or verify a valid code. HMAC therefore proves both integrity and authenticity."}},{"@type":"Question","name":"How does the HMAC construction work?","acceptedAnswer":{"@type":"Answer","text":"HMAC, defined in RFC 2104, hashes the message twice: HMAC(K, m) = H((K xor opad) || H((K xor ipad) || m)). The nested structure with inner and outer padded keys is what defeats length-extension attacks that break naive hash(key || message) schemes."}},{"@type":"Question","name":"Should I use HMAC-SHA256, HMAC-SHA1, or HMAC-MD5?","acceptedAnswer":{"@type":"Answer","text":"Use HMAC-SHA256 (or SHA-384/SHA-512) for all new systems. HMAC-SHA1 and HMAC-MD5 are not broken the way the underlying hashes are for collisions, but the hash functions are deprecated and many compliance standards prohibit them. Only use them when interoperating with legacy APIs."}},{"@type":"Question","name":"Where is HMAC used in practice?","acceptedAnswer":{"@type":"Answer","text":"HMAC signs API requests (AWS Signature Version 4), verifies webhook payloads (Stripe, GitHub, Slack), signs JWTs using the HS256 family, protects session cookies, and provides integrity inside TLS. Any time two parties share a secret and need tamper-proof messages, HMAC fits."}},{"@type":"Question","name":"How should I compare HMAC signatures safely?","acceptedAnswer":{"@type":"Answer","text":"Always use a constant-time comparison function such as crypto.timingSafeEqual or hmac.compare_digest. A normal string comparison returns early at the first mismatched byte, which can leak how much of an attacker's forged signature is correct."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMAC Explained — Keyed Hashing &amp; Signatures — duckTyped</title>
+    <meta name="description" content="Learn how HMAC works, why it beats a plain hash, how to pick SHA-256 over SHA-1 or MD5, and how HMAC secures API requests, webhooks, and tokens.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HMAC Explained — Keyed Hashing & Signatures — duckTyped">
+    <meta property="og:description" content="Learn how HMAC works, why it beats a plain hash, and how it secures API requests, webhooks, and tokens.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/hmac-generator/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HMAC Explained — Keyed Hashing & Signatures — duckTyped">
+    <meta name="twitter:description" content="Learn how HMAC works, why it beats a plain hash, and how it secures APIs and webhooks.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/hmac-generator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>HMAC Generator</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>HMAC Explained: Keyed Hashing for Message Authentication</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Understand what HMAC adds on top of a plain hash, how the RFC 2104 construction actually works, which algorithm to choose, and how HMAC powers API request signing, webhook verification, and token integrity.</p>
+
+            <h2>HMAC vs a Plain Hash</h2>
+            <p>A cryptographic hash like SHA-256 takes any input and produces a fixed-size digest. It proves <strong>integrity</strong>: change one bit of the input and the digest changes completely. What it does not prove is <strong>authenticity</strong>. Anyone can compute <code>SHA-256("amount=100")</code>, so an attacker who tampers with a message can simply recompute the hash to match. A bare hash tells you the data is consistent with itself -- not who produced it.</p>
+            <p><strong>HMAC (Hash-based Message Authentication Code)</strong> fixes this by mixing a <strong>secret key</strong> into the computation. Only parties holding the key can produce a valid code, and only they can verify one. That single change upgrades the guarantee from "this data was not corrupted" to "this data was not corrupted <em>and</em> it came from someone who knows the secret."</p>
+            <pre><code>SHA-256("amount=100")
+  → anyone can compute, anyone can forge
+
+HMAC-SHA256(secret, "amount=100")
+  → only key holders can compute or verify</code></pre>
+            <p>For password storage, file checksums, or deduplication, a plain hash is the right tool -- see the <a href="/learn/hash-generator/">Hashing guide</a>. The moment a message crosses a trust boundary and you need to know who sent it, you need HMAC (or an asymmetric signature).</p>
+
+            <h2>How the HMAC Construction Works</h2>
+            <p>The obvious approach -- <code>hash(secret + message)</code> -- is broken. Merkle-Damgård hashes such as SHA-256 and SHA-1 suffer from <strong>length-extension attacks</strong>: given <code>hash(secret + message)</code>, an attacker can compute a valid <code>hash(secret + message + padding + extra)</code> without ever knowing the secret, appending data to a "signed" message.</p>
+            <p>HMAC, defined in <strong>RFC 2104</strong>, defeats this with a nested, two-pass construction:</p>
+            <pre><code>HMAC(K, m) = H( (K' ⊕ opad) || H( (K' ⊕ ipad) || m ) )
+
+where:
+  H     = the underlying hash (e.g. SHA-256)
+  K'    = the key, hashed if longer than the block size,
+          then zero-padded to the block size (64 bytes for SHA-256)
+  ipad  = the byte 0x36 repeated to the block size
+  opad  = the byte 0x5c repeated to the block size
+  ||    = concatenation, ⊕ = XOR</code></pre>
+            <p>The message is hashed once with the inner key (<code>K' ⊕ ipad</code>), then that digest is hashed again with the outer key (<code>K' ⊕ opad</code>). Because the attacker never sees the inner digest and the outer pass re-keys the result, length extension is impossible. The construction is also remarkably robust: HMAC remains secure even against some weaknesses in the underlying hash, which is why HMAC-SHA1 is not broken despite SHA-1's collision attacks.</p>
+            <p>Key length matters less than you might think -- HMAC handles keys of any length -- but <strong>entropy</strong> matters a lot. Use a randomly generated key of at least the hash's output size (32 bytes for SHA-256), not a human-chosen passphrase.</p>
+
+            <h2>Choosing an Algorithm: SHA-256 vs SHA-1 vs MD5</h2>
+            <p>HMAC is a construction, not an algorithm -- you pair it with a hash function, and that choice determines output size and long-term safety:</p>
+            <ul>
+                <li><strong>HMAC-SHA256</strong> -- the modern default. 256-bit (32-byte) output, fast on all platforms, universally supported. Use it for anything new. <strong>HMAC-SHA384</strong> and <strong>HMAC-SHA512</strong> offer larger margins where policy requires them.</li>
+                <li><strong>HMAC-SHA1</strong> -- 160-bit output. SHA-1 collisions do not directly break HMAC-SHA1, so legacy integrations (older webhook APIs, TOTP per RFC 6238) still work safely. But SHA-1 is deprecated, many compliance regimes (PCI DSS, FIPS) restrict it, and there is no reason to choose it for new designs.</li>
+                <li><strong>HMAC-MD5</strong> -- 128-bit output over a thoroughly broken hash. While the HMAC wrapper masks MD5's collision weakness, the safety margin is gone. Treat it as legacy-only and migrate anything still using it.</li>
+            </ul>
+            <p>Rule of thumb: <strong>SHA-256 for everything new; SHA-1 and MD5 only when a legacy peer forces your hand.</strong></p>
+
+            <h2>Use Case: API Request Signing</h2>
+            <p>HMAC is the backbone of keyed API authentication. Instead of sending a bearer secret with every call, the client signs a <strong>canonical representation</strong> of the request -- method, path, timestamp, and body -- and sends only the signature:</p>
+            <pre><code>string_to_sign = METHOD + "\n" + PATH + "\n" + TIMESTAMP + "\n" + sha256(BODY)
+signature      = hex( HMAC-SHA256(api_secret, string_to_sign) )
+
+GET /v1/orders HTTP/1.1
+X-Timestamp: 1781136000
+X-Signature: 7f1d6a3e9b...</code></pre>
+            <p>The server reconstructs the same string and recomputes the HMAC; a mismatch means the request was tampered with or signed by the wrong key. AWS Signature Version 4 is the best-known production example of this pattern. Including the timestamp in the signed string (and rejecting stale ones) blocks replay attacks, since an intercepted request expires within minutes.</p>
+
+            <h2>Use Case: Webhook Verification and Token Integrity</h2>
+            <p><strong>Webhooks</strong> are the most common place developers meet HMAC today. When Stripe, GitHub, or Slack POSTs an event to your endpoint, anyone on the internet could send a request that looks identical -- so the provider includes an HMAC of the payload computed with your shared webhook secret:</p>
+            <pre><code>X-Hub-Signature-256: sha256=a0b1c2d3...   (GitHub)
+Stripe-Signature: t=1781136000,v1=5257a8...  (Stripe, timestamp included)
+
+// Your server:
+expected = HMAC-SHA256(webhook_secret, raw_request_body)
+if !constant_time_equal(expected, received_signature): reject(401)</code></pre>
+            <p>Two implementation details matter. Verify against the <strong>raw request body bytes</strong>, before any JSON parsing or re-serialization changes whitespace or key order. And compare signatures with a <strong>constant-time comparison</strong> (<code>crypto.timingSafeEqual</code>, <code>hmac.compare_digest</code>) -- an early-exit string comparison leaks timing information an attacker can exploit byte by byte.</p>
+            <p><strong>Token integrity</strong> is the same idea applied to credentials you hand out. A JWT signed with HS256 is exactly an HMAC-SHA256 over the encoded header and payload, and signed session cookies in frameworks like Django and Rails append an HMAC so the server can detect client-side edits. If you can forge the HMAC, you can forge the session -- which is why these secrets deserve the same protection as database passwords.</p>
+
+            <h2>Using the HMAC Generator</h2>
+            <p>The duckTyped <a href="/hmac-generator/">HMAC Generator</a> computes signatures entirely in your browser using the Web Crypto API:</p>
+            <ol>
+                <li><strong>Pick an algorithm</strong> -- SHA-256 (default), SHA-384, SHA-512, or SHA-1 for legacy comparisons.</li>
+                <li><strong>Enter the secret key and message</strong> -- for webhook debugging, paste the raw payload exactly as received.</li>
+                <li><strong>Choose hex or Base64 output</strong> and click <strong>Generate HMAC</strong>, then compare the result against the signature header you received.</li>
+            </ol>
+            <p>Nothing leaves your machine, which makes it safe for debugging test-mode webhook deliveries or verifying your own implementation. As with any tool, avoid pasting live production secrets anywhere outside your infrastructure.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the HMAC Generator:</p>
+            <ul>
+                <li><a href="/hash-generator/">Hash Generator</a> -- compute plain SHA-256, SHA-512, and other unkeyed digests for comparison.</li>
+                <li><a href="/jwt-generator/">JWT Generator</a> -- build HS256-signed tokens, which use HMAC-SHA256 under the hood.</li>
+                <li><a href="/jwt-decoder/">JWT Decoder</a> -- inspect the header, payload, and expiration of HMAC-signed tokens.</li>
+                <li><a href="/base64-encoder/">Base64 Encoder</a> -- convert signatures between hex, Base64, and raw forms.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/hash-generator/">Hashing Algorithms Explained</a>, <a href="/learn/jwt-decoder/">JSON Web Tokens Explained</a>, <a href="/learn/security-headers/">Security Headers guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">HTTP 401 Unauthorized</a> -- the standard response when an HMAC signature on a request or webhook fails verification.</li>
+                <li><a href="/errors/http/403-forbidden">HTTP 403 Forbidden</a> -- returned by some APIs when a signature is valid but the key lacks permission.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/hmac-generator/" class="cta-btn-primary">Try HMAC Generator</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

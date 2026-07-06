@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What do users experience when the limit is hit?","acceptedAnswer":{"@type":"Answer","text":"New connections wait in the TCP backlog — pages hang, then either load late or time out. Apache does not send a clean 503 for this by default, which is why it looks like 'the site is randomly slow' rather than an error."}},{"@type":"Question","name":"MaxRequestWorkers vs ServerLimit vs ThreadsPerChild?","acceptedAnswer":{"@type":"Answer","text":"With mpm_event/worker: total concurrency = processes × threads. ThreadsPerChild is threads per process, ServerLimit caps processes, and MaxRequestWorkers (≤ ServerLimit × ThreadsPerChild) is the effective total. With prefork there are no threads: MaxRequestWorkers = max processes."}},{"@type":"Question","name":"How high can I safely go?","acceptedAnswer":{"@type":"Answer","text":"Divide the RAM you can give Apache by the per-process footprint you measured, keep 20-30% headroom, and remember the backend (database, PHP-FPM) must also handle that concurrency. If you need thousands of concurrent connections, put nginx or a CDN in front for static/keep-alive traffic."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00161 — MaxRequestWorkers Reached — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00161 — MaxRequestWorkers Reached — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00161 'server reached MaxRequestWorkers'. Tune MPM event/prefork limits by memory math, find slow requests, and avoid swap death.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00161: server reached MaxRequestWorkers setting, ah00161, consider raising the MaxRequestWorkers setting, apache maxrequestworkers">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00161 — MaxRequestWorkers Reached — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00161 'server reached MaxRequestWorkers'. Tune MPM event/prefork limits by memory math, find slow requests, and avoid swap death.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00161-maxrequestworkers-reached">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00161-maxrequestworkers-reached">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00161 — MaxRequestWorkers Reached</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00161 — MaxRequestWorkers Reached</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The warning 'AH00161: server reached MaxRequestWorkers setting, consider raising the MaxRequestWorkers setting' — Apache is out of workers and queueing or refusing requests.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00161: server reached MaxRequestWorkers setting</code></li><li><code>ah00161</code></li><li><code>consider raising the MaxRequestWorkers setting</code></li><li><code>apache maxrequestworkers</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Apache caps concurrent request handling at MaxRequestWorkers (256 by default with mpm_event; per-process with prefork). When every worker is busy, new connections queue in the listen backlog, users experience hangs and timeouts, and Apache logs AH00161 once per restart period. The right response is not blindly raising the number: workers cost memory (dramatically so with prefork+mod_php), and the limit often gets hit because requests are slow (backend waits) rather than traffic being high. Raise it with memory math, and fix what made workers slow.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Legitimate traffic growth</strong> — More concurrent users than 256 workers can serve — the setting simply reflects yesterday's capacity planning.</li>
+                <li><strong>Slow requests pinning workers</strong> — Each request holds a worker for its full duration. A slow database or an external API taking seconds turns modest traffic into worker exhaustion — the queue explodes during the incident.</li>
+                <li><strong>Keep-alive hogging with prefork</strong> — With mpm_prefork, an idle keep-alive connection occupies an entire process. High KeepAliveTimeout plus prefork wastes most of the pool on idle clients (mpm_event exists to solve exactly this).</li>
+                <li><strong>Slowloris-style abuse</strong> — Clients deliberately holding connections open trickle-feed headers to pin workers — visible as many workers in 'reading request' state from unfamiliar IPs.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. See what the workers are doing</h3>
+            <p>The server-status scoreboard shows busy/idle workers and each one's state — slow backends and slowloris patterns are visible at a glance.</p>
+            <pre><code># enable once: a2enmod status  (restrict access!)
+curl -s localhost/server-status?auto | grep -E 'BusyWorkers|IdleWorkers|Scoreboard'</code></pre>
+            <h3>2. Raise MaxRequestWorkers with memory math</h3>
+            <p>Budget = available RAM for Apache ÷ average per-process RSS. Exceeding that trades 503s for swapping, which is worse.</p>
+            <pre><code># average Apache process memory:
+ps -ylC apache2 --sort:rss | awk '{sum+=$8; n++} END {print sum/n/1024 &quot; MB avg&quot;}'
+
+# /etc/apache2/mods-available/mpm_event.conf
+&lt;IfModule mpm_event_module&gt;
+    ServerLimit              16
+    ThreadsPerChild          25
+    MaxRequestWorkers       400   # must be &lt;= ServerLimit*ThreadsPerChild
+&lt;/IfModule&gt;
+sudo systemctl restart apache2</code></pre>
+            <h3>3. Switch prefork+mod_php to event+PHP-FPM</h3>
+            <p>The single biggest capacity win on legacy stacks: mpm_event handles keep-alive without dedicating workers, and PHP runs in its own pool.</p>
+            <pre><code>sudo a2dismod php8.3 mpm_prefork
+sudo a2enmod mpm_event proxy_fcgi
+sudo a2enconf php8.3-fpm
+sudo systemctl restart apache2 php8.3-fpm</code></pre>
+            <h3>4. Shorten what pins workers</h3>
+            <p>Cut KeepAliveTimeout to 2-5s, add timeouts to backend/API calls, and use mod_reqtimeout (default on) against slow-request abuse.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What do users experience when the limit is hit?</h3>
+            <p>New connections wait in the TCP backlog — pages hang, then either load late or time out. Apache does not send a clean 503 for this by default, which is why it looks like 'the site is randomly slow' rather than an error.</p>
+            <h3>MaxRequestWorkers vs ServerLimit vs ThreadsPerChild?</h3>
+            <p>With mpm_event/worker: total concurrency = processes × threads. ThreadsPerChild is threads per process, ServerLimit caps processes, and MaxRequestWorkers (≤ ServerLimit × ThreadsPerChild) is the effective total. With prefork there are no threads: MaxRequestWorkers = max processes.</p>
+            <h3>How high can I safely go?</h3>
+            <p>Divide the RAM you can give Apache by the per-process footprint you measured, keep 20-30% headroom, and remember the backend (database, PHP-FPM) must also handle that concurrency. If you need thousands of concurrent connections, put nginx or a CDN in front for static/keep-alive traffic.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — capacity errors clients may see.</li>
+                <li><a href="/errors/nginx/too-many-open-files">Nginx Too Many Open Files</a> — nginx's capacity ceiling.</li>
+                <li><a href="/errors/apache/ah00898-error-reading-from-remote-server">AH00898 Proxy Read Error</a> — slow backends behind mod_proxy.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure slowdowns from outside</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check service reachability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

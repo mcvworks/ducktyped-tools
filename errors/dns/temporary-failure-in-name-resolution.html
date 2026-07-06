@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does Python's socket.gaierror: [Errno -3] mean?","acceptedAnswer":{"@type":"Answer","text":"Errno -3 (EAI_AGAIN) is the same underlying failure: getaddrinfo could not resolve the hostname because no DNS server answered. Fix the system resolver configuration; the Python code itself is usually fine."}},{"@type":"Question","name":"How is this different from 'Name or service not known'?","acceptedAnswer":{"@type":"Answer","text":"'Name or service not known' (EAI_NONAME) means a DNS server answered and said the name does not exist — like NXDOMAIN. 'Temporary failure in name resolution' (EAI_AGAIN) means no usable answer arrived at all, pointing to resolver or connectivity problems rather than a wrong hostname."}},{"@type":"Question","name":"Why does this happen after every reboot?","acceptedAnswer":{"@type":"Answer","text":"Something is rewriting /etc/resolv.conf at boot — typically NetworkManager, dhclient, or WSL2's auto-generation. Fix the source (NetworkManager DNS settings, or wsl.conf) instead of editing resolv.conf by hand each time."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"Temporary failure in name resolution — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporary failure in name resolution — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'Temporary failure in name resolution' on Linux. Covers empty resolv.conf, systemd-resolved failures, WSL2 quirks, and Python socket.gaierror -3.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Temporary failure in name resolution, ping: temporary failure in name resolution, socket.gaierror: [Errno -3], EAI_AGAIN linux, apt temporary failure resolving, Temporary failure in name resolution WSL">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Temporary failure in name resolution — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'Temporary failure in name resolution' on Linux. Covers empty resolv.conf, systemd-resolved failures, WSL2 quirks, and Python socket.gaierror -3.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/temporary-failure-in-name-resolution">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/temporary-failure-in-name-resolution">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>Temporary failure in name resolution</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Temporary failure in name resolution</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A Linux system error meaning the resolver could not translate a hostname into an IP address — usually because no DNS server is configured or reachable.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Temporary failure in name resolution</code></li><li><code>ping: temporary failure in name resolution</code></li><li><code>socket.gaierror: [Errno -3]</code></li><li><code>EAI_AGAIN linux</code></li><li><code>apt temporary failure resolving</code></li><li><code>Temporary failure in name resolution WSL</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>This message comes from the C library resolver (getaddrinfo) on Linux when a hostname lookup fails at the system level. You will see it from ping, apt, curl, and Python (socket.gaierror: [Errno -3]). Unlike NXDOMAIN — where a DNS server answered 'this name does not exist' — this error usually means the system never got a usable answer at all: there is no nameserver configured, the configured nameserver is unreachable, or the local resolver daemon is down.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Empty or missing /etc/resolv.conf</strong> — The resolver reads nameserver addresses from /etc/resolv.conf. If the file is empty, missing, or contains no valid 'nameserver' line, every lookup fails immediately.</li>
+                <li><strong>systemd-resolved is stopped or broken</strong> — On most modern distributions /etc/resolv.conf is a symlink to a stub file managed by systemd-resolved (127.0.0.53). If the service is stopped or crashed, the stub answers nothing and all name resolution fails.</li>
+                <li><strong>No network connectivity</strong> — If the machine has no route to the network (interface down, DHCP failed, VPN dropped), the configured DNS server is unreachable even though the configuration is correct.</li>
+                <li><strong>WSL2 regenerated or broke resolv.conf</strong> — WSL2 auto-generates /etc/resolv.conf pointing at the Windows host. VPN clients and some corporate setups break this bridge, leaving Linux-side lookups failing while Windows resolves fine.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check that resolv.conf contains a nameserver</h3>
+            <p>Inspect the file first — most cases are visible immediately. If there is no nameserver line, add a public resolver as a quick test.</p>
+            <pre><code>cat /etc/resolv.conf
+# quick test entry:
+echo &quot;nameserver 1.1.1.1&quot; | sudo tee /etc/resolv.conf
+ping -c1 example.com</code></pre>
+            <h3>2. Restart systemd-resolved</h3>
+            <p>If resolv.conf points at 127.0.0.53, the stub resolver must be running. Restart it and check its status and upstream servers.</p>
+            <pre><code>sudo systemctl restart systemd-resolved
+resolvectl status
+resolvectl query example.com</code></pre>
+            <h3>3. Verify basic connectivity to the DNS server</h3>
+            <p>Confirm the machine can actually reach the configured resolver. If ping to the resolver IP fails, the problem is the network path, not DNS itself.</p>
+            <pre><code>ip route show
+ping -c2 1.1.1.1
+dig @1.1.1.1 example.com</code></pre>
+            <h3>4. Fix WSL2 DNS permanently</h3>
+            <p>In WSL2, disable auto-generation and set your own nameserver so VPN software cannot break it on every restart.</p>
+            <pre><code># /etc/wsl.conf
+[network]
+generateResolvConf = false
+
+# then recreate /etc/resolv.conf:
+sudo rm /etc/resolv.conf
+echo &quot;nameserver 1.1.1.1&quot; | sudo tee /etc/resolv.conf
+# restart WSL from Windows: wsl --shutdown</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does Python's socket.gaierror: [Errno -3] mean?</h3>
+            <p>Errno -3 (EAI_AGAIN) is the same underlying failure: getaddrinfo could not resolve the hostname because no DNS server answered. Fix the system resolver configuration; the Python code itself is usually fine.</p>
+            <h3>How is this different from 'Name or service not known'?</h3>
+            <p>'Name or service not known' (EAI_NONAME) means a DNS server answered and said the name does not exist — like NXDOMAIN. 'Temporary failure in name resolution' (EAI_AGAIN) means no usable answer arrived at all, pointing to resolver or connectivity problems rather than a wrong hostname.</p>
+            <h3>Why does this happen after every reboot?</h3>
+            <p>Something is rewriting /etc/resolv.conf at boot — typically NetworkManager, dhclient, or WSL2's auto-generation. Fix the source (NetworkManager DNS settings, or wsl.conf) instead of editing resolv.conf by hand each time.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — the configured DNS server is unreachable.</li>
+                <li><a href="/errors/dns/no-servers-could-be-reached">No servers could be reached</a> — dig/nslookup cannot contact any resolver.</li>
+                <li><a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> — the same failure as reported by curl and git.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/dns-propagation/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Propagation Checker</span>
+                    <span class="recommended-tool-desc">Compare answers across public resolvers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

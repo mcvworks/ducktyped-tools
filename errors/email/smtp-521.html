@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SMTP 521 mean?","acceptedAnswer":{"@type":"Answer","text":"SMTP 521 means the server does not accept mail. The receiving host has explicitly configured itself to refuse all incoming email connections. This is a permanent 5xx error — the message will not be delivered."}},{"@type":"Question","name":"Why would a server return SMTP 521?","acceptedAnswer":{"@type":"Answer","text":"A server returns 521 when it is intentionally configured not to accept any mail, such as a web server that only handles HTTP traffic, a server used exclusively for sending (outbound) email with no inbound capability, or a domain that has deliberately published a null MX record."}},{"@type":"Question","name":"What should I do when I receive SMTP 521?","acceptedAnswer":{"@type":"Answer","text":"The recipient's mail server is configured to reject all mail. Verify the recipient's email address is correct. The domain may have a misconfigured MX record or the mail server may be improperly configured. Contact the recipient through another channel to verify their email address."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 521 — Server Does Not Accept Mail"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 521 — Server Does Not Accept Mail — duckTyped</title>
+    <meta name="description" content="Learn what SMTP error 521 means and why a server refuses all incoming email. Covers null MX records, outbound-only mail servers, and recipient verification.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 521, 521 Does not accept mail, 521 Server does not accept mail">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 521 — Server Does Not Accept Mail">
+    <meta property="og:description" content="Understand SMTP 521 errors and what to do when a mail server is configured to reject all incoming email.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-521">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-521">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 521</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 521 — Server Does Not Accept Mail</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP 521 means the receiving server is explicitly configured not to accept any incoming mail. This is a permanent 5xx rejection — the message will not be delivered.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 521</code></li><li><code>521 Does not accept mail</code></li><li><code>521 Server does not accept mail</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>The standard 521 response is: <em>"521 &lt;domain&gt; does not accept mail (see RFC 7504)."</em> RFC 7504 defines this code for systems that are intentionally configured to never accept inbound SMTP. Unlike spam rejections or authentication failures, 521 is a deliberate policy — the server is not set up to receive mail at all.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Outbound-only mail server</strong> — a server configured only to send mail, not receive it (e.g., a transactional email relay).</li>
+                <li><strong>Null MX record (RFC 7505)</strong> — the domain has published a null MX record (<code>0 .</code>) to explicitly declare it does not accept email.</li>
+                <li><strong>Web/application server handling port 25</strong> — a non-mail server responding on SMTP port with a rejection.</li>
+                <li><strong>Anti-spam gateway misconfiguration</strong> — a gateway returning 521 instead of forwarding to the correct mail server.</li>
+                <li><strong>Incorrect MX record</strong> — the domain's MX record points to a server not configured to receive mail.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Senders</h3>
+
+            <h4>1. Verify the Recipient's Email Address</h4>
+            <p>The email address may be for a domain that does not accept email. Confirm the address is correct with the recipient via another channel.</p>
+
+            <h4>2. Check MX Records</h4>
+            <p>Use the <a href="/dns-lookup/">DNS Lookup tool</a> to look up the MX records for the recipient's domain. If no MX records exist, or if a null MX (<code>0 .</code>) is configured, the domain is intentionally configured to not accept email.</p>
+
+            <h3>For Domain Owners Receiving This Error</h3>
+
+            <h4>3. Configure MX Records Correctly</h4>
+            <p>If your domain is intended to receive email, ensure your MX records point to a properly configured mail server that accepts inbound SMTP on port 25.</p>
+
+            <h4>4. Remove Null MX If Unintentional</h4>
+            <p>If you have a null MX record (<code>0 .</code>) but want to receive email, remove it and add a proper MX record pointing to your mail server.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/smtp-checker/">SMTP Checker</a> — test SMTP server connectivity.</li>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — check MX records for any domain.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is a null MX record?</h3>
+            <p>A null MX record is a DNS MX record with a priority of 0 and a target of <code>.</code> (the root domain). Defined in RFC 7505, it explicitly signals that the domain does not accept email, preventing mail servers from attempting delivery.</p>
+
+            <h3>Can 521 ever be resolved by retrying?</h3>
+            <p>No. Since 521 starts with 5, it is a permanent failure code. The sending MTA will not retry — it will immediately bounce the message back to the sender with a non-delivery report.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — mailbox unavailable or rejected.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554</a> — transaction failed.</li>
+                <li><a href="/errors/email/smtp-553">SMTP 553</a> — mailbox name invalid.</li>
+                <li><a href="/errors/email/mailbox-unavailable">Mailbox Unavailable</a> — cannot reach recipient mailbox.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity</span>
+                </a>
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses and MX records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Check MX Records</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

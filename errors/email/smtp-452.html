@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does SMTP 452 mean?","acceptedAnswer":{"@type":"Answer","text":"SMTP 452 means the requested mail action was not taken because the system has insufficient storage. The receiving server does not have enough disk space to accept the message. It is a temporary error and the sending server should retry."}},{"@type":"Question","name":"Is SMTP 452 a permanent error?","acceptedAnswer":{"@type":"Answer","text":"No. 452 is a 4xx temporary error. The sending server will queue the message and retry. If the disk space issue is resolved on the receiving server before the retry window expires, delivery will succeed."}},{"@type":"Question","name":"What should I do if my mail server returns 452?","acceptedAnswer":{"@type":"Answer","text":"Free up disk space on the mail server immediately. Check mail spool size, log files, and message queues for large files. Consider implementing mailbox quotas to prevent individual users from consuming all available storage."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 452 — Insufficient System Storage"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 452 — Insufficient System Storage — duckTyped</title>
+    <meta name="description" content="Learn what SMTP error 452 means and how to fix it. Covers mail server disk space issues, mailbox quotas, and storage management.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 452, 452 Insufficient system storage, 452 Too many recipients, 452 Mailbox full">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 452 — Insufficient System Storage">
+    <meta property="og:description" content="Fix SMTP 452 errors by freeing disk space on your mail server and implementing proper storage management.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-452">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-452">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 452</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 452 — Insufficient System Storage</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP 452 means the receiving mail server does not have enough disk space to accept the message. It is a temporary error — delivery will be retried.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 452</code></li><li><code>452 Insufficient system storage</code></li><li><code>452 Too many recipients</code></li><li><code>452 Mailbox full</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>The full response is typically: <em>"452 Requested action not taken: insufficient system storage."</em> The receiving server received the connection and was ready to accept the message, but hit a disk space limit before or during transfer.</p>
+            <p>This is a server-side resource problem. Since it is a 4xx code, the sending server will queue the message and retry. If disk space is freed up on the receiving server before the retry window expires, delivery succeeds.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mail server disk full</strong> — the server's storage partition is at capacity.</li>
+                <li><strong>User mailbox over quota</strong> — the recipient's individual mailbox quota is exceeded.</li>
+                <li><strong>Mail spool overflow</strong> — the temporary spool directory used for incoming messages is full.</li>
+                <li><strong>Too many messages in mail queue</strong> — a large backlog has consumed the available space.</li>
+                <li><strong>Log files consuming disk</strong> — mail server logs have grown too large.</li>
+                <li><strong>Large attachment rejected</strong> — some servers return 452 when a message is too large, though 552 or 550 is more common for this.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Receiving Server Administrators</h3>
+
+            <h4>1. Free Up Disk Space</h4>
+            <pre><code>df -h                   # check disk usage
+du -sh /var/mail/*      # check mailbox sizes
+du -sh /var/log/mail*   # check log sizes</code></pre>
+            <p>Delete or archive old mail logs. Clear any stuck or expired messages from the mail queue.</p>
+
+            <h4>2. Implement Mailbox Quotas</h4>
+            <p>Set per-user mailbox quotas to prevent any single mailbox from consuming all available storage. In Postfix/Dovecot, configure quota plugin settings.</p>
+
+            <h4>3. Add Storage or Archive</h4>
+            <p>If disk space is consistently full, expand storage capacity or implement email archiving to move old messages to cheaper storage.</p>
+
+            <h3>For Senders</h3>
+
+            <h4>4. Wait for Automatic Retry</h4>
+            <p>If the receiving server's disk space issue is resolved, your queued message will be delivered automatically on the next retry cycle.</p>
+
+            <h4>5. Contact the Recipient</h4>
+            <p>If the error persists over multiple days, contact the recipient via another channel to let them know their mail server has storage issues.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 452 the same as a full inbox?</h3>
+            <p>Related but different. A full individual mailbox usually produces <a href="/errors/email/smtp-450">SMTP 450</a> or <a href="/errors/email/smtp-550">SMTP 550</a> (depending on whether it is temporary or permanent). SMTP 452 refers specifically to a system-level storage problem — the entire server's disk is full, not just one user's quota.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-421">SMTP 421</a> — server temporarily unavailable.</li>
+                <li><a href="/errors/email/smtp-450">SMTP 450</a> — mailbox temporarily unavailable.</li>
+                <li><a href="/errors/email/smtp-451">SMTP 451</a> — local processing error.</li>
+                <li><a href="/errors/email/mailbox-unavailable">Mailbox Unavailable</a> — mailbox cannot receive messages.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server connectivity</span>
+                </a>
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email addresses and MX records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Check SMTP Server</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between SMTP 500 and SMTP 501?","acceptedAnswer":{"@type":"Answer","text":"SMTP 500 means the server did not recognize the command at all. SMTP 501 means the command was recognized but the parameters were malformed. For example, 'RCPT TO:' would return 501 because RCPT TO is valid but the address is not."}},{"@type":"Question","name":"Can email client software cause SMTP 501 errors?","acceptedAnswer":{"@type":"Answer","text":"Yes. If the email client generates malformed SMTP commands, the server will respond with 501. This can happen with buggy clients, custom scripts, or applications that construct SMTP commands manually."}},{"@type":"Question","name":"Does SMTP 501 mean the recipient address does not exist?","acceptedAnswer":{"@type":"Answer","text":"No. SMTP 501 means the address is syntactically invalid, not that it does not exist. A syntactically valid address that does not exist would return SMTP 550 or a similar error."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 501 — Syntax Error in Parameters — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 501 — Syntax Error in Parameters","step":[{"@type":"HowToStep","position":1,"name":"Correct the email address format","text":"Ensure email addresses in SMTP commands use the correct format with angle brackets."},{"@type":"HowToStep","position":2,"name":"Validate the EHLO hostname","text":"Provide a valid fully-qualified domain name or IP address literal in the EHLO command."},{"@type":"HowToStep","position":3,"name":"Check for encoding issues","text":"If sending to or from internationalized email addresses, ensure SMTPUTF8 is supported and enabled. Otherwise, use ASCII-only addresses."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 501 — Syntax Error in Parameters — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 501 syntax error in parameters. Learn what causes parameter errors in SMTP commands and how to correct email addresses and command formatting.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 501, 501 Syntax error in parameters, 501 Bad sender address, 501 Invalid address">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 501 — Syntax Error in Parameters — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 501 syntax error in parameters. Learn what causes parameter errors in SMTP commands and how to correct email addresses and command formatting.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-501">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-501">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 501 — Syntax Error in Parameters</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 501 — Syntax Error in Parameters</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP command parameters contain a syntax error</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 501</code></li><li><code>501 Syntax error in parameters</code></li><li><code>501 Bad sender address</code></li><li><code>501 Invalid address</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 501 is a permanent error indicating that the server recognized the SMTP command but found a syntax error in the parameters or arguments. The command itself is valid, but the data supplied with it is malformed. This commonly occurs with improperly formatted email addresses in MAIL FROM or RCPT TO commands, invalid characters, or missing angle brackets around addresses.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Malformed email address in MAIL FROM or RCPT TO</strong> — The email address provided does not conform to the expected format. Common issues include missing angle brackets, spaces in the address, missing @ symbol, or invalid domain syntax.</li>
+                <li><strong>Invalid characters in parameters</strong> — The command parameters contain characters that are not permitted by the SMTP specification, such as unencoded special characters, null bytes, or control characters.</li>
+                <li><strong>Missing required parameters</strong> — The command was sent without required parameters. For example, MAIL FROM requires a sender address, and RCPT TO requires a recipient address.</li>
+                <li><strong>Incorrect EHLO/HELO hostname format</strong> — The hostname provided in the EHLO or HELO command is not a valid fully-qualified domain name or IP address literal, and the server enforces strict hostname validation.</li>
+                <li><strong>Encoding issues with international addresses</strong> — The email address contains internationalized characters (non-ASCII) but the SMTPUTF8 extension was not negotiated, causing the server to reject the parameters.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Correct the email address format</h3>
+            <p>Ensure email addresses in SMTP commands use the correct format with angle brackets.</p>
+            <pre><code># Correct format
+MAIL FROM:&lt;user@example.com&gt;
+RCPT TO:&lt;recipient@domain.com&gt;
+
+# Incorrect formats that cause 501
+MAIL FROM:user@example.com     # missing brackets
+MAIL FROM:&lt;user @example.com&gt;  # space in address
+MAIL FROM:&lt;user@&gt;              # missing domain</code></pre>
+            <h3>2. Validate the EHLO hostname</h3>
+            <p>Provide a valid fully-qualified domain name or IP address literal in the EHLO command.</p>
+            <pre><code># Correct EHLO formats
+EHLO mail.example.com
+EHLO [192.168.1.10]
+EHLO [IPv6:2001:db8::1]
+
+# Incorrect formats
+EHLO localhost          # may be rejected
+EHLO                    # missing hostname</code></pre>
+            <h3>3. Check for encoding issues</h3>
+            <p>If sending to or from internationalized email addresses, ensure SMTPUTF8 is supported and enabled. Otherwise, use ASCII-only addresses.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between SMTP 500 and SMTP 501?</h3>
+            <p>SMTP 500 means the server did not recognize the command at all. SMTP 501 means the command was recognized but the parameters were malformed. For example, 'RCPT TO:&lt;invalid&gt;' would return 501 because RCPT TO is valid but the address is not.</p>
+            <h3>Can email client software cause SMTP 501 errors?</h3>
+            <p>Yes. If the email client generates malformed SMTP commands, the server will respond with 501. This can happen with buggy clients, custom scripts, or applications that construct SMTP commands manually.</p>
+            <h3>Does SMTP 501 mean the recipient address does not exist?</h3>
+            <p>No. SMTP 501 means the address is syntactically invalid, not that it does not exist. A syntactically valid address that does not exist would return SMTP 550 or a similar error.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-500">SMTP 500</a> — Command not recognized</li>
+                <li><a href="/errors/email/smtp-553">SMTP 553</a> — Mailbox name not allowed</li>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> — Mailbox unavailable</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP connections and command syntax</span>
+                </a>
+        <a href="/email-validator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Validator</span>
+                    <span class="recommended-tool-desc">Validate email address format</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

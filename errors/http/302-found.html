@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a 302 redirect pass SEO value?","acceptedAnswer":{"@type":"Answer","text":"Not reliably. Search engines treat 302 as temporary and generally keep the original URL in their index. For permanent URL changes, use a 301 redirect instead."}},{"@type":"Question","name":"Why does my browser change POST to GET after a 302?","acceptedAnswer":{"@type":"Answer","text":"This is a historical behavior where some clients convert POST requests to GET when following a 302. To guarantee the method is preserved, use a 307 Temporary Redirect instead."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"302 Found — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 302 Found","step":[{"@type":"HowToStep","position":1,"name":"Determine if the redirect should be permanent","text":"If the redirect is not truly temporary, change it to a 301. Using 302 for permanent moves prevents search engines from transferring ranking signals to the new URL."},{"@type":"HowToStep","position":2,"name":"Use 307 for method-preserving temporary redirects","text":"If you need to guarantee that POST and other non-GET methods are preserved during the redirect, use 307 instead of 302. The 302 status historically allowed method changes."},{"@type":"HowToStep","position":3,"name":"Check redirect loops","text":"Ensure that the target URL does not redirect back to the original URL, creating an infinite redirect loop. Use a redirect checker to trace the full chain."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>302 Found — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 302 Found (temporary redirect). Learn when to use 302 vs 301 redirects, common causes, and how to configure temporary redirects correctly.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 302, 302 redirect, 302 Found, 302 Moved Temporarily, Temporary redirect, 302 status code">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="302 Found — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 302 Found (temporary redirect). Learn when to use 302 vs 301 redirects, common causes, and how to configure temporary redirects correctly.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/302-found">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/302-found">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>302 Found</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>302 Found</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The requested resource temporarily resides at a different URL</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 302</code></li><li><code>302 redirect</code></li><li><code>302 Found</code></li><li><code>302 Moved Temporarily</code></li><li><code>Temporary redirect</code></li><li><code>302 status code</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 302 Found response tells the client that the requested resource temporarily resides at a different URI. Unlike a 301, the client should continue to use the original URL for future requests because the redirect is not permanent. Historically, some clients changed POST requests to GET when following a 302, which led to the creation of 307.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Temporary content relocation</strong> — The resource has been temporarily moved during maintenance, A/B testing, or a staged rollout, and the original URL should remain the canonical reference.</li>
+                <li><strong>Authentication redirect</strong> — The server is redirecting unauthenticated users to a login page before granting access to the originally requested resource.</li>
+                <li><strong>Geographic or device-based routing</strong> — The server is temporarily directing users to a localized or device-specific version of the page based on their location or user agent.</li>
+                <li><strong>Incorrect redirect type configured</strong> — A 302 was used when a 301 was intended. This is a common misconfiguration that can prevent search engines from properly indexing the destination URL.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Determine if the redirect should be permanent</h3>
+            <p>If the redirect is not truly temporary, change it to a 301. Using 302 for permanent moves prevents search engines from transferring ranking signals to the new URL.</p>
+            <h3>2. Use 307 for method-preserving temporary redirects</h3>
+            <p>If you need to guarantee that POST and other non-GET methods are preserved during the redirect, use 307 instead of 302. The 302 status historically allowed method changes.</p>
+            <h3>3. Check redirect loops</h3>
+            <p>Ensure that the target URL does not redirect back to the original URL, creating an infinite redirect loop. Use a redirect checker to trace the full chain.</p>
+            <pre><code>curl -Ls -o /dev/null -w '%{url_effective}\n%{redirect_url}\n' https://example.com</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does a 302 redirect pass SEO value?</h3>
+            <p>Not reliably. Search engines treat 302 as temporary and generally keep the original URL in their index. For permanent URL changes, use a 301 redirect instead.</p>
+            <h3>Why does my browser change POST to GET after a 302?</h3>
+            <p>This is a historical behavior where some clients convert POST requests to GET when following a 302. To guarantee the method is preserved, use a 307 Temporary Redirect instead.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/301-moved-permanently">301 Moved Permanently</a> — Permanent redirect to a new URL</li>
+                <li><a href="/errors/http/307-temporary-redirect">307 Temporary Redirect</a> — Temporary redirect preserving request method</li>
+                <li><a href="/errors/http/308-permanent-redirect">308 Permanent Redirect</a> — Permanent redirect preserving request method</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace redirect chains</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/redirect-checker/" class="cta-btn-primary">Try Redirect Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

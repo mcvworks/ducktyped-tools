@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is AH00898 the same as a 502 Bad Gateway?","acceptedAnswer":{"@type":"Answer","text":"It is the main Apache-side reason for one. The visitor sees 502; AH00898/AH01102 in the error log explain that the proxy read failed. If you see 502s without these lines, another layer (CDN, second proxy) produced them."}},{"@type":"Question","name":"Why do I get exactly one 502 every few minutes, then it works on refresh?","acceptedAnswer":{"@type":"Answer","text":"Classic keep-alive race: an idle pooled connection was closed by the backend, Apache's first reuse attempt fails, the retry on a fresh connection succeeds. Set the ttl= on ProxyPass below the backend's idle timeout and the pattern disappears."}},{"@type":"Question","name":"ProxyTimeout vs Timeout — which applies?","acceptedAnswer":{"@type":"Answer","text":"ProxyTimeout (or the timeout= key on ProxyPass) governs waiting on the backend and defaults to the global Timeout value. The per-ProxyPass key wins over ProxyTimeout, which wins over Timeout — use the narrowest scope that fits."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00898 — Error Reading from Remote Server (mod_proxy) — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00898 — Error Reading from Remote Server (mod_proxy) — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00898/AH01102 proxy errors. Backend timeouts, ProxyTimeout tuning, keep-alive races, and crashed upstreams behind mod_proxy.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00898: Error reading from remote server, AH01102: error reading status line from remote server, ah00898, ah01102, apache proxy 502 error reading">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00898 — Error Reading from Remote Server (mod_proxy) — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00898/AH01102 proxy errors. Backend timeouts, ProxyTimeout tuning, keep-alive races, and crashed upstreams behind mod_proxy.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00898-error-reading-from-remote-server">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00898-error-reading-from-remote-server">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00898 — Error Reading from Remote Server (mod_proxy)</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00898 — Error Reading from Remote Server (mod_proxy)</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'AH00898: Error reading from remote server' (with AH01102 'error reading status line') — Apache's reverse proxy lost the backend mid-request. Visitors see 502.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00898: Error reading from remote server</code></li><li><code>AH01102: error reading status line from remote server</code></li><li><code>ah00898</code></li><li><code>ah01102</code></li><li><code>apache proxy 502 error reading</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Apache (acting as reverse proxy via ProxyPass) connected to the backend, sent the request, and then the response never arrived properly — the connection died, timed out, or returned garbage where a status line should be. The client gets a 502 Bad Gateway. The two log lines travel together: AH01102 is the low-level read failure on the status line, AH00898 the request-level consequence. Behind them is a backend that crashed mid-request, took longer than ProxyTimeout, or closed a kept-alive connection just as Apache reused it.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Backend exceeded the proxy timeout</strong> — ProxyTimeout (default = Timeout, 60s) fires while the backend is still working — slow queries and long report endpoints are the usual content.</li>
+                <li><strong>Backend crashed or restarted mid-request</strong> — The worker handling the request died (app crash, OOM kill, deploy restart) and the socket closed with no response.</li>
+                <li><strong>Keep-alive reuse race</strong> — Apache reuses pooled backend connections; if the backend's idle timeout is shorter, it closes the socket just as Apache sends the next request — intermittent one-off 502s under low traffic are the signature.</li>
+                <li><strong>Response not valid HTTP</strong> — Pointing ProxyPass at a non-HTTP port (a database, an AJP port without the ajp:// scheme) yields bytes that fail status-line parsing.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Correlate with backend logs first</h3>
+            <p>The timestamps in Apache's error log tell you where to look in the app's logs — crash, restart, or slow request will be visible there.</p>
+            <pre><code>sudo grep -E 'AH00898|AH01102' /var/log/apache2/error.log | tail -5
+# then check the app around those times:
+journalctl -u myapp --since '10 minutes ago'</code></pre>
+            <h3>2. Raise the proxy timeout for genuinely slow endpoints</h3>
+            <p>Scope it to the slow location rather than globally.</p>
+            <pre><code>&lt;Location /reports/&gt;
+    ProxyPass http://127.0.0.1:3000/reports/ timeout=300
+    ProxyPassReverse http://127.0.0.1:3000/reports/
+&lt;/Location&gt;
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2</code></pre>
+            <h3>3. Defuse the keep-alive race</h3>
+            <p>Make Apache's pooled connections expire before the backend's idle timeout, or disable reuse for a problematic backend.</p>
+            <pre><code># backend closes idle conns at 5s? keep Apache's below it:
+ProxyPass http://127.0.0.1:3000/ ttl=4
+# or bypass pooling entirely (small perf cost, kills the race):
+SetEnv proxy-nokeepalive 1</code></pre>
+            <h3>4. Confirm the backend speaks HTTP on that port</h3>
+            <p>A quick manual request distinguishes protocol mismatch from instability.</p>
+            <pre><code>curl -v http://127.0.0.1:3000/ 2&gt;&amp;1 | head -15
+# garbage or immediate close -&gt; wrong port/protocol in ProxyPass</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is AH00898 the same as a 502 Bad Gateway?</h3>
+            <p>It is the main Apache-side reason for one. The visitor sees 502; AH00898/AH01102 in the error log explain that the proxy read failed. If you see 502s without these lines, another layer (CDN, second proxy) produced them.</p>
+            <h3>Why do I get exactly one 502 every few minutes, then it works on refresh?</h3>
+            <p>Classic keep-alive race: an idle pooled connection was closed by the backend, Apache's first reuse attempt fails, the retry on a fresh connection succeeds. Set the ttl= on ProxyPass below the backend's idle timeout and the pattern disappears.</p>
+            <h3>ProxyTimeout vs Timeout — which applies?</h3>
+            <p>ProxyTimeout (or the timeout= key on ProxyPass) governs waiting on the backend and defaults to the global Timeout value. The per-ProxyPass key wins over ProxyTimeout, which wins over Timeout — use the narrowest scope that fits.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — the client-facing status.</li>
+                <li><a href="/errors/nginx/upstream-timed-out">Nginx Upstream Timed Out</a> — the nginx counterpart.</li>
+                <li><a href="/errors/apache/ah00161-maxrequestworkers-reached">AH00161 MaxRequestWorkers</a> — capacity pressure that slows backends.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-502-bad-gateway/">502 Bad Gateway explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure backend response times</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Verify the backend port</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

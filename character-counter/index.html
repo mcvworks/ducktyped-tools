@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Character & Word Counter","url":"https://ducktyped.xyz/character-counter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Count characters, words, sentences, lines, and paragraphs in any text. Real-time text statistics tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does a character counter do?","acceptedAnswer":{"@type":"Answer","text":"A character counter analyzes text and displays the count of characters, words, sentences, paragraphs, and lines. It also shows character frequency and reading time estimates."}},{"@type":"Question","name":"Does it count spaces and newlines?","acceptedAnswer":{"@type":"Answer","text":"Yes, the tool shows both the total character count (including spaces) and character count without spaces, along with word count and other text statistics."}},{"@type":"Question","name":"Is this character counter free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free with no registration. All counting happens in your browser."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character &amp; Word Counter — Count Characters, Words, Lines — duckTyped</title>
+    <meta name="description" content="Count characters, words, sentences, lines, and paragraphs in any text. Real-time text statistics tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Character &amp; Word Counter — duckTyped">
+    <meta property="og:description" content="Count characters, words, sentences, lines, and paragraphs in any text. Real-time text statistics tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/character-counter/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/character-counter.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Character &amp; Word Counter — duckTyped">
+    <meta name="twitter:description" content="Count characters, words, sentences, lines, and paragraphs in any text.">
+    <link rel="canonical" href="https://ducktyped.xyz/character-counter/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Character &amp; Word Counter</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Get instant statistics about your text including character count, word count, sentence count, line count, paragraph count, and estimated reading time. Updates in real-time as you type.</p><div class="example-box"><strong>Example uses:</strong><p>Checking tweet character limits, counting words for essays, analyzing text length for SEO meta descriptions, or measuring content for form field validation.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Character &amp; Word Counter</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste or type text below. Stats update in real-time.</p>
+            <textarea id="textInput" rows="10" placeholder="Paste or type your text here..." oninput="updateStats()" style="width: 100%; padding: 12px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95em; resize: vertical;"></textarea>
+            <div id="statsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 15px;">
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statChars">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Characters</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statCharsNoSpace">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Without Spaces</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statWords">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Words</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statSentences">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Sentences</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statLines">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Lines</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statParas">0</div><div style="font-size: 0.85em; color: var(--text-secondary);">Paragraphs</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.8em; font-weight: 700; color: var(--primary-color);" id="statReadTime">0 min</div><div style="font-size: 0.85em; color: var(--text-secondary);">Reading Time</div></div>
+            </div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/regex-tester/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Regex Tester</a>
+            <a href="/json-formatter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JSON Formatter</a>
+            <a href="/text-diff/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Text Diff Tool</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">🛠 <strong>Troubleshoot:</strong> <a href="/errors/database/mysql-incorrect-string-value">MySQL Incorrect String Value</a>, <a href="/errors/python/unicodedecodeerror">Python UnicodeDecodeError</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function updateStats() {
+        var t = document.getElementById('textInput').value;
+        document.getElementById('statChars').textContent = t.length;
+        document.getElementById('statCharsNoSpace').textContent = t.replace(/\s/g, '').length;
+        var words = t.trim() ? t.trim().split(/\s+/).filter(function(w){return w.length>0;}).length : 0;
+        document.getElementById('statWords').textContent = words;
+        document.getElementById('statSentences').textContent = t.trim() ? t.split(/[.!?]+/).filter(function(s){return s.trim().length>0;}).length : 0;
+        document.getElementById('statLines').textContent = t ? t.split('\n').length : 0;
+        document.getElementById('statParas').textContent = t.trim() ? t.split(/\n\s*\n/).filter(function(p){return p.trim().length>0;}).length : 0;
+        document.getElementById('statReadTime').textContent = Math.max(1, Math.ceil(words / 200)) + ' min';
+        if (!t.trim()) document.getElementById('statReadTime').textContent = '0 min';
+    }
+    </script>
+</body>
+</html>

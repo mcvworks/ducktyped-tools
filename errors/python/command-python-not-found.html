@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did 'python' stop existing on Linux?","acceptedAnswer":{"@type":"Answer","text":"During the Python 2→3 transition, 'python' meant Python 2 on most systems. When Python 2 was removed (EOL January 2020), distros dropped the name rather than silently changing what it pointed to. python3 is the stable, unambiguous name; python-is-python3 exists for compatibility."}},{"@type":"Question","name":"pip is also 'not found' — same fix?","acceptedAnswer":{"@type":"Answer","text":"Same family: use pip3, or better, invoke it through the interpreter — 'python3 -m pip install ...' always matches pip to the python you ran, which avoids the classic multiple-Pythons confusion where pip installs into a different interpreter than the one running your code."}},{"@type":"Question","name":"The command works in one terminal but not another — how?","acceptedAnswer":{"@type":"Answer","text":"Different PATH per shell: your profile (.bashrc/.zshrc) initializes pyenv or adds directories, and the other context (cron, IDE terminal, CI step) never runs that profile. Print PATH in both and diff; then initialize the tool in the profile the failing context actually loads, or use absolute paths."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"python: command not found — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>python: command not found — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'python: command not found' and 'Python was not found; run without arguments to install'. python vs python3, Windows App Execution Aliases, PATH.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="python: command not found, &#39;python&#39; is not recognized as an internal or external command, Python was not found; run without arguments to install from the Microsoft Store, zsh: command not found: python, bash: python: command not found">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="python: command not found — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'python: command not found' and 'Python was not found; run without arguments to install'. python vs python3, Windows App Execution Aliases, PATH.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/command-python-not-found">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/command-python-not-found">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>python: command not found</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>python: command not found</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Shell errors 'python: command not found' or Windows opening the Microsoft Store — the python command is missing from PATH, or only python3 exists.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>python: command not found</code></li><li><code>&#39;python&#39; is not recognized as an internal or external command</code></li><li><code>Python was not found; run without arguments to install from the Microsoft Store</code></li><li><code>zsh: command not found: python</code></li><li><code>bash: python: command not found</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Modern Linux distributions ship only a python3 command (the python name was retired with Python 2), macOS depends on developer tools or Homebrew, and Windows ships a fake 'python' App Execution Alias that opens the Microsoft Store when nothing real is installed. So this error means one of: Python is genuinely not installed, it is installed under a different name (python3, py), or it is installed but not on the PATH your shell searches.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Only python3 exists</strong> — Ubuntu, Debian, Fedora, and most modern Linux systems install python3 with no python alias. Scripts and tutorials written as 'python ...' fail out of the box.</li>
+                <li><strong>Windows App Execution Alias hijack</strong> — Typing python on a fresh Windows box triggers a Store stub ('Python was not found; run without arguments to install from the Microsoft Store...') — the alias shadows real installs too, if installed later without PATH.</li>
+                <li><strong>Installed, but not on PATH</strong> — Windows installer run without the 'Add python.exe to PATH' checkbox; pyenv shims not initialized in the shell profile; a venv not activated.</li>
+                <li><strong>Genuinely not installed</strong> — Minimal containers, fresh macOS without developer tools, slim CI images.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Try the names that actually exist</h3>
+            <p>Diagnose in ten seconds — one of these usually answers.</p>
+            <pre><code>python3 --version
+py --version        # Windows launcher
+which python3 || command -v python3
+# Windows: where python</code></pre>
+            <h3>2. Linux: use python3, or install the alias package</h3>
+            <p>Either adapt the habit or make 'python' mean python3 system-wide.</p>
+            <pre><code>sudo apt install python3 python3-venv python3-pip
+# optional 'python' alias on Debian/Ubuntu:
+sudo apt install python-is-python3</code></pre>
+            <h3>3. Windows: disable the Store alias and fix PATH</h3>
+            <p>Settings → Apps → Advanced app settings → App execution aliases → turn OFF both 'python' entries. Then install from python.org with 'Add python.exe to PATH' checked, or use the py launcher which needs no PATH edits.</p>
+            <pre><code>py --version
+py -3.12 script.py   # pick a specific installed version</code></pre>
+            <h3>4. macOS: install via Homebrew or the CLT</h3>
+            <p>Homebrew gives current Python as python3.</p>
+            <pre><code>brew install python
+python3 --version
+# make sure brew's bin is on PATH (Apple Silicon):
+echo 'eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;' &gt;&gt; ~/.zprofile</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why did 'python' stop existing on Linux?</h3>
+            <p>During the Python 2→3 transition, 'python' meant Python 2 on most systems. When Python 2 was removed (EOL January 2020), distros dropped the name rather than silently changing what it pointed to. python3 is the stable, unambiguous name; python-is-python3 exists for compatibility.</p>
+            <h3>pip is also 'not found' — same fix?</h3>
+            <p>Same family: use pip3, or better, invoke it through the interpreter — 'python3 -m pip install ...' always matches pip to the python you ran, which avoids the classic multiple-Pythons confusion where pip installs into a different interpreter than the one running your code.</p>
+            <h3>The command works in one terminal but not another — how?</h3>
+            <p>Different PATH per shell: your profile (.bashrc/.zshrc) initializes pyenv or adds directories, and the other context (cron, IDE terminal, CI step) never runs that profile. Print PATH in both and diff; then initialize the tool in the profile the failing context actually loads, or use absolute paths.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/externally-managed-environment">externally-managed-environment</a> — the next hurdle after installing.</li>
+                <li><a href="/errors/python/no-module-named-pip">No Module Named pip</a> — pip missing from an interpreter.</li>
+                <li><a href="/errors/devops/python-modulenotfounderror">ModuleNotFoundError</a> — packages missing at import time.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/env-file-parser/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Env File Parser</span>
+                    <span class="recommended-tool-desc">Check PATH-related env files</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/env-file-parser/" class="cta-btn-primary">Try Env File Parser</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

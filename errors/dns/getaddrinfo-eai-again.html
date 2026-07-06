@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between EAI_AGAIN and ENOTFOUND?","acceptedAnswer":{"@type":"Answer","text":"ENOTFOUND is a definitive answer: the name does not exist. EAI_AGAIN means no definitive answer arrived — the resolver timed out or was unreachable. ENOTFOUND points at the hostname; EAI_AGAIN points at DNS infrastructure."}},{"@type":"Question","name":"Why does 'npm install' fail with EAI_AGAIN inside docker build?","acceptedAnswer":{"@type":"Answer","text":"During builds, BuildKit containers use the host's DNS configuration. If the host resolv.conf points at a VPN-only or systemd-resolved stub address the build network cannot reach, registry lookups time out. Setting explicit DNS servers in /etc/docker/daemon.json fixes it."}},{"@type":"Question","name":"Can EAI_AGAIN be permanent?","acceptedAnswer":{"@type":"Answer","text":"If the configured resolver is permanently unreachable, every lookup returns EAI_AGAIN forever. 'Temporary' describes the protocol semantics, not a guarantee it will heal — check the resolver path if the error persists for more than a minute."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"getaddrinfo EAI_AGAIN — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getaddrinfo EAI_AGAIN — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'getaddrinfo EAI_AGAIN' errors. Covers Docker DNS (127.0.0.11), slow upstream resolvers, Kubernetes ndots, and retry strategies.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="getaddrinfo EAI_AGAIN, Error: getaddrinfo EAI_AGAIN, EAI_AGAIN docker, npm ERR! errno EAI_AGAIN, request to https://registry.npmjs.org failed EAI_AGAIN">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="getaddrinfo EAI_AGAIN — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'getaddrinfo EAI_AGAIN' errors. Covers Docker DNS (127.0.0.11), slow upstream resolvers, Kubernetes ndots, and retry strategies.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/getaddrinfo-eai-again">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/getaddrinfo-eai-again">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>getaddrinfo EAI_AGAIN</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>getaddrinfo EAI_AGAIN</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A temporary DNS resolution failure in Node.js and other applications — the resolver could not get an answer in time, often inside Docker containers or CI environments.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>getaddrinfo EAI_AGAIN</code></li><li><code>Error: getaddrinfo EAI_AGAIN</code></li><li><code>EAI_AGAIN docker</code></li><li><code>npm ERR! errno EAI_AGAIN</code></li><li><code>request to https://registry.npmjs.org failed EAI_AGAIN</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>EAI_AGAIN is the resolver's way of saying 'try again later': the DNS lookup did not definitively fail, but no answer arrived in time. Unlike ENOTFOUND (the name does not exist), EAI_AGAIN is an infrastructure problem — the DNS server is slow, unreachable, or overloaded. It is especially common inside Docker builds and containers, where DNS requests pass through Docker's embedded resolver at 127.0.0.11 and then to whatever upstream the host provides.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Upstream DNS server is slow or unreachable</strong> — The configured resolver did not respond within the timeout. The name may be perfectly valid — the path to the resolver is the problem.</li>
+                <li><strong>Docker's embedded DNS cannot reach its upstream</strong> — Containers resolve via 127.0.0.11, which forwards to the host's resolvers. VPN software, firewalls, or a host resolv.conf pointing at an unreachable server make every container lookup time out.</li>
+                <li><strong>Kubernetes ndots expansion multiplies queries</strong> — The default ndots:5 setting makes the resolver try several search-domain suffixes before the real name, multiplying DNS traffic. Under load, some of those lookups time out and surface as EAI_AGAIN.</li>
+                <li><strong>Rate limiting or packet loss on port 53</strong> — Public resolvers rate-limit heavy clients, and lossy networks drop UDP DNS packets. High-volume services that resolve on every request are most exposed.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Test resolution directly against a known resolver</h3>
+            <p>Distinguish 'my resolver is broken' from 'the network is down' by querying a public resolver explicitly.</p>
+            <pre><code>dig example.com            # uses configured resolver
+dig @1.1.1.1 example.com   # bypasses it
+# in a container:
+docker run --rm alpine nslookup example.com</code></pre>
+            <h3>2. Configure Docker's DNS explicitly</h3>
+            <p>Point the Docker daemon at reliable resolvers so containers stop depending on a fragile host configuration. Restart Docker afterwards.</p>
+            <pre><code># /etc/docker/daemon.json
+{
+  &quot;dns&quot;: [&quot;1.1.1.1&quot;, &quot;8.8.8.8&quot;]
+}
+
+sudo systemctl restart docker</code></pre>
+            <h3>3. Retry with backoff for transient failures</h3>
+            <p>Because EAI_AGAIN is by definition temporary, network code that talks to external APIs should treat it as retryable rather than fatal.</p>
+            <pre><code>async function fetchWithRetry(url, tries = 3) {
+  for (let i = 0; i &lt; tries; i++) {
+    try { return await fetch(url); }
+    catch (e) {
+      if (e.cause?.code !== 'EAI_AGAIN' || i === tries - 1) throw e;
+      await new Promise(r =&gt; setTimeout(r, 500 * 2 ** i));
+    }
+  }
+}</code></pre>
+            <h3>4. Reduce ndots or use fully-qualified names in Kubernetes</h3>
+            <p>Appending a trailing dot ('api.example.com.') or lowering ndots stops the resolver from trying cluster search domains for external names.</p>
+            <pre><code># pod spec:
+dnsConfig:
+  options:
+    - name: ndots
+      value: &quot;2&quot;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between EAI_AGAIN and ENOTFOUND?</h3>
+            <p>ENOTFOUND is a definitive answer: the name does not exist. EAI_AGAIN means no definitive answer arrived — the resolver timed out or was unreachable. ENOTFOUND points at the hostname; EAI_AGAIN points at DNS infrastructure.</p>
+            <h3>Why does 'npm install' fail with EAI_AGAIN inside docker build?</h3>
+            <p>During builds, BuildKit containers use the host's DNS configuration. If the host resolv.conf points at a VPN-only or systemd-resolved stub address the build network cannot reach, registry lookups time out. Setting explicit DNS servers in /etc/docker/daemon.json fixes it.</p>
+            <h3>Can EAI_AGAIN be permanent?</h3>
+            <p>If the configured resolver is permanently unreachable, every lookup returns EAI_AGAIN forever. 'Temporary' describes the protocol semantics, not a guarantee it will heal — check the resolver path if the error persists for more than a minute.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/getaddrinfo-enotfound">getaddrinfo ENOTFOUND</a> — the definitive-failure variant.</li>
+                <li><a href="/errors/dns/dns-query-timeout">DNS Query Timeout</a> — the underlying resolver timeout.</li>
+                <li><a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a> — the same condition at the Linux system level.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/dns-propagation/">How DNS propagation works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Test resolution from an independent network</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Check reachability and response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

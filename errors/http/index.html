@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Errors — 4xx &amp; 5xx Troubleshooting — duckTyped</title>
+    <meta name="description" content="Learn how to diagnose and fix common HTTP errors such as 404 Not Found, 429 Too Many Requests, 500 Internal Server Error, and 502 Bad Gateway using DuckTyped troubleshooting guides.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HTTP Errors – Troubleshooting 4xx and 5xx Web Server Issues — duckTyped">
+    <meta property="og:description" content="Step-by-step guides for fixing common HTTP 4xx and 5xx errors including 404, 500, 502, 503, and more.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTTP Errors – Troubleshooting 4xx and 5xx Web Server Issues — duckTyped">
+    <meta name="twitter:description" content="Fix common HTTP errors with step-by-step troubleshooting guides for 404, 500, 502, 503, and more.">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        .errors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .error-card {
+            display: block;
+            text-decoration: none;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .error-card:hover {
+            border-color: var(--primary-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .error-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .badge-http { background: rgba(242,194,0,0.1); color: #F2C200; }
+        .error-card-title {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .error-card-desc {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+        .hub-breadcrumb {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+        .hub-breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .hub-breadcrumb a:hover { text-decoration: underline; }
+        .hub-tools-section {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            margin-bottom: 48px;
+        }
+        .hub-tools-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .hub-tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hub-tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--primary-dim);
+            border: 1px solid var(--primary-border);
+            border-radius: 999px;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .hub-tool-link:hover { filter: brightness(1.1); }
+        .hub-category-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .hub-category-link {
+            padding: 7px 16px;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .hub-category-link:hover,
+        .hub-category-link.active {
+            background: var(--primary-dim);
+            border-color: var(--primary-border);
+            color: var(--primary-color);
+        }
+        .errors-group-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            margin-top: 32px;
+        }
+        .errors-group-label:first-of-type { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="hub-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> &rsaquo; HTTP Errors
+        </div>
+
+        <div class="standalone-hero">
+            <h1>HTTP Errors</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">HTTP status error codes are returned by web servers to indicate what went wrong with a request. 4xx codes signal client-side problems like missing pages or missing authentication. 5xx codes indicate server-side failures. Use the guides below to understand each error and how to resolve it.</p>
+        </div>
+
+        <!-- Category navigation -->
+        <div class="hub-category-nav">
+            <a href="/errors/browser/" class="hub-category-link">Browser</a>
+            <a href="/errors/http/" class="hub-category-link active">HTTP</a>
+            <a href="/errors/dns/" class="hub-category-link">DNS</a>
+            <a href="/errors/email/" class="hub-category-link">Email</a>
+            <a href="/errors/ssl/" class="hub-category-link">SSL / TLS</a>
+            <a href="/errors/devops/" class="hub-category-link">DevOps</a>
+            <a href="/errors/database/" class="hub-category-link">Database</a>
+            <a href="/errors/nginx/" class="hub-category-link">Nginx</a>
+            <a href="/errors/apache/" class="hub-category-link">Apache</a>
+            <a href="/errors/node/" class="hub-category-link">Node.js</a>
+            <a href="/errors/python/" class="hub-category-link">Python</a>
+            <a href="/errors/cloudflare/" class="hub-category-link">Cloudflare</a>
+        </div>
+
+        <!-- 3xx errors -->
+        <div class="errors-group-label">3xx Redirection</div>
+        <div class="errors-grid">
+            <a href="/errors/http/301-moved-permanently" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">301 Moved Permanently</div>
+                <div class="error-card-desc">The requested resource has been permanently moved to a new URL.</div>
+            </a>
+            <a href="/errors/http/302-found" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">302 Found</div>
+                <div class="error-card-desc">The requested resource temporarily resides at a different URL.</div>
+            </a>
+            <a href="/errors/http/304-not-modified" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">304 Not Modified</div>
+                <div class="error-card-desc">The resource has not been modified since the last request.</div>
+            </a>
+            <a href="/errors/http/307-temporary-redirect" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">307 Temporary Redirect</div>
+                <div class="error-card-desc">The resource temporarily resides at a different URL, preserving the request method.</div>
+            </a>
+            <a href="/errors/http/308-permanent-redirect" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">308 Permanent Redirect</div>
+                <div class="error-card-desc">The resource has permanently moved, preserving the request method.</div>
+            </a>
+        </div>
+
+        <!-- 4xx errors -->
+        <div class="errors-group-label">4xx Client Errors</div>
+        <div class="errors-grid">
+            <a href="/errors/http/400-bad-request" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">400 Bad Request</div>
+                <div class="error-card-desc">The server could not process the request due to malformed syntax or invalid parameters.</div>
+            </a>
+            <a href="/errors/http/401-unauthorized" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">401 Unauthorized</div>
+                <div class="error-card-desc">Authentication is required and the request did not provide valid credentials.</div>
+            </a>
+            <a href="/errors/http/403-forbidden" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">403 Forbidden</div>
+                <div class="error-card-desc">The server refuses to authorize access to the requested resource.</div>
+            </a>
+            <a href="/errors/http/404-not-found" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">404 Not Found</div>
+                <div class="error-card-desc">The requested page or resource does not exist on the server.</div>
+            </a>
+            <a href="/errors/http/405-method-not-allowed" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">405 Method Not Allowed</div>
+                <div class="error-card-desc">The HTTP method used is not allowed for the requested resource.</div>
+            </a>
+            <a href="/errors/http/406-not-acceptable" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">406 Not Acceptable</div>
+                <div class="error-card-desc">The server cannot produce a response matching the client's Accept headers.</div>
+            </a>
+            <a href="/errors/http/407-proxy-authentication-required" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">407 Proxy Authentication Required</div>
+                <div class="error-card-desc">The client must authenticate with the proxy before the request can proceed.</div>
+            </a>
+            <a href="/errors/http/408-request-timeout" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">408 Request Timeout</div>
+                <div class="error-card-desc">The server closed the connection because the client took too long to send the request.</div>
+            </a>
+            <a href="/errors/http/409-conflict" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">409 Conflict</div>
+                <div class="error-card-desc">The request conflicts with the current state of the resource on the server.</div>
+            </a>
+            <a href="/errors/http/410-gone" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">410 Gone</div>
+                <div class="error-card-desc">The requested resource has been permanently removed from the server.</div>
+            </a>
+            <a href="/errors/http/411-length-required" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">411 Length Required</div>
+                <div class="error-card-desc">The server requires a Content-Length header in the request.</div>
+            </a>
+            <a href="/errors/http/412-precondition-failed" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">412 Precondition Failed</div>
+                <div class="error-card-desc">One or more precondition headers evaluated to false on the server.</div>
+            </a>
+            <a href="/errors/http/413-payload-too-large" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">413 Payload Too Large</div>
+                <div class="error-card-desc">The request body exceeds the server's size limit.</div>
+            </a>
+            <a href="/errors/http/414-uri-too-long" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">414 URI Too Long</div>
+                <div class="error-card-desc">The request URL is longer than the server is willing to process.</div>
+            </a>
+            <a href="/errors/http/415-unsupported-media-type" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">415 Unsupported Media Type</div>
+                <div class="error-card-desc">The server refuses to accept the request because the Content-Type is not supported.</div>
+            </a>
+            <a href="/errors/http/416-range-not-satisfiable" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">416 Range Not Satisfiable</div>
+                <div class="error-card-desc">The requested byte range cannot be fulfilled by the server.</div>
+            </a>
+            <a href="/errors/http/417-expectation-failed" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">417 Expectation Failed</div>
+                <div class="error-card-desc">The server cannot meet the requirements of the Expect header.</div>
+            </a>
+            <a href="/errors/http/418-im-a-teapot" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">418 I'm a Teapot</div>
+                <div class="error-card-desc">The server refuses to brew coffee because it is a teapot.</div>
+            </a>
+            <a href="/errors/http/421-misdirected-request" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">421 Misdirected Request</div>
+                <div class="error-card-desc">The request was directed to a server that cannot produce a response.</div>
+            </a>
+            <a href="/errors/http/422-unprocessable-entity" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">422 Unprocessable Entity</div>
+                <div class="error-card-desc">The request syntax is valid but the content fails semantic validation.</div>
+            </a>
+            <a href="/errors/http/429-too-many-requests" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">429 Too Many Requests</div>
+                <div class="error-card-desc">The client has sent too many requests in a short period and hit the server's rate limit.</div>
+            </a>
+            <a href="/errors/http/423-locked" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">423 Locked</div>
+                <div class="error-card-desc">The resource is locked and cannot be modified.</div>
+            </a>
+            <a href="/errors/http/424-failed-dependency" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">424 Failed Dependency</div>
+                <div class="error-card-desc">The request failed because it depended on another request that also failed.</div>
+            </a>
+            <a href="/errors/http/425-too-early" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">425 Too Early</div>
+                <div class="error-card-desc">The server is unwilling to process a request that might be replayed.</div>
+            </a>
+            <a href="/errors/http/426-upgrade-required" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">426 Upgrade Required</div>
+                <div class="error-card-desc">The server requires the client to upgrade to a different protocol.</div>
+            </a>
+            <a href="/errors/http/428-precondition-required" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">428 Precondition Required</div>
+                <div class="error-card-desc">The server requires the request to be conditional.</div>
+            </a>
+            <a href="/errors/http/431-request-header-fields-too-large" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">431 Request Header Fields Too Large</div>
+                <div class="error-card-desc">The request headers are too large for the server to process.</div>
+            </a>
+            <a href="/errors/http/451-unavailable-for-legal-reasons" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">451 Unavailable For Legal Reasons</div>
+                <div class="error-card-desc">The resource is unavailable due to legal demands.</div>
+            </a>
+        </div>
+
+        <!-- 5xx errors -->
+        <div class="errors-group-label">5xx Server Errors</div>
+        <div class="errors-grid">
+            <a href="/errors/http/500-internal-server-error" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">500 Internal Server Error</div>
+                <div class="error-card-desc">The server encountered an unexpected error while processing the request.</div>
+            </a>
+            <a href="/errors/http/501-not-implemented" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">501 Not Implemented</div>
+                <div class="error-card-desc">The server does not support the HTTP method used in the request.</div>
+            </a>
+            <a href="/errors/http/502-bad-gateway" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">502 Bad Gateway</div>
+                <div class="error-card-desc">A proxy or gateway received an invalid response from the upstream server.</div>
+            </a>
+            <a href="/errors/http/503-service-unavailable" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">503 Service Unavailable</div>
+                <div class="error-card-desc">The server is temporarily unable to handle requests — usually due to maintenance or overload.</div>
+            </a>
+            <a href="/errors/http/504-gateway-timeout" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">504 Gateway Timeout</div>
+                <div class="error-card-desc">The gateway timed out waiting for an upstream server to respond.</div>
+            </a>
+            <a href="/errors/http/507-insufficient-storage" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">507 Insufficient Storage</div>
+                <div class="error-card-desc">The server cannot store the data needed to complete the request.</div>
+            </a>
+            <a href="/errors/http/506-variant-also-negotiates" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">506 Variant Also Negotiates</div>
+                <div class="error-card-desc">The server has a circular reference in content negotiation.</div>
+            </a>
+            <a href="/errors/http/508-loop-detected" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">508 Loop Detected</div>
+                <div class="error-card-desc">The server detected an infinite loop while processing the request.</div>
+            </a>
+            <a href="/errors/http/510-not-extended" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">510 Not Extended</div>
+                <div class="error-card-desc">The request requires an HTTP extension that the server does not support.</div>
+            </a>
+            <a href="/errors/http/511-network-authentication-required" class="error-card">
+                <span class="error-card-badge badge-http">HTTP</span>
+                <div class="error-card-title">511 Network Authentication Required</div>
+                <div class="error-card-desc">The client needs to authenticate to gain network access.</div>
+            </a>
+        </div>
+
+        <!-- Related tools -->
+        <div class="hub-tools-section">
+            <div class="hub-tools-title">Related Tools</div>
+            <div class="hub-tools-list">
+                <a href="/http-latency/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    HTTP Latency
+                </a>
+                <a href="/redirect-checker/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                    Redirect Checker
+                </a>
+                <a href="/security-headers/" class="hub-tool-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Security Headers
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta">
+            <p>Browse all troubleshooting guides or explore free developer tools.</p>
+            <a href="/errors/" class="cta-btn-primary">All Error Guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

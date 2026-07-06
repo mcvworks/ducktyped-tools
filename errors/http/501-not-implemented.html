@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 501 Not Implemented mean?","acceptedAnswer":{"@type":"Answer","text":"A 501 Not Implemented error means the server does not support the HTTP method used in the request. For example, a server that only supports GET and POST will return 501 if it receives a PATCH or DELETE request."}},{"@type":"Question","name":"What is the difference between 501 and 405?","acceptedAnswer":{"@type":"Answer","text":"A 405 Method Not Allowed means the server knows the method but the specific resource does not support it. A 501 Not Implemented means the server does not support the method at all, for any resource."}},{"@type":"Question","name":"How do I fix a 501 Not Implemented error?","acceptedAnswer":{"@type":"Answer","text":"If using an API, check that you are using a supported HTTP method for the endpoint. If you are the server owner, implement support for the required method or return 405 Method Not Allowed with an Allow header listing supported methods."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"501 Not Implemented — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>501 Not Implemented — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 501 Not Implemented HTTP error means and how to fix it. Covers unsupported HTTP methods and server capability gaps.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 501, 501 Not Implemented, 501 error, Method not implemented, 501 server error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="501 Not Implemented — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 501 Not Implemented errors by checking HTTP method support and server configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/501-not-implemented">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/501-not-implemented">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>501 Not Implemented</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>501 Not Implemented</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 501 error means the server does not support the HTTP method in the request. The server lacks the functionality to fulfill the request.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 501</code></li><li><code>501 Not Implemented</code></li><li><code>501 error</code></li><li><code>Method not implemented</code></li><li><code>501 server error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 501 is returned when the server does not recognize or implement the HTTP method used in the request. All HTTP servers are required to support GET and HEAD. Other methods like PATCH, PUT, DELETE, and CONNECT are optional — a server may return 501 for any method it does not support.</p>
+            <p>This is a server-side limitation, not a client error. The 501 response may include an <code>Allow</code> header listing the methods the server does support.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Unsupported HTTP method</strong> — sending PATCH, PUT, or DELETE to a server that only handles GET and POST.</li>
+                <li><strong>Proxy server limitation</strong> — a proxy in the chain does not support the requested method and returns 501 instead of forwarding it.</li>
+                <li><strong>Incomplete API implementation</strong> — a developer planned an endpoint but has not yet implemented the method handler.</li>
+                <li><strong>Web framework routing gap</strong> — no route handler registered for that HTTP method on the endpoint.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For API Consumers</h3>
+
+            <h4>1. Check the API Documentation</h4>
+            <p>Verify which HTTP methods the endpoint supports. You may be using PATCH when the API only supports PUT, or vice versa.</p>
+
+            <h4>2. Check the Allow Header</h4>
+            <p>The 501 response may include an <code>Allow</code> header listing supported methods:
+            <code>Allow: GET, POST, PUT</code>. Use one of those methods instead.</p>
+
+            <h3>For Server Owners</h3>
+
+            <h4>3. Implement the Required Method Handler</h4>
+            <p>Add a route handler for the method in your web framework:</p>
+            <pre><code># Express.js example
+app.patch('/resource/:id', (req, res) => {
+    // implement handler
+});</code></pre>
+
+            <h4>4. Return 405 Instead of 501 Where Appropriate</h4>
+            <p>If the server supports the method globally but a specific route does not, return <a href="/errors/http/405-method-not-allowed">405 Method Not Allowed</a> with an <code>Allow</code> header. Reserve 501 for methods the server does not implement at all.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does 501 mean the feature is coming soon?</h3>
+            <p>Not officially — 501 just means "not supported." However, some developers use it as a placeholder for endpoints they plan to implement. Check the API changelog or contact the provider for clarification.</p>
+
+            <h3>Can I encounter 501 on a normal website?</h3>
+            <p>Rarely. Browsers typically only send GET requests for page loads. 501 is more commonly encountered when making API requests programmatically with PATCH, PUT, DELETE, or custom methods.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/405-method-not-allowed">405 Method Not Allowed</a> — method is known but not allowed on this resource.</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — generic server-side error.</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — malformed request.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

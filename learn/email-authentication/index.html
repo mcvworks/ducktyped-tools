@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How Email Authentication Works — SPF, DKIM, and DMARC","description":"Learn how email authentication works using SPF, DKIM, and DMARC. Understand how these three protocols work together to prevent email spoofing and improve deliverability.","datePublished":"2026-03-08","dateModified":"2026-03-08","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/email-authentication/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"How Email Authentication Works"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do I need all three: SPF, DKIM, and DMARC?","acceptedAnswer":{"@type":"Answer","text":"Each protocol addresses a different aspect of email authentication. SPF verifies the sending server's IP is authorized. DKIM verifies the message hasn't been tampered with. DMARC ties them together by requiring domain alignment and specifying what to do when authentication fails. Without all three, there are gaps that attackers can exploit."}},{"@type":"Question","name":"What happens when email authentication fails?","acceptedAnswer":{"@type":"Answer","text":"The outcome depends on the DMARC policy. With p=none, failures are logged but messages are delivered normally. With p=quarantine, failed messages are sent to spam or junk folders. With p=reject, failed messages are refused entirely. Without DMARC, receiving servers use their own heuristics, which may or may not consider SPF and DKIM results."}},{"@type":"Question","name":"Do all email providers check SPF, DKIM, and DMARC?","acceptedAnswer":{"@type":"Answer","text":"All major email providers (Gmail, Outlook, Yahoo, Apple Mail) check SPF, DKIM, and DMARC. Google and Yahoo began requiring DMARC for bulk senders in 2024. Smaller or older email systems may not perform all checks, but the trend is toward universal adoption."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Authentication — SPF, DKIM, DMARC — duckTyped</title>
+    <meta name="description" content="Learn how email authentication works using SPF, DKIM, and DMARC. Understand how these three protocols work together to prevent email spoofing and improve deliverability.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How Email Authentication Works — SPF, DKIM, DMARC Explained — duckTyped">
+    <meta property="og:description" content="Learn how SPF, DKIM, and DMARC work together to authenticate email and prevent spoofing.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/email-authentication/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How Email Authentication Works — SPF, DKIM, DMARC — duckTyped">
+    <meta name="twitter:description" content="Learn how SPF, DKIM, and DMARC work together to authenticate email.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/email-authentication/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>How Email Authentication Works</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>How Email Authentication Works</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Email authentication is a set of protocols -- SPF, DKIM, and DMARC -- that work together to verify that an email genuinely comes from the domain it claims to be from. This guide explains how the three protocols complement each other and how to implement them.</p>
+
+            <h2>The Email Spoofing Problem</h2>
+            <p>The original email protocol (SMTP) was designed in the early 1980s with no built-in authentication. Any server can connect to a mail server and claim to be sending from any domain. This fundamental design flaw makes email spoofing trivially easy and is the root cause of phishing, business email compromise, and spam.</p>
+            <p>Email authentication protocols were developed to retrofit security onto SMTP without breaking backward compatibility. Each protocol addresses a specific gap:</p>
+            <ul>
+                <li><strong>SPF</strong> (2006) -- verifies that the sending server's IP is authorized by the domain.</li>
+                <li><strong>DKIM</strong> (2007) -- verifies that the message content has not been modified and was signed by an authorized key.</li>
+                <li><strong>DMARC</strong> (2012) -- ties SPF and DKIM together with domain alignment and policy enforcement.</li>
+            </ul>
+
+            <h2>How the Three Protocols Work Together</h2>
+            <p>Think of email authentication as a layered verification system:</p>
+
+            <h3>Layer 1: SPF — "Is this server allowed to send for this domain?"</h3>
+            <p>When a receiving server gets an email, it checks the envelope sender domain's SPF record in DNS. The SPF record lists authorized IP addresses and includes. If the sending server's IP matches, SPF passes. SPF answers the question of <strong>who sent the message</strong> at the server level.</p>
+            <p><strong>Limitation:</strong> SPF checks the envelope sender (Return-Path), not the From header users see. SPF also breaks when email is forwarded.</p>
+
+            <h3>Layer 2: DKIM — "Is this message authentic and unmodified?"</h3>
+            <p>The sending server cryptographically signs selected headers and the message body using a private key. The receiving server retrieves the public key from DNS and verifies the signature. If the signature is valid, the message is authenticated and proven unmodified. DKIM answers the question of <strong>message integrity</strong>.</p>
+            <p><strong>Limitation:</strong> DKIM does not tell the receiver what to do when verification fails. It also breaks when message content is modified (e.g., by mailing lists).</p>
+
+            <h3>Layer 3: DMARC — "Does authentication align, and what should we do about failures?"</h3>
+            <p>DMARC checks whether the domain authenticated by SPF or DKIM <strong>aligns</strong> with the visible From header domain. It then applies the domain owner's published policy (none, quarantine, or reject) to messages that fail. DMARC also sends reports back to the domain owner.</p>
+            <p>A message passes DMARC if <strong>either</strong> SPF or DKIM passes with alignment. Both do not need to pass.</p>
+
+            <h2>Authentication Flow Example</h2>
+            <p>Here is what happens when user@example.com sends an email to recipient@gmail.com:</p>
+            <ol>
+                <li>The sending server at <code>mail.example.com</code> (IP: 192.0.2.1) connects to Gmail's server.</li>
+                <li>It sends the message with Return-Path: <code>user@example.com</code> and From: <code>user@example.com</code>.</li>
+                <li>The message includes a DKIM-Signature header signed by <code>d=example.com</code>.</li>
+                <li><strong>Gmail checks SPF:</strong> Queries <code>example.com</code> TXT records, finds <code>v=spf1 ip4:192.0.2.0/24 -all</code>. The sending IP 192.0.2.1 is in the authorized range. SPF passes.</li>
+                <li><strong>Gmail checks DKIM:</strong> Retrieves the public key from DNS, verifies the signature. DKIM passes.</li>
+                <li><strong>Gmail checks DMARC:</strong> Queries <code>_dmarc.example.com</code>, finds <code>v=DMARC1; p=reject</code>. SPF domain (example.com) aligns with From domain (example.com). DMARC passes.</li>
+                <li>The email is delivered to the inbox.</li>
+            </ol>
+
+            <h2>What Happens When Authentication Fails</h2>
+            <p>Consider a spoofed email where an attacker sends from <code>attacker-server.com</code> (IP: 198.51.100.5) with From: <code>ceo@example.com</code>:</p>
+            <ol>
+                <li><strong>SPF fails:</strong> 198.51.100.5 is not in example.com's SPF record.</li>
+                <li><strong>DKIM fails:</strong> The attacker does not have example.com's private key and cannot create a valid signature.</li>
+                <li><strong>DMARC fails:</strong> Neither SPF nor DKIM passes with alignment.</li>
+                <li>Gmail applies example.com's DMARC policy (<code>p=reject</code>) and rejects the message.</li>
+            </ol>
+
+            <h2>Implementation Checklist</h2>
+            <p>To fully authenticate your domain's email:</p>
+            <ol>
+                <li><strong>Configure SPF</strong> -- publish a TXT record listing all authorized sending IPs and services.</li>
+                <li><strong>Configure DKIM</strong> -- set up DKIM signing on your mail server and publish the public key in DNS.</li>
+                <li><strong>Start DMARC monitoring</strong> -- publish <code>v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com</code> to collect reports.</li>
+                <li><strong>Review reports</strong> -- analyze aggregate reports to ensure all legitimate senders pass authentication.</li>
+                <li><strong>Enforce DMARC</strong> -- gradually move from <code>p=none</code> to <code>p=quarantine</code> to <code>p=reject</code>.</li>
+            </ol>
+
+            <h2>Industry Requirements</h2>
+            <p>As of 2024, major email providers have tightened authentication requirements:</p>
+            <ul>
+                <li><strong>Google</strong> requires SPF or DKIM for all senders and DMARC for bulk senders (5,000+ messages/day to Gmail).</li>
+                <li><strong>Yahoo</strong> has implemented similar requirements.</li>
+                <li><strong>Microsoft</strong> strongly recommends all three protocols for Outlook.com delivery.</li>
+            </ul>
+            <p>Domains without proper email authentication face increasing deliverability challenges, with messages more likely to be filtered to spam or rejected entirely.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> -- look up SPF, DKIM, and DMARC TXT records.</li>
+                <li><a href="/email-header-analyzer/">Email Header Analyzer</a> -- inspect authentication results (SPF, DKIM, DMARC) in email headers.</li>
+                <li><a href="/smtp-checker/">SMTP Checker</a> -- test mail server connectivity and SMTP responses.</li>
+                <li><a href="/email-validator/">Email Validator</a> -- validate email addresses and check MX records.</li>
+                <li><a href="/blacklist-checker/">Blacklist Checker</a> -- check if your sending IP or domain is blacklisted.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Deep dives:</strong> <a href="/learn/what-is-spf/">What is SPF</a>, <a href="/learn/what-is-dkim/">What is DKIM</a>, <a href="/learn/what-is-dmarc/">What is DMARC</a>, <a href="/learn/email-auth-cheat-sheet/">Email auth cheat sheet</a>, <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-550">SMTP 550</a> -- often caused by SPF or DMARC failures.</li>
+                <li><a href="/errors/email/smtp-554">SMTP 554</a> -- policy-based rejection.</li>
+                <li><a href="/errors/email/message-rejected">Message Rejected</a> -- authentication failures are a primary cause.</li>
+                <li><a href="/errors/email/">All Email Errors</a> -- browse all email troubleshooting guides.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/email-header-analyzer/" class="cta-btn-primary">Analyze Email Headers</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

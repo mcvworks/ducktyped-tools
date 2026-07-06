@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Cloudflare itself banning me?","acceptedAnswer":{"@type":"Answer","text":"No — the 1006/1007/1008 family reports a rule the specific website's owner configured. Cloudflare enforces it but did not decide it. Other sites behind Cloudflare will treat you normally unless their owners have similar rules."}},{"@type":"Question","name":"I have never visited this site before — why would they ban me?","acceptedAnswer":{"@type":"Answer","text":"The ban targets the address, not the person. Dynamic ISP pools, mobile carriers, and VPN services recycle IPs constantly; you are likely holding an address that earned a ban in someone else's hands. A different network usually proves it instantly."}},{"@type":"Question","name":"What are the exact differences between 1006, 1007, and 1008?","acceptedAnswer":{"@type":"Answer","text":"They distinguish which flavor of access rule matched (direct IP ban vs range vs other criteria) — operationally identical for both sides. Treat the trio as one condition: an owner-configured IP Access Rule matched the visitor."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare error 1006/1007/1008 'owner has banned your IP address'. What visitors can do, and where owners manage IP Access Rules.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 1006, Error 1007, Error 1008, the owner of this website has banned your ip address, access denied banned ip">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare error 1006/1007/1008 'owner has banned your IP address'. What visitors can do, and where owners manage IP Access Rules.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-1006">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-1006">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Errors 1006, 1007, 1008 — Access Denied: IP Banned</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">The page 'Access denied: the owner of this website has banned your IP address' — an IP Access Rule on the site explicitly blocks your address or range.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 1006</code></li><li><code>Error 1007</code></li><li><code>Error 1008</code></li><li><code>the owner of this website has banned your ip address</code></li><li><code>access denied banned ip</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Errors 1006, 1007, and 1008 are the same event through slightly different rule types: the site's owner (not Cloudflare) configured an IP Access Rule that blocks the visitor's IP address, range, or country, and the request matched it. For visitors, the honest news is that the block is intentional from the site's side — though the *reason* is often stale or overbroad: shared/carrier IPs inherit bans earned by strangers, VPN exit nodes accumulate blocks, and old rules outlive their purpose. For owners, the fix lives in one dashboard page.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Your IP matches an explicit block rule</strong> — The exact address or a CIDR range containing it is on the site's block list — sometimes aimed at you, more often at whoever had the address before, or the whole range.</li>
+                <li><strong>VPN, proxy, or shared network reputation</strong> — VPN exits, Tor, cloud-provider ranges, and carrier-grade NAT put thousands of users behind addresses that owners ban wholesale.</li>
+                <li><strong>Country or ASN blocks</strong> — Owners can block whole countries or networks; visitors inside them match automatically (1009 is the country-specific variant of the same family).</li>
+                <li><strong>Stale rules on the owner's side</strong> — A ban added during an old incident, never revisited, now blocking legitimate users who inherited the address space.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Visitors: change how you appear</h3>
+            <p>Toggle the VPN (off, or a different exit), switch networks (mobile data vs Wi-Fi), or restart a dynamic connection to get another address. If the block is country-based, only the site's owner can help.</p>
+            <pre><code># see the IP you currently present:
+curl -s ifconfig.me</code></pre>
+            <h3>2. Visitors: contact the site with specifics</h3>
+            <p>Owners can only fix what they can find: send the exact error code (1006/1007/1008), your IP at the time, the URL, and the Ray ID from the error page.</p>
+            <h3>3. Owners: audit IP Access Rules</h3>
+            <p>Dashboard → Security → WAF → Tools (IP Access Rules). Search the reported IP; remember rules can exist at account level as well as zone level, and a CIDR entry may cover the IP without matching it literally.</p>
+            <pre><code># rules are managable via API too:
+curl -s -X GET 'https://api.cloudflare.com/client/v4/zones/ZONE_ID/firewall/access_rules/rules?configuration.value=1.2.3.4' \
+  -H 'Authorization: Bearer API_TOKEN' | head -40</code></pre>
+            <h3>4. Owners: prefer managed challenges to hard bans</h3>
+            <p>For gray-area traffic, a challenge rule lets humans through while still stopping bots — hard IP bans age badly as addresses change hands.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is Cloudflare itself banning me?</h3>
+            <p>No — the 1006/1007/1008 family reports a rule the specific website's owner configured. Cloudflare enforces it but did not decide it. Other sites behind Cloudflare will treat you normally unless their owners have similar rules.</p>
+            <h3>I have never visited this site before — why would they ban me?</h3>
+            <p>The ban targets the address, not the person. Dynamic ISP pools, mobile carriers, and VPN services recycle IPs constantly; you are likely holding an address that earned a ban in someone else's hands. A different network usually proves it instantly.</p>
+            <h3>What are the exact differences between 1006, 1007, and 1008?</h3>
+            <p>They distinguish which flavor of access rule matched (direct IP ban vs range vs other criteria) — operationally identical for both sides. Treat the trio as one condition: an owner-configured IP Access Rule matched the visitor.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/cloudflare/error-1020">Cloudflare Error 1020</a> — denial by broader firewall rules.</li>
+                <li><a href="/errors/cloudflare/error-1015">Cloudflare Error 1015</a> — rate limiting instead of bans.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — the generic access-denied status.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Checker</span>
+                    <span class="recommended-tool-desc">See the IP and network you appear as</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Check who owns an IP range</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/isp-lookup/" class="cta-btn-primary">Try ISP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

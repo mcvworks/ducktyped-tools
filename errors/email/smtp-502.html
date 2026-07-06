@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do servers disable VRFY and EXPN?","acceptedAnswer":{"@type":"Answer","text":"VRFY allows anyone to verify whether an email address exists on the server, and EXPN reveals the members of mailing lists. Both can be exploited by spammers to harvest valid email addresses, so administrators disable them as a security measure."}},{"@type":"Question","name":"Is SMTP 502 a temporary or permanent error?","acceptedAnswer":{"@type":"Answer","text":"It is a permanent error. The server will never support the command unless the administrator enables it. Your client must use alternative commands or approaches."}},{"@type":"Question","name":"How is SMTP 502 different from SMTP 504?","acceptedAnswer":{"@type":"Answer","text":"SMTP 502 means the entire command is not implemented. SMTP 504 means the command is implemented but a specific parameter for that command is not supported. For example, AUTH may be implemented (no 502) but a specific AUTH mechanism like GSSAPI may not be (504)."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 502 — Command Not Implemented — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 502 — Command Not Implemented","step":[{"@type":"HowToStep","position":1,"name":"Check server capabilities with EHLO","text":"Send an EHLO command and review the server's response to see which extensions and commands are supported."},{"@type":"HowToStep","position":2,"name":"Use a supported authentication mechanism","text":"If AUTH returns 502, check which AUTH mechanisms the server advertises and use one of those instead. Most servers support AUTH LOGIN and AUTH PLAIN."},{"@type":"HowToStep","position":3,"name":"Avoid disabled commands","text":"Do not rely on VRFY or EXPN commands in production email workflows. These commands are disabled on most modern mail servers. Use alternative methods to validate addresses."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 502 — Command Not Implemented — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 502 command not implemented errors. Learn why SMTP servers reject valid commands and how to work with server capability limitations.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 502, 502 Command not implemented, 502 VRFY not implemented">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 502 — Command Not Implemented — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 502 command not implemented errors. Learn why SMTP servers reject valid commands and how to work with server capability limitations.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-502">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-502">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 502 — Command Not Implemented</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 502 — Command Not Implemented</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP command is recognized but not implemented on this server</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 502</code></li><li><code>502 Command not implemented</code></li><li><code>502 VRFY not implemented</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 502 is a permanent error indicating that the server recognizes the SMTP command but has not implemented it. Unlike SMTP 500 where the command is unrecognized, SMTP 502 means the command is part of the SMTP specification but the server deliberately does not support it. This commonly occurs with optional SMTP extensions that not all servers implement, such as VRFY, EXPN, or certain AUTH mechanisms.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Optional SMTP command not supported</strong> — The client sent an optional SMTP command like VRFY (verify address), EXPN (expand mailing list), or TURN that the server has chosen not to implement, often for security reasons.</li>
+                <li><strong>AUTH mechanism not supported</strong> — The client attempted to use an authentication mechanism (such as AUTH CRAM-MD5 or AUTH NTLM) that the server does not support. The server only implements specific authentication methods.</li>
+                <li><strong>ESMTP extension not available</strong> — The client attempted to use an ESMTP extension that was not advertised in the server's EHLO response. Servers only support the extensions they explicitly list.</li>
+                <li><strong>Security policy disables the command</strong> — The server administrator has deliberately disabled certain commands for security purposes. VRFY and EXPN are commonly disabled to prevent email address harvesting.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check server capabilities with EHLO</h3>
+            <p>Send an EHLO command and review the server's response to see which extensions and commands are supported.</p>
+            <pre><code># Check supported extensions
+telnet mail.example.com 25
+EHLO client.example.com
+
+# Server responds with supported extensions:
+# 250-PIPELINING
+# 250-SIZE 52428800
+# 250-AUTH LOGIN PLAIN
+# 250-STARTTLS
+# 250 8BITMIME</code></pre>
+            <h3>2. Use a supported authentication mechanism</h3>
+            <p>If AUTH returns 502, check which AUTH mechanisms the server advertises and use one of those instead. Most servers support AUTH LOGIN and AUTH PLAIN.</p>
+            <h3>3. Avoid disabled commands</h3>
+            <p>Do not rely on VRFY or EXPN commands in production email workflows. These commands are disabled on most modern mail servers. Use alternative methods to validate addresses.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why do servers disable VRFY and EXPN?</h3>
+            <p>VRFY allows anyone to verify whether an email address exists on the server, and EXPN reveals the members of mailing lists. Both can be exploited by spammers to harvest valid email addresses, so administrators disable them as a security measure.</p>
+            <h3>Is SMTP 502 a temporary or permanent error?</h3>
+            <p>It is a permanent error. The server will never support the command unless the administrator enables it. Your client must use alternative commands or approaches.</p>
+            <h3>How is SMTP 502 different from SMTP 504?</h3>
+            <p>SMTP 502 means the entire command is not implemented. SMTP 504 means the command is implemented but a specific parameter for that command is not supported. For example, AUTH may be implemented (no 502) but a specific AUTH mechanism like GSSAPI may not be (504).</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-500">SMTP 500</a> — Command syntax error</li>
+                <li><a href="/errors/email/smtp-504">SMTP 504</a> — Command parameter not implemented</li>
+                <li><a href="/errors/email/smtp-503">SMTP 503</a> — Bad sequence of commands</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP server capabilities</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

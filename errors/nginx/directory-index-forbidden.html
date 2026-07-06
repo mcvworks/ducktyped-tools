@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is this different from a permissions 403?","acceptedAnswer":{"@type":"Answer","text":"This 403 is about a missing index in a directory, and shows this exact 'directory index ... is forbidden' log line. A permissions 403 logs 'Permission denied' instead and involves file ownership/modes (or SELinux). Same status code to the client, entirely different fixes — always read the error log line."}},{"@type":"Question","name":"Why does /page work but /page/ give 403?","acceptedAnswer":{"@type":"Answer","text":"Without the trailing slash nginx matched a file; with it, the request maps to a directory and enters index processing, which failed. A try_files fallback handles both forms uniformly for app-routed sites."}},{"@type":"Question","name":"Is turning autoindex on a security risk?","acceptedAnswer":{"@type":"Answer","text":"It exposes every filename in the directory to anyone, including files you forgot were there (backups, dumps). It is fine for content that is deliberately public, dangerous as a global setting. If you only need to silence crawler noise on directories, returning 404 for them is cleaner than listing them."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Directory Index Forbidden — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Directory Index Forbidden — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx 'directory index of ... is forbidden' 403 errors. Missing index files, wrong root, try_files for SPAs, and when autoindex is appropriate.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="directory index of &quot;/var/www/html/&quot; is forbidden, nginx directory index is forbidden, nginx 403 directory index, autoindex nginx 403">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Directory Index Forbidden — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx 'directory index of ... is forbidden' 403 errors. Missing index files, wrong root, try_files for SPAs, and when autoindex is appropriate.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/directory-index-forbidden">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/directory-index-forbidden">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Directory Index Forbidden</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Directory Index Forbidden</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The error-log line 'directory index of "/var/www/html/" is forbidden' — a request hit a directory, no index file matched, and autoindex is off, so nginx returned 403.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>directory index of &quot;/var/www/html/&quot; is forbidden</code></li><li><code>nginx directory index is forbidden</code></li><li><code>nginx 403 directory index</code></li><li><code>autoindex nginx 403</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When a request maps to a directory rather than a file, nginx tries the filenames in the index directive (index.html by default). If none exists and directory listing (autoindex) is off — the safe default — nginx answers 403 and logs this line. It is a mismatch between what is on disk and what the config expects: the index file is missing or named differently, root points at the wrong directory, or the app needed a try_files fallback (single-page apps, PHP frontends) that is not configured.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No index file in the directory</strong> — The directory exists but contains no index.html (or nothing matching your index directive) — a deploy that did not copy files, or an intentionally file-less directory being hit by crawlers.</li>
+                <li><strong>root points at the wrong directory</strong> — The index file exists — one level above or below where root says. Misplaced root inside location blocks (root + location paths concatenate) is a classic source.</li>
+                <li><strong>index directive does not include the real filename</strong> — The app's entry point is index.php or app.html, while the directive only lists index.html — nginx never tries the file that exists.</li>
+                <li><strong>SPA or PHP app without try_files</strong> — Client-side routed apps need every path to fall back to /index.html; PHP apps need index.php routing. Without try_files, directory URLs dead-end into this 403.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Compare disk contents with the effective config</h3>
+            <p>Look at what is really in the directory and what root/index nginx computed for the request.</p>
+            <pre><code>ls -la /var/www/html/
+sudo nginx -T | grep -E 'root|index' 
+# the error log line names the exact directory nginx looked in</code></pre>
+            <h3>2. Fix root or add the right index</h3>
+            <p>Point root at the directory that holds the entry file, and list the real filename in index.</p>
+            <pre><code>server {
+    root /var/www/myapp/public;
+    index index.php index.html;
+    ...
+}
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></pre>
+            <h3>3. Add try_files for SPAs and PHP apps</h3>
+            <p>Route directory and virtual paths to the app's entry point instead of the filesystem.</p>
+            <pre><code># single-page app:
+location / {
+    try_files $uri $uri/ /index.html;
+}
+# PHP front controller:
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}</code></pre>
+            <h3>4. Enable autoindex only for real file shares</h3>
+            <p>If a browsable listing is the intent (downloads, mirrors), turn it on for that location only — never globally.</p>
+            <pre><code>location /downloads/ {
+    autoindex on;
+    autoindex_exact_size off;
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is this different from a permissions 403?</h3>
+            <p>This 403 is about a missing index in a directory, and shows this exact 'directory index ... is forbidden' log line. A permissions 403 logs 'Permission denied' instead and involves file ownership/modes (or SELinux). Same status code to the client, entirely different fixes — always read the error log line.</p>
+            <h3>Why does /page work but /page/ give 403?</h3>
+            <p>Without the trailing slash nginx matched a file; with it, the request maps to a directory and enters index processing, which failed. A try_files fallback handles both forms uniformly for app-routed sites.</p>
+            <h3>Is turning autoindex on a security risk?</h3>
+            <p>It exposes every filename in the directory to anyone, including files you forgot were there (backups, dumps). It is fine for content that is deliberately public, dangerous as a global setting. If you only need to silence crawler noise on directories, returning 404 for them is cleaner than listing them.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — the generic client-facing status.</li>
+                <li><a href="/errors/nginx/primary-script-unknown">Primary Script Unknown</a> — the PHP-routing cousin of this error.</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — missing-file errors.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Test paths and inspect status codes</span>
+                </a>
+        <a href="/link-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Broken Link Checker</span>
+                    <span class="recommended-tool-desc">Find URLs that dead-end on your site</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

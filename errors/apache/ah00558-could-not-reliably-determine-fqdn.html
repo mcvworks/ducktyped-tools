@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is AH00558 breaking anything or just noise?","acceptedAnswer":{"@type":"Answer","text":"Apache serves traffic fine. The practical costs: log noise on every restart, self-referential redirects possibly using an IP or wrong name (matters with UseCanonicalName On), and health-check scripts that misread the stderr line as an error. Two minutes to fix, so fix it."}},{"@type":"Question","name":"Global ServerName vs the one in my VirtualHost — do both matter?","acceptedAnswer":{"@type":"Answer","text":"Yes, they do different jobs. The global one identifies the server itself and silences AH00558. The per-VirtualHost ServerName decides which vhost answers which Host header — that one you already need for name-based hosting."}},{"@type":"Question","name":"Why does the message name 127.0.1.1?","acceptedAnswer":{"@type":"Answer","text":"Debian-family systems map the machine's hostname to 127.0.1.1 in /etc/hosts. When Apache can find nothing better, that is the address its resolution chain produces — the message is telling you which fallback it chose."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Apache","item":"https://ducktyped.xyz/errors/#apache"},{"@type":"ListItem","position":3,"name":"Apache AH00558 — Could Not Reliably Determine FQDN — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache AH00558 — Could Not Reliably Determine FQDN — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Apache AH00558 'Could not reliably determine the server's fully qualified domain name'. Set ServerName globally and understand when it matters.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="AH00558: apache2: Could not reliably determine the server&#39;s fully qualified domain name, ah00558, apache could not reliably determine fqdn, apache servername warning, using 127.0.1.1 set the servername directive globally">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache AH00558 — Could Not Reliably Determine FQDN — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Apache AH00558 'Could not reliably determine the server's fully qualified domain name'. Set ServerName globally and understand when it matters.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/apache/ah00558-could-not-reliably-determine-fqdn">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/apache/ah00558-could-not-reliably-determine-fqdn">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#apache">Apache</a> <span>/</span> <span>Apache AH00558 — Could Not Reliably Determine FQDN</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Apache AH00558 — Could Not Reliably Determine FQDN</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The startup message 'AH00558: apache2: Could not reliably determine the server's fully qualified domain name' — Apache has no ServerName and is guessing.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>AH00558: apache2: Could not reliably determine the server&#39;s fully qualified domain name</code></li><li><code>ah00558</code></li><li><code>apache could not reliably determine fqdn</code></li><li><code>apache servername warning</code></li><li><code>using 127.0.1.1 set the servername directive globally</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>At startup, Apache wants to know its own hostname to build self-referential URLs and default vhost behavior. Without a ServerName directive, it asks the operating system, and when that returns only 127.0.1.1 or an unresolvable name, Apache prints AH00558 and carries on using the IP. It is a warning, not a failure — the server runs — but it pollutes every restart log, breaks tools that treat stderr output as failure, and hints that redirects Apache generates may use an IP instead of your domain.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>No ServerName directive anywhere</strong> — Fresh installs ship without a global ServerName. Apache falls back to reverse-resolving the host's IP, which on typical cloud/container hosts yields nothing useful.</li>
+                <li><strong>Hostname does not resolve</strong> — The machine's hostname is not in /etc/hosts or DNS, so Apache's lookup chain lands on 127.0.1.1 (the message names the address it settled for).</li>
+                <li><strong>Containers with random hostnames</strong> — Docker containers get generated hostnames that resolve nowhere, so containerized Apache prints AH00558 on every start unless ServerName is set in the image config.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Set a global ServerName</h3>
+            <p>One line in the main config (or a small conf snippet) silences it for good. Use your real domain, or localhost for dev boxes.</p>
+            <pre><code># Debian/Ubuntu:
+echo 'ServerName example.com' | sudo tee /etc/apache2/conf-available/servername.conf
+sudo a2enconf servername
+sudo apachectl configtest &amp;&amp; sudo systemctl reload apache2
+
+# RHEL-family: add 'ServerName example.com' to /etc/httpd/conf/httpd.conf</code></pre>
+            <h3>2. Or make the hostname resolvable</h3>
+            <p>If you prefer fixing the OS side, map the hostname in /etc/hosts.</p>
+            <pre><code>hostnamectl   # see the current hostname
+echo '127.0.0.1 myserver' | sudo tee -a /etc/hosts</code></pre>
+            <h3>3. Verify the warning is gone</h3>
+            <p>configtest triggers the same code path, so you can confirm without restarting.</p>
+            <pre><code>sudo apachectl configtest
+# want: 'Syntax OK' with no AH00558 line</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is AH00558 breaking anything or just noise?</h3>
+            <p>Apache serves traffic fine. The practical costs: log noise on every restart, self-referential redirects possibly using an IP or wrong name (matters with UseCanonicalName On), and health-check scripts that misread the stderr line as an error. Two minutes to fix, so fix it.</p>
+            <h3>Global ServerName vs the one in my VirtualHost — do both matter?</h3>
+            <p>Yes, they do different jobs. The global one identifies the server itself and silences AH00558. The per-VirtualHost ServerName decides which vhost answers which Host header — that one you already need for name-based hosting.</p>
+            <h3>Why does the message name 127.0.1.1?</h3>
+            <p>Debian-family systems map the machine's hostname to 127.0.1.1 in /etc/hosts. When Apache can find nothing better, that is the address its resolution chain produces — the message is telling you which fallback it chose.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/apache/ah00526-syntax-error">AH00526 Syntax Error</a> — config errors that do block startup.</li>
+                <li><a href="/errors/apache/ah00072-could-not-bind-to-address">AH00072 Could Not Bind</a> — startup failures from port conflicts.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — unresolvable-hostname mechanics.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check what your hostname resolves to</span>
+                </a>
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Inspect redirects Apache generates</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

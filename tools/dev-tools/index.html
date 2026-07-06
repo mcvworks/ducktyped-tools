@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Dev Tools — duckTyped","description":"Free browser-based developer tools: JWT decoder, JSON formatter, regex tester, redirect checker, broken link checker, robots.txt analyzer, tech stack detector, security headers checker, and plain notes.","url":"https://ducktyped.xyz/tools/dev-tools/","publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ducktyped.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://ducktyped.xyz/utility/"},{"@type":"ListItem","position":3,"name":"Dev Tools","item":"https://ducktyped.xyz/tools/dev-tools/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What developer tools does duckTyped offer?","acceptedAnswer":{"@type":"Answer","text":"duckTyped provides free browser-based developer tools including Base64/Base32 encoders, hash generator, HMAC generator, JWT decoder/generator, regex tester, cron parser, CSR decoder, Docker Compose validator, env file parser, color converter, URL encoder, and HTTP request builder."}},{"@type":"Question","name":"Are these dev tools free and private?","acceptedAnswer":{"@type":"Answer","text":"Yes, all tools are free with no registration. Everything runs in your browser — no data is sent to any server, making them safe for working with sensitive tokens, keys, and configurations."}},{"@type":"Question","name":"Can I use these tools with production credentials?","acceptedAnswer":{"@type":"Answer","text":"All processing happens client-side in your browser. No data is transmitted or stored. However, as a security best practice, avoid pasting production secrets into any web tool — use test or development credentials when possible."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Tools — JWT Decoder, Regex Tester, Redirect Checker &amp; More — duckTyped</title>
+    <meta name="description" content="Free browser-based developer tools: JWT decoder, JSON formatter, regex tester, redirect checker, broken link checker, robots.txt analyzer, tech stack detector, HTTP security headers checker, and plain notes scratchpad.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dev Tools — JWT Decoder, Regex Tester, Redirect Checker &amp; More — duckTyped">
+    <meta property="og:description" content="Free dev tools: JWT decoder, JSON formatter, regex tester, redirect checker, link checker, robots.txt analyzer, and tech stack detector.">
+    <meta property="og:url" content="https://ducktyped.xyz/tools/dev-tools/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/dev-tools.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dev Tools — duckTyped">
+    <meta name="twitter:description" content="JWT decoder, regex tester, redirect checker, link checker, robots.txt analyzer, and tech stack detector. Free, no registration.">
+    <link rel="canonical" href="https://ducktyped.xyz/tools/dev-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/utility/">Tools</a> <span>/</span> <span>Dev Tools</span>
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Dev Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Utilities for software developers and web engineers. Decode JWTs, test regular expressions, trace redirects, scan for broken links, inspect robots.txt rules, detect technology stacks, and audit HTTP security headers — all without leaving the browser.</p>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Tools</h2>
+            <div class="learn-grid">
+                <a href="/jwt-decoder/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>JWT Decoder</h3>
+                    <p>Decode and inspect JSON Web Token header, payload, and signature. Verify claims, expiry, and structure without a secret key.</p>
+                </a>
+                <a href="/json-formatter/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>JSON Formatter</h3>
+                    <p>Format, pretty-print, and validate JSON data with syntax highlighting. Minify or expand JSON for debugging and readability.</p>
+                </a>
+                <a href="/regex-tester/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Regex Tester</h3>
+                    <p>Test and debug regular expressions against sample text with match highlighting, capture groups, and flag support.</p>
+                </a>
+                <a href="/redirect-checker/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Redirect Checker</h3>
+                    <p>Trace the full redirect chain for any URL, showing each hop with status codes, response headers, and final destination.</p>
+                </a>
+                <a href="/link-checker/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Broken Link Checker</h3>
+                    <p>Check a webpage for broken links, dead URLs, and HTTP error responses to keep your site healthy.</p>
+                </a>
+                <a href="/robots-analyzer/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Robots.txt Analyzer</h3>
+                    <p>Fetch and analyze a site's robots.txt file to understand crawl directives, disallow rules, and sitemap declarations.</p>
+                </a>
+                <a href="/tech-detector/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Tech Stack Detector</h3>
+                    <p>Detect the technologies, frameworks, CMS, CDN, and server software used by any website from response headers and HTML.</p>
+                </a>
+                <a href="/security-headers/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Security Headers Checker</h3>
+                    <p>Inspect HTTP security headers for any URL — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, and more.</p>
+                </a>
+                <a href="/plain-notes/" class="learn-card">
+                    <span class="category-badge">Dev</span>
+                    <h3>Plain Notes</h3>
+                    <p>A fast, browser-based notepad with auto-save using localStorage. No account required — your notes stay on your device.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Related Guides</h2>
+            <div class="learn-grid">
+                <a href="/learn/jwt-decoder/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>JWT Tokens Explained</h3>
+                    <p>JSON Web Token structure, standard claims (iss, exp, sub), signing algorithms, and security considerations for token-based auth.</p>
+                </a>
+                <a href="/learn/json-formatter/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>JSON Formatting and Validation</h3>
+                    <p>JSON syntax rules, common validation errors, and tips for working with nested or malformed JSON data.</p>
+                </a>
+                <a href="/learn/regex-tester/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Regular Expressions Guide</h3>
+                    <p>Regex syntax, character classes, quantifiers, anchors, capture groups, and practical patterns for common validation tasks.</p>
+                </a>
+                <a href="/learn/redirect-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>HTTP Redirects and Status Codes</h3>
+                    <p>How 301, 302, 307, and 308 redirects work, their SEO implications, and how to debug redirect chains.</p>
+                </a>
+                <a href="/learn/link-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Broken Link Checking</h3>
+                    <p>How link checking works, HTTP status codes for dead links, and why maintaining valid links matters for SEO and UX.</p>
+                </a>
+                <a href="/learn/robots-analyzer/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Robots.txt for Web Crawlers</h3>
+                    <p>How robots.txt syntax works, Disallow vs Allow directives, sitemap declarations, and how Googlebot respects crawl rules.</p>
+                </a>
+                <a href="/learn/tech-detector/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Technology Detection on Websites</h3>
+                    <p>How tech stack detection works using HTTP headers, HTML attributes, JavaScript globals, and response patterns.</p>
+                </a>
+                <a href="/learn/security-headers/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>HTTP Security Headers Explained</h3>
+                    <p>What CSP, HSTS, X-Frame-Options, and other security headers do, and how to configure them for your web application.</p>
+                </a>
+                <a href="/learn/plain-notes/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Browser-Based Notes and localStorage</h3>
+                    <p>How localStorage works, its capacity limits, persistence behavior, and privacy considerations for browser-stored data.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Common HTTP Errors</h2>
+            <div class="learn-grid">
+                <a href="/errors/http/400-bad-request" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>400 Bad Request</h3>
+                    <p>Malformed request syntax or invalid request message. Common causes and how to fix them.</p>
+                </a>
+                <a href="/errors/http/404-not-found" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>404 Not Found</h3>
+                    <p>The requested resource does not exist. Debugging missing routes and handling 404s gracefully.</p>
+                </a>
+                <a href="/errors/http/500-internal-server-error" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>500 Internal Server Error</h3>
+                    <p>Unhandled server-side exceptions. How to diagnose and debug application errors.</p>
+                </a>
+                <a href="/errors/http/429-too-many-requests" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>429 Too Many Requests</h3>
+                    <p>Rate limiting triggered. How to implement backoff strategies and respect rate limit headers.</p>
+                </a>
+            </div>
+        </div>
+
+        
+        <div class="learn-category-section">
+            <h2>When to Use Each Tool</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Tool to Use</th><th>What It Does</th></tr></thead>
+                    <tbody>
+                        <tr><td>Debugging a JWT token</td><td><a href="/jwt-decoder/">JWT Decoder</a></td><td>Decodes header, payload, and shows expiry</td></tr>
+                        <tr><td>Testing API auth tokens</td><td><a href="/jwt-generator/">JWT Generator</a></td><td>Creates signed JWTs for testing</td></tr>
+                        <tr><td>Encoding data for URLs</td><td><a href="/url-encoder/">URL Encoder</a></td><td>Percent-encodes/decodes URL components</td></tr>
+                        <tr><td>Encoding binary for APIs</td><td><a href="/base64-encoder/">Base64 Encoder</a></td><td>Encodes/decodes Base64 strings</td></tr>
+                        <tr><td>Generating checksums</td><td><a href="/hash-generator/">Hash Generator</a></td><td>SHA-256, SHA-512, MD5 hashes</td></tr>
+                        <tr><td>Verifying webhook signatures</td><td><a href="/hmac-generator/">HMAC Generator</a></td><td>Keyed hashes for authentication</td></tr>
+                        <tr><td>Writing search/validation patterns</td><td><a href="/regex-tester/">Regex Tester</a></td><td>Live regex testing with match highlighting</td></tr>
+                        <tr><td>Scheduling cron jobs</td><td><a href="/cron-parser/">Cron Parser</a></td><td>Translates cron to human-readable</td></tr>
+                        <tr><td>Validating Docker configs</td><td><a href="/docker-compose-validator/">Docker Compose Validator</a></td><td>Checks YAML syntax and structure</td></tr>
+                        <tr><td>Checking .env files</td><td><a href="/env-file-parser/">Env File Parser</a></td><td>Parses and validates environment files</td></tr>
+                        <tr><td>Converting color formats</td><td><a href="/color-converter/">Color Converter</a></td><td>HEX ↔ RGB ↔ HSL conversion</td></tr>
+                        <tr><td>Building API requests</td><td><a href="/http-request-builder/">HTTP Request Builder</a></td><td>Construct and test HTTP requests</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Other Tool Categories</h2>
+            <div class="learn-grid">
+                <a href="/tools/network-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Network Tools</h3>
+                    <p>DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, and more.</p>
+                </a>
+                <a href="/tools/email-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Email Tools</h3>
+                    <p>Email validator, SMTP checker, email header analyzer, blacklist checker, and breach checker.</p>
+                </a>
+                <a href="/tools/security-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Security Tools</h3>
+                    <p>SSL checker, security headers, password generator, hash generator, and URL safety checker.</p>
+                </a>
+                <a href="/tools/data-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Data Tools</h3>
+                    <p>Base64 encoder, URL encoder, JSON formatter, timestamp converter, QR generator, and more.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

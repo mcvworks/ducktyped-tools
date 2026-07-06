@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Generating JSON Web Tokens Safely","description":"Learn how to generate JWTs: the header-payload-signature structure, choosing between HS256, RS256, and ES256, standard claims like exp and sub, and expiration strategy.","datePublished":"2026-06-11","dateModified":"2026-06-11","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/jwt-generator/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"JWT Generator"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I generate a JWT?","acceptedAnswer":{"@type":"Answer","text":"To generate a JWT you build a JSON header specifying the algorithm, a JSON payload containing your claims, Base64url-encode both, then sign the combined string with a secret key (HMAC) or private key (RSA/ECDSA). The duckTyped JWT Generator does this entirely in your browser using HMAC-SHA256."}},{"@type":"Question","name":"Which JWT signing algorithm should I use?","acceptedAnswer":{"@type":"Answer","text":"Use HS256 when the same service issues and verifies tokens and can keep one shared secret. Use RS256 or ES256 when multiple services need to verify tokens: the issuer signs with a private key and verifiers only need the public key. ES256 offers equivalent security to RSA with smaller keys and faster signatures."}},{"@type":"Question","name":"Which claims should every JWT include?","acceptedAnswer":{"@type":"Answer","text":"At minimum include exp (expiration time), iat (issued at), and sub (subject, usually the user ID). Adding iss (issuer) and aud (audience) lets verifiers reject tokens minted by the wrong system or intended for a different API."}},{"@type":"Question","name":"How long should a JWT be valid?","acceptedAnswer":{"@type":"Answer","text":"Access tokens should be short-lived, typically 5 to 60 minutes, because a signed JWT cannot be easily revoked once issued. Pair short-lived access tokens with a longer-lived refresh token stored securely so users do not have to log in repeatedly."}},{"@type":"Question","name":"Is it safe to generate JWTs in the browser?","acceptedAnswer":{"@type":"Answer","text":"Yes, for testing and development. The duckTyped JWT Generator signs tokens entirely client-side and never transmits your secret or payload. For production, always generate tokens server-side with a strong secret that never leaves your infrastructure."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Generate JWTs — Algorithms, Claims &amp; Expiry — duckTyped</title>
+    <meta name="description" content="Learn how to generate JWTs: header and payload structure, HS256 vs RS256 vs ES256, standard claims like exp, iat, sub, and aud, and safe expiration strategy.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How to Generate JWTs — Algorithms, Claims & Expiry — duckTyped">
+    <meta property="og:description" content="Learn how to generate JWTs: structure, signing algorithms, standard claims, and expiration strategy.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/jwt-generator/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Generate JWTs — Algorithms, Claims & Expiry — duckTyped">
+    <meta name="twitter:description" content="Learn how to generate JWTs: structure, signing algorithms, claims, and expiration strategy.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/jwt-generator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>JWT Generator</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Generating JSON Web Tokens Safely</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-06-11">June 11, 2026</time></p>
+            <p class="standalone-intro">Learn what goes into a well-formed JWT: the three-part structure, how to choose between HS256, RS256, and ES256, which standard claims to include, and how to pick an expiration strategy that limits the damage of a leaked token.</p>
+
+            <h2>What Generating a JWT Actually Means</h2>
+            <p>A <strong>JSON Web Token (JWT)</strong> is a signed, Base64url-encoded credential defined in <strong>RFC 7519</strong>. Generating one is not just "creating a string" -- it is making a cryptographic promise. The issuer asserts a set of <strong>claims</strong> (who the user is, what they may do, how long the token is valid) and signs them so that any verifier can detect tampering.</p>
+            <p>Every generated token has three dot-separated parts: <code>header.payload.signature</code>. The header declares the signing algorithm, the payload carries the claims, and the signature binds them together. A minimal generation flow looks like this:</p>
+            <pre><code>// 1. Header
+{ "alg": "HS256", "typ": "JWT" }
+
+// 2. Payload
+{ "sub": "user_1024", "iat": 1781136000, "exp": 1781139600 }
+
+// 3. Sign
+signature = HMAC-SHA256(
+  base64url(header) + "." + base64url(payload),
+  secret
+)
+
+token = base64url(header) + "." + base64url(payload) + "." + base64url(signature)</code></pre>
+            <p>Two details trip people up. First, the encoding is <strong>Base64url</strong>, not plain Base64 -- <code>+</code> becomes <code>-</code>, <code>/</code> becomes <code>_</code>, and padding <code>=</code> characters are stripped. Second, the payload is <strong>encoded, not encrypted</strong>: anyone holding the token can read every claim. Never put passwords or other secrets in a JWT you generate.</p>
+
+            <h2>Choosing a Signing Algorithm</h2>
+            <p>The <code>alg</code> header is the most consequential decision you make when generating a token. The three production-grade families differ in who can sign and who can verify.</p>
+            <h3>HS256 (HMAC with SHA-256)</h3>
+            <p>A <strong>symmetric</strong> algorithm: the same shared secret both signs and verifies. It is fast and simple, which makes it the right default when a single service issues and verifies its own tokens. The trade-off is that every verifier must hold the secret -- and anyone holding the secret can <em>mint</em> valid tokens. Use a secret of at least 32 random bytes; a short, guessable secret can be brute-forced offline from a single captured token.</p>
+            <h3>RS256 (RSA with SHA-256)</h3>
+            <p>An <strong>asymmetric</strong> algorithm: a private key signs, a public key verifies. This is the standard choice for distributed systems and third-party identity providers (it is what most OIDC providers issue). Microservices can verify tokens with the published public key but can never forge them. RSA keys should be 2048 bits or larger; signing is slower than HMAC and tokens are bigger.</p>
+            <h3>ES256 (ECDSA with P-256 and SHA-256)</h3>
+            <p>Also asymmetric, but built on elliptic curves. A 256-bit ECDSA key gives security comparable to a 3072-bit RSA key, with much smaller signatures and faster signing. ES256 is the best choice for high-volume token issuance when all your verifiers support it.</p>
+            <p>Whichever you choose, hard-code the expected algorithm on the verification side. Never let the token's own header decide how it is verified -- that is the root of the well-known <code>alg: "none"</code> forgery attack.</p>
+
+            <h2>Standard Claims to Include</h2>
+            <p>RFC 7519 registers a set of claim names that every JWT library understands. When generating tokens, include at least these:</p>
+            <ul>
+                <li><strong><code>sub</code> (Subject)</strong> -- who the token is about, usually a stable user ID such as <code>"user_1024"</code>. Avoid emails, which can change.</li>
+                <li><strong><code>iat</code> (Issued At)</strong> -- Unix timestamp of creation. Lets verifiers reject suspiciously old tokens and supports "invalidate everything issued before X" logic.</li>
+                <li><strong><code>exp</code> (Expiration)</strong> -- Unix timestamp after which the token must be rejected. Every token you generate should have one.</li>
+                <li><strong><code>aud</code> (Audience)</strong> -- which API or service the token is for, e.g. <code>"api.example.com"</code>. Stops a token minted for one API from being replayed against another.</li>
+                <li><strong><code>iss</code> (Issuer)</strong> -- who minted the token, e.g. <code>"auth.example.com"</code>.</li>
+                <li><strong><code>jti</code> (JWT ID)</strong> -- a unique random ID per token, useful for revocation lists and replay detection.</li>
+            </ul>
+            <p>A realistic payload for an API access token:</p>
+            <pre><code>{
+  "iss": "auth.example.com",
+  "sub": "user_1024",
+  "aud": "api.example.com",
+  "iat": 1781136000,
+  "exp": 1781137800,
+  "jti": "f3b1c2a8-9d4e-4f6a-b1c0-7e2d5a9c3f10",
+  "role": "editor"
+}</code></pre>
+            <p>Custom claims like <code>role</code> are fine -- just keep the payload small, since the token travels on every request, and remember it is readable by anyone who holds it.</p>
+
+            <h2>Expiration Strategy</h2>
+            <p>A signed JWT cannot be recalled once issued; it stays valid until <code>exp</code>. That makes expiration your primary damage-control mechanism:</p>
+            <ul>
+                <li><strong>Keep access tokens short-lived</strong> -- 5 to 60 minutes is typical. A leaked 15-minute token is a nuisance; a leaked 30-day token is a breach.</li>
+                <li><strong>Use refresh tokens for long sessions</strong> -- issue a separate, longer-lived refresh token (stored in an HTTP-only cookie or secure storage) that exchanges for fresh access tokens. Refresh tokens are stored server-side, so they <em>can</em> be revoked.</li>
+                <li><strong>Allow small clock skew</strong> -- verifiers commonly accept 30-60 seconds of leeway on <code>exp</code> and <code>nbf</code> to tolerate clock drift between servers.</li>
+                <li><strong>Set <code>iat</code> honestly</strong> -- backdating or omitting it removes your ability to do issued-before cutoffs after a key rotation or incident.</li>
+            </ul>
+            <p>Remember that <code>exp</code> and <code>iat</code> are <strong>Unix timestamps in seconds</strong>, not milliseconds. Passing a JavaScript <code>Date.now()</code> value without dividing by 1000 creates tokens that "expire" tens of thousands of years from now.</p>
+
+            <h2>Using the JWT Generator Safely</h2>
+            <p>The duckTyped <a href="/jwt-generator/">JWT Generator</a> builds and signs tokens entirely in your browser:</p>
+            <ol>
+                <li><strong>Edit the header</strong> -- the default is <code>{"alg":"HS256","typ":"JWT"}</code>. The tool signs with the HMAC family (HS256).</li>
+                <li><strong>Build the payload</strong> -- type JSON directly, or use the one-click buttons to add <code>iss</code>, <code>aud</code>, <code>exp</code> (+1 hour), <code>iat</code> (now), or a random <code>jti</code>.</li>
+                <li><strong>Enter a secret key</strong> and click <strong>Generate JWT</strong> to produce a properly signed token.</li>
+            </ol>
+            <p>Nothing is sent to a server, so generating test tokens is safe. Still, follow two rules: <strong>never paste a production signing secret</strong> into any tool, browser-based or not, and treat generated tokens as test artifacts -- production tokens belong on your server, minted from a secret that never leaves your infrastructure. To inspect a token you have generated (or one from your auth provider), decode it with the <a href="/jwt-decoder/">JWT Decoder</a> and check the claims and expiration status.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools work well alongside the JWT Generator:</p>
+            <ul>
+                <li><a href="/jwt-decoder/">JWT Decoder</a> -- decode and inspect any token you generate, including expiration status.</li>
+                <li><a href="/hmac-generator/">HMAC Generator</a> -- compute the raw HMAC-SHA256 signatures that HS256 tokens are built on.</li>
+                <li><a href="/timestamp-converter/">Unix Timestamp Converter</a> -- convert <code>exp</code> and <code>iat</code> values between Unix time and readable dates.</li>
+                <li><a href="/base64-encoder/">Base64 Encoder</a> -- experiment with the Base64 encoding used for each token segment.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/jwt-decoder/">JSON Web Tokens Explained</a>, <a href="/learn/hash-generator/">Hashing guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">HTTP 401 Unauthorized</a> -- the typical response when a JWT is missing, expired, or fails signature verification.</li>
+                <li><a href="/errors/http/403-forbidden">HTTP 403 Forbidden</a> -- the token verified, but its claims do not grant access to the resource.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/jwt-generator/" class="cta-btn-primary">Try JWT Generator</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

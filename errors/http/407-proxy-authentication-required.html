@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between 401 and 407?","acceptedAnswer":{"@type":"Answer","text":"A 401 means the origin server requires authentication. A 407 means an intermediary proxy server requires authentication. They use different headers: WWW-Authenticate (401) vs Proxy-Authenticate (407)."}},{"@type":"Question","name":"How do I find out which proxy is blocking my requests?","acceptedAnswer":{"@type":"Answer","text":"Check your system proxy settings (network preferences on macOS, Internet Options on Windows, or environment variables on Linux). The proxy URL will indicate the server requiring authentication."}},{"@type":"Question","name":"Can browser extensions cause 407 errors?","acceptedAnswer":{"@type":"Answer","text":"Extensions that route traffic through proxy servers can trigger 407 if they require authentication. Check your installed extensions, especially VPN or privacy-related ones."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"407 Proxy Authentication Required — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 407 Proxy Authentication Required","step":[{"@type":"HowToStep","position":1,"name":"Configure proxy credentials","text":"Set the proxy authentication credentials in your HTTP client or system proxy settings. Most tools accept proxy credentials in the proxy URL format."},{"@type":"HowToStep","position":2,"name":"Check proxy authentication scheme","text":"Inspect the Proxy-Authenticate header in the 407 response to determine which authentication scheme the proxy requires (Basic, Digest, NTLM, Negotiate) and configure your client accordingly."},{"@type":"HowToStep","position":3,"name":"Update stored proxy credentials","text":"If your proxy password has changed, update the stored credentials in your operating system's proxy settings, browser configuration, or application environment variables."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>407 Proxy Authentication Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 407 Proxy Authentication Required errors. Learn what causes proxy authentication failures and how to configure proxy credentials correctly.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 407, 407 Proxy Authentication Required, 407 error, Proxy auth required, Proxy-Authenticate header">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="407 Proxy Authentication Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 407 Proxy Authentication Required errors. Learn what causes proxy authentication failures and how to configure proxy credentials correctly.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/407-proxy-authentication-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/407-proxy-authentication-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>407 Proxy Authentication Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>407 Proxy Authentication Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The client must authenticate with the proxy before the request can proceed</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 407</code></li><li><code>407 Proxy Authentication Required</code></li><li><code>407 error</code></li><li><code>Proxy auth required</code></li><li><code>Proxy-Authenticate header</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 407 Proxy Authentication Required response indicates that the client must first authenticate with an intermediary proxy server before the request can be forwarded to the destination. The proxy returns a Proxy-Authenticate header indicating the authentication scheme required. This is similar to 401 Unauthorized, but applies to the proxy rather than the origin server.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing proxy credentials</strong> — The HTTP client is connecting through a proxy that requires authentication, but no credentials were provided in the Proxy-Authorization header.</li>
+                <li><strong>Expired or invalid proxy credentials</strong> — The proxy credentials have expired, been changed, or are incorrect. The proxy server rejects the authentication attempt and requests new credentials.</li>
+                <li><strong>Corporate proxy enforcement</strong> — A corporate network proxy requires all outbound traffic to be authenticated, and the application or tool making the request is not configured with proxy credentials.</li>
+                <li><strong>Proxy configuration mismatch</strong> — The system proxy settings specify a proxy server, but the application is not using the correct authentication scheme (Basic, Digest, NTLM, Kerberos) expected by the proxy.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Configure proxy credentials</h3>
+            <p>Set the proxy authentication credentials in your HTTP client or system proxy settings. Most tools accept proxy credentials in the proxy URL format.</p>
+            <pre><code># curl with proxy authentication
+curl -x http://user:password@proxy.example.com:8080 https://example.com
+
+# Environment variable
+export https_proxy=http://user:password@proxy.example.com:8080</code></pre>
+            <h3>2. Check proxy authentication scheme</h3>
+            <p>Inspect the Proxy-Authenticate header in the 407 response to determine which authentication scheme the proxy requires (Basic, Digest, NTLM, Negotiate) and configure your client accordingly.</p>
+            <h3>3. Update stored proxy credentials</h3>
+            <p>If your proxy password has changed, update the stored credentials in your operating system's proxy settings, browser configuration, or application environment variables.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between 401 and 407?</h3>
+            <p>A 401 means the origin server requires authentication. A 407 means an intermediary proxy server requires authentication. They use different headers: WWW-Authenticate (401) vs Proxy-Authenticate (407).</p>
+            <h3>How do I find out which proxy is blocking my requests?</h3>
+            <p>Check your system proxy settings (network preferences on macOS, Internet Options on Windows, or environment variables on Linux). The proxy URL will indicate the server requiring authentication.</p>
+            <h3>Can browser extensions cause 407 errors?</h3>
+            <p>Extensions that route traffic through proxy servers can trigger 407 if they require authentication. Check your installed extensions, especially VPN or privacy-related ones.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — Authentication required by the origin server</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — Server refuses to authorize the request</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Invalid response from upstream server</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check ports</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

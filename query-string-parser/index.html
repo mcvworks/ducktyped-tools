@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Query String Parser","url":"https://ducktyped.xyz/query-string-parser/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Parse URL query strings into key-value pairs or build query strings from parameters.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a query string?","acceptedAnswer":{"@type":"Answer","text":"A query string is the part of a URL after the ? mark, containing key-value pairs separated by & signs (e.g., ?page=1&sort=date). It is used to pass parameters to web pages and APIs."}},{"@type":"Question","name":"How do I parse a query string?","acceptedAnswer":{"@type":"Answer","text":"Paste a URL or query string in the parser above. The tool extracts all parameters and displays them in a structured key-value table, handling URL-encoded values automatically."}},{"@type":"Question","name":"Are query strings case-sensitive?","acceptedAnswer":{"@type":"Answer","text":"Query string parameter names and values are technically case-sensitive per the URL specification, but many web frameworks treat them as case-insensitive. Best practice is to treat them as case-sensitive."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query String Parser — Parse and Build URL Query Strings — duckTyped</title>
+    <meta name="description" content="Parse URL query strings into key-value pairs or build query strings from parameters. Free query string tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Query String Parser — duckTyped">
+    <meta property="og:description" content="Parse URL query strings into key-value pairs or build query strings from parameters.">
+    <meta property="og:url" content="https://ducktyped.xyz/query-string-parser/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/query-string-parser.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Query String Parser — duckTyped">
+    <meta name="twitter:description" content="Parse URL query strings into key-value pairs or build query strings.">
+    <link rel="canonical" href="https://ducktyped.xyz/query-string-parser/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Query String Parser</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Parse URL query strings into readable key-value pairs, or build query strings by entering parameters.</p><div class="example-box"><strong>Example uses:</strong><p>Debugging API request parameters, extracting tracking parameters from URLs, building query strings for API calls.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Query String Parser</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste a URL or query string to parse, or build one from key-value pairs.</p>
+            <div class="input-group"><label>URL or Query String:</label><textarea id="qsInput" rows="3" placeholder="https://example.com/search?q=hello&lang=en&page=1" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <button onclick="parseQS()">Parse</button>
+            <div id="qsResult"></div>
+            <hr style="border:none;border-top:1px solid var(--border-color);margin:20px 0;">
+            <h3 style="margin-bottom:10px;">Build Query String</h3>
+            <div id="buildParams"></div>
+            <button onclick="addParam()" style="margin-bottom:10px;padding:6px 14px;font-size:0.85em;">+ Add Parameter</button>
+            <button onclick="buildQS()">Build Query String</button>
+            <div id="buildResult"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/url-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Encoder</a>
+            <a href="/url-parser/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Parser</a>
+            <a href="/json-formatter/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">JSON Formatter</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/url-encoder/">URL Encoding (Percent-Encoding)</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function parseQS() {
+        var input = document.getElementById('qsInput').value.trim(), r = document.getElementById('qsResult');
+        if (!input) { r.innerHTML = ''; return; }
+        var qs = input.indexOf('?') > -1 ? input.split('?')[1] : input;
+        qs = qs.split('#')[0];
+        var params = new URLSearchParams(qs), html = '<table style="width:100%;border-collapse:collapse;margin-top:12px;">';
+        html += '<tr style="border-bottom:2px solid var(--border-color);"><th style="text-align:left;padding:8px;color:var(--primary-color);">Key</th><th style="text-align:left;padding:8px;color:var(--primary-color);">Value</th></tr>';
+        var count = 0;
+        params.forEach(function(v, k) {
+            html += '<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:8px;color:var(--text-primary);font-weight:600;">'+escapeHtml(k)+'</td><td style="padding:8px;color:var(--text-secondary);">'+escapeHtml(decodeURIComponent(v))+'</td></tr>';
+            count++;
+        });
+        html += '</table>';
+        if (count === 0) html = '<p style="color:var(--text-secondary);margin-top:12px;">No parameters found.</p>';
+        else html = '<p style="color:var(--primary-color);margin-top:12px;font-weight:600;">'+count+' parameter(s) found:</p>' + html;
+        r.innerHTML = html;
+    }
+    function addParam() {
+        var div = document.getElementById('buildParams');
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:8px;margin-bottom:8px;align-items:center;';
+        row.innerHTML = '<input type="text" placeholder="key" style="flex:1;padding:8px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;" class="param-key"><input type="text" placeholder="value" style="flex:1;padding:8px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;" class="param-val"><button onclick="this.parentElement.remove()" style="padding:6px 10px;font-size:0.85em;min-width:auto;">X</button>';
+        div.appendChild(row);
+    }
+    function buildQS() {
+        var keys = document.querySelectorAll('.param-key'), vals = document.querySelectorAll('.param-val');
+        var params = new URLSearchParams();
+        for (var i = 0; i < keys.length; i++) { if (keys[i].value) params.append(keys[i].value, vals[i].value); }
+        var qs = params.toString();
+        var buildR = document.getElementById('buildResult');
+        if (!qs) { buildR.innerHTML = ''; return; }
+        buildR.innerHTML = '<div style="margin-top:12px;padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><code id="builtQS" style="color:var(--primary-color);word-break:break-all;"></code><br><button id="copyBuiltQS" style="margin-top:8px;padding:6px 14px;font-size:0.85em;">Copy</button></div>';
+        document.getElementById('builtQS').textContent = '?' + qs;
+        document.getElementById('copyBuiltQS').addEventListener('click', function() { navigator.clipboard.writeText('?' + qs); });
+    }
+    addParam(); addParam();
+    </script>
+</body>
+</html>

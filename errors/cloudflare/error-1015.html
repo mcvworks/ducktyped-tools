@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does the 1015 block last?","acceptedAnswer":{"@type":"Answer","text":"Whatever the owner's rule says — the mitigation timeout is part of the rule (10 seconds to hours). There is no universal number; if it clears after a short wait, the rule is short. Persistent blocks across hours mean either a long timeout or you keep re-tripping it."}},{"@type":"Question","name":"Is 1015 the same as HTTP 429?","acceptedAnswer":{"@type":"Answer","text":"Same idea — 'too many requests' — different layer. 429 is the standard status any server can send; 1015 is Cloudflare's rate-limiting error page (delivered with a 429 status under the hood). Client handling should be identical: back off and retry later."}},{"@type":"Question","name":"Our whole office gets 1015 on a site we use — what should we tell them?","acceptedAnswer":{"@type":"Answer","text":"That you are many users behind one IP (give them the IP), that a per-IP threshold aggregates all of you, and roughly how many people share it. Owners can raise thresholds for your address, key limits by session, or switch the action to a challenge — the report is genuinely useful to them."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Cloudflare","item":"https://ducktyped.xyz/errors/#cloudflare"},{"@type":"ListItem","position":3,"name":"Cloudflare Error 1015 — You Are Being Rate Limited — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Error 1015 — You Are Being Rate Limited — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Cloudflare Error 1015 'You are being rate limited'. How long blocks last, what visitors can do, and how owners tune rate limiting rules.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Cloudflare Error 1015, you are being rate limited, error 1015, cloudflare rate limited how long">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloudflare Error 1015 — You Are Being Rate Limited — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Cloudflare Error 1015 'You are being rate limited'. How long blocks last, what visitors can do, and how owners tune rate limiting rules.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/cloudflare/error-1015">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/cloudflare/error-1015">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#cloudflare">Cloudflare</a> <span>/</span> <span>Cloudflare Error 1015 — You Are Being Rate Limited</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Cloudflare Error 1015 — You Are Being Rate Limited</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">The request tripped a Rate Limiting rule configured by the site's owner — too many requests from your IP inside the rule's time window.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>Cloudflare Error 1015</code></li><li><code>you are being rate limited</code></li><li><code>error 1015</code></li><li><code>cloudflare rate limited how long</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Error 1015 means a Cloudflare Rate Limiting rule matched: the visitor's IP exceeded the owner-configured request threshold for some path within a time window, and the rule's action (block for N seconds, usually) kicked in. For visitors, it is self-resolving — wait out the window. For owners, recurring 1015 reports from legitimate users mean the rule's threshold, window, or scope needs tuning: counting static assets toward API limits, thresholds sized for single users but hit by offices behind one NAT IP, or overly long ban durations.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Genuinely rapid requests</strong> — Refresh storms, aggressive scripts/scrapers, or an API client without backoff exceeding the configured requests-per-window.</li>
+                <li><strong>Shared IP aggregation</strong> — Offices, campuses, and CGNAT put many users behind one IP — their combined traffic trips per-IP thresholds that a single user never would.</li>
+                <li><strong>Rules scoped too broadly</strong> — A limit meant for a login endpoint applied to paths that load dozens of subresources per page-view — every normal visit counts many times.</li>
+                <li><strong>Client bugs</strong> — Retry loops without backoff, polling intervals in milliseconds instead of seconds, or SPA bugs re-firing requests.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Visitors: wait out the window</h3>
+            <p>Blocks are time-boxed (commonly 10 seconds to an hour, per the rule). Stop the requests, wait, retry gently. If you run a script, add rate limiting and exponential backoff on 429/1015.</p>
+            <h3>2. API clients: honor limits proactively</h3>
+            <p>Space requests and back off on rejection.</p>
+            <pre><code># simple client-side pacing:
+for url in $(cat urls.txt); do
+  curl -s &quot;$url&quot; -o /dev/null
+  sleep 1   # stay under the site's threshold
+done</code></pre>
+            <h3>3. Owners: check which rule fires and on what</h3>
+            <p>Security → Events shows matched rate-limiting rules, paths, and source IPs. Verify the rule counts only what it should (exclude static assets; scope to the sensitive path).</p>
+            <pre><code># typical sane shapes:
+#  login:  5 requests / 1 min / per IP  -&gt; block 10 min
+#  api:    100 requests / 1 min / per IP -&gt; managed challenge
+#  never:  sitewide low threshold counting all assets</code></pre>
+            <h3>4. Owners: key limits smarter than raw IP where possible</h3>
+            <p>For APIs with auth, rate-limit by API key/session (Advanced Rate Limiting) so one office NAT does not consume everyone's budget; use challenge actions rather than long hard blocks for borderline traffic.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How long does the 1015 block last?</h3>
+            <p>Whatever the owner's rule says — the mitigation timeout is part of the rule (10 seconds to hours). There is no universal number; if it clears after a short wait, the rule is short. Persistent blocks across hours mean either a long timeout or you keep re-tripping it.</p>
+            <h3>Is 1015 the same as HTTP 429?</h3>
+            <p>Same idea — 'too many requests' — different layer. 429 is the standard status any server can send; 1015 is Cloudflare's rate-limiting error page (delivered with a 429 status under the hood). Client handling should be identical: back off and retry later.</p>
+            <h3>Our whole office gets 1015 on a site we use — what should we tell them?</h3>
+            <p>That you are many users behind one IP (give them the IP), that a per-IP threshold aggregates all of you, and roughly how many people share it. Owners can raise thresholds for your address, key limits by session, or switch the action to a challenge — the report is genuinely useful to them.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/429-too-many-requests">429 Too Many Requests</a> — the standard rate-limit status.</li>
+                <li><a href="/errors/cloudflare/error-1020">Cloudflare Error 1020</a> — firewall-rule denials.</li>
+                <li><a href="/errors/cloudflare/error-1006">Cloudflare Error 1006</a> — outright IP bans.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-429-too-many-requests/">HTTP 429 explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Test carefully paced requests</span>
+                </a>
+        <a href="/isp-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">ISP Checker</span>
+                    <span class="recommended-tool-desc">See which IP you share</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

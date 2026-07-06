@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 304 response an error?","acceptedAnswer":{"@type":"Answer","text":"No. A 304 is a successful response that tells the client its cached copy is still valid. It is an optimization that reduces bandwidth usage and improves page load times."}},{"@type":"Question","name":"Does a 304 response have a body?","acceptedAnswer":{"@type":"Answer","text":"No. A 304 response must not contain a message body. The client uses its cached copy of the resource instead."}},{"@type":"Question","name":"How do I prevent 304 responses during development?","acceptedAnswer":{"@type":"Answer","text":"Open browser DevTools and check 'Disable cache' in the Network tab, or use Ctrl+Shift+R for hard refresh. You can also set Cache-Control: no-store headers on your development server."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"304 Not Modified — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 304 Not Modified","step":[{"@type":"HowToStep","position":1,"name":"Force a fresh request","text":"If you need the latest version of a resource, bypass the cache by doing a hard refresh (Ctrl+Shift+R) or adding a cache-busting query parameter to the URL."},{"@type":"HowToStep","position":2,"name":"Configure cache headers properly","text":"If your server is returning 304 when content has changed, check that your ETag generation and Last-Modified timestamps are updating correctly when content changes."},{"@type":"HowToStep","position":3,"name":"Disable caching for dynamic content","text":"For resources that change frequently, set appropriate cache headers to prevent stale content from being served."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>304 Not Modified — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 304 Not Modified responses. Learn how browser caching works with ETags and Last-Modified headers, and how to troubleshoot caching issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 304, 304 Not Modified, 304 status code, Browser cache 304, If-Modified-Since 304">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="304 Not Modified — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 304 Not Modified responses. Learn how browser caching works with ETags and Last-Modified headers, and how to troubleshoot caching issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/304-not-modified">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/304-not-modified">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>304 Not Modified</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>304 Not Modified</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The resource has not been modified since the last request</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 304</code></li><li><code>304 Not Modified</code></li><li><code>304 status code</code></li><li><code>Browser cache 304</code></li><li><code>If-Modified-Since 304</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 304 Not Modified response indicates that the cached version of the requested resource is still valid and can be reused. The server sends this when the client includes conditional headers like If-Modified-Since or If-None-Match, and the resource has not changed. This saves bandwidth by avoiding retransmission of unchanged content.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Valid browser cache</strong> — The browser has a cached copy of the resource and sent a conditional request. The server confirmed the cached version is still current by responding with 304.</li>
+                <li><strong>ETag match</strong> — The client sent an If-None-Match header containing the ETag from a previous response, and the server determined the resource has not changed.</li>
+                <li><strong>Last-Modified date unchanged</strong> — The client sent an If-Modified-Since header, and the resource has not been modified since the timestamp provided.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Force a fresh request</h3>
+            <p>If you need the latest version of a resource, bypass the cache by doing a hard refresh (Ctrl+Shift+R) or adding a cache-busting query parameter to the URL.</p>
+            <pre><code># Force reload with curl (no cache)
+curl -H 'Cache-Control: no-cache' https://example.com/resource</code></pre>
+            <h3>2. Configure cache headers properly</h3>
+            <p>If your server is returning 304 when content has changed, check that your ETag generation and Last-Modified timestamps are updating correctly when content changes.</p>
+            <h3>3. Disable caching for dynamic content</h3>
+            <p>For resources that change frequently, set appropriate cache headers to prevent stale content from being served.</p>
+            <pre><code># Nginx: disable caching for dynamic endpoints
+location /api/ {
+    add_header Cache-Control &quot;no-store, no-cache, must-revalidate&quot;;
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is a 304 response an error?</h3>
+            <p>No. A 304 is a successful response that tells the client its cached copy is still valid. It is an optimization that reduces bandwidth usage and improves page load times.</p>
+            <h3>Does a 304 response have a body?</h3>
+            <p>No. A 304 response must not contain a message body. The client uses its cached copy of the resource instead.</p>
+            <h3>How do I prevent 304 responses during development?</h3>
+            <p>Open browser DevTools and check 'Disable cache' in the Network tab, or use Ctrl+Shift+R for hard refresh. You can also set Cache-Control: no-store headers on your development server.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — Server could not understand the request</li>
+                <li><a href="/errors/http/404-not-found">404 Not Found</a> — Resource could not be found</li>
+                <li><a href="/learn/http-status-codes/">HTTP status codes reference</a> — what 2xx success codes mean</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Try Security Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

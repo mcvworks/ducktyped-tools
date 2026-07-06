@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a 301 redirect pass SEO value?","acceptedAnswer":{"@type":"Answer","text":"Yes. A 301 redirect transfers the majority of link equity and ranking signals from the old URL to the new one. It is the recommended redirect type for permanent URL changes."}},{"@type":"Question","name":"What is the difference between 301 and 302 redirects?","acceptedAnswer":{"@type":"Answer","text":"A 301 indicates a permanent move and tells search engines to index the new URL. A 302 indicates a temporary redirect and tells search engines to keep indexing the original URL."}},{"@type":"Question","name":"Can a 301 redirect be reversed?","acceptedAnswer":{"@type":"Answer","text":"Yes, but browsers cache 301 redirects aggressively. After removing a 301, users may still be redirected until their browser cache expires. You may need to clear browser cache or wait for the cache TTL."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"301 Moved Permanently — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 301 Moved Permanently","step":[{"@type":"HowToStep","position":1,"name":"Follow the redirect to the new URL","text":"Update bookmarks, links, and API endpoints to point directly to the new URL provided in the Location header. Browsers handle this automatically, but hardcoded URLs in applications should be updated."},{"@type":"HowToStep","position":2,"name":"Configure the redirect in your web server","text":"If you are setting up a 301 redirect, configure it in your server. In Nginx, use a return directive. In Apache, use Redirect or RewriteRule."},{"@type":"HowToStep","position":3,"name":"Check for redirect chains","text":"Ensure you are not chaining multiple 301 redirects (A -> B -> C). Each hop adds latency and search engines may not follow long chains. Use a redirect checker tool to trace the full chain."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>301 Moved Permanently — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 301 Moved Permanently errors. Learn what causes permanent redirects, how they affect SEO, and how to configure them correctly.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 301, 301 redirect, 301 Moved Permanently, Permanent redirect, 301 status code, 301 SEO redirect">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="301 Moved Permanently — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 301 Moved Permanently errors. Learn what causes permanent redirects, how they affect SEO, and how to configure them correctly.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/301-moved-permanently">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/301-moved-permanently">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>301 Moved Permanently</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>301 Moved Permanently</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The requested resource has been permanently moved to a new URL</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 301</code></li><li><code>301 redirect</code></li><li><code>301 Moved Permanently</code></li><li><code>Permanent redirect</code></li><li><code>301 status code</code></li><li><code>301 SEO redirect</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 301 Moved Permanently response indicates that the requested resource has been assigned a new permanent URI and future requests should use the new URL. Search engines transfer ranking signals from the old URL to the new one. This is the standard way to permanently redirect traffic from one URL to another.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Domain or URL migration</strong> — The website has moved to a new domain or the URL structure has been reorganized, and the server is redirecting visitors to the new location.</li>
+                <li><strong>HTTP to HTTPS enforcement</strong> — The server is configured to redirect all HTTP requests to HTTPS, issuing a 301 to ensure browsers always use the secure version.</li>
+                <li><strong>Trailing slash normalization</strong> — The server enforces a canonical URL format by redirecting requests with or without a trailing slash to the preferred version.</li>
+                <li><strong>www/non-www canonicalization</strong> — The server redirects between www and non-www versions of the domain to consolidate traffic under a single canonical hostname.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Follow the redirect to the new URL</h3>
+            <p>Update bookmarks, links, and API endpoints to point directly to the new URL provided in the Location header. Browsers handle this automatically, but hardcoded URLs in applications should be updated.</p>
+            <h3>2. Configure the redirect in your web server</h3>
+            <p>If you are setting up a 301 redirect, configure it in your server. In Nginx, use a return directive. In Apache, use Redirect or RewriteRule.</p>
+            <pre><code># Nginx
+server {
+    listen 80;
+    server_name old-domain.com;
+    return 301 https://new-domain.com$request_uri;
+}</code></pre>
+            <h3>3. Check for redirect chains</h3>
+            <p>Ensure you are not chaining multiple 301 redirects (A -> B -> C). Each hop adds latency and search engines may not follow long chains. Use a redirect checker tool to trace the full chain.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Does a 301 redirect pass SEO value?</h3>
+            <p>Yes. A 301 redirect transfers the majority of link equity and ranking signals from the old URL to the new one. It is the recommended redirect type for permanent URL changes.</p>
+            <h3>What is the difference between 301 and 302 redirects?</h3>
+            <p>A 301 indicates a permanent move and tells search engines to index the new URL. A 302 indicates a temporary redirect and tells search engines to keep indexing the original URL.</p>
+            <h3>Can a 301 redirect be reversed?</h3>
+            <p>Yes, but browsers cache 301 redirects aggressively. After removing a 301, users may still be redirected until their browser cache expires. You may need to clear browser cache or wait for the cache TTL.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/302-found">302 Found</a> — Temporary redirect to another URL</li>
+                <li><a href="/errors/http/307-temporary-redirect">307 Temporary Redirect</a> — Temporary redirect preserving request method</li>
+                <li><a href="/errors/http/308-permanent-redirect">308 Permanent Redirect</a> — Permanent redirect preserving request method</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace redirect chains</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/redirect-checker/" class="cta-btn-primary">Try Redirect Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

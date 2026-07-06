@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_SSL_PROTOCOL_ERROR mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_SSL_PROTOCOL_ERROR means the SSL/TLS handshake between your browser and the server failed. The browser and server could not agree on a common protocol version or cipher suite, the certificate was not presented correctly, or there was a mismatch between what was expected and what was sent during the handshake."}},{"@type":"Question","name":"What causes ERR_SSL_PROTOCOL_ERROR?","acceptedAnswer":{"@type":"Answer","text":"Common causes include: the server is configured with outdated TLS versions (SSLv3, TLS 1.0) that modern browsers reject, the SSL certificate is expired or misconfigured, the server is configured to handle HTTP connections but you are connecting via HTTPS, or an antivirus or firewall is intercepting HTTPS traffic and failing the handshake."}},{"@type":"Question","name":"How do I fix ERR_SSL_PROTOCOL_ERROR?","acceptedAnswer":{"@type":"Answer","text":"Try: clearing SSL state in your browser, disabling antivirus HTTPS scanning temporarily, checking if the server's SSL certificate is valid and not expired using the SSL Checker tool, updating TLS configuration on the server to support TLS 1.2 and 1.3, and checking that you are not trying to connect to an HTTP-only server via HTTPS."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"ERR_SSL_PROTOCOL_ERROR — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_SSL_PROTOCOL_ERROR","step":[{"@type":"HowToStep","position":1,"name":"Check the SSL Certificate","text":"Use the SSL Certificate Checker to verify:"},{"@type":"HowToStep","position":2,"name":"Clear Browser SSL State","text":"A corrupted SSL cache can cause persistent errors. Clear it:"},{"@type":"HowToStep","position":3,"name":"Disable Antivirus HTTPS Scanning Temporarily","text":"Some antivirus products (Avast, Kaspersky, ESET, Bitdefender) perform HTTPS inspection. This can cause SSL errors if their certificate substitution fails. Look for \"HTTPS scanning,\" \"SSL scanning,\" or \"Web Shield\" settings and temporarily disable them to test."},{"@type":"HowToStep","position":4,"name":"Check and Fix the Server's TLS Configuration","text":"If you manage the server, ensure it is configured to support modern TLS versions. In nginx:"},{"@type":"HowToStep","position":5,"name":"Verify You Are Connecting to an HTTPS-Enabled Server","text":"If you typed https:// but the server only serves HTTP (no SSL certificate installed), you will get this error. Use the HTTP Latency Checker to test both HTTP and HTTPS versions of the URL."},{"@type":"HowToStep","position":6,"name":"Check Your System Clock","text":"An incorrect date or time on your device causes TLS certificate validation to fail. Ensure your system clock is synchronized:"},{"@type":"HowToStep","position":7,"name":"Install Missing Intermediate Certificates","text":"If the SSL Checker shows an incomplete chain, your server is not sending intermediate certificates. Download and configure the full chain from your Certificate Authority. In nginx:"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_SSL_PROTOCOL_ERROR — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_SSL_PROTOCOL_ERROR means and how to fix it. Covers TLS handshake failures, expired certificates, cipher mismatches, and antivirus interference.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ERR_SSL_PROTOCOL_ERROR, SSL protocol error, This site can&#39;t provide a secure connection, SSL connection error, SSL handshake failed Chrome">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_SSL_PROTOCOL_ERROR — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_SSL_PROTOCOL_ERROR with step-by-step solutions covering TLS configuration, certificate issues, browser SSL state, and antivirus interference.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/err_ssl_protocol_error">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/err_ssl_protocol_error">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>ERR_SSL_PROTOCOL_ERROR</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_SSL_PROTOCOL_ERROR</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the SSL/TLS handshake between your browser and the server failed. The browser and server could not establish a secure connection. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ERR_SSL_PROTOCOL_ERROR</code></li><li><code>SSL protocol error</code></li><li><code>This site can&#39;t provide a secure connection</code></li><li><code>SSL connection error</code></li><li><code>SSL handshake failed Chrome</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where the Handshake Fails</h2>
+                <div class="dt-diagram" data-diagram="ssl" data-error="protocol"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When you visit an HTTPS website, your browser and the server perform a <strong>TLS handshake</strong> to establish an encrypted connection. This handshake involves negotiating a protocol version (TLS 1.2, TLS 1.3) and a cipher suite. <strong>ERR_SSL_PROTOCOL_ERROR</strong> means this handshake failed before any secure communication could occur.</p>
+            <p>The failure can happen for many reasons: the server is using a TLS version the browser no longer supports, the certificate is malformed, the server is misconfigured to handle HTTP but you're connecting via HTTPS, or something between you and the server (a firewall, antivirus, or proxy) is interfering with the handshake.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Outdated TLS version on the server</strong> — modern browsers have dropped support for SSLv3, TLS 1.0, and TLS 1.1. A server configured to use only these older versions will fail the handshake.</li>
+                <li><strong>Connecting to an HTTP server via HTTPS</strong> — if the server is not configured for HTTPS (no SSL certificate installed), connecting to it via <code>https://</code> will cause a protocol error.</li>
+                <li><strong>Expired or invalid certificate</strong> — an expired, self-signed, or misconfigured certificate can cause the handshake to fail at the certificate validation step.</li>
+                <li><strong>Antivirus HTTPS scanning</strong> — some security software intercepts HTTPS connections to inspect traffic. If it fails to re-sign the connection correctly, this error occurs.</li>
+                <li><strong>Browser SSL state corruption</strong> — a corrupted SSL session cache in the browser can prevent new connections from succeeding.</li>
+                <li><strong>Cipher suite mismatch</strong> — no common cipher suite is supported between the browser and server.</li>
+                <li><strong>Intermediate certificate missing</strong> — the server is not sending the full certificate chain, causing validation to fail.</li>
+                <li><strong>System clock incorrect</strong> — TLS certificates have validity periods. An incorrect system clock can cause the browser to consider a valid certificate expired (or not yet valid).</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the SSL Certificate</h3>
+            <p>Use the <a href="/ssl-checker/">SSL Certificate Checker</a> to verify:</p>
+            <ul>
+                <li>The certificate is not expired</li>
+                <li>The certificate is issued for the correct domain (including www vs non-www)</li>
+                <li>The full certificate chain is being served (root + intermediates)</li>
+                <li>The TLS versions and cipher suites supported</li>
+            </ul>
+
+            <h3>2. Clear Browser SSL State</h3>
+            <p>A corrupted SSL cache can cause persistent errors. Clear it:</p>
+            <ul>
+                <li><strong>Chrome:</strong> Settings → Privacy and security → Clear browsing data → check "Cached images and files" and clear</li>
+                <li><strong>Windows (all browsers):</strong> Internet Options → Content tab → Clear SSL State</li>
+                <li>Or try opening the URL in an Incognito/Private window to bypass cache</li>
+            </ul>
+
+            <h3>3. Disable Antivirus HTTPS Scanning Temporarily</h3>
+            <p>Some antivirus products (Avast, Kaspersky, ESET, Bitdefender) perform HTTPS inspection. This can cause SSL errors if their certificate substitution fails. Look for "HTTPS scanning," "SSL scanning," or "Web Shield" settings and temporarily disable them to test.</p>
+
+            <h3>4. Check and Fix the Server's TLS Configuration</h3>
+            <p>If you manage the server, ensure it is configured to support modern TLS versions. In nginx:</p>
+            <pre><code>ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+ssl_prefer_server_ciphers off;</code></pre>
+            <p>Disable SSLv3, TLS 1.0, and TLS 1.1 entirely.</p>
+
+            <h3>5. Verify You Are Connecting to an HTTPS-Enabled Server</h3>
+            <p>If you typed <code>https://</code> but the server only serves HTTP (no SSL certificate installed), you will get this error. Use the <a href="/http-latency/">HTTP Latency Checker</a> to test both HTTP and HTTPS versions of the URL.</p>
+
+            <h3>6. Check Your System Clock</h3>
+            <p>An incorrect date or time on your device causes TLS certificate validation to fail. Ensure your system clock is synchronized:</p>
+            <ul>
+                <li><strong>Windows:</strong> Settings → Time &amp; Language → sync clock</li>
+                <li><strong>macOS:</strong> System Preferences → Date &amp; Time → Set date and time automatically</li>
+            </ul>
+
+            <h3>7. Install Missing Intermediate Certificates</h3>
+            <p>If the SSL Checker shows an incomplete chain, your server is not sending intermediate certificates. Download and configure the full chain from your Certificate Authority. In nginx:</p>
+            <pre><code>ssl_certificate /etc/ssl/certs/fullchain.pem;  # Should include intermediates</code></pre>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — inspect your certificate, chain, and TLS configuration.</li>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — verify whether the server responds to HTTP and HTTPS.</li>
+                <li><a href="/dns-lookup/">DNS Record Checker</a> — confirm your domain resolves to the correct server.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is ERR_SSL_PROTOCOL_ERROR the same as an expired certificate?</h3>
+            <p>An expired certificate produces a different error — typically <strong>NET::ERR_CERT_DATE_INVALID</strong>. ERR_SSL_PROTOCOL_ERROR is specifically about the handshake protocol failing, not certificate expiry. However, certificate issues (including expiry) can sometimes manifest as protocol errors depending on the server and browser combination.</p>
+
+            <h3>Can a firewall cause ERR_SSL_PROTOCOL_ERROR?</h3>
+            <p>Yes. Firewalls that perform deep packet inspection (DPI) on HTTPS traffic can interfere with the TLS handshake. Corporate and school network firewalls often do this. Try using a mobile data connection to isolate whether the firewall is the cause.</p>
+
+            <h3>Why does the error appear on some browsers but not others?</h3>
+            <p>Different browsers support different sets of TLS protocol versions and cipher suites. An older browser might still support TLS 1.0 and connect to the server successfully, while a modern browser that has dropped TLS 1.0 support will fail. This is a strong indicator that the server needs to be updated to support TLS 1.2 or higher.</p>
+
+            <p class="related-guides">📖 <strong>Learn more:</strong> <a href="/learn/err-ssl-protocol-error/">What causes ERR_SSL_PROTOCOL_ERROR</a>, <a href="/learn/ssl-tls-handshake/">How TLS handshakes work</a>, <a href="/learn/ssl-checker/">SSL Certificates guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — connection reset, sometimes TLS-related.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server not accepting connections at all.</li>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain not resolved before SSL can even begin.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificate details and validity</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Check SSL Certificate</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

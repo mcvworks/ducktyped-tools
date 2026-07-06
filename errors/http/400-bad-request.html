@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 400 Bad Request mean?","acceptedAnswer":{"@type":"Answer","text":"A 400 Bad Request error means the server could not process the request because it was malformed, invalid, or contained corrupt data. The problem is on the client side — the server understood the request but refused to process it because the syntax is incorrect."}},{"@type":"Question","name":"What causes 400 Bad Request errors?","acceptedAnswer":{"@type":"Answer","text":"Common causes include an oversized request or cookie, malformed URL syntax, invalid HTTP headers, corrupted browser cache, and in APIs, sending incorrectly formatted JSON or missing required fields."}},{"@type":"Question","name":"How do I fix a 400 Bad Request error?","acceptedAnswer":{"@type":"Answer","text":"Clear your browser cache and cookies, verify the URL has no invalid characters, and try a hard refresh. If using an API, check your request body and headers against the API documentation."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"400 Bad Request — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 400 Bad Request","step":[{"@type":"HowToStep","position":1,"name":"Clear Browser Cache and Cookies","text":"Press Ctrl+Shift+Delete (Windows) or Cmd+Shift+Delete (macOS). Select \"Cookies and site data\" and \"Cached images and files.\" Reload the page."},{"@type":"HowToStep","position":2,"name":"Check the URL","text":"Look for special characters that need URL encoding (spaces should be %20, for example). Remove any duplicate slashes or illegal characters."},{"@type":"HowToStep","position":3,"name":"Try in Incognito Mode","text":"Open the page in incognito. If it works, the issue is with cached data or cookies in your normal browser session."},{"@type":"HowToStep","position":4,"name":"Reduce Cookie Size (for Developers)","text":"If users are reporting 400 errors on your site, check cookie sizes. Nginx defaults to an 8KB limit for request headers. Consider clearing old cookies or using server-side session storage instead of large client-side cookies."},{"@type":"HowToStep","position":5,"name":"Fix API Requests (for Developers)","text":"Check that your request body is valid JSON, includes the correct Content-Type header, and all required fields are present. Compare against API documentation carefully."},{"@type":"HowToStep","position":6,"name":"Check Server Logs","text":"Server logs (nginx error.log, Apache error.log) typically include the specific reason for a 400 rejection, such as \"request line too large\" or \"invalid header.\""}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>400 Bad Request — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 400 Bad Request error means and how to fix it. Covers malformed URLs, oversized cookies, invalid headers, and API request errors.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 400, 400 Bad Request, Error 400, 400 error, Bad request error, The request could not be understood, 400 Bad Request nginx, 400 Bad Request Apache">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="400 Bad Request — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 400 Bad Request errors by troubleshooting malformed requests, cookies, and invalid headers.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/400-bad-request">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/400-bad-request">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>400 Bad Request</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>400 Bad Request</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 400 error means the server received a request it could not understand. The problem is with the request itself — malformed syntax, invalid data, or an oversized payload.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 400</code></li><li><code>400 Bad Request</code></li><li><code>Error 400</code></li><li><code>400 error</code></li><li><code>Bad request error</code></li><li><code>The request could not be understood</code></li><li><code>400 Bad Request nginx</code></li><li><code>400 Bad Request Apache</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 400 is a client-side error. The server received your request and understood it was an HTTP request, but the content was malformed or invalid in a way that prevented the server from processing it. This is different from <a href="/errors/http/404-not-found">404 Not Found</a> — with 400, the server found nothing wrong with the endpoint, but the request data itself was unacceptable.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Oversized cookies</strong> — cookie header exceeds the server's size limit (often 4KB or 8KB).</li>
+                <li><strong>Corrupted or malformed URL</strong> — special characters not properly URL-encoded, double slashes, or invalid query strings.</li>
+                <li><strong>Invalid HTTP headers</strong> — headers with illegal characters or malformed values.</li>
+                <li><strong>Corrupted browser cache</strong> — stale cached data being sent as part of the request.</li>
+                <li><strong>API request errors</strong> — sending invalid JSON, missing required fields, or wrong content type.</li>
+                <li><strong>Oversized request body</strong> — file upload or POST body exceeding the server's maximum allowed size.</li>
+                <li><strong>Double URL encoding</strong> — encoding a URL that is already encoded, creating invalid sequences.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Clear Browser Cache and Cookies</h3>
+            <p>Press <kbd>Ctrl+Shift+Delete</kbd> (Windows) or <kbd>Cmd+Shift+Delete</kbd> (macOS). Select "Cookies and site data" and "Cached images and files." Reload the page.</p>
+
+            <h3>2. Check the URL</h3>
+            <p>Look for special characters that need URL encoding (spaces should be <code>%20</code>, for example). Remove any duplicate slashes or illegal characters.</p>
+
+            <h3>3. Try in Incognito Mode</h3>
+            <p>Open the page in incognito. If it works, the issue is with cached data or cookies in your normal browser session.</p>
+
+            <h3>4. Reduce Cookie Size (for Developers)</h3>
+            <p>If users are reporting 400 errors on your site, check cookie sizes. Nginx defaults to an 8KB limit for request headers. Consider clearing old cookies or using server-side session storage instead of large client-side cookies.</p>
+
+            <h3>5. Fix API Requests (for Developers)</h3>
+            <p>Check that your request body is valid JSON, includes the correct <code>Content-Type</code> header, and all required fields are present. Compare against API documentation carefully.</p>
+
+            <h3>6. Check Server Logs</h3>
+            <p>Server logs (nginx error.log, Apache error.log) typically include the specific reason for a 400 rejection, such as "request line too large" or "invalid header."</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is a 400 error always the client's fault?</h3>
+            <p>Not always. While 400 technically indicates a client-side problem, a server can also return 400 due to a bug in its own request parsing logic. If many users report 400 errors on a specific action, check the server side.</p>
+
+            <h3>400 vs. 422 — what is the difference?</h3>
+            <p>A <a href="/errors/http/422-unprocessable-entity">422 Unprocessable Entity</a> is more specific — the request is syntactically valid but semantically incorrect (e.g., the JSON is valid but fails business validation). A 400 is more general and usually indicates the request itself was malformed before the server could even validate its content.</p>
+
+            <h3>Can ad blockers or proxies cause 400 errors?</h3>
+            <p>Yes. Some proxies modify headers in ways that make them invalid. Ad blockers can occasionally interfere with cookies or request headers. Test in a clean browser session if you suspect this.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/401-unauthorized">401 Unauthorized</a> — authentication credentials missing or invalid.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — server understood the request but refuses to authorize it.</li>
+                <li><a href="/errors/http/422-unprocessable-entity">422 Unprocessable Entity</a> — request is valid but semantically incorrect.</li>
+                <li><a href="/errors/http/413-payload-too-large">413 Payload Too Large</a> — request body exceeds server limit.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

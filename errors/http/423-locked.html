@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 423 only used with WebDAV?","acceptedAnswer":{"@type":"Answer","text":"It was defined for WebDAV but some APIs use it to indicate application-level resource locking. However, using 409 Conflict or 429 Too Many Requests may be more appropriate for non-WebDAV scenarios."}},{"@type":"Question","name":"How long do WebDAV locks last?","acceptedAnswer":{"@type":"Answer","text":"Lock duration is set when the lock is created and can range from seconds to infinity. Most servers set a maximum lock timeout (often 10-30 minutes) after which the lock expires automatically."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"423 Locked — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 423 Locked","step":[{"@type":"HowToStep","position":1,"name":"Wait for the lock to be released","text":"If another user has the resource locked, wait for them to finish their modifications and release the lock. Most locks have a timeout after which they expire automatically."},{"@type":"HowToStep","position":2,"name":"Unlock the resource via WebDAV","text":"If you have the lock token, send an UNLOCK request to release the lock on the resource."},{"@type":"HowToStep","position":3,"name":"Contact the administrator to force unlock","text":"If a stale lock cannot be released normally, a server administrator may need to manually remove the lock from the server's lock database."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>423 Locked — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix HTTP 423 Locked errors. Learn about WebDAV resource locking, what causes locked resource errors, and how to unlock resources.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 423, 423 Locked, 423 error, Resource locked, WebDAV locked">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="423 Locked — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix HTTP 423 Locked errors. Learn about WebDAV resource locking, what causes locked resource errors, and how to unlock resources.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/423-locked">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/423-locked">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>423 Locked</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>423 Locked</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The resource is locked and cannot be modified</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 423</code></li><li><code>423 Locked</code></li><li><code>423 error</code></li><li><code>Resource locked</code></li><li><code>WebDAV locked</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 423 Locked response indicates that the target resource is currently locked and the requested operation cannot be performed. This status code is defined in the WebDAV (Web Distributed Authoring and Versioning) extension to HTTP. Resources are locked to prevent concurrent modifications, similar to file locking in operating systems.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>WebDAV resource lock</strong> — Another user or process has acquired an exclusive lock on the resource through WebDAV, preventing other clients from modifying it.</li>
+                <li><strong>Stale lock not released</strong> — A previous lock was not properly released due to a client crash, network interruption, or programming error, leaving the resource in a permanently locked state.</li>
+                <li><strong>Application-level resource locking</strong> — The application implements its own resource locking mechanism (beyond WebDAV) and returns 423 when a resource is being edited by another user.</li>
+                <li><strong>Lock timeout not expired</strong> — A lock was placed on the resource with a timeout that has not yet expired. The resource will remain locked until the timeout passes or the lock is explicitly released.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Wait for the lock to be released</h3>
+            <p>If another user has the resource locked, wait for them to finish their modifications and release the lock. Most locks have a timeout after which they expire automatically.</p>
+            <h3>2. Unlock the resource via WebDAV</h3>
+            <p>If you have the lock token, send an UNLOCK request to release the lock on the resource.</p>
+            <pre><code># WebDAV UNLOCK request
+curl -X UNLOCK -H 'Lock-Token: &lt;opaquelocktoken:...&gt;' https://example.com/resource</code></pre>
+            <h3>3. Contact the administrator to force unlock</h3>
+            <p>If a stale lock cannot be released normally, a server administrator may need to manually remove the lock from the server's lock database.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 423 only used with WebDAV?</h3>
+            <p>It was defined for WebDAV but some APIs use it to indicate application-level resource locking. However, using 409 Conflict or 429 Too Many Requests may be more appropriate for non-WebDAV scenarios.</p>
+            <h3>How long do WebDAV locks last?</h3>
+            <p>Lock duration is set when the lock is created and can range from seconds to infinity. Most servers set a maximum lock timeout (often 10-30 minutes) after which the lock expires automatically.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/409-conflict">409 Conflict</a> — Request conflicts with current resource state</li>
+                <li><a href="/errors/http/424-failed-dependency">424 Failed Dependency</a> — Request failed due to a dependent operation failure</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — Server refuses to authorize the request</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ASCII Table","url":"https://ducktyped.xyz/ascii-table/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Complete ASCII table with decimal, hexadecimal, octal, and binary values. Search and filter ASCII characters.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the ASCII table?","acceptedAnswer":{"@type":"Answer","text":"The ASCII (American Standard Code for Information Interchange) table maps 128 characters to numeric values (0-127). It includes control characters (0-31), printable characters (32-126), and DEL (127)."}},{"@type":"Question","name":"What is the difference between ASCII and Unicode?","acceptedAnswer":{"@type":"Answer","text":"ASCII defines 128 characters using 7 bits. Unicode is a superset that supports over 149,000 characters from all writing systems. The first 128 Unicode code points are identical to ASCII."}},{"@type":"Question","name":"How do I find the ASCII code for a character?","acceptedAnswer":{"@type":"Answer","text":"Use the ASCII table above to look up any character. You can search by character, decimal value, hexadecimal value, or octal value."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Table — Character Code Reference — duckTyped</title>
+    <meta name="description" content="Complete ASCII table with decimal, hexadecimal, octal, and binary values. Search and filter ASCII characters.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="ASCII Table — Character Code Reference — duckTyped">
+    <meta property="og:description" content="Complete ASCII table with decimal, hex, octal, and binary values.">
+    <meta property="og:url" content="https://ducktyped.xyz/ascii-table/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/ascii-table.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ASCII Table — duckTyped">
+    <meta name="twitter:description" content="Complete ASCII character code reference table.">
+    <link rel="canonical" href="https://ducktyped.xyz/ascii-table/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>ASCII Table</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Browse the complete ASCII character table with decimal, hexadecimal, octal, binary, and HTML entity values. Search by character, name, or code value.</p><div class="example-box"><strong>Example uses:</strong><p>Looking up ASCII codes for programming, finding hex values for special characters, understanding control characters.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>ASCII Character Table</h2>
+            <div class="input-group"><label>Search:</label><input type="text" id="asciiSearch" placeholder="Search by character, name, or code..." oninput="filterASCII()"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:15px;">
+                <button onclick="setFilter('all')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">All</button>
+                <button onclick="setFilter('printable')" class="preset-btn green" style="padding:6px 12px;font-size:0.8em;">Printable</button>
+                <button onclick="setFilter('control')" class="preset-btn red" style="padding:6px 12px;font-size:0.8em;">Control</button>
+                <button onclick="setFilter('letters')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">Letters</button>
+                <button onclick="setFilter('digits')" class="preset-btn green" style="padding:6px 12px;font-size:0.8em;">Digits</button>
+                <button onclick="setFilter('symbols')" class="preset-btn red" style="padding:6px 12px;font-size:0.8em;">Symbols</button>
+            </div>
+            <div style="overflow-x:auto;"><table id="asciiTable" style="width:100%;border-collapse:collapse;font-size:0.85em;">
+                <thead><tr style="border-bottom:2px solid var(--border-color);">
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Dec</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Hex</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Oct</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Bin</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Char</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">HTML</th>
+                    <th style="padding:8px;text-align:left;color:var(--primary-color);">Description</th>
+                </tr></thead>
+                <tbody id="asciiBody"></tbody>
+            </table></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/base64-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Base64 Encoder</a>
+            <a href="/url-encoder/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">URL Encoder</a>
+            <a href="/hash-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Hash Generator</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var ctrlNames = ['NUL','SOH','STX','ETX','EOT','ENQ','ACK','BEL','BS','TAB','LF','VT','FF','CR','SO','SI','DLE','DC1','DC2','DC3','DC4','NAK','SYN','ETB','CAN','EM','SUB','ESC','FS','GS','RS','US'];
+    var data = [];
+    for (var i = 0; i < 128; i++) {
+        var ch, desc, type;
+        if (i < 32) { ch = ctrlNames[i]; desc = ctrlNames[i]; type = 'control'; }
+        else if (i === 32) { ch = 'SP'; desc = 'Space'; type = 'printable'; }
+        else if (i === 127) { ch = 'DEL'; desc = 'Delete'; type = 'control'; }
+        else { ch = String.fromCharCode(i); desc = String.fromCharCode(i); type = (i>=65&&i<=90)||(i>=97&&i<=122)?'letter':i>=48&&i<=57?'digit':'symbol'; }
+        data.push({dec:i,hex:i.toString(16).toUpperCase().padStart(2,'0'),oct:i.toString(8),bin:i.toString(2).padStart(8,'0'),ch:ch,html:'&#'+i+';',desc:desc,type:type});
+    }
+    var currentFilter = 'all';
+    function setFilter(f) { currentFilter = f; filterASCII(); }
+    function filterASCII() {
+        var search = document.getElementById('asciiSearch').value.toLowerCase();
+        var html = '';
+        data.forEach(function(d) {
+            var matchFilter = currentFilter==='all' || (currentFilter==='printable'&&d.type!=='control') || (currentFilter==='control'&&d.type==='control') || (currentFilter==='letters'&&d.type==='letter') || (currentFilter==='digits'&&d.type==='digit') || (currentFilter==='symbols'&&d.type==='symbol');
+            var matchSearch = !search || d.dec.toString().indexOf(search)>-1 || d.hex.toLowerCase().indexOf(search)>-1 || d.ch.toLowerCase().indexOf(search)>-1 || d.desc.toLowerCase().indexOf(search)>-1;
+            if (matchFilter && matchSearch) {
+                html += '<tr style="border-bottom:1px solid var(--border-color);">';
+                html += '<td style="padding:6px;color:var(--text-primary);">'+d.dec+'</td>';
+                html += '<td style="padding:6px;color:var(--text-secondary);">0x'+d.hex+'</td>';
+                html += '<td style="padding:6px;color:var(--text-secondary);">'+d.oct+'</td>';
+                html += '<td style="padding:6px;color:var(--text-secondary);font-family:monospace;">'+d.bin+'</td>';
+                html += '<td style="padding:6px;color:var(--primary-color);font-weight:600;font-size:1.1em;">'+d.ch+'</td>';
+                html += '<td style="padding:6px;color:var(--text-secondary);font-family:monospace;">'+d.html+'</td>';
+                html += '<td style="padding:6px;color:var(--text-secondary);">'+d.desc+'</td></tr>';
+            }
+        });
+        document.getElementById('asciiBody').innerHTML = html;
+    }
+    filterASCII();
+    </script>
+</body>
+</html>

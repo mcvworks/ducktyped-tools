@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does a background save block writes at all?","acceptedAnswer":{"@type":"Answer","text":"It is a deliberate alarm: if saves fail silently, you discover data loss only after a crash. Blocking writes makes the operational problem impossible to ignore. Cache-only deployments that can tolerate loss may reasonably disable the behavior — persistent-data deployments should not."}},{"@type":"Question","name":"Why does fork need so much memory?","acceptedAnswer":{"@type":"Answer","text":"It usually does not — Linux forks with copy-on-write, so the child shares pages with the parent. But with vm.overcommit_memory=0 the kernel conservatively assumes a full copy might be needed and can refuse the fork for a large Redis. Setting overcommit to 1 tells the kernel to allow it."}},{"@type":"Question","name":"Where does Redis write its dump file?","acceptedAnswer":{"@type":"Answer","text":"The 'dir' directive holds the directory and 'dbfilename' the file (default dump.rdb). Check both live with CONFIG GET dir and CONFIG GET dbfilename — the log messages about failed saves refer to that path."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Redis MISCONF — Unable to Persist to Disk — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis MISCONF — Unable to Persist to Disk — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Redis MISCONF 'unable to persist on disk' errors. Covers full disks, dir permissions, fork failures with vm.overcommit_memory, and safe overrides.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="MISCONF Redis is configured to save RDB snapshots, not able to persist on disk, redis MISCONF, stop-writes-on-bgsave-error, redis bgsave failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Redis MISCONF — Unable to Persist to Disk — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Redis MISCONF 'unable to persist on disk' errors. Covers full disks, dir permissions, fork failures with vm.overcommit_memory, and safe overrides.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/redis-misconf-rdb-snapshots">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/redis-misconf-rdb-snapshots">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Redis MISCONF — Unable to Persist to Disk</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Redis MISCONF — Unable to Persist to Disk</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The Redis error 'MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk' — writes are blocked until persistence recovers.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>MISCONF Redis is configured to save RDB snapshots</code></li><li><code>not able to persist on disk</code></li><li><code>redis MISCONF</code></li><li><code>stop-writes-on-bgsave-error</code></li><li><code>redis bgsave failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>By default Redis refuses all writes when its last background save (BGSAVE) failed, to make data loss loud instead of silent — that is the stop-writes-on-bgsave-error policy behind MISCONF. The save fails for environmental reasons: the disk is full, the configured dump directory is not writable by the redis user, or the fork() that background saving requires was denied memory by the kernel. Fix the save, and the error clears on the next successful BGSAVE.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Disk full</strong> — The volume holding the dump file (dir directive, default /var/lib/redis) has no space for a new dump.rdb — the most common cause by far.</li>
+                <li><strong>Directory not writable by the redis user</strong> — After migrations, restores from backup, or manual chown, the data directory or existing dump.rdb belongs to root and the redis process cannot replace it.</li>
+                <li><strong>fork() failed due to memory overcommit settings</strong> — BGSAVE forks the process; with vm.overcommit_memory=0 the kernel may refuse the fork when Redis uses a lot of memory, even though copy-on-write means the child needs far less than a full copy.</li>
+                <li><strong>AOF rewrite failures with the same roots</strong> — If appendonly is enabled, AOF rewrite failures (same disk/permission/fork causes) can block writes the same way.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read the exact failure from Redis itself</h3>
+            <p>INFO persistence shows the last save status and error; the log names the failing path.</p>
+            <pre><code>redis-cli INFO persistence | grep -E 'rdb_last_bgsave_status|aof_last_write_status'
+sudo tail -50 /var/log/redis/redis-server.log</code></pre>
+            <h3>2. Free disk space or move the dump directory</h3>
+            <p>Check the volume, clear space, or point dir at a volume with room, then trigger a save to confirm.</p>
+            <pre><code>df -h $(redis-cli CONFIG GET dir | tail -1)
+redis-cli CONFIG SET dir /data/redis   # writable volume
+redis-cli BGSAVE
+redis-cli INFO persistence | grep rdb_last_bgsave_status</code></pre>
+            <h3>3. Fix ownership and permissions</h3>
+            <p>The redis user must own the data directory and be able to replace the dump file.</p>
+            <pre><code>sudo chown -R redis:redis /var/lib/redis
+sudo chmod 750 /var/lib/redis
+redis-cli BGSAVE</code></pre>
+            <h3>4. Set vm.overcommit_memory = 1</h3>
+            <p>Allow the kernel to permit the BGSAVE fork under copy-on-write; Redis itself warns about this at startup.</p>
+            <pre><code>sudo sysctl vm.overcommit_memory=1
+# persist:
+echo 'vm.overcommit_memory = 1' | sudo tee /etc/sysctl.d/99-redis.conf</code></pre>
+            <h3>5. Only as a stopgap: allow writes despite failed saves</h3>
+            <p>This unblocks the application but disables the safety check — data written now is lost if Redis restarts before a save succeeds. Re-enable after fixing persistence.</p>
+            <pre><code>redis-cli CONFIG SET stop-writes-on-bgsave-error no
+# ...fix disk/permissions/fork...
+redis-cli CONFIG SET stop-writes-on-bgsave-error yes</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does a background save block writes at all?</h3>
+            <p>It is a deliberate alarm: if saves fail silently, you discover data loss only after a crash. Blocking writes makes the operational problem impossible to ignore. Cache-only deployments that can tolerate loss may reasonably disable the behavior — persistent-data deployments should not.</p>
+            <h3>Why does fork need so much memory?</h3>
+            <p>It usually does not — Linux forks with copy-on-write, so the child shares pages with the parent. But with vm.overcommit_memory=0 the kernel conservatively assumes a full copy might be needed and can refuse the fork for a large Redis. Setting overcommit to 1 tells the kernel to allow it.</p>
+            <h3>Where does Redis write its dump file?</h3>
+            <p>The 'dir' directive holds the directory and 'dbfilename' the file (default dump.rdb). Check both live with CONFIG GET dir and CONFIG GET dbfilename — the log messages about failed saves refer to that path.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/redis-oom-command-not-allowed">Redis OOM Command Not Allowed</a> — the maxmemory write block.</li>
+                <li><a href="/errors/database/redis-connection-refused">Redis Connection Refused</a> — server unreachable.</li>
+                <li><a href="/errors/database/redis-noauth-authentication-required">Redis NOAUTH</a> — authentication-required errors.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check Redis reachability</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

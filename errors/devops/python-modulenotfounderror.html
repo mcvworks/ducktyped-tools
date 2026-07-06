@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the module work in one terminal but not another?","acceptedAnswer":{"@type":"Answer","text":"Different terminals may have different Python environments active. Check 'which python' (Linux/macOS) or 'where python' (Windows) in each terminal to see which Python installation is being used."}},{"@type":"Question","name":"How do I find the correct pip package name for a module?","acceptedAnswer":{"@type":"Answer","text":"Search on pypi.org for the package. Many packages have different install names and import names. The package's documentation will specify the correct import name."}},{"@type":"Question","name":"Does ModuleNotFoundError mean the same as ImportError?","acceptedAnswer":{"@type":"Answer","text":"ModuleNotFoundError is a subclass of ImportError, introduced in Python 3.6. It specifically indicates that the module was not found, while ImportError can also cover cases where the module was found but something inside it failed to import."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Python ModuleNotFoundError — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Python ModuleNotFoundError","step":[{"@type":"HowToStep","position":1,"name":"Install the missing module","text":"Use pip to install the module. Make sure you are using the correct pip for your Python version."},{"@type":"HowToStep","position":2,"name":"Activate the correct virtual environment","text":"Ensure your virtual environment is activated before running your script."},{"@type":"HowToStep","position":3,"name":"Verify installation and check Python path","text":"Confirm the module is installed and check where Python is looking for modules."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python ModuleNotFoundError — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Python ModuleNotFoundError. Learn why Python cannot find a module and how to resolve import errors, virtual environment, and path issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ModuleNotFoundError, No module named, ModuleNotFoundError: No module named Python, ImportError: No module named, pip install module not found">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python ModuleNotFoundError — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Python ModuleNotFoundError. Learn why Python cannot find a module and how to resolve import errors, virtual environment, and path issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/python-modulenotfounderror">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/python-modulenotfounderror">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Python ModuleNotFoundError</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Python ModuleNotFoundError</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Python cannot find the specified module</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ModuleNotFoundError</code></li><li><code>No module named</code></li><li><code>ModuleNotFoundError: No module named Python</code></li><li><code>ImportError: No module named</code></li><li><code>pip install module not found</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ModuleNotFoundError occurs when Python's import system cannot locate the module you are trying to import. This can mean the module is not installed, is installed in a different Python environment, or the module name is misspelled. In Python 2, this appears as ImportError.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Module is not installed</strong> — The package has not been installed via pip or another package manager. The module needs to be explicitly installed before it can be imported.</li>
+                <li><strong>Wrong Python environment or virtual environment</strong> — The module is installed in a different Python installation or virtual environment than the one currently active. This is very common when switching between projects.</li>
+                <li><strong>Module name differs from package name</strong> — The pip package name is different from the import name. For example, 'pip install Pillow' but 'import PIL', or 'pip install python-dotenv' but 'import dotenv'.</li>
+                <li><strong>Python path does not include the module location</strong> — The module exists on disk but is not in any of the directories listed in sys.path, so Python's import system cannot find it.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install the missing module</h3>
+            <p>Use pip to install the module. Make sure you are using the correct pip for your Python version.</p>
+            <pre><code>pip install module-name
+# Or for Python 3 specifically:
+python3 -m pip install module-name</code></pre>
+            <h3>2. Activate the correct virtual environment</h3>
+            <p>Ensure your virtual environment is activated before running your script.</p>
+            <pre><code># Create and activate venv:
+python3 -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+pip install -r requirements.txt</code></pre>
+            <h3>3. Verify installation and check Python path</h3>
+            <p>Confirm the module is installed and check where Python is looking for modules.</p>
+            <pre><code>pip list | grep module-name
+python3 -c &quot;import sys; print(sys.path)&quot;</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why does the module work in one terminal but not another?</h3>
+            <p>Different terminals may have different Python environments active. Check 'which python' (Linux/macOS) or 'where python' (Windows) in each terminal to see which Python installation is being used.</p>
+            <h3>How do I find the correct pip package name for a module?</h3>
+            <p>Search on pypi.org for the package. Many packages have different install names and import names. The package's documentation will specify the correct import name.</p>
+            <h3>Does ModuleNotFoundError mean the same as ImportError?</h3>
+            <p>ModuleNotFoundError is a subclass of ImportError, introduced in Python 3.6. It specifically indicates that the module was not found, while ImportError can also cover cases where the module was found but something inside it failed to import.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/pip-install-failed">pip Install Failed</a> — pip installation failed with error</li>
+                <li><a href="/errors/devops/java-classnotfoundexception">Java ClassNotFoundException</a> — Java cannot find the specified class</li>
+                <li><a href="/errors/devops/npm-err-eresolve">npm ERR! ERESOLVE</a> — npm dependency resolution conflict</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check DNS records</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

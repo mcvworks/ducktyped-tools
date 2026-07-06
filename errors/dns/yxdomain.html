@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is YXDOMAIN different from NXDOMAIN?","acceptedAnswer":{"@type":"Answer","text":"They are opposites. NXDOMAIN: you asked for a name and it does not exist. YXDOMAIN: you required (in an update prerequisite) that a name not exist — and it does. YXDOMAIN appears in update responses, not ordinary lookups."}},{"@type":"Question","name":"Why does my DHCP server log YXDOMAIN errors?","acceptedAnswer":{"@type":"Answer","text":"The DHCP server tried to register a client's hostname in DNS, but a record for that name already exists and is owned by someone else (a previous lease, an old machine account). Clean up the stale record or enable scavenging so it expires."}},{"@type":"Question","name":"Can ordinary users ever see YXDOMAIN in a browser?","acceptedAnswer":{"@type":"Answer","text":"Practically never. Browsers do plain lookups, which return NOERROR, NXDOMAIN, or SERVFAIL. YXDOMAIN is confined to dynamic-update responses and the rare DNAME overflow case — it is an operator-facing error."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"DNS YXDOMAIN — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS YXDOMAIN — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix DNS YXDOMAIN (RCODE 6) errors. Covers nsupdate prerequisite conflicts, Windows DHCP dynamic-update collisions, and DNAME expansion limits.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="YXDOMAIN, RCODE 6, Name Exists when it should not, nsupdate YXDOMAIN, dynamic update prerequisite failed">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DNS YXDOMAIN — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix DNS YXDOMAIN (RCODE 6) errors. Covers nsupdate prerequisite conflicts, Windows DHCP dynamic-update collisions, and DNAME expansion limits.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/yxdomain">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/yxdomain">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>DNS YXDOMAIN</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>DNS YXDOMAIN</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">DNS response code 6 — a name exists when it should not. Seen in dynamic DNS updates with failed prerequisites and in DNAME/CNAME expansion overflows.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>YXDOMAIN</code></li><li><code>RCODE 6</code></li><li><code>Name Exists when it should not</code></li><li><code>nsupdate YXDOMAIN</code></li><li><code>dynamic update prerequisite failed</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>YXDOMAIN is one of the rarer DNS response codes, defined for dynamic updates (RFC 2136): an update said 'this name must not exist' as a prerequisite, but it does — so the server rejects the change. You will meet it in nsupdate scripts, DHCP servers doing dynamic DNS registration (especially Windows/Active Directory), and — in a second, unrelated meaning from RFC 6672 — when DNAME redirection produces a name longer than DNS allows. Understanding which of the two situations you are in is the whole diagnosis.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Dynamic update prerequisite failed</strong> — The update used an NXDOMAIN prerequisite ('add this only if the name does not exist'), but a record already exists at that name — often left behind by an earlier registration.</li>
+                <li><strong>DHCP name collisions in Active Directory</strong> — Two machines claiming the same hostname, or a machine re-imaged with a new identity, collide with the existing DNS record owned by the old registration. The DHCP server's update is answered with YXDOMAIN.</li>
+                <li><strong>Stale records that were never scavenged</strong> — Without DNS scavenging (or with it misconfigured), records from long-gone hosts persist and block re-registration of their names.</li>
+                <li><strong>DNAME expansion exceeded the name-length limit</strong> — Per RFC 6672, when substituting a DNAME target produces a domain name longer than 255 octets, the server responds with YXDOMAIN. This is a zone-design problem, not an update conflict.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Inspect what exists at the conflicting name</h3>
+            <p>Look at the current records before fighting the prerequisite — the conflict is usually a stale A or CNAME record.</p>
+            <pre><code>dig +noall +answer conflicting-host.example.com ANY
+dig +noall +answer conflicting-host.example.com A CNAME TXT</code></pre>
+            <h3>2. Delete the stale record, then re-run the update</h3>
+            <p>Remove the existing record explicitly in the same nsupdate session (or via your DNS console), then add the new one.</p>
+            <pre><code>nsupdate -k /etc/rndc.key &lt;&lt;'EOF'
+server ns1.example.com
+zone example.com
+update delete conflicting-host.example.com A
+update add conflicting-host.example.com 300 A 192.0.2.10
+send
+EOF</code></pre>
+            <h3>3. Enable scavenging / fix ownership in AD environments</h3>
+            <p>In Windows DNS, enable aging and scavenging so stale dynamic records expire, and check the record's security tab — a record owned by another computer account blocks updates from the new machine. Deleting the stale record and re-registering (ipconfig /registerdns) resolves the immediate conflict.</p>
+            <h3>4. Shorten names involved in DNAME redirection</h3>
+            <p>If YXDOMAIN comes from DNAME expansion, the combined substituted name exceeds 255 bytes. Flatten deep label hierarchies or move the DNAME higher in the tree so expanded names stay legal.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How is YXDOMAIN different from NXDOMAIN?</h3>
+            <p>They are opposites. NXDOMAIN: you asked for a name and it does not exist. YXDOMAIN: you required (in an update prerequisite) that a name not exist — and it does. YXDOMAIN appears in update responses, not ordinary lookups.</p>
+            <h3>Why does my DHCP server log YXDOMAIN errors?</h3>
+            <p>The DHCP server tried to register a client's hostname in DNS, but a record for that name already exists and is owned by someone else (a previous lease, an old machine account). Clean up the stale record or enable scavenging so it expires.</p>
+            <h3>Can ordinary users ever see YXDOMAIN in a browser?</h3>
+            <p>Practically never. Browsers do plain lookups, which return NOERROR, NXDOMAIN, or SERVFAIL. YXDOMAIN is confined to dynamic-update responses and the rare DNAME overflow case — it is an operator-facing error.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — the name-does-not-exist counterpart.</li>
+                <li><a href="/errors/dns/notauth">DNS NOTAUTH</a> — updates sent to a non-authoritative server.</li>
+                <li><a href="/errors/dns/refused">DNS REFUSED</a> — updates rejected by policy.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">See what currently exists at a name</span>
+                </a>
+        <a href="/reverse-dns/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Reverse DNS Lookup</span>
+                    <span class="recommended-tool-desc">Find which hostname an IP claims</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

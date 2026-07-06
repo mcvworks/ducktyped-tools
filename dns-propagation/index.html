@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"DNS Propagation Checker","url":"https://ducktyped.xyz/dns-propagation/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Check how DNS records have propagated across different DNS servers worldwide. Compare responses from multiple resolvers.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is DNS propagation?","acceptedAnswer":{"@type":"Answer","text":"DNS propagation is the process of DNS record changes being updated across all DNS servers worldwide. It can take anywhere from a few minutes to 48 hours depending on TTL values and caching."}},{"@type":"Question","name":"How long does DNS propagation take?","acceptedAnswer":{"@type":"Answer","text":"DNS propagation typically takes 15 minutes to 48 hours. The actual time depends on the TTL (Time To Live) value set on the records and how aggressively DNS resolvers cache results."}},{"@type":"Question","name":"How do I check if my DNS changes have propagated?","acceptedAnswer":{"@type":"Answer","text":"Use this DNS Propagation Checker to query your domain from multiple DNS servers worldwide. If all servers return the same updated records, propagation is complete."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Propagation Checker — Check DNS Records Globally — duckTyped</title>
+    <meta name="description" content="Check how DNS records have propagated across different DNS servers worldwide. Compare responses from multiple resolvers.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DNS Propagation Checker — Check DNS Records Globally — duckTyped">
+    <meta property="og:description" content="Check how DNS records have propagated across different DNS servers worldwide. Compare responses from multiple resolvers.">
+    <meta property="og:url" content="https://ducktyped.xyz/dns-propagation/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/dns-propagation.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DNS Propagation Checker — Check DNS Records Globally — duckTyped">
+    <meta name="twitter:description" content="Check how DNS records have propagated across different DNS servers worldwide. Compare responses from multiple resolvers.">
+    <link rel="canonical" href="https://ducktyped.xyz/dns-propagation/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <!-- SEO Content -->
+        <div class="standalone-hero">
+            <h1>DNS Propagation Checker</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Check DNS propagation by querying multiple public DNS resolvers. See if your DNS changes have propagated across Google, Cloudflare, OpenDNS, Quad9, and other providers.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Checking if DNS changes have propagated after updating nameservers, verifying DNS records across different providers, troubleshooting DNS resolution issues, or monitoring DNS consistency.</p></div>
+            <a href="/learn/dns-propagation/" class="learn-more-link">Learn how DNS propagation works</a>
+        </div>
+
+        <!-- Tool -->
+        <div class="standalone-tool-wrap">
+            <div class="tool-card standalone-card" id="dnsPropagation">
+                <h2>DNS Propagation Checker</h2>
+                <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
+                    Query multiple public DNS resolvers via DNS-over-HTTPS to check propagation status. All queries run from your browser.
+                </p>
+
+                <div class="input-group">
+                    <label>Domain:</label>
+                    <input type="text" id="domainInput" placeholder="example.com" onkeypress="if(event.key==='Enter') checkPropagation()">
+                </div>
+
+                <div class="input-group">
+                    <label>Record Type:</label>
+                    <select id="recordType" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--input-background); color: var(--text-primary); font-size: 0.9em;">
+                        <option value="A">A (IPv4 Address)</option>
+                        <option value="AAAA">AAAA (IPv6 Address)</option>
+                        <option value="CNAME">CNAME (Canonical Name)</option>
+                        <option value="MX">MX (Mail Exchange)</option>
+                        <option value="TXT">TXT (Text Record)</option>
+                        <option value="NS">NS (Nameserver)</option>
+                    </select>
+                </div>
+
+                <button onclick="checkPropagation()">Check Propagation</button>
+                <div id="dnsResults"></div>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <div class="standalone-tool-wrap" style="margin-top: 20px;">
+            <div class="tool-card standalone-card">
+                <h3 style="margin-bottom: 12px;">Related Tools</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="/dns-lookup/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">DNS Lookup</a>
+                    <a href="/reverse-dns/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Reverse DNS</a>
+                    <a href="/whois-lookup/" style="color: var(--primary-color); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border-color); border-radius: 6px;">Whois Lookup</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore More -->
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Record Checker</span>
+                    <span class="recommended-tool-desc">Look up A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, and DKIM records for any domain</span>
+                </a>
+                <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Scan TCP ports on any host to check which ports are open, closed, or filtered</span>
+                </a>
+                <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency Checker</span>
+                    <span class="recommended-tool-desc">Measure HTTP response times and check server reachability and performance</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/dns-propagation/">What Is DNS Propagation?</a> &nbsp;·&nbsp; 🛠 <strong>Troubleshoot:</strong> <a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a>, <a href="/errors/dns/dnssec-validation-failure">DNSSEC Validation Failure</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta">
+            <p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    var DNS_PROVIDERS = [
+        { name: 'Google', ip: '8.8.8.8', url: 'https://dns.google/resolve', needsAccept: false },
+        { name: 'Cloudflare', ip: '1.1.1.1', url: 'https://cloudflare-dns.com/dns-query', needsAccept: true },
+        { name: 'Quad9', ip: '9.9.9.9', url: 'https://dns.quad9.net:5053/dns-query', needsAccept: true }
+    ];
+
+    var TYPE_MAP = { A: 1, AAAA: 28, CNAME: 5, MX: 15, TXT: 16, NS: 2 };
+
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    async function queryDNS(provider, domain, type) {
+        var url = provider.url + '?name=' + encodeURIComponent(domain) + '&type=' + type;
+        var headers = {};
+        if (provider.needsAccept) {
+            headers['Accept'] = 'application/dns-json';
+        }
+        var startTime = performance.now();
+        try {
+            var response = await fetch(url, { headers: headers });
+            var elapsed = Math.round(performance.now() - startTime);
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            var data = await response.json();
+            return { provider: provider, data: data, time: elapsed, error: null };
+        } catch (e) {
+            var elapsed = Math.round(performance.now() - startTime);
+            return { provider: provider, data: null, time: elapsed, error: e.message };
+        }
+    }
+
+    function formatRecords(data, type) {
+        if (!data || !data.Answer || data.Answer.length === 0) {
+            if (data && data.Authority && data.Authority.length > 0) return '<span style="color: var(--text-secondary);">No records (SOA authority returned)</span>';
+            return '<span style="color: var(--text-secondary);">No records found</span>';
+        }
+        var records = [];
+        for (var i = 0; i < data.Answer.length; i++) {
+            var ans = data.Answer[i];
+            var val = escapeHtml(ans.data || '');
+            if (type === 'MX') {
+                // MX has priority
+                records.push(val);
+            } else {
+                records.push(val);
+            }
+        }
+        return records.join('<br>');
+    }
+
+    function getTTL(data) {
+        if (!data || !data.Answer || data.Answer.length === 0) return '—';
+        return data.Answer[0].TTL + 's';
+    }
+
+    async function checkPropagation() {
+        var domain = document.getElementById('domainInput').value.trim();
+        var type = document.getElementById('recordType').value;
+        var resultsDiv = document.getElementById('dnsResults');
+
+        if (!domain) {
+            resultsDiv.innerHTML = '<div style="border-left: 3px solid #e74c3c; padding: 12px; margin-top: 12px; background: var(--input-background); border-radius: 6px;"><strong style="color: #e74c3c;">Error:</strong> Please enter a domain name.</div>';
+            return;
+        }
+
+        // Remove protocol and trailing slashes
+        domain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/^www\./, '');
+
+        // Show loading state
+        var loadingHtml = '<div style="margin-top: 15px;">';
+        loadingHtml += '<table style="width: 100%; border-collapse: collapse; font-size: 0.9em; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden;">';
+        loadingHtml += '<thead><tr style="background: var(--input-background);">';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color);">Provider</th>';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color);">IP</th>';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--border-color);">Status</th>';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color);">Records</th>';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--border-color);">TTL</th>';
+        loadingHtml += '<th style="padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--border-color);">Time</th>';
+        loadingHtml += '</tr></thead><tbody>';
+        for (var i = 0; i < DNS_PROVIDERS.length; i++) {
+            var p = DNS_PROVIDERS[i];
+            loadingHtml += '<tr id="row-' + i + '"><td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-weight: 600;">' + p.name + '</td>';
+            loadingHtml += '<td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.85em; color: var(--text-secondary);">' + p.ip + '</td>';
+            loadingHtml += '<td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: center;" id="status-' + i + '">&#9203;</td>';
+            loadingHtml += '<td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color);" id="records-' + i + '"><span style="color: var(--text-secondary);">Querying...</span></td>';
+            loadingHtml += '<td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: center;" id="ttl-' + i + '">—</td>';
+            loadingHtml += '<td style="padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: center;" id="time-' + i + '">—</td>';
+            loadingHtml += '</tr>';
+        }
+        loadingHtml += '</tbody></table>';
+        loadingHtml += '<div id="consistencyMsg" style="margin-top: 12px;"></div>';
+        loadingHtml += '</div>';
+        resultsDiv.innerHTML = loadingHtml;
+
+        // Query all providers in parallel
+        var promises = DNS_PROVIDERS.map(function(provider) {
+            return queryDNS(provider, domain, type);
+        });
+
+        var results = await Promise.allSettled(promises);
+        var allAnswers = [];
+        var hasFailures = false;
+
+        for (var i = 0; i < results.length; i++) {
+            var result = results[i].status === 'fulfilled' ? results[i].value : { provider: DNS_PROVIDERS[i], data: null, time: 0, error: 'Query failed' };
+            var statusEl = document.getElementById('status-' + i);
+            var recordsEl = document.getElementById('records-' + i);
+            var ttlEl = document.getElementById('ttl-' + i);
+            var timeEl = document.getElementById('time-' + i);
+
+            if (result.error) {
+                statusEl.innerHTML = '<span style="color: #e74c3c;" title="Failed">&#10060;</span>';
+                recordsEl.innerHTML = '<span style="color: #e74c3c;">' + escapeHtml(result.error) + '</span>';
+                hasFailures = true;
+            } else {
+                var hasRecords = result.data && result.data.Answer && result.data.Answer.length > 0;
+                statusEl.innerHTML = hasRecords ? '<span style="color: #27ae60;" title="Success">&#9989;</span>' : '<span style="color: #f39c12;" title="No records">&#9888;&#65039;</span>';
+                recordsEl.innerHTML = '<span style="font-family: var(--font-mono); font-size: 0.85em;">' + formatRecords(result.data, type) + '</span>';
+                ttlEl.textContent = getTTL(result.data);
+
+                if (hasRecords) {
+                    var answers = result.data.Answer.map(function(a) { return a.data; }).sort().join(',');
+                    allAnswers.push(answers);
+                }
+            }
+            timeEl.textContent = result.time + 'ms';
+        }
+
+        // Consistency check
+        var consistencyEl = document.getElementById('consistencyMsg');
+        if (allAnswers.length === 0) {
+            consistencyEl.innerHTML = '<div style="background: var(--input-background); border-left: 3px solid #f39c12; padding: 12px; border-radius: 6px; font-size: 0.9em;">No records returned from any provider for <strong>' + escapeHtml(domain) + '</strong> (' + type + ').</div>';
+        } else {
+            var unique = [...new Set(allAnswers)];
+            if (unique.length === 1 && allAnswers.length === DNS_PROVIDERS.length && !hasFailures) {
+                consistencyEl.innerHTML = '<div style="background: var(--input-background); border-left: 3px solid #27ae60; padding: 12px; border-radius: 6px; font-size: 0.9em;"><strong style="color: #27ae60;">Fully Propagated</strong> — All providers return the same records for <strong>' + escapeHtml(domain) + '</strong>.</div>';
+            } else if (unique.length === 1) {
+                consistencyEl.innerHTML = '<div style="background: var(--input-background); border-left: 3px solid #f39c12; padding: 12px; border-radius: 6px; font-size: 0.9em;"><strong style="color: #f39c12;">Partially Propagated</strong> — Responding providers agree, but some failed to respond.</div>';
+            } else {
+                consistencyEl.innerHTML = '<div style="background: var(--input-background); border-left: 3px solid #e74c3c; padding: 12px; border-radius: 6px; font-size: 0.9em;"><strong style="color: #e74c3c;">Inconsistent</strong> — Providers are returning different records. DNS may still be propagating.</div>';
+            }
+        }
+    }
+    </script>
+</body>
+</html>

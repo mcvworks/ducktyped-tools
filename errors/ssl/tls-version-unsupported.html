@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which TLS versions should I support?","acceptedAnswer":{"@type":"Answer","text":"Support TLS 1.2 and TLS 1.3. TLS 1.0 and 1.1 are deprecated and have known security issues. TLS 1.2 provides broad compatibility, and TLS 1.3 provides the strongest security and performance."}},{"@type":"Question","name":"Why did TLS 1.0 and 1.1 get deprecated?","acceptedAnswer":{"@type":"Answer","text":"TLS 1.0 and 1.1 use older cryptographic algorithms vulnerable to attacks like BEAST, POODLE, and others. They also lack modern features like authenticated encryption with associated data (AEAD) cipher suites that are mandatory in TLS 1.2+."}},{"@type":"Question","name":"Can I force my browser to use an older TLS version?","acceptedAnswer":{"@type":"Answer","text":"Most modern browsers have removed the ability to enable TLS 1.0 and 1.1. Even if possible through advanced settings, doing so is not recommended as it exposes you to known attacks. The server should be updated instead."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"TLS Version Not Supported — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix TLS Version Not Supported","step":[{"@type":"HowToStep","position":1,"name":"Enable TLS 1.2 and 1.3 on the server","text":"Configure the server to support both TLS 1.2 and TLS 1.3 for maximum compatibility while maintaining security."},{"@type":"HowToStep","position":2,"name":"Update the client software","text":"If the client does not support modern TLS versions, update the browser, operating system, or application. All current browsers support TLS 1.2 and 1.3."},{"@type":"HowToStep","position":3,"name":"Check with OpenSSL","text":"Test which TLS versions the server supports using OpenSSL."},{"@type":"HowToStep","position":4,"name":"Disable legacy TLS versions","text":"Remove support for TLS 1.0 and 1.1 on the server side. These versions have known vulnerabilities and are no longer accepted by modern clients."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLS Version Not Supported — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix TLS version not supported errors. Learn why TLS version mismatches occur, which TLS versions are current, and how to update your configuration.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="TLS version unsupported, ERR_SSL_VERSION_OR_CIPHER_MISMATCH, TLS 1.0 not supported, TLS 1.1 deprecated, Protocol version not supported, Unsupported TLS version">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="TLS Version Not Supported — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix TLS version not supported errors. Learn why TLS version mismatches occur, which TLS versions are current, and how to update your configuration.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/tls-version-unsupported">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/tls-version-unsupported">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>TLS Version Not Supported</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>TLS Version Not Supported</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The TLS protocol version is not supported by the server or client</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>TLS version unsupported</code></li><li><code>ERR_SSL_VERSION_OR_CIPHER_MISMATCH</code></li><li><code>TLS 1.0 not supported</code></li><li><code>TLS 1.1 deprecated</code></li><li><code>Protocol version not supported</code></li><li><code>Unsupported TLS version</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>TLS Version Not Supported occurs when the client and server cannot agree on a TLS protocol version during the handshake. The client proposes the TLS versions it supports, and if the server does not support any of them, the handshake fails. This commonly happens when a client supports only modern TLS versions (1.2 or 1.3) but the server only supports deprecated versions (1.0 or 1.1), or vice versa when an old client connects to a server that has disabled legacy TLS versions.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server only supports deprecated TLS versions</strong> — The server is configured to use only TLS 1.0 or TLS 1.1, which modern browsers and clients have disabled. TLS 1.0 and 1.1 were deprecated in RFC 8996 due to known security vulnerabilities.</li>
+                <li><strong>Client does not support server's TLS version</strong> — An older client or application only supports TLS 1.0/1.1, but the server requires TLS 1.2 or higher. This is common with legacy systems, embedded devices, or outdated software.</li>
+                <li><strong>Server misconfiguration excluding TLS 1.2</strong> — The server is misconfigured to only allow TLS 1.3, but the client does not yet support TLS 1.3. Both TLS 1.2 and 1.3 should typically be enabled for compatibility.</li>
+                <li><strong>Network middlebox interference</strong> — A firewall or security appliance is modifying the TLS handshake and removing supported version indicators, causing the server to believe the client does not support any compatible version.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Enable TLS 1.2 and 1.3 on the server</h3>
+            <p>Configure the server to support both TLS 1.2 and TLS 1.3 for maximum compatibility while maintaining security.</p>
+            <pre><code># Nginx
+ssl_protocols TLSv1.2 TLSv1.3;
+
+# Apache
+SSLProtocol -all +TLSv1.2 +TLSv1.3
+
+# HAProxy
+ssl-default-bind-options ssl-min-ver TLSv1.2</code></pre>
+            <h3>2. Update the client software</h3>
+            <p>If the client does not support modern TLS versions, update the browser, operating system, or application. All current browsers support TLS 1.2 and 1.3.</p>
+            <h3>3. Check with OpenSSL</h3>
+            <p>Test which TLS versions the server supports using OpenSSL.</p>
+            <pre><code># Test TLS 1.2
+openssl s_client -connect example.com:443 -tls1_2
+
+# Test TLS 1.3
+openssl s_client -connect example.com:443 -tls1_3
+
+# Test all versions
+nmap --script ssl-enum-ciphers -p 443 example.com</code></pre>
+            <h3>4. Disable legacy TLS versions</h3>
+            <p>Remove support for TLS 1.0 and 1.1 on the server side. These versions have known vulnerabilities and are no longer accepted by modern clients.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Which TLS versions should I support?</h3>
+            <p>Support TLS 1.2 and TLS 1.3. TLS 1.0 and 1.1 are deprecated and have known security issues. TLS 1.2 provides broad compatibility, and TLS 1.3 provides the strongest security and performance.</p>
+            <h3>Why did TLS 1.0 and 1.1 get deprecated?</h3>
+            <p>TLS 1.0 and 1.1 use older cryptographic algorithms vulnerable to attacks like BEAST, POODLE, and others. They also lack modern features like authenticated encryption with associated data (AEAD) cipher suites that are mandatory in TLS 1.2+.</p>
+            <h3>Can I force my browser to use an older TLS version?</h3>
+            <p>Most modern browsers have removed the ability to enable TLS 1.0 and 1.1. Even if possible through advanced settings, doing so is not recommended as it exposes you to known attacks. The server should be updated instead.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/err_ssl_protocol_error">ERR_SSL_PROTOCOL_ERROR</a> — SSL/TLS protocol error</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS handshake could not complete</li>
+                <li><a href="/errors/ssl/ssl-wrong-version-number">SSL Wrong Version Number</a> — Unexpected SSL/TLS version in response</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificates and TLS configuration</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check security headers and HSTS</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

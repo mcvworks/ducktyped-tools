@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between ERR_INVALID_RESPONSE and a 500 error?","acceptedAnswer":{"@type":"Answer","text":"A 500 error is a valid HTTP response indicating a server error. ERR_INVALID_RESPONSE means the server did not send a valid HTTP response at all — the browser cannot even parse what the server sent."}},{"@type":"Question","name":"Can antivirus software cause ERR_INVALID_RESPONSE?","acceptedAnswer":{"@type":"Answer","text":"Yes, antivirus software that intercepts and inspects network traffic can sometimes corrupt HTTP responses, particularly when it fails to properly re-inject modified content."}},{"@type":"Question","name":"Why does this error only happen on certain pages?","acceptedAnswer":{"@type":"Answer","text":"Different pages may be handled by different server-side code paths. The error typically occurs when a specific code path produces malformed output or crashes during response generation."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_INVALID_RESPONSE — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_INVALID_RESPONSE","step":[{"@type":"HowToStep","position":1,"name":"Check server logs for errors","text":"Examine the web server and application error logs for crashes, segmentation faults, or exceptions that occur when the failing URL is requested. The root cause is almost always server-side."},{"@type":"HowToStep","position":2,"name":"Test with curl for detailed output","text":"Use curl with verbose output to see exactly what the server is sending. This will show the raw response including any malformed headers or unexpected data."},{"@type":"HowToStep","position":3,"name":"Restart the web server","text":"Restart the web server process (Nginx, Apache, Node.js, etc.) to clear any corrupted state. If the server application is crashing, fix the underlying application error."},{"@type":"HowToStep","position":4,"name":"Bypass proxy or VPN","text":"If you are using a proxy or VPN, bypass it temporarily to test whether the intermediary is corrupting the response. Connect directly to the server to isolate the issue."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_INVALID_RESPONSE — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_INVALID_RESPONSE in Chrome and other browsers. Learn why servers send invalid responses and how to troubleshoot and resolve this error.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_INVALID_RESPONSE, ERR_INVALID_RESPONSE Chrome, Invalid response received, This page isn&#39;t working">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_INVALID_RESPONSE — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_INVALID_RESPONSE in Chrome and other browsers. Learn why servers send invalid responses and how to troubleshoot and resolve this error.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_invalid_response">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_invalid_response">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_INVALID_RESPONSE</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_INVALID_RESPONSE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Server sent a response the browser cannot parse</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_INVALID_RESPONSE</code></li><li><code>ERR_INVALID_RESPONSE Chrome</code></li><li><code>Invalid response received</code></li><li><code>This page isn&#39;t working</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_INVALID_RESPONSE occurs when the server sends a response that does not conform to the HTTP specification and the browser cannot parse it. This typically means the response headers are malformed, the status line is missing or corrupt, or the server is speaking a different protocol than expected. It is a catch-all error for responses that are syntactically invalid at the HTTP level.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Malformed HTTP response headers</strong> — The server is sending response headers that violate HTTP syntax rules, such as missing the status line, using invalid characters in header names, or sending improperly terminated headers.</li>
+                <li><strong>Server sending non-HTTP data</strong> — The server process is responding with a protocol other than HTTP (such as raw TCP data or a different application protocol) on the expected HTTP port.</li>
+                <li><strong>Proxy returning garbage data</strong> — A forward or reverse proxy is corrupting the response by mixing data from different connections, truncating headers, or injecting non-HTTP content.</li>
+                <li><strong>Server application crash mid-response</strong> — The server-side application crashed while writing the response headers, leaving the output in an incomplete and unparseable state.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check server logs for errors</h3>
+            <p>Examine the web server and application error logs for crashes, segmentation faults, or exceptions that occur when the failing URL is requested. The root cause is almost always server-side.</p>
+            <h3>2. Test with curl for detailed output</h3>
+            <p>Use curl with verbose output to see exactly what the server is sending. This will show the raw response including any malformed headers or unexpected data.</p>
+            <pre><code>curl -v https://example.com/problematic-path</code></pre>
+            <h3>3. Restart the web server</h3>
+            <p>Restart the web server process (Nginx, Apache, Node.js, etc.) to clear any corrupted state. If the server application is crashing, fix the underlying application error.</p>
+            <h3>4. Bypass proxy or VPN</h3>
+            <p>If you are using a proxy or VPN, bypass it temporarily to test whether the intermediary is corrupting the response. Connect directly to the server to isolate the issue.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between ERR_INVALID_RESPONSE and a 500 error?</h3>
+            <p>A 500 error is a valid HTTP response indicating a server error. ERR_INVALID_RESPONSE means the server did not send a valid HTTP response at all — the browser cannot even parse what the server sent.</p>
+            <h3>Can antivirus software cause ERR_INVALID_RESPONSE?</h3>
+            <p>Yes, antivirus software that intercepts and inspects network traffic can sometimes corrupt HTTP responses, particularly when it fails to properly re-inject modified content.</p>
+            <h3>Why does this error only happen on certain pages?</h3>
+            <p>Different pages may be handled by different server-side code paths. The error typically occurs when a specific code path produces malformed output or crashes during response generation.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — Connection was reset during communication</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Upstream server sent invalid response</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Server refused the connection</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-latency/" class="cta-btn-primary">Try HTTP Latency</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which of the duplicate blocks actually serves traffic?","acceptedAnswer":{"@type":"Answer","text":"The first one nginx loads — include order is alphabetical within each include directive, in the order the includes appear. That is why symptoms feel random: it depends on filenames. 'nginx -T' prints blocks in load order, so the first block showing that server_name is the winner."}},{"@type":"Question","name":"It is just a [warn] — can I ignore it?","acceptedAnswer":{"@type":"Answer","text":"The process runs fine, but one of your config files is dead weight that looks alive. Sooner or later someone edits the ignored block and loses hours wondering why nothing changes — or worse, the wrong block serves an old certificate. Treat the warning as a to-do, not noise."}},{"@type":"Question","name":"Is the same server_name on ports 80 and 443 a conflict?","acceptedAnswer":{"@type":"Answer","text":"No — the conflict space is name + listen address:port. One block for :80 (usually a redirect to HTTPS) and one for :443 with the same name is the standard pattern and produces no warning."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Conflicting Server Name — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Conflicting Server Name — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx '[warn] conflicting server name ... ignored'. Duplicate vhosts from sites-enabled leftovers, certbot copies, and how to find which block wins.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="nginx: [warn] conflicting server name, conflicting server name ignored, nginx duplicate server_name, nginx duplicate server block">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Conflicting Server Name — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx '[warn] conflicting server name ... ignored'. Duplicate vhosts from sites-enabled leftovers, certbot copies, and how to find which block wins.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/conflicting-server-name">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/conflicting-server-name">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Conflicting Server Name</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Conflicting Server Name</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The warning 'nginx: [warn] conflicting server name "example.com" on 0.0.0.0:80, ignored' — two server blocks claim the same name, and nginx is silently ignoring one of them.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>nginx: [warn] conflicting server name</code></li><li><code>conflicting server name ignored</code></li><li><code>nginx duplicate server_name</code></li><li><code>nginx duplicate server block</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Two (or more) server blocks declare the same server_name for the same listen address. Nginx does not fail — it keeps the first block it loaded and ignores the duplicate name in later ones, printing this warning at config test or reload. The danger is precisely that it is only a warning: your edits to the ignored block do nothing, redirects seem not to apply, certificates appear stale — because a different block than the one you are editing is serving the traffic.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The same vhost loaded from two places</strong> — A config present in both /etc/nginx/conf.d/ and /etc/nginx/sites-enabled/, or an old copy left beside the new one — both get included, the name collides.</li>
+                <li><strong>Backup files caught by the include glob</strong> — include sites-enabled/*; loads everything — site.conf.bak, site.conf.save, site.conf.orig included. Editor backups quietly become live duplicate vhosts.</li>
+                <li><strong>Tool-generated duplicates</strong> — Certbot's --nginx installer, control panels, or provisioning scripts sometimes write a new server block instead of editing the existing one — same server_name, different files.</li>
+                <li><strong>Same name intentionally split across HTTP/HTTPS gone wrong</strong> — Having example.com on :80 and :443 in separate blocks is normal and does NOT warn. The warning appears when the same name doubles up on the same port — often after copy-pasting the HTTPS block to make the HTTP one.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Find every block claiming the name</h3>
+            <p>Dump the effective config with filenames and locate all declarations of the conflicting name and their listen ports.</p>
+            <pre><code>sudo nginx -T | grep -nE 'configuration file|server_name .*example.com|listen '
+# or across the config tree:
+sudo grep -rn 'server_name' /etc/nginx/ | grep example.com</code></pre>
+            <h3>2. Delete or merge the duplicate</h3>
+            <p>Keep exactly one block per name+port. If both blocks contain needed directives, merge them, then remove the loser and reload.</p>
+            <pre><code>sudo rm /etc/nginx/sites-enabled/example.com.conf.bak
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx
+# warning gone = resolved</code></pre>
+            <h3>3. Tighten the include pattern</h3>
+            <p>Restrict includes to *.conf so backup files can never go live again.</p>
+            <pre><code># /etc/nginx/nginx.conf
+http {
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*.conf;   # not sites-enabled/*
+}</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Which of the duplicate blocks actually serves traffic?</h3>
+            <p>The first one nginx loads — include order is alphabetical within each include directive, in the order the includes appear. That is why symptoms feel random: it depends on filenames. 'nginx -T' prints blocks in load order, so the first block showing that server_name is the winner.</p>
+            <h3>It is just a [warn] — can I ignore it?</h3>
+            <p>The process runs fine, but one of your config files is dead weight that looks alive. Sooner or later someone edits the ignored block and loses hours wondering why nothing changes — or worse, the wrong block serves an old certificate. Treat the warning as a to-do, not noise.</p>
+            <h3>Is the same server_name on ports 80 and 443 a conflict?</h3>
+            <p>No — the conflict space is name + listen address:port. One block for :80 (usually a redirect to HTTPS) and one for :443 with the same name is the standard pattern and produces no warning.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/nginx/address-already-in-use">Address Already in Use</a> — duplicate listens at the socket level.</li>
+                <li><a href="/errors/nginx/unknown-directive">Nginx Unknown Directive</a> — other config-parse issues.</li>
+                <li><a href="/errors/nginx/cannot-load-certificate">Cannot Load Certificate</a> — cert confusion duplicates can cause.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-request-builder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Request Builder</span>
+                    <span class="recommended-tool-desc">Check which vhost answers a Host header</span>
+                </a>
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Verify which certificate is served</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/http-request-builder/" class="cta-btn-primary">Try HTTP Request Builder</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

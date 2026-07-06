@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a 404 error?","acceptedAnswer":{"@type":"Answer","text":"A 404 Not Found error is an HTTP response status code indicating that the server could not find the resource at the URL the client requested. The server is reachable, but the specific page or file does not exist at that path."}},{"@type":"Question","name":"Is a 404 error the website's fault or mine?","acceptedAnswer":{"@type":"Answer","text":"Both are possible. If you typed the URL yourself and see a 404, you may have mistyped it. If you followed a link from another page and see a 404, the website has a broken or outdated link. If you see 404 on pages that used to work, the site has removed or moved the content."}},{"@type":"Question","name":"Does a 404 page hurt SEO?","acceptedAnswer":{"@type":"Answer","text":"404 pages themselves are not penalized by Google, but having many broken links leading to 404 pages can hurt your site's crawlability and link equity. It is best practice to set up 301 redirects from old URLs to new ones, or fix broken links."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"404 Not Found — What It Means & How to Fix It"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found — What It Means &amp; How to Fix It — duckTyped</title>
+    <meta name="description" content="Learn what a 404 Not Found HTTP error means, what causes it, and how to fix it — for both website visitors and site owners.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 404, 404 Not Found, Error 404, 404 error, Page not found, 404 file not found, The requested URL was not found, 404 nginx, 404 Apache">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="404 Not Found — What It Means &amp; How to Fix It">
+    <meta property="og:description" content="Understand the 404 Not Found HTTP error and learn how to fix it as a visitor or site owner.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/404-not-found">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/404-not-found">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>404 Not Found</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>404 Not Found</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 404 error means the server is up and responding, but the specific page or resource you requested does not exist at that URL. Here is what causes it and how to address it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 404</code></li><li><code>404 Not Found</code></li><li><code>Error 404</code></li><li><code>404 error</code></li><li><code>Page not found</code></li><li><code>404 file not found</code></li><li><code>The requested URL was not found</code></li><li><code>404 nginx</code></li><li><code>404 Apache</code></li></ul>
+            </div>
+
+            <h2>What Does a 404 Error Mean?</h2>
+            <p>The HTTP <strong>404 Not Found</strong> status code tells the client (your browser) that the server understood the request but cannot find the resource at the given URL. Crucially, the server is working — it just does not have what you asked for at that path.</p>
+            <p>For example, if you request <code>https://example.com/old-page</code> and that page has been deleted or moved, the server returns a 404 instead of content.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mistyped URL</strong> — an incorrect path, wrong capitalization, or extra characters in the URL.</li>
+                <li><strong>Page deleted or moved</strong> — the content existed but was removed or relocated without a redirect.</li>
+                <li><strong>Broken links</strong> — a link on another page points to a URL that no longer exists.</li>
+                <li><strong>Changed URL structure</strong> — the site reorganized its content but did not set up redirects from the old URLs.</li>
+                <li><strong>Permalink or routing misconfiguration</strong> — common in WordPress or CMS platforms where pretty URLs require server-side routing support.</li>
+                <li><strong>Case sensitivity</strong> — web servers on Linux are case-sensitive. <code>/Blog/Post</code> and <code>/blog/post</code> are different paths.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Visitors</h3>
+            <ol>
+                <li><strong>Check the URL</strong> — look for typos, extra slashes, or wrong capitalization.</li>
+                <li><strong>Go to the homepage</strong> — navigate to the root domain and search for the content from there.</li>
+                <li><strong>Use the site's search function</strong> — many sites have a search bar to help you find moved content.</li>
+                <li><strong>Try the Wayback Machine</strong> — check <code>web.archive.org</code> to see if the page was cached in the past.</li>
+                <li><strong>Check external links</strong> — if you followed a link, report it to the site owner as a broken link.</li>
+            </ol>
+
+            <h3>For Site Owners</h3>
+            <ol>
+                <li><strong>Set up 301 redirects</strong> — if you moved or renamed content, redirect the old URL to the new one using a permanent redirect.</li>
+                <li><strong>Check for broken links</strong> — use the <a href="/link-checker/">Broken Link Checker</a> to find and fix dead links on your site.</li>
+                <li><strong>Fix permalink settings</strong> — in WordPress: Settings → Permalinks → save (no changes needed, just save to flush rewrite rules).</li>
+                <li><strong>Configure a custom 404 page</strong> — provide helpful navigation rather than a blank error page, so users can find what they need.</li>
+                <li><strong>Monitor 404s in server logs</strong> — regularly audit your access logs to find patterns in 404 traffic and fix the underlying issues.</li>
+            </ol>
+
+            <h3>Fixing 404 in nginx</h3>
+            <pre><code># Add a redirect for a moved page:
+location /old-path {
+    return 301 /new-path;
+}</code></pre>
+
+            <h3>Fixing 404 in Apache (.htaccess)</h3>
+            <pre><code>Redirect 301 /old-path /new-path</code></pre>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/link-checker/">Broken Link Checker</a> — scan your site for pages returning 404 errors.</li>
+                <li><a href="/redirect-checker/">Redirect Checker</a> — verify that your 301 redirects are working correctly.</li>
+                <li><a href="/http-latency/">HTTP Latency Checker</a> — check the HTTP status code returned by any URL.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is a 404 error the same as the server being down?</h3>
+            <p>No. A 404 means the server is working and responding, but the specific resource you asked for does not exist. If the server itself were down, you would see a connection error like <strong>ERR_CONNECTION_REFUSED</strong> or a 502/503 error, not a 404.</p>
+
+            <h3>Should I use 404 or 410 for deleted content?</h3>
+            <p>A <strong>410 Gone</strong> status code is more accurate for intentionally deleted content that will not return. Search engines remove 410 pages from their index faster than 404 pages. For most cases, 404 is fine, but 410 is preferred when the content is permanently gone.</p>
+
+            <h3>Does Google penalize sites for 404 pages?</h3>
+            <p>404 responses themselves are not a ranking penalty. However, having many broken internal links or external links pointing to 404 pages wastes crawl budget and erodes link equity. Use 301 redirects where possible.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — server is up but upstream is failing.</li>
+                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server is temporarily unable to handle any requests.</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server is not reachable at all.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/redirect-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Redirect Checker</span>
+                    <span class="recommended-tool-desc">Trace URL redirects and redirect chains</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/link-checker/" class="cta-btn-primary">Try Link Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

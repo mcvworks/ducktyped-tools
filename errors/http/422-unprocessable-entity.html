@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 422 Unprocessable Entity mean?","acceptedAnswer":{"@type":"Answer","text":"A 422 Unprocessable Entity error means the server understood the request and the syntax is valid, but it cannot process the instructions because the content is semantically incorrect. Validation errors in APIs — like missing required fields, invalid values, or business rule violations — typically return 422."}},{"@type":"Question","name":"What is the difference between 400 and 422?","acceptedAnswer":{"@type":"Answer","text":"A 400 Bad Request means the request is syntactically malformed — the server cannot even parse it. A 422 means the request was parsed successfully but the content fails semantic validation — required fields missing, values out of range, or business logic constraints violated."}},{"@type":"Question","name":"How do I fix a 422 Unprocessable Entity error?","acceptedAnswer":{"@type":"Answer","text":"Check the response body — 422 responses should include validation error details. Ensure all required fields are present, values are within expected ranges, and data types are correct. Review the API documentation for validation rules."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"422 Unprocessable Entity — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 422 Unprocessable Entity","step":[{"@type":"HowToStep","position":1,"name":"Read the Response Body","text":"Well-designed APIs include validation error details in the 422 response body. A typical response might look like:"},{"@type":"HowToStep","position":2,"name":"Check Required Fields","text":"Compare your request body against the API documentation. Ensure all required fields are present and spelled correctly (field names are usually case-sensitive)."},{"@type":"HowToStep","position":3,"name":"Verify Data Types and Formats","text":"Ensure dates are in the expected format (ISO 8601 vs. Unix timestamp), numbers are not wrapped in strings, and arrays are not objects."},{"@type":"HowToStep","position":4,"name":"Review API Documentation","text":"Check the specific validation rules for each field: minimum/maximum values, allowed enum values, regex patterns, and relationship constraints."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>422 Unprocessable Entity — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 422 Unprocessable Entity error means and how to fix it. Covers validation errors, semantic failures, and API request debugging.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 422, 422 Unprocessable Entity, 422 error, Validation failed, Unprocessable entity, 422 API validation error, 422 vs 400">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="422 Unprocessable Entity — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 422 Unprocessable Entity errors by resolving validation failures and correcting semantically invalid API requests.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/422-unprocessable-entity">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/422-unprocessable-entity">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>422 Unprocessable Entity</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>422 Unprocessable Entity</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 422 error means the request was parsed successfully but failed semantic validation. The data structure is correct, but the content violates business rules or validation constraints.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 422</code></li><li><code>422 Unprocessable Entity</code></li><li><code>422 error</code></li><li><code>Validation failed</code></li><li><code>Unprocessable entity</code></li><li><code>422 API validation error</code></li><li><code>422 vs 400</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 422 is used when a request body is syntactically valid (parseable JSON, correct content type) but semantically incorrect — the server understands what you are trying to do but cannot process it because the data violates its rules.</p>
+            <p>This is commonly returned by REST APIs for validation errors: missing required fields, values outside allowed ranges, invalid enum values, or violated business logic constraints.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Missing required fields</strong> — a required JSON field was omitted from the request body.</li>
+                <li><strong>Invalid field value</strong> — a field value is outside the allowed range or does not match the expected format.</li>
+                <li><strong>Wrong data type</strong> — sending a string where a number is expected, or an object where an array is expected.</li>
+                <li><strong>Business rule violation</strong> — e.g., setting a ship date before the order date, or a quantity below 1.</li>
+                <li><strong>Foreign key constraint</strong> — referencing an ID that does not exist in a related resource.</li>
+                <li><strong>Duplicate value in a unique field</strong> — though 409 may be more appropriate here.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Read the Response Body</h3>
+            <p>Well-designed APIs include validation error details in the 422 response body. A typical response might look like:</p>
+            <pre><code>{
+  "errors": [
+    { "field": "email", "message": "is required" },
+    { "field": "age", "message": "must be a positive integer" }
+  ]
+}</code></pre>
+            <p>Fix each reported validation issue in your request.</p>
+
+            <h3>2. Check Required Fields</h3>
+            <p>Compare your request body against the API documentation. Ensure all required fields are present and spelled correctly (field names are usually case-sensitive).</p>
+
+            <h3>3. Verify Data Types and Formats</h3>
+            <p>Ensure dates are in the expected format (ISO 8601 vs. Unix timestamp), numbers are not wrapped in strings, and arrays are not objects.</p>
+
+            <h3>4. Review API Documentation</h3>
+            <p>Check the specific validation rules for each field: minimum/maximum values, allowed enum values, regex patterns, and relationship constraints.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>When should an API return 422 vs. 400?</h3>
+            <p>Use 400 for syntactic problems (malformed JSON, invalid HTTP headers, unparseable request). Use 422 for semantic problems (valid JSON but failing business validation). In practice, many APIs return 400 for both — but 422 provides more precise semantics for validation failures.</p>
+
+            <h3>Does 422 indicate the server made an error?</h3>
+            <p>No. Like all 4xx errors, 422 indicates the problem is on the client side. The client sent data that the server cannot process. Fix the request to comply with the server's validation rules.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — syntactically malformed request.</li>
+                <li><a href="/errors/http/409-conflict">409 Conflict</a> — request conflicts with existing resource state.</li>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — access denied.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

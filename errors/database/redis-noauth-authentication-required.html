@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between NOAUTH and WRONGPASS?","acceptedAnswer":{"@type":"Answer","text":"NOAUTH: you have not authenticated at all — the client never sent AUTH. WRONGPASS: you did send AUTH and the credentials were wrong. NOAUTH points at missing configuration; WRONGPASS points at incorrect credentials."}},{"@type":"Question","name":"Is it safe to run Redis without a password?","acceptedAnswer":{"@type":"Answer","text":"Only when the port is genuinely unreachable from untrusted networks — bound to 127.0.0.1 or inside a private network with protected-mode on. Any Redis reachable from the internet without auth will be found and exploited quickly; enable auth and TLS for anything exposed."}},{"@type":"Question","name":"Why does my client work in dev but NOAUTH in production?","acceptedAnswer":{"@type":"Answer","text":"Dev Redis typically runs auth-less on localhost while production (especially managed Redis) enforces a password and often TLS. Make the connection URL — including password and rediss:// scheme — part of per-environment configuration."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Database","item":"https://ducktyped.xyz/errors/#database"},{"@type":"ListItem","position":3,"name":"Redis NOAUTH Authentication Required — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis NOAUTH Authentication Required — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Redis 'NOAUTH Authentication required'. Authenticate with AUTH/redis-cli -a, fix redis:// connection URLs, and understand Redis 6 ACL users.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="NOAUTH Authentication required, redis NOAUTH, ReplyError: NOAUTH, redis.exceptions.AuthenticationError, WRONGPASS invalid username-password pair">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Redis NOAUTH Authentication Required — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Redis 'NOAUTH Authentication required'. Authenticate with AUTH/redis-cli -a, fix redis:// connection URLs, and understand Redis 6 ACL users.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/database/redis-noauth-authentication-required">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/database/redis-noauth-authentication-required">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#database">Database</a> <span>/</span> <span>Redis NOAUTH Authentication Required</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Redis NOAUTH Authentication Required</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The Redis error returned when the server requires a password (requirepass or ACLs) but the client sent commands without authenticating first.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>NOAUTH Authentication required</code></li><li><code>redis NOAUTH</code></li><li><code>ReplyError: NOAUTH</code></li><li><code>redis.exceptions.AuthenticationError</code></li><li><code>WRONGPASS invalid username-password pair</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Redis answers every command with NOAUTH until the client authenticates, whenever authentication is enabled — via the classic requirepass directive or Redis 6+ ACL users. The error appears after someone enables auth on a previously open instance (a common security hardening step, since exposed unauthenticated Redis is a major attack target), or when connection strings lose their password piece — a surprisingly frequent bug because the redis:// URL format puts the password in an unusual position.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>requirepass was enabled and clients were not updated</strong> — The server now demands AUTH, but application configs still hold password-less connection details.</li>
+                <li><strong>Password missing or misplaced in the redis:// URL</strong> — The correct form is redis://:password@host:6379 (note the colon before the password — the 'username' slot is empty for classic auth). Passwords put in the username slot silently fail.</li>
+                <li><strong>Redis 6 ACLs expect a username and password</strong> — With ACL users, authentication needs both parts (AUTH username password). Clients doing classic single-argument AUTH authenticate as the 'default' user — which fails if that user is disabled or has a different password.</li>
+                <li><strong>Connecting to the wrong instance</strong> — Managed Redis (ElastiCache, Azure Cache, Upstash) is provisioned with auth (and often TLS) mandatory. Local dev configs pointed at production endpoints hit NOAUTH immediately.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Authenticate in redis-cli</h3>
+            <p>Provide the password at launch or with the AUTH command; then verify with PING.</p>
+            <pre><code>redis-cli -a 'yourpassword' PING
+# or interactively:
+redis-cli
+&gt; AUTH yourpassword
+&gt; PING
+# Redis 6 ACL user:
+&gt; AUTH myuser userpassword</code></pre>
+            <h3>2. Fix the connection URL in applications</h3>
+            <p>Use the correct URL anatomy — empty username, colon, password.</p>
+            <pre><code># classic requirepass:
+REDIS_URL=redis://:s3cret@redis-host:6379/0
+# ACL user:
+REDIS_URL=redis://myuser:s3cret@redis-host:6379/0
+# TLS (managed providers):
+REDIS_URL=rediss://:s3cret@redis-host:6380/0</code></pre>
+            <h3>3. Check what the server actually requires</h3>
+            <p>On the server, inspect the auth configuration to know whether you are dealing with requirepass, ACLs, or both.</p>
+            <pre><code>redis-cli -a 'yourpassword' CONFIG GET requirepass
+redis-cli -a 'yourpassword' ACL LIST</code></pre>
+            <h3>4. Handle auth added after clients connected</h3>
+            <p>CONFIG SET requirepass takes effect for new commands on existing connections too — deploy updated client configuration first, then enable auth, to avoid a window of NOAUTH crash-loops.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between NOAUTH and WRONGPASS?</h3>
+            <p>NOAUTH: you have not authenticated at all — the client never sent AUTH. WRONGPASS: you did send AUTH and the credentials were wrong. NOAUTH points at missing configuration; WRONGPASS points at incorrect credentials.</p>
+            <h3>Is it safe to run Redis without a password?</h3>
+            <p>Only when the port is genuinely unreachable from untrusted networks — bound to 127.0.0.1 or inside a private network with protected-mode on. Any Redis reachable from the internet without auth will be found and exploited quickly; enable auth and TLS for anything exposed.</p>
+            <h3>Why does my client work in dev but NOAUTH in production?</h3>
+            <p>Dev Redis typically runs auth-less on localhost while production (especially managed Redis) enforces a password and often TLS. Make the connection URL — including password and rediss:// scheme — part of per-environment configuration.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/database/redis-connection-refused">Redis Connection Refused</a> — failures reaching the server at all.</li>
+                <li><a href="/errors/database/redis-oom-command-not-allowed">Redis OOM Command Not Allowed</a> — memory-limit write failures.</li>
+                <li><a href="/errors/database/redis-misconf-rdb-snapshots">Redis MISCONF RDB Snapshots</a> — persistence-failure write blocks.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if port 6379 is reachable</span>
+                </a>
+        <a href="/password-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Password Generator</span>
+                    <span class="recommended-tool-desc">Generate a strong Redis password</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

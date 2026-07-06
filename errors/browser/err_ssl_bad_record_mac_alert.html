@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is ERR_SSL_BAD_RECORD_MAC_ALERT a security threat?","acceptedAnswer":{"@type":"Answer","text":"It can indicate a man-in-the-middle attack, but it is more commonly caused by network hardware issues or misconfigured SSL inspection. The browser correctly blocks the connection in all cases to protect you."}},{"@type":"Question","name":"Why does this error appear intermittently?","acceptedAnswer":{"@type":"Answer","text":"Intermittent occurrences usually point to flaky network hardware or congested network paths. The corruption happens randomly depending on which physical path the packets take."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_SSL_BAD_RECORD_MAC_ALERT — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_SSL_BAD_RECORD_MAC_ALERT","step":[{"@type":"HowToStep","position":1,"name":"Test with a different network","text":"Switch to a different network connection (mobile hotspot, different Wi-Fi, or wired connection) to determine whether the issue is caused by network hardware or configuration on your current network."},{"@type":"HowToStep","position":2,"name":"Disable SSL inspection","text":"If your network uses SSL inspection (common in corporate environments), temporarily disable it or add an exception for the affected domain to see if it resolves the error."},{"@type":"HowToStep","position":3,"name":"Lower the MTU size","text":"Reduce the network MTU to avoid fragmentation issues with TLS records. On Windows, use netsh to set a lower MTU value."},{"@type":"HowToStep","position":4,"name":"Update network drivers and firmware","text":"Update your network adapter drivers and router firmware, as bugs in network hardware can cause bit-level corruption that triggers MAC validation failures."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_SSL_BAD_RECORD_MAC_ALERT — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_SSL_BAD_RECORD_MAC_ALERT in your browser. Learn what causes bad record MAC errors in SSL/TLS connections and how to resolve them.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="ERR_SSL_BAD_RECORD_MAC_ALERT, SSL bad record MAC, SSL handshake error, bad record MAC alert">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_SSL_BAD_RECORD_MAC_ALERT — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_SSL_BAD_RECORD_MAC_ALERT in your browser. Learn what causes bad record MAC errors in SSL/TLS connections and how to resolve them.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_ssl_bad_record_mac_alert">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_ssl_bad_record_mac_alert">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_SSL_BAD_RECORD_MAC_ALERT</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_SSL_BAD_RECORD_MAC_ALERT</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SSL/TLS record has an incorrect MAC (message authentication code)</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>ERR_SSL_BAD_RECORD_MAC_ALERT</code></li><li><code>SSL bad record MAC</code></li><li><code>SSL handshake error</code></li><li><code>bad record MAC alert</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_SSL_BAD_RECORD_MAC_ALERT occurs when the message authentication code (MAC) on an SSL/TLS record does not match the expected value. This means the encrypted data was altered or corrupted during transmission, which can indicate network-level data corruption, faulty network hardware, or a man-in-the-middle attack. The browser terminates the connection to protect against tampered data.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Network data corruption</strong> — Faulty network hardware such as a bad network interface card, damaged Ethernet cable, or malfunctioning switch is corrupting packets in transit, altering the encrypted payload.</li>
+                <li><strong>TLS version or cipher mismatch</strong> — The client and server negotiated a cipher suite that one side does not correctly implement, leading to MAC calculation errors during the handshake or data transfer.</li>
+                <li><strong>MTU or packet fragmentation issues</strong> — Incorrect MTU settings on the network path are causing TLS records to be fragmented and reassembled incorrectly, resulting in MAC verification failures.</li>
+                <li><strong>Firewall or security appliance interference</strong> — A firewall, IDS, or SSL inspection appliance is modifying encrypted traffic without properly re-encrypting it, causing MAC validation to fail.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Test with a different network</h3>
+            <p>Switch to a different network connection (mobile hotspot, different Wi-Fi, or wired connection) to determine whether the issue is caused by network hardware or configuration on your current network.</p>
+            <h3>2. Disable SSL inspection</h3>
+            <p>If your network uses SSL inspection (common in corporate environments), temporarily disable it or add an exception for the affected domain to see if it resolves the error.</p>
+            <h3>3. Lower the MTU size</h3>
+            <p>Reduce the network MTU to avoid fragmentation issues with TLS records. On Windows, use netsh to set a lower MTU value.</p>
+            <pre><code>netsh interface ipv4 set subinterface &quot;Ethernet&quot; mtu=1400 store=persistent</code></pre>
+            <h3>4. Update network drivers and firmware</h3>
+            <p>Update your network adapter drivers and router firmware, as bugs in network hardware can cause bit-level corruption that triggers MAC validation failures.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is ERR_SSL_BAD_RECORD_MAC_ALERT a security threat?</h3>
+            <p>It can indicate a man-in-the-middle attack, but it is more commonly caused by network hardware issues or misconfigured SSL inspection. The browser correctly blocks the connection in all cases to protect you.</p>
+            <h3>Why does this error appear intermittently?</h3>
+            <p>Intermittent occurrences usually point to flaky network hardware or congested network paths. The corruption happens randomly depending on which physical path the packets take.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</a> — SSL version or cipher negotiation failed</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — SSL/TLS handshake could not complete</li>
+                <li><a href="/errors/browser/err_connection_reset">ERR_CONNECTION_RESET</a> — Connection was reset during communication</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a>, <a href="/learn/ssl-certificate-expired/">Fixing expired or invalid SSL certificates</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificates</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

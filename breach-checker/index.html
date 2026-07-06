@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Password Breach Checker","url":"https://ducktyped.xyz/breach-checker/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Check if your password has been exposed in known data breaches. Uses Have I Been Pwned with k-anonymity - your full password never leaves your browser. Free tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a data breach checker?","acceptedAnswer":{"@type":"Answer","text":"A data breach checker tells you if your email address or personal data has appeared in known data breaches. It checks against databases of leaked credentials from compromised services."}},{"@type":"Question","name":"Is it safe to enter my email in a breach checker?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool checks your email against known breach databases without storing or transmitting your email address beyond the necessary API query. No passwords are required or collected."}},{"@type":"Question","name":"What should I do if my email was in a breach?","acceptedAnswer":{"@type":"Answer","text":"Change your password on the breached service immediately. If you used the same password elsewhere, change those too. Enable two-factor authentication and consider using a password manager."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Breach Checker — Have I Been Pwned Lookup — duckTyped</title>
+    <meta name="description" content="Check if your password has been exposed in known data breaches. Uses Have I Been Pwned with k-anonymity — your full password never leaves your browser. Free tool.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Password Breach Checker — Have I Been Pwned Lookup — duckTyped">
+    <meta property="og:description" content="Check if your password has been exposed in known data breaches. Uses Have I Been Pwned with k-anonymity — your full password never leaves your browser. Free tool.">
+    <meta property="og:url" content="https://ducktyped.xyz/breach-checker/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/breach-checker.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Password Breach Checker — Have I Been Pwned Lookup — duckTyped">
+    <meta name="twitter:description" content="Check if your password has been exposed in known data breaches. Uses Have I Been Pwned with k-anonymity — your full password never leaves your browser. Free tool.">
+    <link rel="canonical" href="https://ducktyped.xyz/breach-checker/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Password Breach Checker</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p>
+            <p class="standalone-intro">Check if a password has appeared in any known data breaches using the Have I Been Pwned database. Your password is hashed locally and only the first 5 characters of the hash are sent — your actual password never leaves your browser (k-anonymity model).</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Checking if your current passwords have been compromised, auditing password strength as part of a security review, verifying that a newly generated password hasn't appeared in breach databases, or educating users about password reuse risks.</p></div>
+            <a href="/learn/breach-checker/" class="learn-more-link">Learn about password breaches and credential safety</a>
+        </div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="breachChecker"><h2>Password Breach Checker</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check if a password has appeared in known data breaches using the Have I Been Pwned API. Uses k-anonymity — your full password is never sent over the network.</p>
+            <div class="input-group"><label>Password to Check:</label>
+                <div style="position: relative;">
+                    <input type="password" id="breachPassword" placeholder="Enter a password to check" aria-label="Password to check for breaches" onkeypress="if(event.key==='Enter') checkPasswordBreach()">
+                    <button onclick="toggleBreachPasswordVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px 8px; width: auto; min-width: auto; margin-top: 0;">👁️</button>
+                </div>
+            </div>
+            <button onclick="checkPasswordBreach()">🔓 Check for Breaches</button>
+            <div id="breachResults"></div>
+            <div style="margin-top: 15px; padding: 12px; background: var(--input-background); border-radius: 6px; border-left: 3px solid var(--primary-color);">
+                <p style="color: var(--text-secondary); margin: 0; font-size: 0.9em; line-height: 1.5;"><strong>🔒 Privacy Note:</strong> Your password is hashed locally using SHA-1. Only the first 5 characters of the hash are sent to the API (k-anonymity). Your actual password never leaves your browser.</p>
+            </div>
+        </div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check SSL/TLS certificate validity, expiry date, and certificate chain for…</span>
+                </a>
+                <a href="/password-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Password Generator</span>
+                    <span class="recommended-tool-desc">Generate cryptographically secure random passwords with customizable length…</span>
+                </a>
+                <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers Checker</span>
+                    <span class="recommended-tool-desc">Inspect HTTP security headers for any URL including HSTS, CSP,…</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/breach-checker/">Data Breaches and Account Security</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p>
+            <a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-password.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

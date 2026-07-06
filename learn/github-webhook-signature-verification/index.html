@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GitHub Webhook Signature Verification","description":"How to verify GitHub webhook signatures with HMAC-SHA256: the X-Hub-Signature-256 header, raw-body handling, Node and Python examples, SHA-256 vs legacy SHA-1, and fixing signature mismatches.","datePublished":"2026-07-03","dateModified":"2026-07-03","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/github-webhook-signature-verification/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"GitHub Webhook Signature Verification"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I verify a GitHub webhook signature?","acceptedAnswer":{"@type":"Answer","text":"Compute an HMAC-SHA256 of the exact raw request body using your webhook secret, hex-encode it, and prefix it with sha256=. Compare that string to the X-Hub-Signature-256 header using a constant-time comparison such as crypto.timingSafeEqual in Node or hmac.compare_digest in Python. If they match, the delivery is authentic."}},{"@type":"Question","name":"What is the X-Hub-Signature-256 header?","acceptedAnswer":{"@type":"Answer","text":"It is the header GitHub sends on each webhook delivery containing an HMAC-SHA256 signature of the payload, formatted as sha256= followed by a hex digest. GitHub also sends a legacy X-Hub-Signature header that uses SHA-1; you should verify against the SHA-256 header and ignore the SHA-1 one."}},{"@type":"Question","name":"Why does my GitHub webhook signature not match?","acceptedAnswer":{"@type":"Answer","text":"The usual causes are: hashing a parsed-and-re-serialized body instead of the raw bytes GitHub signed, a secret that does not exactly match the one configured on the webhook (including stray whitespace or newlines), verifying against the wrong header (SHA-1 vs SHA-256), or no secret being set on the webhook at all, in which case GitHub sends no signature header."}},{"@type":"Question","name":"Should I use X-Hub-Signature or X-Hub-Signature-256?","acceptedAnswer":{"@type":"Answer","text":"Use X-Hub-Signature-256, which is HMAC-SHA256. X-Hub-Signature is the older HMAC-SHA1 header GitHub keeps for backward compatibility; SHA-1 is weak and should not be used for new integrations."}},{"@type":"Question","name":"Do I need to set a webhook secret on GitHub?","acceptedAnswer":{"@type":"Answer","text":"It is technically optional, but you should always set one. Without a secret, GitHub sends no signature header and anyone who learns your endpoint URL can POST forged events. Set the secret in the webhook configuration and store the same value in your app's environment."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Webhook Signature Verification (HMAC-SHA256) — duckTyped</title>
+    <meta name="description" content="Verify GitHub webhook signatures with HMAC-SHA256: the X-Hub-Signature-256 header, raw-body handling, Node and Python examples, SHA-256 vs legacy SHA-1, and fixing signature mismatches.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="GitHub Webhook Signature Verification (HMAC-SHA256) — duckTyped">
+    <meta property="og:description" content="The X-Hub-Signature-256 header, HMAC-SHA256 verification in Node and Python, raw-body handling, and fixing GitHub webhook signature mismatches.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/github-webhook-signature-verification/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GitHub Webhook Signature Verification — duckTyped">
+    <meta name="twitter:description" content="Verify GitHub webhooks with HMAC-SHA256, use the raw body, and fix signature mismatches.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/github-webhook-signature-verification/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>GitHub Webhook Signature Verification</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>GitHub Webhook Signature Verification</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-03">July 3, 2026</time></p>
+            <p class="standalone-intro">GitHub signs every webhook it sends with an HMAC-SHA256 of the raw payload, keyed by a secret only you and GitHub know, and delivers it in the <code>X-Hub-Signature-256</code> header. Verifying it proves the delivery is genuinely from GitHub and was not forged. This guide shows the header format, working verification in Node and Python, why SHA-256 beats the legacy SHA-1 header, and the handful of mistakes behind almost every signature mismatch. For the Stripe equivalent, see <a href="/learn/stripe-webhook-signature-verification/">Stripe Webhook Signature Verification</a>; for webhooks in general, the <a href="/learn/webhook-tester/">Webhooks Explained</a> guide.</p>
+
+            <h2>The X-Hub-Signature-256 Header</h2>
+            <p>A GitHub webhook delivery carries several relevant headers:</p>
+            <pre><code>POST /webhooks/github HTTP/1.1
+Host: api.yourapp.com
+Content-Type: application/json
+X-GitHub-Event: push
+X-GitHub-Delivery: 72d3162e-cc78-11e3-81ab-4c9367dc0958
+X-Hub-Signature-256: sha256=7d38cdd689735b008b3c702edd92eea23791c5f6...
+X-Hub-Signature: sha1=... (legacy — ignore this one)
+
+{ "ref": "refs/heads/main", "commits": [ ... ] }</code></pre>
+            <ul>
+                <li><code>X-Hub-Signature-256</code> — the signature you should verify: <code>sha256=</code> followed by the hex HMAC-SHA256 of the raw body, keyed by your webhook secret.</li>
+                <li><code>X-Hub-Signature</code> — the same idea with HMAC-<strong>SHA1</strong>. It exists only for backward compatibility; SHA-1 is weak, so ignore it for new code.</li>
+                <li><code>X-GitHub-Event</code> — the event type (<code>push</code>, <code>pull_request</code>, <code>issues</code>, and so on), including a <code>ping</code> when the webhook is first created.</li>
+                <li><code>X-GitHub-Delivery</code> — a unique GUID per delivery. Use it as an idempotency key so a redelivered event is processed only once.</li>
+            </ul>
+            <p>The secret is configured on the webhook itself — in a repository's <em>Settings &rarr; Webhooks</em>, at the organization level, or in a GitHub App's settings — and you store the identical value in your app. <strong>If no secret is set, GitHub sends no signature header at all</strong>, so always configure one.</p>
+
+            <h2>Verifying the Signature in Node.js</h2>
+            <p>Compute the HMAC over the raw body, rebuild the <code>sha256=</code> string, and compare it in constant time:</p>
+            <pre><code>const crypto = require('crypto');
+
+function verifyGithubSignature(rawBody, signatureHeader, secret) {
+  // signatureHeader looks like: sha256=&lt;hex digest&gt;
+  const expected = 'sha256=' + crypto
+    .createHmac('sha256', secret)
+    .update(rawBody)                 // raw bytes, NOT re-serialized JSON
+    .digest('hex');
+
+  const a = Buffer.from(expected);
+  const b = Buffer.from(signatureHeader || '');
+  // timingSafeEqual throws if lengths differ, so guard first
+  return a.length === b.length &amp;&amp; crypto.timingSafeEqual(a, b);
+}</code></pre>
+            <p>Wired into an Express route, the critical detail is capturing the <strong>raw body</strong> and only parsing JSON <em>after</em> the signature checks out:</p>
+            <pre><code>app.post('/webhooks/github',
+  express.raw({ type: 'application/json' }),   // req.body is a Buffer
+  (req, res) =&gt; {
+    const sig = req.headers['x-hub-signature-256'];
+    if (!verifyGithubSignature(req.body, sig, process.env.GITHUB_WEBHOOK_SECRET)) {
+      return res.status(403).send('signature mismatch');   // GitHub's own convention
+    }
+
+    const event = req.headers['x-github-event'];
+    const payload = JSON.parse(req.body);   // safe to parse now that it is verified
+    if (event === 'ping') return res.sendStatus(200);   // acknowledge the setup ping
+
+    handleEvent(event, payload);
+    res.sendStatus(200);
+  });</code></pre>
+
+            <h2>Verifying the Signature in Python</h2>
+            <p>The Flask version uses only the standard library plus <code>request.data</code>, which is the raw request body:</p>
+            <pre><code>import hmac, hashlib
+from flask import request, abort
+
+def verify_github_signature(secret: str):
+    signature = request.headers.get('X-Hub-Signature-256', '')
+    expected = 'sha256=' + hmac.new(
+        secret.encode(),
+        request.data,          # raw bytes — do NOT use request.json here
+        hashlib.sha256,
+    ).hexdigest()
+    if not hmac.compare_digest(expected, signature):
+        abort(403)</code></pre>
+            <p>To reproduce the exact HMAC-SHA256 computation by hand — handy when your code and GitHub disagree — paste the raw body and secret into the <a href="/hmac-generator/">HMAC Generator</a> and compare the hex digest.</p>
+
+            <h2>Common Causes of a Signature Mismatch</h2>
+            <p>When verification fails, it is almost always one of these:</p>
+            <ul>
+                <li><strong>Not hashing the raw body.</strong> The number-one cause. If middleware like <code>express.json()</code> parses the request first, you no longer have the exact bytes GitHub signed, and re-serializing changes whitespace and key order. Use <code>express.raw()</code> on the route (or <code>request.data</code> in Flask, <code>await request.body()</code> in FastAPI).</li>
+                <li><strong>Wrong or mistyped secret.</strong> The secret in your environment must match the webhook's configured secret <em>exactly</em> — a trailing newline or stray space is enough to break it.</li>
+                <li><strong>Verifying the wrong header.</strong> Hashing with SHA-256 but comparing to <code>X-Hub-Signature</code> (SHA-1), or vice versa. Match the algorithm to the header.</li>
+                <li><strong>No secret configured on GitHub.</strong> Then there is no <code>X-Hub-Signature-256</code> header to read, and your code compares against an empty string.</li>
+                <li><strong>Non-constant-time comparison.</strong> Using <code>===</code> or <code>==</code> instead of <code>timingSafeEqual</code> / <code>compare_digest</code> leaks timing information and is considered a vulnerability.</li>
+            </ul>
+
+            <h2>The Ping Event and Redelivery</h2>
+            <p>When you first create a webhook, GitHub immediately sends a <code>ping</code> event — respond with a <code>2xx</code> so the webhook shows as healthy. In production, GitHub retries nothing automatically, but you can <strong>redeliver</strong> any past event by hand from <em>Settings &rarr; Webhooks &rarr; Recent Deliveries</em>, which is invaluable for debugging. Because a manual redelivery reuses the original <code>X-GitHub-Delivery</code> GUID, recording processed GUIDs keeps your handler idempotent.</p>
+
+            <h2>Testing Locally</h2>
+            <p>GitHub can only reach a public URL, so forward deliveries to your machine while developing:</p>
+            <pre><code># GitHub CLI: forward a repo's webhook deliveries to localhost
+gh webhook forward --repo owner/repo --events push \
+  --url http://localhost:3000/webhooks/github
+
+# Or relay through smee.io (the payload is signed with YOUR secret either way)
+npx smee-client --url https://smee.io/AbCd1234 \
+  --target http://localhost:3000/webhooks/github</code></pre>
+            <p>For a fully offline loop with no repository at all, generate a GitHub-style payload with the <a href="/webhook-tester/">Webhook Payload Builder</a>, sign it with your secret, and POST it at your handler — then confirm the digest against the <a href="/hmac-generator/">HMAC Generator</a>. Both tools run entirely in your browser via the Web Crypto API, so nothing leaves your machine.</p>
+
+            <h2>Related Tools</h2>
+            <p>These duckTyped tools pair naturally with GitHub webhook work:</p>
+            <ul>
+                <li><a href="/webhook-tester/">Webhook Payload Builder</a> -- generate realistic GitHub event payloads and sign them with an HMAC-SHA256 signature to replay at your handler.</li>
+                <li><a href="/hmac-generator/">HMAC Generator</a> -- compute HMAC-SHA256 over a raw body to pinpoint exactly where your verification diverges from GitHub.</li>
+                <li><a href="/http-request-builder/">HTTP Request Builder</a> -- turn a signed payload into a curl command to POST at your local endpoint.</li>
+                <li><a href="/json-formatter/">JSON Formatter</a> -- inspect and validate the event body once verification passes.</li>
+            </ul>
+            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/stripe-webhook-signature-verification/">Stripe Signature Verification guide</a>, <a href="/learn/webhook-tester/">Webhooks Explained</a>, <a href="/learn/hmac-generator/">HMAC Signatures guide</a></p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> -- the status GitHub's own docs return when a signature check fails.</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> -- returned when the signature header is missing or malformed.</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> -- a slow handler times out and GitHub marks the delivery as failed.</li>
+            </ul>
+        </article>
+
+        <div class="learn-cta">
+            <a href="/webhook-tester/" class="cta-btn-primary">Build &amp; Sign a Test Payload</a>
+            <a href="/learn/" class="learn-more-link">Browse all guides</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"HTTP Methods — GET vs POST vs PUT vs PATCH vs DELETE","description":"Comparison of HTTP request methods: GET (safe, idempotent), POST (create), PUT (replace), PATCH (partial update), DELETE (remove). Decision matrix and API design best practices.","datePublished":"2026-07-02","dateModified":"2026-07-02","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/get-vs-post-vs-put-vs-delete/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"HTTP Methods Comparison"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between idempotent and safe?","acceptedAnswer":{"@type":"Answer","text":"Safe means the method doesn't modify server state (no side effects). GET is safe. Idempotent means making the same request multiple times has the same effect as making it once. GET, PUT, and DELETE are idempotent. POST is neither safe nor idempotent — each request creates a new resource."}},{"@type":"Question","name":"Why can't I send a body with GET?","acceptedAnswer":{"@type":"Answer","text":"Technically, HTTP allows bodies on GET, but semantically it violates REST principles and causes problems. Caches, proxies, and servers don't expect bodies on GET and may ignore them or reject the request. For filtering, use query parameters (example.com/users?role=admin). For complex filters, use POST (even though POST isn't idempotent)."}},{"@type":"Question","name":"When should I use PUT vs PATCH?","acceptedAnswer":{"@type":"Answer","text":"PUT replaces the entire resource with the provided data. PATCH applies a partial update. If you're updating one field in a 10-field object: PUT requires all 10 fields (omitted ones are cleared), PATCH needs only the field you're changing. PATCH is less commonly supported; check API docs. For most APIs, use PUT unless the API explicitly requires PATCH."}},{"@type":"Question","name":"What is the most common API design mistake?","acceptedAnswer":{"@type":"Answer","text":"Using POST for everything. POST is non-idempotent and non-cacheable, so repeated requests have different effects. The most common mistakes: (1) GET requests that modify state (query string side effects), (2) POST for idempotent operations (should be PUT/PATCH/DELETE), (3) DELETE requests with a body (most clients/servers don't support it — use POST with a special header instead)."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GET vs POST vs PUT vs PATCH vs DELETE — HTTP Methods — duckTyped</title>
+    <meta name="description" content="HTTP methods comparison: GET, POST, PUT, PATCH, DELETE. Safe, idempotent, cacheable properties. API design best practices and common mistakes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP methods, GET vs POST, PUT vs PATCH, DELETE, idempotent, safe, REST API, HTTP request methods">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="GET vs POST vs PUT vs PATCH vs DELETE — HTTP Methods — duckTyped">
+    <meta property="og:description" content="Understand HTTP methods: safe, idempotent, cacheable. API design best practices.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/get-vs-post-vs-put-vs-delete/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GET vs POST vs PUT vs PATCH vs DELETE — duckTyped">
+    <meta name="twitter:description" content="HTTP methods comparison and API design guide.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/get-vs-post-vs-put-vs-delete/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></circle></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>HTTP Methods Comparison</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>HTTP Methods — GET vs POST vs PUT vs PATCH vs DELETE</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Each HTTP method has a semantic meaning in REST APIs. Choosing the right method prevents bugs, enables caching, and makes APIs predictable and discoverable.</p>
+
+            <p>To build and test requests, use the <a href="/http-request-builder/">HTTP Request Builder</a>. For status code details, see <a href="/learn/http-status-codes/">HTTP Status Codes</a>.</p>
+
+            <h2>HTTP Methods Comparison Matrix</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Method</th><th>Safe?</th><th>Idempotent?</th><th>Cacheable?</th><th>Body Allowed?</th><th>Typical Status</th><th>Use Case</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>GET</strong></td><td>✓ Yes</td><td>✓ Yes</td><td>✓ Yes</td><td>Allowed but unusual</td><td>200, 404</td><td>Retrieve resource, read-only</td></tr>
+                        <tr><td><strong>POST</strong></td><td>✗ No</td><td>✗ No</td><td>Only with headers</td><td>✓ Yes (usually)</td><td>201, 200</td><td>Create resource, submit form, non-idempotent action</td></tr>
+                        <tr><td><strong>PUT</strong></td><td>✗ No</td><td>✓ Yes</td><td>✗ No</td><td>✓ Yes (required)</td><td>200, 201, 204</td><td>Replace entire resource with new version</td></tr>
+                        <tr><td><strong>PATCH</strong></td><td>✗ No</td><td>Depends</td><td>✗ No</td><td>✓ Yes</td><td>200, 204</td><td>Apply partial updates to resource</td></tr>
+                        <tr><td><strong>DELETE</strong></td><td>✗ No</td><td>✓ Yes</td><td>✗ No</td><td>Rarely (non-standard)</td><td>200, 204, 404</td><td>Remove resource</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Key Definitions</h2>
+
+            <h3>Safe</h3>
+            <p>The method doesn't modify server state — it only reads. GET is the only safe method. A safe request can be repeated unlimited times with no side effects.</p>
+
+            <h3>Idempotent</h3>
+            <p>Making the same request multiple times has the same effect as making it once. GET, PUT, and DELETE are idempotent. POST is not — each POST creates a new resource. Example: calling DELETE /resource/123 five times always results in the resource being deleted (idempotent); the 2nd–5th calls return 404, which is fine.</p>
+
+            <h3>Cacheable</h3>
+            <p>Caches (browser, CDN, proxy) can store the response and reuse it. GET is cacheable by default. POST is technically cacheable but rarely cached in practice unless cache headers explicitly say so. PUT, PATCH, DELETE are not cacheable.</p>
+
+            <h2>Detailed Methods</h2>
+
+            <h3>GET — Retrieve a Resource</h3>
+            <p><strong>Semantic:</strong> Read-only, no side effects.</p>
+            <p><strong>Usage:</strong> Fetch a single resource, list resources (with query parameters for filtering), download a file.</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>GET /api/users/123
+GET /api/users?role=admin&amp;status=active</code></pre>
+            <p><strong>Response:</strong> 200 OK with resource in body, or 404 Not Found.</p>
+            <p><strong>Note:</strong> Query parameters go in the URL, not the body. Avoid GET requests with side effects (e.g., <code>&lt;a href=&quot;/api/delete?id=123&quot;&gt;</code> is bad design).</p>
+
+            <h3>POST — Create a Resource or Trigger an Action</h3>
+            <p><strong>Semantic:</strong> Non-idempotent, creates or triggers something.</p>
+            <p><strong>Usage:</strong> Create a new resource, submit a form, trigger a one-time action (send email, generate report), file upload.</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>POST /api/users
+Content-Type: application/json
+
+{"name":"Alice","email":"alice@example.com"}</code></pre>
+            <p><strong>Response:</strong> 201 Created (with Location header pointing to new resource) or 200 OK.</p>
+            <p><strong>Important:</strong> Each POST creates a new resource (non-idempotent). Calling the same request twice creates two resources. For idempotent creation, use PUT.</p>
+
+            <h3>PUT — Replace Entire Resource</h3>
+            <p><strong>Semantic:</strong> Idempotent complete replacement. The request body defines the full new state.</p>
+            <p><strong>Usage:</strong> Replace a resource with a new version. Create or update idempotently using a client-specified ID.</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>PUT /api/users/123
+Content-Type: application/json
+
+{"name":"Alice","email":"alice@example.com","role":"admin"}</code></pre>
+            <p><strong>Key rule:</strong> If you omit a field, it's set to null/deleted. The request body is the complete resource state. Don't send it twice — the result is the same.</p>
+            <p><strong>Response:</strong> 200 OK (with updated resource), 201 Created (if the resource didn't exist), or 204 No Content.</p>
+
+            <h3>PATCH — Partial Update</h3>
+            <p><strong>Semantic:</strong> Apply partial changes. Unspecified fields remain unchanged.</p>
+            <p><strong>Usage:</strong> Update one or two fields without replacing the entire resource.</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>PATCH /api/users/123
+Content-Type: application/json
+
+{"role":"admin"}</code></pre>
+            <p><strong>Result:</strong> Only the role field is updated; other fields stay as they were.</p>
+            <p><strong>Caveat:</strong> PATCH semantics are less standardized (RFC 6902 JSON Patch, RFC 7386 JSON Merge Patch). Check API documentation. Many APIs prefer PUT for simplicity.</p>
+            <p><strong>Response:</strong> 200 OK or 204 No Content.</p>
+
+            <h3>DELETE — Remove a Resource</h3>
+            <p><strong>Semantic:</strong> Idempotent removal.</p>
+            <p><strong>Usage:</strong> Delete a resource.</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>DELETE /api/users/123</code></pre>
+            <p><strong>Idempotent:</strong> Calling DELETE /users/123 five times has the same effect as calling it once. First call deletes, 2nd–5th return 404 (acceptable).</p>
+            <p><strong>Response:</strong> 200 OK (with confirmation), 204 No Content (no response body), or 404 Not Found.</p>
+            <p><strong>Note:</strong> Some APIs allow a body on DELETE for specifying which items to delete (e.g., bulk delete). This is non-standard — use POST for bulk operations instead.</p>
+
+            <h2>Understanding Idempotency</h2>
+
+            <p>Idempotent means "same result from one or many calls." This is critical for reliability:</p>
+
+            <ul>
+                <li><strong>GET:</strong> Reading data multiple times returns the same data (idempotent).</li>
+                <li><strong>PUT:</strong> Replacing a resource with the same data multiple times results in the same state (idempotent).</li>
+                <li><strong>DELETE:</strong> Deleting a resource multiple times results in deletion (idempotent — 2nd+ calls return 404, which is acceptable).</li>
+                <li><strong>POST:</strong> Creating a new resource multiple times creates multiple resources (NOT idempotent).</li>
+            </ul>
+
+            <p><strong>Why it matters:</strong> Networks are unreliable. If a request times out, was it processed? Idempotent methods are safe to retry. Non-idempotent methods (POST) need deduplication or idempotency keys.</p>
+
+            <h2>Common API Design Mistakes</h2>
+
+            <h3>1. GET with Side Effects</h3>
+            <p>Mistake: <code>&lt;a href=&quot;/api/delete?id=123&quot;&gt;Delete&lt;/a&gt;</code> or <code>GET /api/send-email?to=user@example.com</code></p>
+            <p>Problem: Caches, crawlers, and proxies will fetch the URL, triggering the side effect unintentionally.</p>
+            <p>Solution: Use POST or DELETE for operations that change state.</p>
+
+            <h3>2. POST for Idempotent Operations</h3>
+            <p>Mistake: POST /api/pay with the same transaction ID multiple times.</p>
+            <p>Problem: Each POST creates a new payment. Without idempotency keys, retrying failed requests double-charges.</p>
+            <p>Solution: Use PUT (idempotent) or add deduplication (idempotency keys).</p>
+
+            <h3>3. PUT vs PATCH Confusion</h3>
+            <p>Mistake: Sending partial data to a PUT endpoint and expecting unmentioned fields to stay unchanged.</p>
+            <p>Problem: PUT replaces the entire resource — omitted fields are deleted/nulled.</p>
+            <p>Solution: Send the complete resource to PUT, use PATCH for partial updates, or document your PUT endpoint behavior clearly.</p>
+
+            <h3>4. DELETE with Request Body</h3>
+            <p>Mistake: DELETE /api/users with body &lt;ids in JSON&gt;</p>
+            <p>Problem: Most HTTP clients, caches, and proxies don't support bodies on DELETE. The request may be silently truncated or rejected.</p>
+            <p>Solution: Use POST /api/users/bulk-delete or DELETE /api/users?id=123&amp;id=456 (query params).</p>
+
+            <h2>Status Codes by Method</h2>
+
+            <p><strong>GET:</strong> 200 (success), 404 (not found), 301/302 (redirect).</p>
+            <p><strong>POST:</strong> 201 (created), 200 (okay), 400 (bad request), 409 (conflict).</p>
+            <p><strong>PUT:</strong> 200 (updated), 201 (created), 204 (no content), 400 (bad request).</p>
+            <p><strong>PATCH:</strong> 200 (updated), 204 (no content), 400 (bad request).</p>
+            <p><strong>DELETE:</strong> 200 (deleted), 204 (no content), 404 (not found).</p>
+
+            <p>See <a href="/learn/http-status-codes/">HTTP Status Codes</a> for complete reference and <a href="/errors/http/405-method-not-allowed.html">405 Method Not Allowed</a> troubleshooting.</p>
+        </article>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

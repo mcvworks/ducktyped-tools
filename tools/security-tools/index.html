@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Security Tools — duckTyped","description":"Free browser-based security tools: SSL certificate checker, HTTP security headers inspector, password generator, hash generator, URL safety checker, breach checker, and encrypted note sender.","url":"https://ducktyped.xyz/tools/security-tools/","publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ducktyped.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://ducktyped.xyz/utility/"},{"@type":"ListItem","position":3,"name":"Security Tools","item":"https://ducktyped.xyz/tools/security-tools/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What security tools does duckTyped offer?","acceptedAnswer":{"@type":"Answer","text":"duckTyped offers SSL certificate checker, security headers checker, password generator, password entropy analyzer, blacklist checker, breach checker, public key decoder, QR code generator/scanner, and URL safety checker."}},{"@type":"Question","name":"Are duckTyped security tools safe to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. All tools run entirely in your browser. Passwords are generated client-side using the Web Crypto API. No credentials, keys, or sensitive data is ever sent to a server."}},{"@type":"Question","name":"How do I check if my website is secure?","acceptedAnswer":{"@type":"Answer","text":"Start with the SSL Checker to verify your certificate is valid, then use Security Headers to check for missing HTTP security headers (CSP, HSTS, X-Frame-Options). Use the URL Safety checker for reputation analysis."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Tools — SSL Checker, Password Generator, Hash Generator &amp; More — duckTyped</title>
+    <meta name="description" content="Free browser-based security tools: SSL certificate checker, HTTP security headers inspector, password generator, hash generator, URL safety checker, data breach checker, blacklist checker, and encrypted note sender.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Security Tools — SSL Checker, Password Generator &amp; More — duckTyped">
+    <meta property="og:description" content="Free security tools: SSL checker, security headers, password generator, hash generator, URL safety, breach checker, and encrypted notes.">
+    <meta property="og:url" content="https://ducktyped.xyz/tools/security-tools/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/security-tools.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Security Tools — duckTyped">
+    <meta name="twitter:description" content="SSL checker, security headers, password generator, hash generator, URL safety, and breach checker. Free, no registration.">
+    <link rel="canonical" href="https://ducktyped.xyz/tools/security-tools/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/utility/">Tools</a> <span>/</span> <span>Security Tools</span>
+        </div>
+
+        <div class="standalone-hero">
+            <h1>Security Tools</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Audit, verify, and strengthen your security posture directly in the browser. Check SSL certificates, inspect HTTP security headers, generate strong passwords, verify file integrity, and check for exposed credentials — all client-side with no data sent to external servers.</p>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Tools</h2>
+            <div class="learn-grid">
+                <a href="/ssl-checker/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>SSL Certificate Checker</h3>
+                    <p>Check SSL/TLS certificate validity, expiry date, issuer, and certificate chain for any domain.</p>
+                </a>
+                <a href="/security-headers/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Security Headers Checker</h3>
+                    <p>Inspect HTTP security headers for any URL — HSTS, CSP, X-Frame-Options, Referrer-Policy, and more.</p>
+                </a>
+                <a href="/password-generator/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Password Generator</h3>
+                    <p>Generate cryptographically secure random passwords with customizable length, character sets, and strength requirements.</p>
+                </a>
+                <a href="/hash-generator/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Hash Generator</h3>
+                    <p>Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input. Useful for checksums and data integrity verification.</p>
+                </a>
+                <a href="/url-safety/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>URL Safety Checker</h3>
+                    <p>Check any URL for malware, phishing threats, and suspicious indicators before visiting.</p>
+                </a>
+                <a href="/breach-checker/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Email Breach Checker</h3>
+                    <p>Check if an email address has appeared in known data breaches using k-anonymity to protect your query.</p>
+                </a>
+                <a href="/blacklist-checker/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Blacklist / RBL Checker</h3>
+                    <p>Check if a domain or IP address appears on email blacklists and DNS-based security blocklists.</p>
+                </a>
+                <a href="/secure-note/" class="learn-card">
+                    <span class="category-badge">Security</span>
+                    <h3>Encrypted Note</h3>
+                    <p>Create password-protected notes encrypted with AES-GCM for secure one-time sharing. Encryption happens entirely in your browser.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Related Guides</h2>
+            <div class="learn-grid">
+                <a href="/learn/ssl-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Understanding SSL/TLS Certificates</h3>
+                    <p>How SSL certificates work, certificate chains, certificate authorities, and how to diagnose HTTPS issues.</p>
+                </a>
+                <a href="/learn/security-headers/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>HTTP Security Headers Explained</h3>
+                    <p>What CSP, HSTS, X-Frame-Options, and other security headers do, and how to configure them correctly.</p>
+                </a>
+                <a href="/learn/password-generator/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Password Security and Generation</h3>
+                    <p>Cryptographic randomness, password entropy, character sets, and best practices for secure password policies.</p>
+                </a>
+                <a href="/learn/hash-generator/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Cryptographic Hashing Explained</h3>
+                    <p>How hash functions work, the difference between MD5/SHA-1/SHA-256, and practical use cases for checksums.</p>
+                </a>
+                <a href="/learn/url-safety/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>URL Safety and Phishing Detection</h3>
+                    <p>How phishing URLs are constructed, what indicators to look for, and how safe-browsing APIs classify threats.</p>
+                </a>
+                <a href="/learn/breach-checker/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Data Breach Awareness</h3>
+                    <p>How credential databases are exposed, what Have I Been Pwned is, k-anonymity, and what to do after a breach.</p>
+                </a>
+                <a href="/learn/encrypted-note/" class="learn-card">
+                    <span class="category-badge">Learn</span>
+                    <h3>Encrypted Note and Secure Messaging</h3>
+                    <p>AES-GCM encryption, PBKDF2 key derivation, and how client-side encryption protects data at rest and in transit.</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Common SSL and Security Errors</h2>
+            <div class="learn-grid">
+                <a href="/errors/ssl/ssl-certificate-expired" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SSL Certificate Expired</h3>
+                    <p>What causes certificate expiry errors and how to renew or replace an expired SSL certificate.</p>
+                </a>
+                <a href="/errors/ssl/ssl-handshake-failed" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>SSL Handshake Failed</h3>
+                    <p>Why TLS handshake failures occur and how to diagnose protocol version and cipher suite mismatches.</p>
+                </a>
+                <a href="/errors/browser/err_cert_common_name_invalid" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>ERR_CERT_COMMON_NAME_INVALID</h3>
+                    <p>Certificate hostname mismatch — why browsers reject this and how to fix it.</p>
+                </a>
+                <a href="/errors/http/401-unauthorized" class="learn-card">
+                    <span class="category-badge">Error</span>
+                    <h3>401 Unauthorized</h3>
+                    <p>Authentication required error — causes, authentication schemes, and how to resolve it.</p>
+                </a>
+            </div>
+        </div>
+
+        
+        <div class="learn-category-section">
+            <h2>When to Use Each Tool</h2>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Tool to Use</th><th>What It Checks</th></tr></thead>
+                    <tbody>
+                        <tr><td>SSL certificate issues</td><td><a href="/ssl-checker/">SSL Checker</a></td><td>Certificate validity, chain, expiry date</td></tr>
+                        <tr><td>Hardening HTTP headers</td><td><a href="/security-headers/">Security Headers</a></td><td>CSP, HSTS, X-Frame-Options, and more</td></tr>
+                        <tr><td>Creating strong passwords</td><td><a href="/password-generator/">Password Generator</a></td><td>Cryptographically random passwords</td></tr>
+                        <tr><td>Testing password strength</td><td><a href="/password-entropy/">Password Entropy</a></td><td>Entropy bits, crack time estimate</td></tr>
+                        <tr><td>IP/domain blacklisted</td><td><a href="/blacklist-checker/">Blacklist Checker</a></td><td>DNSBL reputation status</td></tr>
+                        <tr><td>Data breach exposure</td><td><a href="/breach-checker/">Breach Checker</a></td><td>Email in known data breaches</td></tr>
+                        <tr><td>Inspecting certificates</td><td><a href="/public-key-decoder/">Public Key Decoder</a></td><td>RSA/EC key details and parameters</td></tr>
+                        <tr><td>Checking a suspicious link</td><td><a href="/url-safety/">URL Safety</a></td><td>Malware, phishing, reputation check</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="learn-category-section">
+            <h2>Other Tool Categories</h2>
+            <div class="learn-grid">
+                <a href="/tools/network-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Network Tools</h3>
+                    <p>DNS lookup, WHOIS, port scanner, subnet calculator, traceroute, reverse DNS, and more.</p>
+                </a>
+                <a href="/tools/email-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Email Tools</h3>
+                    <p>Email validator, SMTP checker, email header analyzer, blacklist checker, and breach checker.</p>
+                </a>
+                <a href="/tools/data-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Data Tools</h3>
+                    <p>Base64 encoder, URL encoder, JSON formatter, timestamp converter, QR generator, and more.</p>
+                </a>
+                <a href="/tools/dev-tools/" class="learn-card">
+                    <span class="category-badge">Category</span>
+                    <h3>Dev Tools</h3>
+                    <p>JWT decoder, regex tester, redirect checker, robots.txt analyzer, and tech stack detector.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

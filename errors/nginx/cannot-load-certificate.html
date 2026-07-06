@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What exactly does 'key values mismatch' mean?","acceptedAnswer":{"@type":"Answer","text":"The modulus/public key inside the certificate does not equal the one derived from the private key file — they are from different generations or different CSRs. Find the key that was created with the CSR for this certificate, or re-issue the certificate from the key you have."}},{"@type":"Question","name":"cert.pem, chain.pem, fullchain.pem — which goes where?","acceptedAnswer":{"@type":"Answer","text":"For nginx: ssl_certificate = fullchain.pem (leaf + intermediates), ssl_certificate_key = privkey.pem. cert.pem (leaf only) causes chain errors for strict clients; chain.pem alone is never what ssl_certificate wants. Modern nginx has no separate directive for the chain — it all goes in fullchain."}},{"@type":"Question","name":"Why did this break right after a certbot renewal?","acceptedAnswer":{"@type":"Answer","text":"Renewal rotates files under /etc/letsencrypt/archive and updates the live/ symlinks. If your config points at a copied file rather than the symlink, or a deploy hook copies only the cert and not the new key, you end up mismatched. Point nginx at the live/ symlinks and reload in a certbot deploy hook."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Nginx","item":"https://ducktyped.xyz/errors/#nginx"},{"@type":"ListItem","position":3,"name":"Nginx Cannot Load Certificate — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Cannot Load Certificate — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix nginx '[emerg] cannot load certificate' and 'key values mismatch'. Wrong paths, fullchain vs cert, PEM format issues, and certbot renewal quirks.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="nginx: [emerg] cannot load certificate, SSL_CTX_use_PrivateKey_file failed, key values mismatch nginx, PEM_read_bio_X509_AUX failed, nginx ssl certificate error emerg">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Nginx Cannot Load Certificate — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix nginx '[emerg] cannot load certificate' and 'key values mismatch'. Wrong paths, fullchain vs cert, PEM format issues, and certbot renewal quirks.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/nginx/cannot-load-certificate">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/nginx/cannot-load-certificate">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#nginx">Nginx</a> <span>/</span> <span>Nginx Cannot Load Certificate</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Nginx Cannot Load Certificate</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">Startup/reload errors like 'nginx: [emerg] cannot load certificate' or 'SSL_CTX_use_PrivateKey_file failed (key values mismatch)' — the TLS files are missing, unreadable, or mismatched.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>nginx: [emerg] cannot load certificate</code></li><li><code>SSL_CTX_use_PrivateKey_file failed</code></li><li><code>key values mismatch nginx</code></li><li><code>PEM_read_bio_X509_AUX failed</code></li><li><code>nginx ssl certificate error emerg</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Nginx validates every ssl_certificate and ssl_certificate_key at config load. Failure here blocks the reload (or the whole start), and the message narrows it down: 'No such file or directory' is a path problem, 'Permission denied' is filesystem access, 'PEM routines' errors mean the file content is not what nginx expects, and 'key values mismatch' means the certificate and the private key are not a pair — typically one was renewed or copied while the other was not.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Wrong file path</strong> — The config points at a moved or deleted file — common after switching from self-signed to Let's Encrypt paths, or copying a config between servers whose cert locations differ.</li>
+                <li><strong>Certificate and key do not match</strong> — The cert was replaced (renewal, re-issue) but the old key stayed, or files from two different issuances got mixed. OpenSSL's pair check settles it in seconds.</li>
+                <li><strong>Not PEM, or PEM assembled wrongly</strong> — A DER/.pfx file where PEM is expected, Windows line endings, a missing final newline, or a fullchain built in the wrong order (intermediates before the leaf) all trigger PEM routine errors.</li>
+                <li><strong>Permissions or dangling symlinks</strong> — Keys locked to another user, or Let's Encrypt's /etc/letsencrypt/live symlinks pointing at archive files that were cleaned up or not copied when migrating servers.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check the files exist and are readable</h3>
+            <p>Follow symlinks — Let's Encrypt's live/ directory is all symlinks into archive/.</p>
+            <pre><code>ls -lL /etc/letsencrypt/live/example.com/
+sudo head -1 /etc/letsencrypt/live/example.com/fullchain.pem
+# should print: -----BEGIN CERTIFICATE-----</code></pre>
+            <h3>2. Verify the cert and key are a pair</h3>
+            <p>Compare the public-key fingerprints derived from each file; they must be identical.</p>
+            <pre><code>openssl x509 -noout -pubkey -in fullchain.pem | openssl sha256
+openssl pkey  -noout -pubkey -in privkey.pem  | openssl sha256
+# identical hashes = matching pair</code></pre>
+            <h3>3. Use fullchain, in the right order</h3>
+            <p>Point ssl_certificate at the full chain (leaf first, then intermediates). Serving only the leaf 'works' in some browsers but fails strict clients.</p>
+            <pre><code>ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></pre>
+            <h3>4. Convert non-PEM formats</h3>
+            <p>If the file came from a Windows export or a provider bundle, convert it to PEM first.</p>
+            <pre><code># DER -&gt; PEM
+openssl x509 -inform der -in cert.der -out cert.pem
+# PFX/PKCS12 -&gt; PEM cert + key
+openssl pkcs12 -in bundle.pfx -clcerts -nokeys -out cert.pem
+openssl pkcs12 -in bundle.pfx -nocerts -nodes  -out key.pem</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What exactly does 'key values mismatch' mean?</h3>
+            <p>The modulus/public key inside the certificate does not equal the one derived from the private key file — they are from different generations or different CSRs. Find the key that was created with the CSR for this certificate, or re-issue the certificate from the key you have.</p>
+            <h3>cert.pem, chain.pem, fullchain.pem — which goes where?</h3>
+            <p>For nginx: ssl_certificate = fullchain.pem (leaf + intermediates), ssl_certificate_key = privkey.pem. cert.pem (leaf only) causes chain errors for strict clients; chain.pem alone is never what ssl_certificate wants. Modern nginx has no separate directive for the chain — it all goes in fullchain.</p>
+            <h3>Why did this break right after a certbot renewal?</h3>
+            <p>Renewal rotates files under /etc/letsencrypt/archive and updates the live/ symlinks. If your config points at a copied file rather than the symlink, or a deploy hook copies only the cert and not the new key, you end up mismatched. Point nginx at the live/ symlinks and reload in a certbot deploy hook.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/certificate-chain-invalid">Certificate Chain Invalid</a> — chain problems visible to clients.</li>
+                <li><a href="/errors/ssl/ssl-certificate-verify-failed">SSL Certificate Verify Failed</a> — client-side verification errors.</li>
+                <li><a href="/errors/nginx/unknown-directive">Nginx Unknown Directive</a> — other config-load failures.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-checker/">SSL certificates explained</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Validate the served cert and chain</span>
+                </a>
+        <a href="/csr-decoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">CSR Decoder</span>
+                    <span class="recommended-tool-desc">Inspect CSRs and certificate details</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

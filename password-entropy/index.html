@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Password Entropy Calculator","url":"https://ducktyped.xyz/password-entropy/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Calculate the entropy and estimated crack time of any password. Understand what makes a password strong.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is password entropy?","acceptedAnswer":{"@type":"Answer","text":"Password entropy measures the unpredictability of a password in bits. Higher entropy means a password is harder to crack. A password with 80+ bits of entropy is generally considered very strong."}},{"@type":"Question","name":"How is password entropy calculated?","acceptedAnswer":{"@type":"Answer","text":"Entropy is calculated as log2(N^L), where N is the size of the character set and L is the password length. For example, a 12-character password using 95 printable ASCII characters has about 79 bits of entropy."}},{"@type":"Question","name":"Is my password sent to a server for analysis?","acceptedAnswer":{"@type":"Answer","text":"No. All entropy calculations happen entirely in your browser. Your password never leaves your device and is not stored or transmitted anywhere."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Entropy Calculator — Measure Password Strength — duckTyped</title>
+    <meta name="description" content="Calculate the entropy and estimated crack time of any password. Understand what makes a password strong.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Password Entropy Calculator — duckTyped">
+    <meta property="og:description" content="Calculate password entropy and estimated crack times.">
+    <meta property="og:url" content="https://ducktyped.xyz/password-entropy/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/password-entropy.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Password Entropy Calculator — duckTyped">
+    <meta name="twitter:description" content="Calculate password entropy and estimated crack times.">
+    <link rel="canonical" href="https://ducktyped.xyz/password-entropy/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/" class="active">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Password Entropy Calculator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Calculate the information entropy of any password and see estimated crack times. Understand the character pool size and what makes passwords secure.</p><div class="example-box"><strong>Example uses:</strong><p>Evaluating password policies, testing password strength, understanding entropy calculations for security training.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Password Entropy Calculator</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Type a password below. Analysis updates in real-time.</p>
+            <div class="input-group"><label>Password:</label>
+                <div style="position:relative;"><input type="text" id="pwInput" placeholder="Enter a password to analyze" oninput="analyze()" style="padding-right:50px;">
+                <button onclick="var i=document.getElementById('pwInput');i.type=i.type==='password'?'text':'password';" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px 8px;width:auto;min-width:auto;margin:0;">Show</button></div>
+            </div>
+            <div id="strengthBar" style="height:8px;border-radius:4px;background:var(--border-color);margin:15px 0;overflow:hidden;"><div id="strengthFill" style="height:100%;width:0;border-radius:4px;transition:all 0.3s;"></div></div>
+            <div id="strengthLabel" style="text-align:center;font-weight:600;font-size:1.1em;margin-bottom:15px;color:var(--text-secondary);">Enter a password</div>
+            <div id="entropyStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;"></div>
+            <div id="crackTimes" style="margin-top:15px;"></div>
+            <div id="charAnalysis" style="margin-top:15px;"></div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/password-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Password Generator</a>
+            <a href="/hash-generator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Hash Generator</a>
+            <a href="/breach-checker/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Breach Checker</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/password-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Password Generator</span>
+                    <span class="recommended-tool-desc">Generate cryptographically secure random passwords with customizable length…</span>
+                </a>
+                <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check SSL/TLS certificate validity, expiry date, and certificate chain for…</span>
+                </a>
+                <a href="/breach-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Email Breach Checker</span>
+                    <span class="recommended-tool-desc">Check if an email address has appeared in known data breaches</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/password-generator/">Password Security Best Practices</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function formatTime(seconds) {
+        if (seconds < 1) return 'Instant';
+        if (seconds < 60) return Math.round(seconds) + ' seconds';
+        if (seconds < 3600) return Math.round(seconds/60) + ' minutes';
+        if (seconds < 86400) return Math.round(seconds/3600) + ' hours';
+        if (seconds < 31536000) return Math.round(seconds/86400) + ' days';
+        var years = seconds / 31536000;
+        if (years < 1000) return Math.round(years) + ' years';
+        if (years < 1e6) return Math.round(years/1000) + ' thousand years';
+        if (years < 1e9) return Math.round(years/1e6) + ' million years';
+        if (years < 1e12) return Math.round(years/1e9) + ' billion years';
+        return Math.round(years/1e12) + ' trillion years';
+    }
+    function analyze() {
+        var pw = document.getElementById('pwInput').value;
+        if (!pw) {
+            document.getElementById('strengthFill').style.width = '0';
+            document.getElementById('strengthLabel').textContent = 'Enter a password';
+            document.getElementById('strengthLabel').style.color = 'var(--text-secondary)';
+            document.getElementById('entropyStats').innerHTML = '';
+            document.getElementById('crackTimes').innerHTML = '';
+            document.getElementById('charAnalysis').innerHTML = '';
+            return;
+        }
+        var hasLower = /[a-z]/.test(pw), hasUpper = /[A-Z]/.test(pw), hasDigit = /[0-9]/.test(pw), hasSymbol = /[^a-zA-Z0-9]/.test(pw);
+        var pool = 0;
+        if (hasLower) pool += 26;
+        if (hasUpper) pool += 26;
+        if (hasDigit) pool += 10;
+        if (hasSymbol) pool += 33;
+        var entropy = pw.length * Math.log2(pool || 1);
+        var pct = Math.min(100, (entropy / 128) * 100);
+        var color, label;
+        if (entropy < 28) { color = '#ef4444'; label = 'Very Weak'; }
+        else if (entropy < 36) { color = '#f97316'; label = 'Weak'; }
+        else if (entropy < 60) { color = '#eab308'; label = 'Fair'; }
+        else if (entropy < 128) { color = '#22c55e'; label = 'Strong'; }
+        else { color = '#06b6d4'; label = 'Very Strong'; }
+        document.getElementById('strengthFill').style.width = pct + '%';
+        document.getElementById('strengthFill').style.background = color;
+        document.getElementById('strengthLabel').textContent = label;
+        document.getElementById('strengthLabel').style.color = color;
+        var statCard = function(title, value) { return '<div style="padding:12px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;text-align:center;"><div style="font-size:1.4em;font-weight:700;color:var(--primary-color);">'+value+'</div><div style="font-size:0.8em;color:var(--text-secondary);">'+title+'</div></div>'; };
+        document.getElementById('entropyStats').innerHTML = statCard('Entropy', entropy.toFixed(1) + ' bits') + statCard('Pool Size', pool + ' chars') + statCard('Length', pw.length + ' chars') + statCard('Unique Chars', new Set(pw).size);
+        var combos = Math.pow(2, entropy - 1);
+        var speeds = [['Online Attack (1K/s)', 1000], ['Fast Hash (10B/s)', 1e10], ['Massive Parallel (1T/s)', 1e12]];
+        var html = '<div style="padding:15px;background:var(--input-background);border:1px solid var(--border-color);border-radius:8px;"><h4 style="color:var(--primary-color);margin-bottom:10px;">Estimated Crack Times</h4>';
+        speeds.forEach(function(s) { html += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border-color);"><span style="color:var(--text-secondary);">'+s[0]+'</span><strong style="color:var(--text-primary);">'+formatTime(combos/s[1])+'</strong></div>'; });
+        html += '</div>';
+        document.getElementById('crackTimes').innerHTML = html;
+        var types = [['Lowercase (a-z)', hasLower], ['Uppercase (A-Z)', hasUpper], ['Digits (0-9)', hasDigit], ['Symbols (!@#...)', hasSymbol]];
+        var ahtml = '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+        types.forEach(function(t) { ahtml += '<span style="padding:6px 12px;border-radius:6px;font-size:0.85em;background:'+(t[1]?'rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)':'rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2)')+';">'+(t[1]?'&#10004;':'&#10008;')+' '+t[0]+'</span>'; });
+        ahtml += '</div>';
+        document.getElementById('charAnalysis').innerHTML = ahtml;
+    }
+    </script>
+</body>
+</html>

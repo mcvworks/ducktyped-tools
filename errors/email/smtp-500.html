@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is SMTP 500 a permanent or temporary error?","acceptedAnswer":{"@type":"Answer","text":"SMTP 500 is a permanent error (5xx class). The server will not accept the same command if retried. The client must fix the command syntax or use a different command before retrying."}},{"@type":"Question","name":"Can SMTP 500 be caused by the email content?","acceptedAnswer":{"@type":"Answer","text":"No. SMTP 500 is specifically about the SMTP command itself, not the email content. Content-related rejections use different error codes like 550 or 554."}},{"@type":"Question","name":"Why do I see SMTP 500 when connecting to a new mail server?","acceptedAnswer":{"@type":"Answer","text":"The new server may have different capabilities or stricter syntax requirements. Check which SMTP extensions the server supports by examining the response to the EHLO command."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Email","item":"https://ducktyped.xyz/errors/#email"},{"@type":"ListItem","position":3,"name":"SMTP 500 — Syntax Error — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SMTP 500 — Syntax Error","step":[{"@type":"HowToStep","position":1,"name":"Verify SMTP command sequence","text":"Ensure your client follows the correct SMTP command sequence: EHLO/HELO, then MAIL FROM, RCPT TO, DATA, and QUIT."},{"@type":"HowToStep","position":2,"name":"Use EHLO instead of HELO","text":"Modern SMTP servers expect the EHLO command which initiates an Extended SMTP session. If the server returns 500 for EHLO, fall back to HELO for basic SMTP."},{"@type":"HowToStep","position":3,"name":"Check for proper line endings","text":"SMTP requires CRLF (\\r\\n) line endings. If your client sends only LF (\\n), some strict servers will reject the commands with a syntax error."},{"@type":"HowToStep","position":4,"name":"Review client configuration","text":"Ensure the email client is configured to use SMTP (not HTTP or another protocol) and is connecting to the correct port (25, 465, or 587)."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMTP 500 — Syntax Error — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SMTP 500 syntax error responses. Learn what causes SMTP command syntax errors, common misconfigurations, and how to resolve them.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SMTP 500, 500 Syntax error, 500 Unrecognized command, 500 Command not recognized">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SMTP 500 — Syntax Error — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SMTP 500 syntax error responses. Learn what causes SMTP command syntax errors, common misconfigurations, and how to resolve them.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/email/smtp-500">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/email/smtp-500">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#email">Email</a> <span>/</span> <span>SMTP 500 — Syntax Error</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SMTP 500 — Syntax Error</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">SMTP command not recognized due to syntax error</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SMTP 500</code></li><li><code>500 Syntax error</code></li><li><code>500 Unrecognized command</code></li><li><code>500 Command not recognized</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SMTP 500 is a permanent error response indicating that the server did not recognize the command sent by the client. The command may be misspelled, improperly formatted, or not supported by the server. This is a protocol-level error meaning the SMTP conversation cannot proceed with the unrecognized command. Unlike content or recipient errors, SMTP 500 indicates a fundamental miscommunication between the client and server about the SMTP protocol itself.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Unrecognized SMTP command</strong> — The client sent an SMTP command that the server does not support or recognize. This can happen when a client uses extended SMTP (ESMTP) commands with a server that only supports basic SMTP.</li>
+                <li><strong>Malformed command syntax</strong> — The command was sent with incorrect syntax, such as missing required parameters, extra spaces, or incorrect line endings (not using CRLF).</li>
+                <li><strong>Client sending HTTP to an SMTP port</strong> — A misconfigured application is sending HTTP requests to an SMTP server port, causing the SMTP server to reject the unrecognized data as a syntax error.</li>
+                <li><strong>Protocol version mismatch</strong> — The client is attempting to use ESMTP features (like STARTTLS or AUTH) on a server that only supports the basic SMTP command set and does not advertise these extensions.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Verify SMTP command sequence</h3>
+            <p>Ensure your client follows the correct SMTP command sequence: EHLO/HELO, then MAIL FROM, RCPT TO, DATA, and QUIT.</p>
+            <pre><code># Correct SMTP command sequence
+EHLO client.example.com
+MAIL FROM:&lt;sender@example.com&gt;
+RCPT TO:&lt;recipient@example.com&gt;
+DATA
+Subject: Test
+
+Test message body.
+.
+QUIT</code></pre>
+            <h3>2. Use EHLO instead of HELO</h3>
+            <p>Modern SMTP servers expect the EHLO command which initiates an Extended SMTP session. If the server returns 500 for EHLO, fall back to HELO for basic SMTP.</p>
+            <h3>3. Check for proper line endings</h3>
+            <p>SMTP requires CRLF (\r\n) line endings. If your client sends only LF (\n), some strict servers will reject the commands with a syntax error.</p>
+            <h3>4. Review client configuration</h3>
+            <p>Ensure the email client is configured to use SMTP (not HTTP or another protocol) and is connecting to the correct port (25, 465, or 587).</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is SMTP 500 a permanent or temporary error?</h3>
+            <p>SMTP 500 is a permanent error (5xx class). The server will not accept the same command if retried. The client must fix the command syntax or use a different command before retrying.</p>
+            <h3>Can SMTP 500 be caused by the email content?</h3>
+            <p>No. SMTP 500 is specifically about the SMTP command itself, not the email content. Content-related rejections use different error codes like 550 or 554.</p>
+            <h3>Why do I see SMTP 500 when connecting to a new mail server?</h3>
+            <p>The new server may have different capabilities or stricter syntax requirements. Check which SMTP extensions the server supports by examining the response to the EHLO command.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/email/smtp-501">SMTP 501</a> — Syntax error in command parameters</li>
+                <li><a href="/errors/email/smtp-502">SMTP 502</a> — Command not implemented</li>
+                <li><a href="/errors/email/smtp-503">SMTP 503</a> — Bad sequence of commands</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/email-not-delivering/">Email not delivering? Step-by-step diagnostic</a>, <a href="/learn/smtp-checker/">SMTP and mail server testing</a>, <a href="/learn/email-header-analyzer/">How to read email headers</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/smtp-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SMTP Checker</span>
+                    <span class="recommended-tool-desc">Test SMTP connections and commands</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/smtp-checker/" class="cta-btn-primary">Try SMTP Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

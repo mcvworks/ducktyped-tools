@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between ERR_CONNECTION_TIMED_OUT and ERR_TIMED_OUT?","acceptedAnswer":{"@type":"Answer","text":"ERR_CONNECTION_TIMED_OUT specifically refers to the TCP connection attempt timing out (before any data is exchanged). ERR_TIMED_OUT can refer to the overall request timing out, including waiting for a response after the connection was established."}},{"@type":"Question","name":"How long does the browser wait before timing out?","acceptedAnswer":{"@type":"Answer","text":"Chrome typically waits about 30 seconds for a TCP connection to be established. This value is built into the browser and cannot be changed by the user."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_CONNECTION_TIMED_OUT — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_CONNECTION_TIMED_OUT","step":[{"@type":"HowToStep","position":1,"name":"Check if the server is responding","text":"Use an external service or different network to confirm whether the server is responding to anyone. If it is only timing out for you, the issue is with your network path."},{"@type":"HowToStep","position":2,"name":"Verify firewall rules","text":"Check firewall rules on both the server and client side. Ensure the destination port (typically 80 or 443) is allowed through all firewalls on the network path."},{"@type":"HowToStep","position":3,"name":"Check server resource usage","text":"If you have server access, check CPU, memory, and connection counts. A server at capacity will stop accepting new connections."},{"@type":"HowToStep","position":4,"name":"Flush DNS and try alternate DNS","text":"Clear your local DNS cache and try using a different DNS server in case stale DNS records are pointing to an unresponsive IP."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_CONNECTION_TIMED_OUT — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix ERR_CONNECTION_TIMED_OUT in Chrome and other browsers. Learn why connection attempts time out and how to troubleshoot slow servers and network issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_CONNECTION_TIMED_OUT, ERR_CONNECTION_TIMED_OUT Chrome, This site can&#39;t be reached, took too long to respond, Connection timed out, ETIMEDOUT">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_CONNECTION_TIMED_OUT — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_CONNECTION_TIMED_OUT in Chrome and other browsers. Learn why connection attempts time out and how to troubleshoot slow servers and network issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_connection_timed_out">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_connection_timed_out">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_CONNECTION_TIMED_OUT</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_CONNECTION_TIMED_OUT</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Connection attempt to the server timed out before completing</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_CONNECTION_TIMED_OUT</code></li><li><code>ERR_CONNECTION_TIMED_OUT Chrome</code></li><li><code>This site can&#39;t be reached</code></li><li><code>took too long to respond</code></li><li><code>Connection timed out</code></li><li><code>ETIMEDOUT</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>ERR_CONNECTION_TIMED_OUT occurs when the browser's attempt to establish a TCP connection with the server does not receive a response within the timeout period (typically 30 seconds). Unlike ERR_CONNECTION_REFUSED where the server actively rejects the connection, a timeout means the connection request received no response at all. This indicates the server is not responding, packets are being dropped, or a firewall is silently blocking the connection.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Server is overloaded</strong> — The server is under heavy load and cannot accept new TCP connections within the timeout period. Its connection backlog queue is full, causing new connection attempts to be silently dropped.</li>
+                <li><strong>Firewall silently dropping packets</strong> — A firewall between the client and server is configured to DROP (not REJECT) packets to the destination port, causing the connection to hang until it times out rather than receiving an immediate refusal.</li>
+                <li><strong>Server is down but IP is routable</strong> — The server machine is powered on and its IP is routable, but the web server process is not running or not listening on the expected port.</li>
+                <li><strong>Network congestion or packet loss</strong> — Severe network congestion between the client and server is causing SYN packets to be dropped, preventing the TCP three-way handshake from completing.</li>
+                <li><strong>Incorrect port or IP configuration</strong> — The DNS records or URL point to the correct server but the wrong port, or the server is listening on a different interface than expected.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check if the server is responding</h3>
+            <p>Use an external service or different network to confirm whether the server is responding to anyone. If it is only timing out for you, the issue is with your network path.</p>
+            <pre><code># Test connection with timeout
+curl -m 10 -v https://example.com</code></pre>
+            <h3>2. Verify firewall rules</h3>
+            <p>Check firewall rules on both the server and client side. Ensure the destination port (typically 80 or 443) is allowed through all firewalls on the network path.</p>
+            <h3>3. Check server resource usage</h3>
+            <p>If you have server access, check CPU, memory, and connection counts. A server at capacity will stop accepting new connections.</p>
+            <pre><code># Check connection counts
+ss -s
+# Check resource usage
+top</code></pre>
+            <h3>4. Flush DNS and try alternate DNS</h3>
+            <p>Clear your local DNS cache and try using a different DNS server in case stale DNS records are pointing to an unresponsive IP.</p>
+            <pre><code># Windows
+ipconfig /flushdns
+# Linux
+sudo systemd-resolve --flush-caches</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between ERR_CONNECTION_TIMED_OUT and ERR_TIMED_OUT?</h3>
+            <p>ERR_CONNECTION_TIMED_OUT specifically refers to the TCP connection attempt timing out (before any data is exchanged). ERR_TIMED_OUT can refer to the overall request timing out, including waiting for a response after the connection was established.</p>
+            <h3>How long does the browser wait before timing out?</h3>
+            <p>Chrome typically waits about 30 seconds for a TCP connection to be established. This value is built into the browser and cannot be changed by the user.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/err_timed_out">ERR_TIMED_OUT</a> — Request timed out</li>
+                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — Server refused the connection</li>
+                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — Upstream server did not respond in time</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

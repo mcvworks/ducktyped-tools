@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between ENOTFOUND and ECONNREFUSED?","acceptedAnswer":{"@type":"Answer","text":"ENOTFOUND fails before any connection attempt — the hostname could not be resolved to an IP. ECONNREFUSED means DNS worked and Node reached the target machine, but nothing was listening on that port. They point to completely different problems."}},{"@type":"Question","name":"Why do I get 'getaddrinfo ENOTFOUND localhost'?","acceptedAnswer":{"@type":"Answer","text":"Some minimal containers and misconfigured systems are missing the localhost entry in /etc/hosts. Add '127.0.0.1 localhost' to the hosts file, or connect to 127.0.0.1 directly."}},{"@type":"Question","name":"Does Node.js cache DNS results?","acceptedAnswer":{"@type":"Answer","text":"Not by default — every lookup calls the OS resolver. If you fixed DNS and still see the error, the stale result is being cached by the operating system or an HTTP agent in your code, not by Node's resolver."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"getaddrinfo ENOTFOUND — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getaddrinfo ENOTFOUND — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'Error: getaddrinfo ENOTFOUND' in Node.js. Covers wrong hostnames, undefined env vars, Docker service names, and hosts-file issues.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="getaddrinfo ENOTFOUND, Error: getaddrinfo ENOTFOUND, getaddrinfo ENOTFOUND undefined, getaddrinfo ENOTFOUND localhost, FetchError: getaddrinfo ENOTFOUND, axios ENOTFOUND">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="getaddrinfo ENOTFOUND — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'Error: getaddrinfo ENOTFOUND' in Node.js. Covers wrong hostnames, undefined env vars, Docker service names, and hosts-file issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/getaddrinfo-enotfound">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/getaddrinfo-enotfound">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>getaddrinfo ENOTFOUND</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>getaddrinfo ENOTFOUND</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">A Node.js error thrown when a hostname cannot be resolved to an IP address — the DNS lookup returned no result for the name your code tried to connect to.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>getaddrinfo ENOTFOUND</code></li><li><code>Error: getaddrinfo ENOTFOUND</code></li><li><code>getaddrinfo ENOTFOUND undefined</code></li><li><code>getaddrinfo ENOTFOUND localhost</code></li><li><code>FetchError: getaddrinfo ENOTFOUND</code></li><li><code>axios ENOTFOUND</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Node.js calls the operating system's getaddrinfo function to turn a hostname into an IP address before opening a connection. ENOTFOUND means that lookup came back empty: the name does not exist in DNS (or in /etc/hosts) from this machine's point of view. The error is almost always about *which name* the code tried to resolve — very often a typo, an unset environment variable, or a hostname that only exists inside another network (like a Docker or Kubernetes internal name).</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>The hostname is wrong or does not exist</strong> — A typo in the URL or connection string, or a domain that was never registered or has been deleted. The lookup correctly reports there is no such name.</li>
+                <li><strong>An environment variable is unset</strong> — Errors like 'getaddrinfo ENOTFOUND undefined' mean the code built a hostname from a variable that was undefined — the literal string 'undefined' was looked up in DNS.</li>
+                <li><strong>The name only resolves in a different environment</strong> — Docker Compose service names (db, redis) and Kubernetes service names resolve only inside that network. Code running on the host, or in a different network, cannot resolve them.</li>
+                <li><strong>Local DNS or hosts-file entry is missing</strong> — If the app previously relied on an /etc/hosts entry or an internal DNS zone (VPN, office network), running it elsewhere makes the same hostname unresolvable.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Log and verify the exact hostname</h3>
+            <p>Print the hostname the code actually uses (not the one you think it uses), then test it with dig or an online DNS lookup. This catches typos and undefined variables immediately.</p>
+            <pre><code>console.log('connecting to:', process.env.DB_HOST);
+# on the same machine:
+dig +short your-hostname.example.com</code></pre>
+            <h3>2. Check environment variables are loaded</h3>
+            <p>If the hostname comes from .env, confirm the file is loaded (dotenv configured, correct working directory, variable spelled the same in code and file).</p>
+            <pre><code>node -e &quot;require('dotenv').config(); console.log(process.env.DB_HOST)&quot;</code></pre>
+            <h3>3. Use the right name for the network you are in</h3>
+            <p>Inside Docker Compose, connect using the service name. From the host machine, use localhost with the published port instead — the service name does not exist in host DNS.</p>
+            <pre><code># inside the compose network:
+DATABASE_URL=postgres://user:pass@db:5432/app
+# from the host (port published as 5432):
+DATABASE_URL=postgres://user:pass@localhost:5432/app</code></pre>
+            <h3>4. Add a hosts entry or fix DNS for internal names</h3>
+            <p>For names served by an internal DNS zone, connect to the VPN, or add a temporary /etc/hosts entry while testing.</p>
+            <pre><code>echo &quot;10.0.0.15 internal-api.company.local&quot; | sudo tee -a /etc/hosts</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the difference between ENOTFOUND and ECONNREFUSED?</h3>
+            <p>ENOTFOUND fails before any connection attempt — the hostname could not be resolved to an IP. ECONNREFUSED means DNS worked and Node reached the target machine, but nothing was listening on that port. They point to completely different problems.</p>
+            <h3>Why do I get 'getaddrinfo ENOTFOUND localhost'?</h3>
+            <p>Some minimal containers and misconfigured systems are missing the localhost entry in /etc/hosts. Add '127.0.0.1 localhost' to the hosts file, or connect to 127.0.0.1 directly.</p>
+            <h3>Does Node.js cache DNS results?</h3>
+            <p>Not by default — every lookup calls the OS resolver. If you fixed DNS and still see the error, the stale result is being cached by the operating system or an HTTP agent in your code, not by Node's resolver.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/getaddrinfo-eai-again">getaddrinfo EAI_AGAIN</a> — the temporary-failure variant of this error.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — the DNS response code behind ENOTFOUND.</li>
+                <li><a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> — the same failure from curl and git.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check whether the hostname resolves</span>
+                </a>
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Verify the target port is reachable</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it safe to bypass the certificate unknown warning?","acceptedAnswer":{"@type":"Answer","text":"Bypassing the warning means your connection may not be secure. For internal or development servers with self-signed certificates, it may be acceptable. For public websites, it is not safe — the certificate issue may indicate a man-in-the-middle attack or a compromised server."}},{"@type":"Question","name":"Why does my certificate work in Chrome but not in other applications?","acceptedAnswer":{"@type":"Answer","text":"Different applications use different trust stores. Chrome uses the operating system's trust store, while applications like Java, Python, or curl may use their own. You need to ensure the CA certificate is trusted in the specific trust store used by the failing application."}},{"@type":"Question","name":"How do I add a private CA to my trust store?","acceptedAnswer":{"@type":"Answer","text":"Import the private CA's root certificate into your operating system or application trust store. On Windows, use the Certificate Manager. On macOS, use Keychain Access. On Linux, add the certificate to /usr/local/share/ca-certificates/ and run update-ca-certificates."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"SSL / TLS","item":"https://ducktyped.xyz/errors/#ssl"},{"@type":"ListItem","position":3,"name":"SSL Certificate Unknown — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix SSL Certificate Unknown","step":[{"@type":"HowToStep","position":1,"name":"Install intermediate certificates on the server","text":"Ensure the server sends the complete certificate chain including all intermediate certificates. Most CAs provide a bundle file containing the necessary intermediates."},{"@type":"HowToStep","position":2,"name":"Verify the certificate chain","text":"Use OpenSSL to check whether the certificate chain is complete and valid."},{"@type":"HowToStep","position":3,"name":"Replace self-signed certificates","text":"For public-facing servers, replace self-signed certificates with certificates from a trusted CA. Let's Encrypt provides free trusted certificates."},{"@type":"HowToStep","position":4,"name":"Update the client's trust store","text":"On older systems, update the CA certificate bundle to include current root CAs. On Linux, update the ca-certificates package."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificate Unknown — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix SSL certificate unknown errors. Learn why browsers reject unrecognized certificates, common causes including missing CA certificates, and how to resolve them.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="SSL certificate unknown, Unknown certificate error, Certificate unknown, TLS alert certificate unknown">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificate Unknown — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix SSL certificate unknown errors. Learn why browsers reject unrecognized certificates, common causes including missing CA certificates, and how to resolve them.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/ssl/ssl-certificate-unknown">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/ssl/ssl-certificate-unknown">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#ssl">SSL</a> <span>/</span> <span>SSL Certificate Unknown</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificate Unknown</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Browser does not recognize or trust the SSL certificate</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>SSL certificate unknown</code></li><li><code>Unknown certificate error</code></li><li><code>Certificate unknown</code></li><li><code>TLS alert certificate unknown</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>SSL Certificate Unknown occurs when the browser or TLS client encounters a certificate that it cannot verify against its trusted certificate store. The certificate may be issued by an unknown Certificate Authority (CA), the intermediate certificates may be missing from the server's certificate chain, or the certificate may use a format or extension the client does not understand. The TLS handshake fails because the client cannot establish a trust path from the server's certificate to a known root CA.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Certificate issued by an untrusted CA</strong> — The certificate was issued by a Certificate Authority that is not in the browser's or operating system's trusted root store. This includes private CAs, less common public CAs, or CAs that have been removed from trust stores.</li>
+                <li><strong>Missing intermediate certificates</strong> — The server is not sending the full certificate chain. The server's certificate was signed by an intermediate CA, but the intermediate certificate is not included in the TLS handshake, breaking the chain of trust.</li>
+                <li><strong>Self-signed certificate</strong> — The certificate is self-signed and not issued by any CA. Browsers do not trust self-signed certificates by default because there is no third-party verification of the server's identity.</li>
+                <li><strong>Outdated client trust store</strong> — The client's operating system or browser has an outdated certificate store that does not include newer root CAs. This can happen on old systems that no longer receive updates.</li>
+                <li><strong>Certificate uses unsupported extensions</strong> — The certificate contains X.509 extensions that the client does not understand and has marked as critical, causing the client to reject the entire certificate.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Install intermediate certificates on the server</h3>
+            <p>Ensure the server sends the complete certificate chain including all intermediate certificates. Most CAs provide a bundle file containing the necessary intermediates.</p>
+            <pre><code># Nginx — include full chain
+ssl_certificate /etc/ssl/fullchain.pem;
+ssl_certificate_key /etc/ssl/private.key;
+
+# Apache — specify chain file
+SSLCertificateFile /etc/ssl/cert.pem
+SSLCertificateChainFile /etc/ssl/chain.pem
+SSLCertificateKeyFile /etc/ssl/private.key</code></pre>
+            <h3>2. Verify the certificate chain</h3>
+            <p>Use OpenSSL to check whether the certificate chain is complete and valid.</p>
+            <pre><code># Check certificate chain
+openssl s_client -connect example.com:443 -showcerts
+
+# Verify chain completeness
+openssl verify -CAfile /etc/ssl/certs/ca-certificates.crt cert.pem</code></pre>
+            <h3>3. Replace self-signed certificates</h3>
+            <p>For public-facing servers, replace self-signed certificates with certificates from a trusted CA. Let's Encrypt provides free trusted certificates.</p>
+            <pre><code># Obtain a free certificate from Let's Encrypt
+certbot certonly --webroot -w /var/www/html -d example.com</code></pre>
+            <h3>4. Update the client's trust store</h3>
+            <p>On older systems, update the CA certificate bundle to include current root CAs. On Linux, update the ca-certificates package.</p>
+            <pre><code># Debian/Ubuntu
+sudo apt update &amp;&amp; sudo apt install ca-certificates
+sudo update-ca-certificates
+
+# RHEL/CentOS
+sudo yum update ca-certificates</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is it safe to bypass the certificate unknown warning?</h3>
+            <p>Bypassing the warning means your connection may not be secure. For internal or development servers with self-signed certificates, it may be acceptable. For public websites, it is not safe — the certificate issue may indicate a man-in-the-middle attack or a compromised server.</p>
+            <h3>Why does my certificate work in Chrome but not in other applications?</h3>
+            <p>Different applications use different trust stores. Chrome uses the operating system's trust store, while applications like Java, Python, or curl may use their own. You need to ensure the CA certificate is trusted in the specific trust store used by the failing application.</p>
+            <h3>How do I add a private CA to my trust store?</h3>
+            <p>Import the private CA's root certificate into your operating system or application trust store. On Windows, use the Certificate Manager. On macOS, use Keychain Access. On Linux, add the certificate to /usr/local/share/ca-certificates/ and run update-ca-certificates.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a> — Certificate authority is not trusted</li>
+                <li><a href="/errors/ssl/ssl-certificate-invalid">SSL Certificate Invalid</a> — Certificate failed validation checks</li>
+                <li><a href="/errors/ssl/ssl-handshake-failed">SSL Handshake Failed</a> — TLS handshake could not complete</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/ssl-certificate-expired/">Fixing expired SSL certificates</a>, <a href="/learn/ssl-checker/">SSL certificate checking</a>, <a href="/learn/ssl-tls-handshake/">How the TLS handshake works</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Checker</span>
+                    <span class="recommended-tool-desc">Verify SSL certificates and chain validity</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check security headers including HSTS</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

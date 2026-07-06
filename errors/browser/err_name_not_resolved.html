@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ERR_NAME_NOT_RESOLVED mean?","acceptedAnswer":{"@type":"Answer","text":"ERR_NAME_NOT_RESOLVED means the browser could not translate the domain name into an IP address. The DNS lookup returned no result, either because the domain does not exist, the DNS server is unreachable, or your device has a stale DNS cache."}},{"@type":"Question","name":"Is ERR_NAME_NOT_RESOLVED the same as DNS_PROBE_FINISHED_NXDOMAIN?","acceptedAnswer":{"@type":"Answer","text":"They are closely related. ERR_NAME_NOT_RESOLVED is a broader Chrome error meaning DNS resolution failed for any reason. DNS_PROBE_FINISHED_NXDOMAIN is more specific — the DNS server confirmed the domain does not exist. ERR_NAME_NOT_RESOLVED can also appear when the DNS server is unreachable or timed out."}},{"@type":"Question","name":"How do I fix ERR_NAME_NOT_RESOLVED?","acceptedAnswer":{"@type":"Answer","text":"Start by flushing your DNS cache (ipconfig /flushdns on Windows, sudo dscacheutil -flushcache on macOS). Then try switching to a public DNS server like 1.1.1.1 or 8.8.8.8. Also verify you typed the URL correctly and check your internet connection."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Browser","item":"https://ducktyped.xyz/errors/#browser"},{"@type":"ListItem","position":3,"name":"ERR_NAME_NOT_RESOLVED — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix ERR_NAME_NOT_RESOLVED","step":[{"@type":"HowToStep","position":1,"name":"Verify the URL","text":"Check the address bar for typos, missing letters, or the wrong domain extension. Try searching for the site in a search engine if you are unsure of the exact address."},{"@type":"HowToStep","position":2,"name":"Switch to a Public DNS Server","text":"Change your DNS to a reliable public resolver in your network adapter or router settings:"},{"@type":"HowToStep","position":3,"name":"Check Your Internet Connection","text":"Open another site or try pinging a known IP (ping 1.1.1.1) to confirm whether you have network access at all."},{"@type":"HowToStep","position":4,"name":"Restart Router and Modem","text":"Power cycle your router. Wait 30 seconds before turning it back on to clear any cached DNS state."},{"@type":"HowToStep","position":5,"name":"Disable VPN or Security Software Temporarily","text":"Disconnect your VPN or temporarily disable antivirus DNS filtering to see if they are the cause."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERR_NAME_NOT_RESOLVED — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what ERR_NAME_NOT_RESOLVED means and how to fix it. Step-by-step solutions for Chrome, Edge, and other browsers on Windows, Mac, and Linux.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="net::ERR_NAME_NOT_RESOLVED, ERR_NAME_NOT_RESOLVED Chrome, This site can&#39;t be reached, DNS address could not be found, Server DNS address could not be found">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ERR_NAME_NOT_RESOLVED — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix ERR_NAME_NOT_RESOLVED with step-by-step DNS troubleshooting solutions for all browsers.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/browser/err_name_not_resolved">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/browser/err_name_not_resolved">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="stylesheet" href="/utility/diagrams.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#browser">Browser</a> <span>/</span> <span>ERR_NAME_NOT_RESOLVED</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>ERR_NAME_NOT_RESOLVED</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">This error means the browser could not resolve the domain name — DNS returned no usable result. Here is what causes it and how to fix it.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>net::ERR_NAME_NOT_RESOLVED</code></li><li><code>ERR_NAME_NOT_RESOLVED Chrome</code></li><li><code>This site can&#39;t be reached</code></li><li><code>DNS address could not be found</code></li><li><code>Server DNS address could not be found</code></li></ul>
+            </div>
+
+            <div class="dt-diagram-section">
+                <h2>Where This Error Occurs</h2>
+                <div class="dt-diagram" data-diagram="dns" data-error="nxdomain"></div>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>When you enter a URL, your browser asks a DNS resolver to convert the domain name into an IP address. <strong>ERR_NAME_NOT_RESOLVED</strong> appears when that lookup fails entirely — the DNS server either has no record for the domain or could not be reached in time.</p>
+            <p>This differs slightly from <a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a>: that error means the server positively confirmed the domain does not exist, while ERR_NAME_NOT_RESOLVED can also occur when the DNS server itself is unreachable or times out.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Mistyped URL</strong> — the most frequent cause. Verify spelling and the TLD (.com, .net, .org).</li>
+                <li><strong>DNS server unreachable</strong> — your configured DNS server is offline or not responding.</li>
+                <li><strong>Stale DNS cache</strong> — old or corrupted records cached on your device or router.</li>
+                <li><strong>Domain does not exist</strong> — the domain was never registered, has expired, or was deleted.</li>
+                <li><strong>No internet connection</strong> — DNS queries cannot leave your device if you are offline.</li>
+                <li><strong>Firewall or security software blocking DNS</strong> — antivirus or parental controls may be intercepting DNS queries.</li>
+                <li><strong>VPN DNS leak or misconfiguration</strong> — VPN may be routing DNS through an unreachable resolver.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Verify the URL</h3>
+            <p>Check the address bar for typos, missing letters, or the wrong domain extension. Try searching for the site in a search engine if you are unsure of the exact address.</p>
+
+            <h3>2. Flush DNS Cache</h3>
+            <ul>
+                <li><strong>Windows:</strong> <code>ipconfig /flushdns</code> in an elevated Command Prompt</li>
+                <li><strong>macOS:</strong> <code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+                <li><strong>Linux:</strong> <code>sudo systemd-resolve --flush-caches</code></li>
+                <li><strong>Chrome:</strong> <code>chrome://net-internals/#dns</code> → Clear host cache</li>
+            </ul>
+
+            <h3>3. Switch to a Public DNS Server</h3>
+            <p>Change your DNS to a reliable public resolver in your network adapter or router settings:</p>
+            <ul>
+                <li>Cloudflare: <code>1.1.1.1</code> / <code>1.0.0.1</code></li>
+                <li>Google: <code>8.8.8.8</code> / <code>8.8.4.4</code></li>
+                <li>Quad9: <code>9.9.9.9</code></li>
+            </ul>
+
+            <h3>4. Check Your Internet Connection</h3>
+            <p>Open another site or try pinging a known IP (<code>ping 1.1.1.1</code>) to confirm whether you have network access at all.</p>
+
+            <h3>5. Restart Router and Modem</h3>
+            <p>Power cycle your router. Wait 30 seconds before turning it back on to clear any cached DNS state.</p>
+
+            <h3>6. Disable VPN or Security Software Temporarily</h3>
+            <p>Disconnect your VPN or temporarily disable antivirus DNS filtering to see if they are the cause.</p>
+
+            <h2>Related Tools</h2>
+            <ul>
+                <li><a href="/dns-lookup/">DNS Lookup</a> — check whether the domain has valid DNS records.</li>
+                <li><a href="/whois-lookup/">WHOIS Lookup</a> — verify the domain is registered and not expired.</li>
+                <li><a href="/isp-lookup/">ISP Lookup</a> — identify your current DNS resolver.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is ERR_NAME_NOT_RESOLVED the same on all browsers?</h3>
+            <p>Chrome and Edge display this specific error code. Firefox shows "Server Not Found" and Safari shows "Safari Can't Find the Server" — but all indicate the same underlying DNS resolution failure.</p>
+
+            <h3>Why does ERR_NAME_NOT_RESOLVED happen on mobile but not desktop?</h3>
+            <p>Mobile devices may use different DNS servers (via cellular carrier) than your Wi-Fi network. If one works and the other does not, the issue is likely with a specific DNS server rather than the domain itself.</p>
+
+            <h3>Can a website be up but still trigger this error?</h3>
+            <p>Yes. If the domain's DNS records are valid but your local DNS server has a corrupted cache entry, you will see this error even though the site is reachable for everyone else. Flushing your DNS cache usually resolves it.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — DNS server confirmed the domain does not exist.</li>
+                <li><a href="/errors/dns/dns-server-not-responding">DNS Server Not Responding</a> — DNS server is offline or unreachable.</li>
+                <li><a href="/errors/dns/dns-lookup-failed">DNS Lookup Failed</a> — generic DNS resolution failure.</li>
+                <li><a href="/errors/browser/err_internet_disconnected">ERR_INTERNET_DISCONNECTED</a> — no network connection at all.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Query DNS records for any domain</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Check domain registration and expiry</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup Tool</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script defer src="/utility/diagrams.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is 506 a common error?","acceptedAnswer":{"@type":"Answer","text":"No. It is very rare because transparent content negotiation (RFC 2295) is rarely used. Most servers use server-driven content negotiation, which does not produce this error."}},{"@type":"Question","name":"What is transparent content negotiation?","acceptedAnswer":{"@type":"Answer","text":"It is a mechanism where the server sends a list of available variants to the client, and the client chooses the best one. It is defined in RFC 2295 but is rarely implemented in practice."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"506 Variant Also Negotiates — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix 506 Variant Also Negotiates","step":[{"@type":"HowToStep","position":1,"name":"Review content negotiation configuration","text":"Check the server's content negotiation configuration for circular references. Ensure that variant resources do not themselves perform content negotiation."},{"@type":"HowToStep","position":2,"name":"Fix type-map files","text":"If using Apache with type-map files, ensure variant URIs point to final resources and not to other type-map files or negotiated resources."},{"@type":"HowToStep","position":3,"name":"Use server-driven negotiation instead","text":"If transparent content negotiation is causing issues, switch to server-driven negotiation where the server chooses the variant based on Accept headers without client-side negotiation."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>506 Variant Also Negotiates — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Understand HTTP 506 Variant Also Negotiates errors. Learn about transparent content negotiation failures, circular references, and server configuration fixes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 506, 506 Variant Also Negotiates, 506 error, Content negotiation error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="506 Variant Also Negotiates — Causes &amp; Fixes">
+    <meta property="og:description" content="Understand HTTP 506 Variant Also Negotiates errors. Learn about transparent content negotiation failures, circular references, and server configuration fixes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/506-variant-also-negotiates">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/506-variant-also-negotiates">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>506 Variant Also Negotiates</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>506 Variant Also Negotiates</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">The server has a circular reference in content negotiation</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 506</code></li><li><code>506 Variant Also Negotiates</code></li><li><code>506 error</code></li><li><code>Content negotiation error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>A 506 Variant Also Negotiates response indicates that the server has an internal configuration error during transparent content negotiation. A chosen variant resource is configured to engage in content negotiation itself, creating a circular reference that the server cannot resolve. This is a rare error caused by misconfigured content negotiation on the server.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Circular content negotiation reference</strong> — A variant resource selected during content negotiation is itself configured to perform content negotiation, creating an infinite loop that the server detects and refuses.</li>
+                <li><strong>Misconfigured type-map files</strong> — Apache type-map files or equivalent configuration point to variant resources that also have type-map configurations, creating a circular dependency.</li>
+                <li><strong>Incorrect Alternates header configuration</strong> — The server's transparent content negotiation configuration includes variant URIs that reference themselves or each other in the Alternates header.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Review content negotiation configuration</h3>
+            <p>Check the server's content negotiation configuration for circular references. Ensure that variant resources do not themselves perform content negotiation.</p>
+            <h3>2. Fix type-map files</h3>
+            <p>If using Apache with type-map files, ensure variant URIs point to final resources and not to other type-map files or negotiated resources.</p>
+            <pre><code># Apache type-map file (correct)
+URI: page
+
+URI: page.en.html
+Content-Type: text/html
+Content-Language: en
+
+URI: page.fr.html
+Content-Type: text/html
+Content-Language: fr</code></pre>
+            <h3>3. Use server-driven negotiation instead</h3>
+            <p>If transparent content negotiation is causing issues, switch to server-driven negotiation where the server chooses the variant based on Accept headers without client-side negotiation.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is 506 a common error?</h3>
+            <p>No. It is very rare because transparent content negotiation (RFC 2295) is rarely used. Most servers use server-driven content negotiation, which does not produce this error.</p>
+            <h3>What is transparent content negotiation?</h3>
+            <p>It is a mechanism where the server sends a list of available variants to the client, and the client chooses the best one. It is defined in RFC 2295 but is rarely implemented in practice.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — Server encountered an unexpected error</li>
+                <li><a href="/errors/http/406-not-acceptable">406 Not Acceptable</a> — No acceptable content type available</li>
+                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — Invalid response from upstream server</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Check response headers</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/security-headers/" class="cta-btn-primary">Try Security Headers</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

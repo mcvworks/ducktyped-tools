@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the backoff timing for CrashLoopBackOff?","acceptedAnswer":{"@type":"Answer","text":"Kubernetes uses exponential backoff: 10 seconds, 20 seconds, 40 seconds, 80 seconds, and so on, capping at 5 minutes. After the pod runs successfully for 10 minutes, the backoff timer resets."}},{"@type":"Question","name":"How is CrashLoopBackOff different from ImagePullBackOff?","acceptedAnswer":{"@type":"Answer","text":"CrashLoopBackOff means the container image was pulled successfully but the application inside keeps crashing. ImagePullBackOff means Kubernetes cannot even download the container image."}},{"@type":"Question","name":"Can I force restart a pod in CrashLoopBackOff?","acceptedAnswer":{"@type":"Answer","text":"You can delete the pod with 'kubectl delete pod '. If it is managed by a Deployment, a new pod will be created. However, if the underlying issue is not fixed, the new pod will also enter CrashLoopBackOff."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Kubernetes CrashLoopBackOff — Causes & Fixes"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Kubernetes CrashLoopBackOff","step":[{"@type":"HowToStep","position":1,"name":"Check pod logs","text":"View the logs from the crashing container to identify the error message or stack trace."},{"@type":"HowToStep","position":2,"name":"Describe the pod for events","text":"Check the pod's events for Kubernetes-level errors like image pull failures, mounting issues, or OOM kills."},{"@type":"HowToStep","position":3,"name":"Debug with an interactive shell","text":"Override the container command to start a shell instead of the application, allowing you to investigate inside the container."},{"@type":"HowToStep","position":4,"name":"Check resource limits","text":"Verify that the container has enough memory and CPU allocated. OOM kills show as exit code 137."}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes CrashLoopBackOff — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix Kubernetes CrashLoopBackOff error. Learn why pods crash repeatedly, how to diagnose the root cause, and how to resolve container startup failures.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="CrashLoopBackOff, Kubernetes CrashLoopBackOff, Back-off restarting failed container, Pod CrashLoopBackOff, kubectl pod crash loop">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Kubernetes CrashLoopBackOff — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix Kubernetes CrashLoopBackOff error. Learn why pods crash repeatedly, how to diagnose the root cause, and how to resolve container startup failures.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/devops/kubernetes-crashloopbackoff">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/devops/kubernetes-crashloopbackoff">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#devops">DevOps</a> <span>/</span> <span>Kubernetes CrashLoopBackOff</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Kubernetes CrashLoopBackOff</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">Pod is crashing repeatedly and Kubernetes is backing off restarts</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>CrashLoopBackOff</code></li><li><code>Kubernetes CrashLoopBackOff</code></li><li><code>Back-off restarting failed container</code></li><li><code>Pod CrashLoopBackOff</code></li><li><code>kubectl pod crash loop</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>CrashLoopBackOff means a Kubernetes pod's container starts, crashes, and keeps restarting in a loop. Kubernetes uses exponential backoff to delay restarts (10s, 20s, 40s, up to 5 minutes) to avoid overwhelming the system. The pod status shows CrashLoopBackOff during these backoff periods.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Application crashes on startup</strong> — The application inside the container exits with a non-zero exit code due to bugs, missing configuration, unhandled exceptions, or failed initialization.</li>
+                <li><strong>Missing configuration or secrets</strong> — The pod references ConfigMaps, Secrets, or environment variables that do not exist or contain incorrect values, causing the application to fail on startup.</li>
+                <li><strong>Failed health checks</strong> — Liveness probes fail repeatedly, causing Kubernetes to kill and restart the container. This can happen when the probe endpoint is wrong or the initial delay is too short.</li>
+                <li><strong>Insufficient resources</strong> — The container's memory or CPU limits are too low, causing the application to be OOM-killed (Out of Memory) during startup.</li>
+                <li><strong>Incorrect container command</strong> — The container's entrypoint or command is wrong, causing it to exit immediately. This includes typos in the command or referencing a binary that does not exist in the image.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Check pod logs</h3>
+            <p>View the logs from the crashing container to identify the error message or stack trace.</p>
+            <pre><code>kubectl logs &lt;pod-name&gt;
+# If the container has already restarted:
+kubectl logs &lt;pod-name&gt; --previous</code></pre>
+            <h3>2. Describe the pod for events</h3>
+            <p>Check the pod's events for Kubernetes-level errors like image pull failures, mounting issues, or OOM kills.</p>
+            <pre><code>kubectl describe pod &lt;pod-name&gt;</code></pre>
+            <h3>3. Debug with an interactive shell</h3>
+            <p>Override the container command to start a shell instead of the application, allowing you to investigate inside the container.</p>
+            <pre><code>kubectl run debug --image=&lt;your-image&gt; --rm -it -- /bin/sh</code></pre>
+            <h3>4. Check resource limits</h3>
+            <p>Verify that the container has enough memory and CPU allocated. OOM kills show as exit code 137.</p>
+            <pre><code>kubectl get pod &lt;pod-name&gt; -o jsonpath='{.status.containerStatuses[0].lastState.terminated}'</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What is the backoff timing for CrashLoopBackOff?</h3>
+            <p>Kubernetes uses exponential backoff: 10 seconds, 20 seconds, 40 seconds, 80 seconds, and so on, capping at 5 minutes. After the pod runs successfully for 10 minutes, the backoff timer resets.</p>
+            <h3>How is CrashLoopBackOff different from ImagePullBackOff?</h3>
+            <p>CrashLoopBackOff means the container image was pulled successfully but the application inside keeps crashing. ImagePullBackOff means Kubernetes cannot even download the container image.</p>
+            <h3>Can I force restart a pod in CrashLoopBackOff?</h3>
+            <p>You can delete the pod with 'kubectl delete pod &lt;name&gt;'. If it is managed by a Deployment, a new pod will be created. However, if the underlying issue is not fixed, the new pod will also enter CrashLoopBackOff.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/devops/kubernetes-imagepullbackoff">Kubernetes ImagePullBackOff</a> — Cannot pull container image</li>
+                <li><a href="/errors/devops/docker-daemon-not-running">Docker Daemon Not Running</a> — Docker daemon is not running</li>
+                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — Server encountered an unexpected condition</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/port-scanner/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Port Scanner</span>
+                    <span class="recommended-tool-desc">Check if a port is open</span>
+                </a>
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

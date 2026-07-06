@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"URL Metadata Extractor","url":"https://ducktyped.xyz/metadata-extractor/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Extract meta tags, Open Graph data, Twitter cards, and SEO information from any URL. Preview how links appear when shared. Free metadata viewer.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is metadata extraction?","acceptedAnswer":{"@type":"Answer","text":"Metadata extraction reads embedded information from files such as images (EXIF data), documents (author, creation date), and other file types. This data is stored within the file itself."}},{"@type":"Question","name":"What metadata can be extracted from images?","acceptedAnswer":{"@type":"Answer","text":"Image metadata (EXIF) can include camera model, GPS coordinates, date taken, exposure settings, lens information, and software used. This tool reads and displays all available metadata fields."}},{"@type":"Question","name":"Is my file uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All metadata extraction happens in your browser using JavaScript. Your files never leave your device — they are processed entirely client-side."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Metadata Extractor — View Open Graph & SEO Tags — duckTyped</title>
+    <meta name="description" content="Extract meta tags, Open Graph data, Twitter cards, and SEO information from any URL. Preview how links appear when shared. Free metadata viewer.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="URL Metadata Extractor — View Open Graph & SEO Tags — duckTyped">
+    <meta property="og:description" content="Extract meta tags, Open Graph data, Twitter cards, and SEO information from any URL. Preview how links appear when shared. Free metadata viewer.">
+    <meta property="og:url" content="https://ducktyped.xyz/metadata-extractor/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/metadata-extractor.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="URL Metadata Extractor — View Open Graph & SEO Tags — duckTyped">
+    <meta name="twitter:description" content="Extract meta tags, Open Graph data, Twitter cards, and SEO information from any URL. Preview how links appear when shared. Free metadata viewer.">
+    <link rel="canonical" href="https://ducktyped.xyz/metadata-extractor/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+    <div class="container">
+        <div class="standalone-hero"><h1>URL Metadata Extractor</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Pull the title, description, Open Graph tags, Twitter card data, and other meta information from any URL. See exactly how a link will appear when shared on social media or in search results.</p><div class="example-box"><strong>Example uses:</strong><p>Previewing how your page looks when shared on social media, auditing Open Graph tags after a site update, checking competitor SEO meta tags, or verifying Twitter card configuration.</p></div>
+            <a href="/learn/metadata-extractor/" class="learn-more-link">Learn about Open Graph and URL metadata</a></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="urlMetadata"><h2>URL Metadata Extractor</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Extract page title, description, Open Graph tags, and metadata from any URL. See how links appear when shared on social media.</p>
+            <div class="input-group"><label>URL to Extract:</label><input type="url" id="urlToExtract" placeholder="https://example.com" aria-label="URL to Extract:" onkeypress="if(event.key==='Enter') extractMetadata()"></div>
+            <button onclick="extractMetadata()">📄 Extract Metadata</button>
+            <div id="urlMetadataResults"></div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/base64-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Base64 Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode text to and from Base64 format</span>
+                </a>
+                <a href="/url-encoder/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">URL Encoder / Decoder</span>
+                    <span class="recommended-tool-desc">Encode and decode URLs using percent-encoding (RFC 3986)</span>
+                </a>
+            </div>
+        </div>
+        <p class="related-guides">📖 <strong>Learn:</strong> <a href="/learn/metadata-extractor/">File Metadata and EXIF Data</a></p>
+        <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/tools-helpers.js"></script>
+    <script defer src="/utility/tools-url.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

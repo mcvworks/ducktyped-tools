@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did the Python build succeed if a core module is missing?","acceptedAnswer":{"@type":"Answer","text":"CPython treats many extension modules as optional at build time: missing headers mean the module is skipped with only a summary warning in the build log ('The necessary bits to build these optional modules were not found: _ssl ...'). It bites later, when something imports ssl — usually pip, immediately."}},{"@type":"Question","name":"Can I pip-install the ssl module instead of rebuilding?","acceptedAnswer":{"@type":"Answer","text":"No — ssl is part of the interpreter, compiled against OpenSSL during the build. Nothing on PyPI can add it afterwards (and pip cannot reach PyPI anyway without it). Rebuild with headers present, or switch interpreters."}},{"@type":"Question","name":"Same error inside a conda environment — same fix?","acceptedAnswer":{"@type":"Answer","text":"Conda ships its own OpenSSL; the linkage occasionally breaks after partial updates. 'conda install openssl' (or recreating the environment) usually repairs it — no compiling involved, since conda distributes prebuilt interpreters."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"pip: TLS/SSL Module Not Available — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pip: TLS/SSL Module Not Available — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix pip 'ssl module in Python is not available'. Install OpenSSL headers before pyenv/source builds, rebuild Python, and conda environment fixes.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available, No module named &#39;_ssl&#39;, pyenv ssl module missing, python ssl module not available">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="pip: TLS/SSL Module Not Available — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix pip 'ssl module in Python is not available'. Install OpenSSL headers before pyenv/source builds, rebuild Python, and conda environment fixes.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/python/pip-ssl-module-not-available">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/python/pip-ssl-module-not-available">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#python">Python</a> <span>/</span> <span>pip: TLS/SSL Module Not Available</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>pip: TLS/SSL Module Not Available</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The failure 'pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available' — this Python was built without OpenSSL support.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available</code></li><li><code>No module named &#39;_ssl&#39;</code></li><li><code>pyenv ssl module missing</code></li><li><code>python ssl module not available</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Python's ssl module binds to OpenSSL at build time. If the OpenSSL development headers were missing when the interpreter was compiled — the classic pyenv-on-a-fresh-machine mistake — the resulting Python has no ssl module at all, and pip (which talks HTTPS to PyPI) cannot function. The fix is never inside pip: the interpreter itself must be rebuilt with the SSL libraries present, or you switch to an interpreter that has them.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>pyenv/source build without OpenSSL headers</strong> — pyenv install compiles CPython; without libssl-dev (Debian) or openssl@3 (Homebrew) present, the build finishes but quietly skips the ssl module.</li>
+                <li><strong>Minimal container images</strong> — Hand-rolled Python builds in slim images missing the ssl shared libraries, or copied interpreters whose linked OpenSSL is absent.</li>
+                <li><strong>Broken conda/virtualenv linkage</strong> — Conda environments after certain updates, or venvs whose base interpreter moved, can lose the _ssl extension linkage.</li>
+                <li><strong>Very old Python vs modern OpenSSL</strong> — Building an EOL Python (3.7-) against OpenSSL 3 fails or produces a crippled ssl module — old interpreters need old OpenSSL or patches.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm the diagnosis</h3>
+            <p>Import ssl directly — the error message settles it.</p>
+            <pre><code>python3 -c &quot;import ssl; print(ssl.OPENSSL_VERSION)&quot;
+# ModuleNotFoundError: No module named '_ssl'  -&gt; rebuild needed</code></pre>
+            <h3>2. Install the build dependencies, then rebuild</h3>
+            <p>Get the headers first, then recompile the same version with pyenv.</p>
+            <pre><code># Debian/Ubuntu:
+sudo apt install -y libssl-dev libbz2-dev libreadline-dev libsqlite3-dev \
+  libffi-dev zlib1g-dev liblzma-dev
+# macOS:
+brew install openssl@3 readline sqlite3 xz zlib
+
+pyenv uninstall 3.12.4
+pyenv install 3.12.4
+python3 -c 'import ssl; print(ssl.OPENSSL_VERSION)'</code></pre>
+            <h3>3. Point older builds at Homebrew's OpenSSL if needed</h3>
+            <p>When the build does not find brew's keg-only OpenSSL automatically.</p>
+            <pre><code>export LDFLAGS=&quot;-L$(brew --prefix openssl@3)/lib&quot;
+export CPPFLAGS=&quot;-I$(brew --prefix openssl@3)/include&quot;
+PYTHON_CONFIGURE_OPTS=&quot;--with-openssl=$(brew --prefix openssl@3)&quot; pyenv install 3.12.4</code></pre>
+            <h3>4. Or use an interpreter that ships working SSL</h3>
+            <p>Distro python3, python.org installers, and the official Docker images all come with ssl working — a valid alternative to compiling.</p>
+            <pre><code>sudo apt install python3 python3-venv
+# or in Docker:
+FROM python:3.12-slim</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why did the Python build succeed if a core module is missing?</h3>
+            <p>CPython treats many extension modules as optional at build time: missing headers mean the module is skipped with only a summary warning in the build log ('The necessary bits to build these optional modules were not found: _ssl ...'). It bites later, when something imports ssl — usually pip, immediately.</p>
+            <h3>Can I pip-install the ssl module instead of rebuilding?</h3>
+            <p>No — ssl is part of the interpreter, compiled against OpenSSL during the build. Nothing on PyPI can add it afterwards (and pip cannot reach PyPI anyway without it). Rebuild with headers present, or switch interpreters.</p>
+            <h3>Same error inside a conda environment — same fix?</h3>
+            <p>Conda ships its own OpenSSL; the linkage occasionally breaks after partial updates. 'conda install openssl' (or recreating the environment) usually repairs it — no compiling involved, since conda distributes prebuilt interpreters.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/python/certificate-verify-failed">CERTIFICATE_VERIFY_FAILED</a> — TLS trust problems (ssl module present).</li>
+                <li><a href="/errors/devops/pip-install-failed">pip Install Failed</a> — general install failures.</li>
+                <li><a href="/errors/node/node-gyp-build-failed">node-gyp Build Failed</a> — the same missing-headers pattern in Node.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Verify TLS from a working environment</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/ssl-checker/" class="cta-btn-primary">Try SSL Certificate Checker</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

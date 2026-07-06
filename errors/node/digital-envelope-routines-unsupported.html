@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is --openssl-legacy-provider dangerous?","acceptedAnswer":{"@type":"Answer","text":"It re-enables old algorithms for that Node process. For a build step hashing module names, the practical risk is negligible; the danger is normalizing it in servers doing real cryptography. Scope it to the build command, and schedule the toolchain upgrade that removes the need."}},{"@type":"Question","name":"Why exactly did OpenSSL 3 break MD4?","acceptedAnswer":{"@type":"Answer","text":"OpenSSL 3 moved obsolete algorithms (MD4 among them — broken since the 1990s for cryptographic purposes) into a 'legacy provider' that is off by default. webpack 4 used MD4 not for security but as a fast content hash; harmless use, same locked door."}},{"@type":"Question","name":"I upgraded react-scripts and got a wall of new errors — expected?","acceptedAnswer":{"@type":"Answer","text":"The 4→5 jump swaps webpack majors, so plugin and polyfill differences surface (webpack 5 stopped auto-polyfilling Node core modules for the browser). It is one afternoon of migration in most apps — resolve the polyfill errors with the fallbacks the messages suggest, and drop obsolete plugins."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Node.js","item":"https://ducktyped.xyz/errors/#node"},{"@type":"ListItem","position":3,"name":"Node.js error:0308010C — Digital Envelope Routines Unsupported — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js error:0308010C — Digital Envelope Routines Unsupported — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'error:0308010C digital envelope routines unsupported'. Upgrade react-scripts/webpack, or use --openssl-legacy-provider as a stopgap — safely.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="error:0308010C:digital envelope routines::unsupported, ERR_OSSL_EVP_UNSUPPORTED, digital envelope routines unsupported, openssl-legacy-provider, node 17 webpack openssl error">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Node.js error:0308010C — Digital Envelope Routines Unsupported — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'error:0308010C digital envelope routines unsupported'. Upgrade react-scripts/webpack, or use --openssl-legacy-provider as a stopgap — safely.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/node/digital-envelope-routines-unsupported">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/node/digital-envelope-routines-unsupported">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#node">Node.js</a> <span>/</span> <span>Node.js error:0308010C — Digital Envelope Routines Unsupported</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Node.js error:0308010C — Digital Envelope Routines Unsupported</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
+            <p class="standalone-intro">The build crash 'Error: error:0308010C:digital envelope routines::unsupported' — Node 17+ (OpenSSL 3) rejects legacy hash usage in older webpack toolchains.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>error:0308010C:digital envelope routines::unsupported</code></li><li><code>ERR_OSSL_EVP_UNSUPPORTED</code></li><li><code>digital envelope routines unsupported</code></li><li><code>openssl-legacy-provider</code></li><li><code>node 17 webpack openssl error</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Node 17 switched to OpenSSL 3, which disables legacy crypto algorithms by default — including the MD4 hashing that webpack 4 used internally for module identifiers. Any toolchain built on webpack 4 (create-react-app's react-scripts 4, vue-cli 4, older Angular, countless custom configs) crashes with error:0308010C the moment it runs on Node 17+. Nothing is wrong with your application code; the build tool's internal hashing is what OpenSSL rejects. The real fix is upgrading the toolchain to webpack 5-based versions; the documented stopgap is enabling OpenSSL's legacy provider.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>webpack 4-era toolchain on Node 17+</strong> — react-scripts 4, vue-cli 4, webpack 4 configs — all hash with MD4 via Node's crypto, which OpenSSL 3 refuses by default.</li>
+                <li><strong>Node upgraded underneath a frozen project</strong> — CI images and dev machines move to current LTS; a project pinned to old build tooling starts failing without any code change.</li>
+                <li><strong>A dependency calling a legacy algorithm directly</strong> — Less common: application code or a library invoking crypto.createHash('md4') or other removed-by-default algorithms.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Upgrade the toolchain (real fix)</h3>
+            <p>Move to the webpack 5 generation of your framework tooling.</p>
+            <pre><code># create-react-app projects:
+npm install react-scripts@5
+# vue-cli:
+npm install @vue/cli-service@5
+# raw webpack:
+npm install webpack@5 webpack-cli@5
+npm run build</code></pre>
+            <h3>2. Stopgap: enable OpenSSL's legacy provider</h3>
+            <p>Unblocks the build today. It re-enables legacy algorithms inside this process only — treat it as technical debt with the upgrade scheduled.</p>
+            <pre><code>NODE_OPTIONS=--openssl-legacy-provider npm run build
+# or per-script:
+&quot;build&quot;: &quot;cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --mode production&quot;</code></pre>
+            <h3>3. Alternative stopgap: run the build on Node 16</h3>
+            <p>Node 16 predates OpenSSL 3 — but it is end-of-life (no security updates), so use only as a bridge in isolated CI, not as the resting state.</p>
+            <pre><code>nvm install 16
+nvm exec 16 npm run build</code></pre>
+            <h3>4. If your own code hashes with MD4</h3>
+            <p>Switch to a supported algorithm — MD4 is cryptographically broken anyway.</p>
+            <pre><code>// before: crypto.createHash('md4')
+const crypto = require('crypto');
+const h = crypto.createHash('sha256').update(data).digest('hex');</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Is --openssl-legacy-provider dangerous?</h3>
+            <p>It re-enables old algorithms for that Node process. For a build step hashing module names, the practical risk is negligible; the danger is normalizing it in servers doing real cryptography. Scope it to the build command, and schedule the toolchain upgrade that removes the need.</p>
+            <h3>Why exactly did OpenSSL 3 break MD4?</h3>
+            <p>OpenSSL 3 moved obsolete algorithms (MD4 among them — broken since the 1990s for cryptographic purposes) into a 'legacy provider' that is off by default. webpack 4 used MD4 not for security but as a fast content hash; harmless use, same locked door.</p>
+            <h3>I upgraded react-scripts and got a wall of new errors — expected?</h3>
+            <p>The 4→5 jump swaps webpack majors, so plugin and polyfill differences surface (webpack 5 stopped auto-polyfilling Node core modules for the browser). It is one afternoon of migration in most apps — resolve the polyfill errors with the fallbacks the messages suggest, and drop obsolete plugins.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/node/javascript-heap-out-of-memory">Heap Out of Memory</a> — the other big-build breaker.</li>
+                <li><a href="/errors/node/node-gyp-build-failed">node-gyp Build Failed</a> — native toolchain failures.</li>
+                <li><a href="/errors/node/unable-to-get-issuer-cert-locally">Unable to Get Issuer Cert</a> — other OpenSSL-adjacent failures.</li>
+            </ul>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Modern hash algorithms in the browser</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/hash-generator/" class="cta-btn-primary">Try Hash Generator</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

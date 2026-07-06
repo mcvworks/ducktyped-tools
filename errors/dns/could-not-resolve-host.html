@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does curl exit code 6 mean exactly?","acceptedAnswer":{"@type":"Answer","text":"Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: the hostname lookup failed before any connection was attempted. It never indicates a server-side problem — the request never left your machine."}},{"@type":"Question","name":"Why does git say 'Could not resolve host: github.com' when github.com loads in my browser?","acceptedAnswer":{"@type":"Answer","text":"The browser may be using DNS-over-HTTPS or a different network path (VPN split tunneling), while git uses the system resolver. Test with 'dig github.com' — if that fails, fix the system DNS; if it works, check for a proxy requirement or an /etc/hosts override."}},{"@type":"Question","name":"Why does it fail only sometimes?","acceptedAnswer":{"@type":"Answer","text":"Intermittent failures point to an unreliable resolver (packet loss on UDP port 53, an overloaded router DNS, or a flaky VPN). Switching to a public resolver like 1.1.1.1 or 8.8.8.8 usually stabilizes it."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"Could not resolve host — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Could not resolve host — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Fix 'curl: (6) Could not resolve host' and git's 'Could not resolve host: github.com'. Covers typos, proxies, DNS config, and flushing caches.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="curl: (6) Could not resolve host, Could not resolve host: github.com, wget: unable to resolve host address, git could not resolve host, curl error 6, CURLE_COULDNT_RESOLVE_HOST">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Could not resolve host — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 'curl: (6) Could not resolve host' and git's 'Could not resolve host: github.com'. Covers typos, proxies, DNS config, and flushing caches.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/dns/could-not-resolve-host">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/dns/could-not-resolve-host">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshooting</a> <span>/</span> <a href="/errors/#dns">DNS</a> <span>/</span> <span>Could not resolve host</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>Could not resolve host</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
+            <p class="standalone-intro">The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>curl: (6) Could not resolve host</code></li><li><code>Could not resolve host: github.com</code></li><li><code>wget: unable to resolve host address</code></li><li><code>git could not resolve host</code></li><li><code>curl error 6</code></li><li><code>CURLE_COULDNT_RESOLVE_HOST</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>Command-line tools like curl, git, and wget resolve the hostname in a URL before connecting. When that resolution fails, curl exits with code 6 and this message; git prints the same text when fetching or pushing. The cause is either the name itself (typo, deleted domain, internal-only name) or the machine's resolver setup (no DNS configured, VPN required, proxy required). Because the failure happens before any TCP connection, server-side problems can be ruled out immediately.</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Typo in the URL or git remote</strong> — A misspelled hostname is the single most common cause — for git, the remote URL was saved once with a typo and fails on every operation afterwards.</li>
+                <li><strong>The machine's DNS is not working</strong> — If every hostname fails (try a second domain), the machine's resolver configuration is broken — not the specific site.</li>
+                <li><strong>The name is internal and needs VPN or a proxy</strong> — Corporate GitLab, private registries, and intranet hosts only resolve through the company VPN or an HTTP proxy. Off VPN, resolution fails with this exact error.</li>
+                <li><strong>Stale negative DNS cache</strong> — If the domain was queried while its DNS was broken, a local cache (systemd-resolved, macOS mDNSResponder, or a browser) may keep serving the failure after the domain recovered.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>1. Confirm the exact spelling, then test resolution</h3>
+            <p>Check what name is actually being resolved, then look it up directly. For git, print the remote URL — the typo is usually visible.</p>
+            <pre><code>git remote -v
+dig +short github.com
+curl -v https://github.com 2&gt;&amp;1 | head -5</code></pre>
+            <h3>2. Test whether all DNS is down or just this name</h3>
+            <p>If a known-good domain also fails, fix the system resolver rather than chasing the specific hostname.</p>
+            <pre><code>dig example.com
+dig @1.1.1.1 example.com   # works -&gt; your resolver is the problem
+cat /etc/resolv.conf</code></pre>
+            <h3>3. Set proxy variables if your network requires one</h3>
+            <p>Behind a corporate proxy, curl and git need the proxy address — with it set, the proxy does the DNS resolution instead of your machine.</p>
+            <pre><code>export https_proxy=http://proxy.company.com:8080
+export http_proxy=http://proxy.company.com:8080
+# git-specific alternative:
+git config --global http.proxy http://proxy.company.com:8080</code></pre>
+            <h3>4. Flush the local DNS cache</h3>
+            <p>After a domain's DNS was fixed, clear cached negative answers.</p>
+            <pre><code># Linux (systemd-resolved):
+sudo resolvectl flush-caches
+# macOS:
+sudo dscacheutil -flushcache &amp;&amp; sudo killall -HUP mDNSResponder
+# Windows:
+ipconfig /flushdns</code></pre>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>What does curl exit code 6 mean exactly?</h3>
+            <p>Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: the hostname lookup failed before any connection was attempted. It never indicates a server-side problem — the request never left your machine.</p>
+            <h3>Why does git say 'Could not resolve host: github.com' when github.com loads in my browser?</h3>
+            <p>The browser may be using DNS-over-HTTPS or a different network path (VPN split tunneling), while git uses the system resolver. Test with 'dig github.com' — if that fails, fix the system DNS; if it works, check for a proxy requirement or an /etc/hosts override.</p>
+            <h3>Why does it fail only sometimes?</h3>
+            <p>Intermittent failures point to an unreliable resolver (packet loss on UDP port 53, an overloaded router DNS, or a flaky VPN). Switching to a public resolver like 1.1.1.1 or 8.8.8.8 usually stabilizes it.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/dns/getaddrinfo-enotfound">getaddrinfo ENOTFOUND</a> — the same failure in Node.js.</li>
+                <li><a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a> — the Linux system-level variant.</li>
+                <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — what the DNS server answers for nonexistent names.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Lookup</span>
+                    <span class="recommended-tool-desc">Check the hostname from an independent resolver</span>
+                </a>
+        <a href="/whois-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">WHOIS Lookup</span>
+                    <span class="recommended-tool-desc">Confirm the domain exists and has not expired</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/dns-lookup/" class="cta-btn-primary">Try DNS Lookup</a>
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

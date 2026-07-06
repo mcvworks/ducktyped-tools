@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does 401 Unauthorized mean?","acceptedAnswer":{"@type":"Answer","text":"A 401 Unauthorized response means the request requires authentication credentials that were not provided, or the provided credentials are invalid. The server is asking the client to authenticate before access is granted."}},{"@type":"Question","name":"What is the difference between 401 and 403?","acceptedAnswer":{"@type":"Answer","text":"A 401 Unauthorized means the server doesn't know who you are — authentication is required or has failed. A 403 Forbidden means the server knows who you are but you don't have permission to access the resource."}},{"@type":"Question","name":"How do I fix a 401 Unauthorized error?","acceptedAnswer":{"@type":"Answer","text":"Check that you are logged in with the correct credentials. If using an API, verify your API key or token is correct, not expired, and included in the proper header. Clear cookies and try logging in again if your session has expired."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"HTTP","item":"https://ducktyped.xyz/errors/#http"},{"@type":"ListItem","position":3,"name":"401 Unauthorized — Causes & Fixes"}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>401 Unauthorized — Causes &amp; Fixes — duckTyped</title>
+    <meta name="description" content="Learn what a 401 Unauthorized error means and how to fix it. Covers login failures, expired tokens, API authentication, and session management.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="HTTP 401, 401 Unauthorized, Error 401, 401 error, Authentication required, WWW-Authenticate, 401 vs 403, Unauthorized access">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="401 Unauthorized — Causes &amp; Fixes">
+    <meta property="og:description" content="Fix 401 Unauthorized errors by troubleshooting authentication credentials, API tokens, and session issues.">
+    <meta property="og:url" content="https://ducktyped.xyz/errors/http/401-unauthorized">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/errors/http/401-unauthorized">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>
+    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/" class="active">Troubleshoot</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb">
+            <a href="/errors/">Troubleshoot</a> <span>/</span> <a href="/errors/#http">HTTP</a> <span>/</span> <span>401 Unauthorized</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>401 Unauthorized</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
+            <p class="standalone-intro">A 401 error means the server requires authentication and the request did not include valid credentials. You must log in or provide a valid token to access the resource.</p>
+            <div class="error-aliases">
+                <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
+                <ul class="error-aliases-list"><li><code>HTTP 401</code></li><li><code>401 Unauthorized</code></li><li><code>Error 401</code></li><li><code>401 error</code></li><li><code>Authentication required</code></li><li><code>WWW-Authenticate</code></li><li><code>401 vs 403</code></li><li><code>Unauthorized access</code></li></ul>
+            </div>
+
+            <h2>What Does This Error Mean?</h2>
+            <p>HTTP 401 signals that the request lacks valid authentication credentials. Despite the name "Unauthorized," it is really an <em>unauthenticated</em> error — the server does not know who you are. When responding with 401, the server typically includes a <code>WWW-Authenticate</code> header indicating the authentication method required (e.g., Bearer, Basic).</p>
+
+            <h2>Common Causes</h2>
+            <ul>
+                <li><strong>Not logged in</strong> — accessing a protected resource without a session or token.</li>
+                <li><strong>Session expired</strong> — your login session or JWT token has timed out.</li>
+                <li><strong>Wrong credentials</strong> — incorrect username, password, or API key.</li>
+                <li><strong>Expired API token</strong> — OAuth access tokens expire and need to be refreshed.</li>
+                <li><strong>Missing Authorization header</strong> — API request sent without the required <code>Authorization: Bearer &lt;token&gt;</code> header.</li>
+                <li><strong>Revoked credentials</strong> — API key or token has been revoked or rotated.</li>
+                <li><strong>Incorrect authentication scheme</strong> — using Basic auth where Bearer is expected, or vice versa.</li>
+            </ul>
+
+            <h2>How to Fix It</h2>
+
+            <h3>For Web Users</h3>
+
+            <h4>1. Log In Again</h4>
+            <p>Your session may have expired. Return to the login page and sign in with your credentials.</p>
+
+            <h4>2. Clear Cookies and Cache</h4>
+            <p>Corrupt session cookies can prevent authentication from working correctly. Clear cookies for the site and log in again.</p>
+
+            <h4>3. Check for Password Changes</h4>
+            <p>If a password was recently changed, all existing sessions are typically invalidated. Log in with the new credentials.</p>
+
+            <h3>For Developers and API Consumers</h3>
+
+            <h4>4. Include the Authorization Header</h4>
+            <p>For Bearer token authentication:</p>
+            <pre><code>Authorization: Bearer your_access_token_here</code></pre>
+            <p>For Basic authentication:</p>
+            <pre><code>Authorization: Basic base64(username:password)</code></pre>
+
+            <h4>5. Refresh Expired Tokens</h4>
+            <p>OAuth 2.0 access tokens expire. Implement token refresh logic using your refresh token before the access token expires.</p>
+
+            <h4>6. Verify Your API Key</h4>
+            <p>Confirm the API key is correct, has not been revoked, and has the required permissions for the endpoint.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>Why is it called "Unauthorized" if it is about authentication?</h3>
+            <p>This is a historical naming quirk in the HTTP specification. The spec authors originally used "Unauthorized" to mean "unauthenticated" — you have not proven your identity. The term "authorization" is used loosely in HTTP 401 to mean "prove who you are." HTTP 403 is the true authorization error.</p>
+
+            <h3>Can 401 be caused by a server misconfiguration?</h3>
+            <p>Yes. A reverse proxy like nginx may be configured to require HTTP Basic auth for a route, and if credentials are not passed through, all requests return 401 — even for users who are authenticated at the application level.</p>
+
+            <h3>Should APIs return 401 or 403 for expired tokens?</h3>
+            <p>401 is the correct code for expired or missing tokens, since the authentication itself has failed. 403 should be returned when the token is valid but the user lacks permission to perform the action.</p>
+
+            <h2>Related Errors</h2>
+            <ul>
+                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — authenticated but not authorized.</li>
+                <li><a href="/errors/http/429-too-many-requests">429 Too Many Requests</a> — rate limit exceeded for API calls.</li>
+                <li><a href="/errors/http/400-bad-request">400 Bad Request</a> — malformed request, possibly malformed auth header.</li>
+            </ul>
+                    <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/http-status-codes/">HTTP status codes explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+        </article>
+
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Recommended Tools</div>
+            <div class="recommended-tools-grid">
+        <a href="/http-latency/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">HTTP Latency</span>
+                    <span class="recommended-tool-desc">Test server response times and availability</span>
+                </a>
+        <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers</span>
+                    <span class="recommended-tool-desc">Inspect a site’s HTTP security headers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="learn-cta">
+            <a href="/errors/" class="learn-more-link">Browse all errors</a>
+        </div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>
