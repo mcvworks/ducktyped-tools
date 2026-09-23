@@ -5,7 +5,9 @@ Thanks for your interest! DuckTyped is a collection of fast, privacy-first devel
 ## Project ethos (please keep to these)
 
 - **Client-side where possible.** If a tool can run entirely in the browser, it should. User data should not leave the device unless the tool fundamentally requires a server (DNS, SSL, WHOIS, ping, email diagnostics).
-- **No trackers, no analytics, no ads.** Ever.
+- **No profiling, advertising, or new analytics integrations.** The hosted site
+  already uses cookieless Cloudflare Web Analytics and anonymous usage counters,
+  as disclosed in the [privacy policy](https://ducktyped.xyz/privacy/).
 - **No heavy dependencies.** Vanilla HTML + JavaScript, no build step, no framework. Keep pages fast.
 - **One crawlable URL per tool.**
 

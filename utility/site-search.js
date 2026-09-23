@@ -207,8 +207,10 @@
                 '</div>';
             dropdown.hidden = false;
             input.setAttribute('aria-expanded', 'true');
+            reportSearchMiss(query);
             return;
         }
+        clearTimeout(missTimer);
 
         var groups = groupResults(scored);
         var html = '';
@@ -254,6 +256,21 @@
                 if (typeof dtBeacon === 'function') dtBeacon('search', '', query);
             });
         }
+    }
+
+    // A search that finds nothing is the most useful thing a visitor can tell
+    // us: it is a tool or guide we do not have. Report it only once typing has
+    // settled, so half-typed words are not counted, and once per page.
+    var missTimer = null;
+    var reportedMisses = {};
+    function reportSearchMiss(query) {
+        clearTimeout(missTimer);
+        var settled = (query || '').toLowerCase().trim();
+        if (settled.length < 3 || reportedMisses[settled]) return;
+        missTimer = setTimeout(function () {
+            reportedMisses[settled] = true;
+            if (typeof dtBeacon === 'function') dtBeacon('search_miss', '', settled);
+        }, 2000);
     }
 
     function hideDropdown() {

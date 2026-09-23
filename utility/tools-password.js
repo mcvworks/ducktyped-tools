@@ -290,9 +290,10 @@ async function encryptNote() {
         const messageId = generateId();
         
         // Create link to separate note viewer page
-        const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
+        // The viewer lives only at /utility/note.html. Building the link from
+        // the current path 404'd for notes created on the /secure-note/ page.
         const pwdParam = requirePassword ? '1' : '0';
-        const shareLink = `${baseUrl}note.html?pwd=${pwdParam}#${encryptedBase64}`;
+        const shareLink = `${window.location.origin}/utility/note.html?pwd=${pwdParam}#${encryptedBase64}`;
         
         document.getElementById('encryptedLink').textContent = shareLink;
         document.getElementById('encryptOutput').classList.add('show');
@@ -472,7 +473,20 @@ async function checkPasswordBreach() {
     resultsDiv.innerHTML = '<div class="success">🔓 Checking password against breach databases...</div>';
 
     try {
-        const data = await callWorker('breachcheck', { password });
+        // k-anonymity, done here so the password never leaves the browser:
+        // only the first 5 hex chars of its SHA-1 are sent, and the returned
+        // range of suffixes is matched locally.
+        const digest = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(password));
+        const sha1 = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+        const { range } = await callWorker('breachcheck', { prefix: sha1.slice(0, 5) });
+        const match = range.find(line => line.startsWith(sha1.slice(5)));
+        const count = match ? parseInt(match.split(':')[1], 10) : 0;
+        const data = {
+            breached: count > 0,
+            message: count > 0
+                ? `This password has appeared in ${count.toLocaleString()} data breaches.`
+                : 'This password was not found in any known data breaches.',
+        };
 
         let html = '<div class="dns-results">';
 

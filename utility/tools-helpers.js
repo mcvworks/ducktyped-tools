@@ -315,3 +315,104 @@ if (document.getElementById('notesTextarea')) {
         }, 2000);
     });
 }
+
+// ============================================
+// DONATION PROMPT (server-backed tools only)
+// ============================================
+// One quiet line under the results of a tool that ran a real check on our
+// server. Rules: never delays or gates output, at most once per session,
+// dismissible for good, a plain link with no script or pixel behind it.
+const DONATION_URL = 'https://ko-fi.com/ducktyped';
+const DONATION_RESULTS = {
+    dns: ['dnsResults', 'smtpResults'],
+    whois: ['whoisResults'],
+    ssl: ['sslResults'],
+    port: ['portResults', 'smtpResults'],
+    traceroute: ['tracerouteResults'],
+    blacklist: ['blacklistResults'],
+    isp: ['ispResults', 'whoisResults'],
+    'http-latency': ['pingResults']
+};
+
+// API tool names do not map 1:1 to result panels (WHOIS also calls 'isp', the
+// SMTP checker calls 'port'), so the prompt follows the card the visitor used.
+const RESULTS_SETTLE_MS = 700;
+const RESULTS_GIVE_UP_MS = 30000;
+let promptPending = false;
+let lastUsedToolCard = null;
+document.addEventListener('click', event => {
+    const card = event.target.closest && event.target.closest('.tool-card');
+    if (card) lastUsedToolCard = card;
+}, true);
+
+function donationPromptAllowed() {
+    try {
+        return !localStorage.getItem('dt_donation_dismissed') && !sessionStorage.getItem('dt_donation_shown');
+    } catch (e) {
+        return false;
+    }
+}
+
+function getDonationResults(tool) {
+    const ids = DONATION_RESULTS[tool];
+    if (!ids || !donationPromptAllowed()) return null;
+    const focusedCard = document.activeElement && document.activeElement.closest('.tool-card');
+    const card = focusedCard || lastUsedToolCard;
+    if (!card) return null;
+    for (const id of ids) {
+        const results = card.querySelector('#' + id);
+        if (results) return results;
+    }
+    return null;
+}
+
+/** Called by callWorker after a fresh (non-cached) successful server lookup. */
+function showDonationPrompt(tool, results) {
+    if (!results || !DONATION_RESULTS[tool] || !DONATION_RESULTS[tool].includes(results.id)
+        || !donationPromptAllowed() || promptPending) return;
+    promptPending = true;
+
+    // Tools render at different moments: some wait for several lookups to
+    // finish, some stream rows in. Act once the panel has been quiet for a
+    // moment, and give up after a while so nothing lingers.
+    let settleTimer = null;
+    const observer = new MutationObserver(() => { clearTimeout(settleTimer); settleTimer = setTimeout(place, RESULTS_SETTLE_MS); });
+    const stop = () => { observer.disconnect(); clearTimeout(settleTimer); clearTimeout(giveUpTimer); promptPending = false; };
+    const giveUpTimer = setTimeout(stop, RESULTS_GIVE_UP_MS);
+    observer.observe(results, { childList: true, subtree: true, characterData: true });
+    // Wait for the caller to render this response, rather than inspecting
+    // a previous result or loading message already in the panel.
+
+    function place() {
+        // Still empty, or still a "Checking..." placeholder: keep watching.
+        const text = results.textContent.trim();
+        if (!text || /(\.\.\.|\u2026)$/.test(text)) return;
+        const progress = results.querySelector('.success');
+        if (progress && /(?:Checking|Scanning|Resolving).*?(?:\.\.\.|\u2026)/i.test(progress.textContent)) return;
+        stop();
+        if (!results.isConnected || results.querySelector('.error') || !donationPromptAllowed()) return;
+
+        const prompt = document.createElement('p');
+        prompt.className = 'donation-prompt';
+        prompt.append('These tools run real checks on a live server \u2014 DNS queries, SSL handshakes, port scans. ');
+        const link = document.createElement('a');
+        link.href = DONATION_URL;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'Chip in for the API bill';
+        prompt.append(link, ' to help keep them free and ad-free. ');
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'donation-prompt-dismiss';
+        dismiss.setAttribute('aria-label', 'Hide this message for good');
+        dismiss.textContent = '\u00d7';
+        dismiss.addEventListener('click', () => {
+            try { localStorage.setItem('dt_donation_dismissed', '1'); } catch (e) { /* storage unavailable */ }
+            prompt.remove();
+        });
+        prompt.append(dismiss);
+
+        results.insertAdjacentElement('afterend', prompt);
+        try { sessionStorage.setItem('dt_donation_shown', '1'); } catch (e) { /* storage unavailable */ }
+    }
+}

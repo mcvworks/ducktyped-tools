@@ -61,6 +61,17 @@ const CACHE_DURATIONS = {
     robots: 3600000      // 1 hour (robots.txt can change)
 };
 
+// Breach checks used to be cached under a key containing the plaintext
+// password. Requests now carry only a hash prefix; this removes whatever
+// earlier visits left behind.
+(function purgeLegacyBreachCheckCache() {
+    try {
+        Object.keys(localStorage)
+            .filter(key => key.startsWith('cache_breachcheck_') && key.includes('"password"'))
+            .forEach(key => localStorage.removeItem(key));
+    } catch (e) { /* storage unavailable */ }
+})();
+
 function getCacheKey(tool, params) {
     // Create unique cache key from tool + params
     const paramStr = JSON.stringify(params);
@@ -504,6 +515,12 @@ window.addEventListener('DOMContentLoaded', async function() {
 // HELPER FUNCTION: CALL WORKER
 // ============================================
 async function callWorker(tool, data) {
+    // Capture the initiating result panel before awaiting the request. The
+    // visitor can switch tools while a lookup is still running.
+    let donationResults = null;
+    try {
+        if (typeof getDonationResults === 'function') donationResults = getDonationResults(tool);
+    } catch (e) { /* optional UI must never interfere with a lookup */ }
     if (!WORKER_URL) {
         throw new Error('Worker URL not configured. Please check configuration.');
     }
@@ -562,6 +579,9 @@ async function callWorker(tool, data) {
 
     // Cache the successful response
     setCache(tool, data, result.data);
+    try {
+        if (typeof showDonationPrompt === 'function') showDonationPrompt(tool, donationResults);
+    } catch (e) { /* optional UI must never interfere with a lookup */ }
 
     return result.data;
 }

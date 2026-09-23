@@ -1,12 +1,12 @@
 # DuckTyped — Free, Privacy-First Developer Tools
 
-**[ducktyped.xyz](https://ducktyped.xyz)** · 50+ web-based utilities for developers and IT pros. No sign-up, no tracking, no ads.
+**[ducktyped.xyz](https://ducktyped.xyz)** · 55+ web-based utilities for developers and IT pros. No sign-up, no cookies, no ads.
 
-![License: MIT](https://img.shields.io/badge/license-MIT-blue) ![Privacy](https://img.shields.io/badge/tracking-none-brightgreen) ![No sign-up](https://img.shields.io/badge/sign--up-not%20required-brightgreen) ![Static](https://img.shields.io/badge/stack-static%20HTML%2FJS-orange)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue) ![No cookies](https://img.shields.io/badge/cookies-none-brightgreen) ![No sign-up](https://img.shields.io/badge/sign--up-not%20required-brightgreen) ![Static](https://img.shields.io/badge/stack-static%20HTML%2FJS-orange)
 
-DuckTyped is a collection of fast, no-nonsense developer utilities. Most run entirely **client-side in your browser** — your data never leaves your device. There are no analytics scripts, no cookies, and no accounts. This repository is the frontend, published openly so anyone can verify that claim.
+DuckTyped is a collection of fast, no-nonsense developer utilities. Most process your input entirely **in your browser**. Network tools send the lookup to DuckTyped's API. The hosted site uses cookieless Cloudflare Web Analytics and anonymous usage counters, including site-search terms. It has no accounts, cookies, or ads. See the [privacy policy](https://ducktyped.xyz/privacy/) for logging, caching, third-party services, and retention details.
 
-> **Why open source?** Our whole pitch is "no tracking." Open source lets you check the code and confirm it — and self-host it if you'd rather.
+> **Why open source?** You can inspect how the frontend handles your input and self-host it. Hosting features such as Cloudflare's injected analytics script are configured outside this repository and documented in the privacy policy.
 
 ## Tools
 
@@ -29,7 +29,7 @@ There are also **[Learn](https://ducktyped.xyz/learn/)** guides explaining the c
 Deliberately minimal — the whole point is fast, dependency-light pages:
 
 - Static **HTML + vanilla JavaScript**, no build step, no framework
-- No analytics, no trackers, no third-party scripts
+- Self-hosted fonts and scripts; the hosted site also uses Cloudflare Web Analytics
 - One crawlable URL per tool
 - Hosted on Cloudflare Pages
 
@@ -46,6 +46,11 @@ python3 -m http.server 8080
 Or use `npx serve`, `caddy file-server`, nginx, etc.
 
 **Note on network tools:** The many client-side tools — encoders, formatters, hashing, regex, JWT, QR, diffing, and more — run fully standalone with no backend. The **network/lookup tools** (DNS, SSL, WHOIS, ping, port scan, email diagnostics) call the hosted DuckTyped API for the server-side work, which is not part of this repository. Those tools will show connection errors when self-hosted without your own backend.
+
+## Support
+
+Optional donations through [Ko-fi](https://ko-fi.com/ducktyped) help pay for the
+API server. Tools remain free; no donation is required.
 
 ## Contributing
 

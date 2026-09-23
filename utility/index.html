@@ -99,9 +99,8 @@
     <link rel="apple-touch-icon" href="/dtlogo_lg.svg">
     
     <link rel="preload" href="styles.css?v=20260308" as="style">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="stylesheet" href="styles.css?v=20260308">
     <!-- AdSense: uncomment and replace ca-pub-XXXXXXXXXX with your publisher ID when ready
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
@@ -123,6 +122,7 @@
                 <li><a href="/utility/" class="active">Utility</a></li>
                 <li><a href="/learn/">Learn</a></li>
                 <li><a href="/errors/">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
             </ul>
             <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
                 <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
@@ -1630,7 +1630,7 @@
                 <h3>Site Info & FAQ</h3>
             </div>
             <div class="site-info-content" id="siteInfoContent">
-                <p><strong>🔒 Privacy & Security:</strong> All tools run entirely in your browser. No data is sent to external servers—your information never leaves your device.</p>
+                <p><strong>🔒 Privacy & Security:</strong> Most tools run entirely in your browser and send nothing anywhere. Network tools (DNS, WHOIS, SSL, port scan and similar) are run by our server, so it sees what you look up. No accounts, no cookies, no ad or analytics trackers. <a href="/privacy/">Full details</a>.</p>
                 
                 <p><strong>💾 Settings Storage:</strong> Your preferences (tool visibility, theme, layout) are saved locally in your browser using localStorage. These settings persist across visits.</p>
                 
@@ -1810,6 +1810,8 @@
                         <li><a href="/learn/">Learn</a></li>
                         <li><a href="/errors/">Troubleshoot</a></li>
                         <li><a href="/feedback/">Suggest &amp; Feedback</a></li>
+                        <li><a href="/privacy/">Privacy</a></li>
+                        <li><a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></li>
                     </ul>
                     <h3 style="margin-top: 24px;">Keyboard Shortcuts</h3>
                     <ul class="footer-shortcuts">
@@ -1842,7 +1844,7 @@
                 <div class="footer-section">
                     <div class="footer-contact-card">
                         <h3>Get in Touch</h3>
-                        <p style="font-size: 0.85em; color: var(--text-secondary); margin-bottom: 16px;">Request a tool, report a bug, or just say hello.</p>
+                        <p style="font-size: 0.85em; margin-bottom: 16px;">Request a tool, report a bug, or just say hello.</p>
                         <form id="contactForm" class="footer-contact-form">
                             <!-- Honeypot field - hidden from humans, visible to bots -->
                             <input

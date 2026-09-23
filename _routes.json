@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "include": [
+    "/api/*",
+    "/blacklist-checker/*",
+    "/color-converter/*",
+    "/cron-parser/*",
+    "/dns-lookup/*",
+    "/dns-propagation/*",
+    "/email-validator/*",
+    "/http-latency/*",
+    "/isp-lookup/*",
+    "/link-checker/*",
+    "/mac-lookup/*",
+    "/port-scanner/*",
+    "/qr-generator/*",
+    "/redirect-checker/*",
+    "/reverse-dns/*",
+    "/security-headers/*",
+    "/smtp-checker/*",
+    "/ssl-checker/*",
+    "/subnet-calculator/*",
+    "/traceroute/*",
+    "/url-parser/*",
+    "/whois-lookup/*"
+  ],
+  "exclude": []
+}

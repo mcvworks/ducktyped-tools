@@ -19,9 +19,8 @@
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <link rel="canonical" href="https://ducktyped.xyz/errors/http/510-not-extended">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
 </head>
@@ -37,6 +36,7 @@
                 <li><a href="/utility/">Utility</a></li>
                 <li><a href="/learn/">Learn</a></li>
                 <li><a href="/errors/" class="active">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
             </ul>
             <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
                 <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
@@ -120,7 +120,7 @@
     </div>
 
     <footer class="standalone-page-footer">
-        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
     </footer>
 
     <script defer src="/utility/core.js"></script>

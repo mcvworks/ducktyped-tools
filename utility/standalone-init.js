@@ -156,8 +156,9 @@ if (typeof initializeEncryptedNotes === 'undefined') { window.initializeEncrypte
             var t = data[i].type;
             if (t === 'tool') {
                 var slug = (data[i].url || '').replace(/^\/|\/$/g, '');
-                // /feedback/ is tagged 'tool' so it appears in site search, but it is a page, not a counted tool
-                if (slug !== 'feedback') stats.tools++;
+                // /feedback/ and /badges/ are tagged 'tool' so they rank in site search, but they are
+                // pages, not counted tools. Keep in sync with NON_TOOL_URLS in scripts/add-related-links.js.
+                if (slug !== 'feedback' && slug !== 'badges') stats.tools++;
                 var cats = toolCategories[slug];
                 if (cats) {
                     for (var c = 0; c < cats.length; c++) {

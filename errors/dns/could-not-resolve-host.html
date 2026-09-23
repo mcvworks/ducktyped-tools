@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does curl exit code 6 mean exactly?","acceptedAnswer":{"@type":"Answer","text":"Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: the hostname lookup failed before any connection was attempted. It never indicates a server-side problem — the request never left your machine."}},{"@type":"Question","name":"Why does git say 'Could not resolve host: github.com' when github.com loads in my browser?","acceptedAnswer":{"@type":"Answer","text":"The browser may be using DNS-over-HTTPS or a different network path (VPN split tunneling), while git uses the system resolver. Test with 'dig github.com' — if that fails, fix the system DNS; if it works, check for a proxy requirement or an /etc/hosts override."}},{"@type":"Question","name":"Why does it fail only sometimes?","acceptedAnswer":{"@type":"Answer","text":"Intermittent failures point to an unreliable resolver (packet loss on UDP port 53, an overloaded router DNS, or a flaky VPN). Switching to a public resolver like 1.1.1.1 or 8.8.8.8 usually stabilizes it."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does curl exit code 6 mean exactly?","acceptedAnswer":{"@type":"Answer","text":"Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: curl could not resolve the remote hostname. It has not reached the target web application, but DNS traffic may already have left the machine. The cause may be local configuration, the network, or the domain’s DNS."}},{"@type":"Question","name":"Why does git say 'Could not resolve host: github.com' when github.com loads in my browser?","acceptedAnswer":{"@type":"Answer","text":"The browser can use a different resolver or proxy path from Git. Compare the hostname in git remote -v with the browser URL, then test resolution from the same terminal, container, or VPN context where Git fails. Browser access alone does not prove that Git’s network path works."}},{"@type":"Question","name":"Why does it fail only sometimes?","acceptedAnswer":{"@type":"Answer","text":"Intermittent failures can come from a resolver, network connectivity, caching, or a VPN. Compare results across resolvers and times before changing settings. Keep internal company hostnames on the company’s DNS; public resolvers cannot resolve private zones."}},{"@type":"Question","name":"How is curl error 6 different from errors 5 and 7?","acceptedAnswer":{"@type":"Answer","text":"Error 5 means the proxy hostname could not be resolved. Error 6 concerns the target hostname. Error 7 means curl could not connect to the host or proxy after reaching the connection stage. Diagnose the stage named by the error instead of changing unrelated credentials or TLS settings."}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"Could not resolve host — Causes & Fixes"}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Could not resolve host — Causes &amp; Fixes — duckTyped</title>
-    <meta name="description" content="Fix 'curl: (6) Could not resolve host' and git's 'Could not resolve host: github.com'. Covers typos, proxies, DNS config, and flushing caches.">
+    <title>curl: (6) Could Not Resolve Host — DNS &amp; Git Fixes — duckTyped</title>
+    <meta name="description" content="Fix curl error 6 and Git’s could not resolve host error. Check URL quoting, compare DNS results, and diagnose VPN, proxy, or container-only failures.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="curl: (6) Could not resolve host, Could not resolve host: github.com, wget: unable to resolve host address, git could not resolve host, curl error 6, CURLE_COULDNT_RESOLVE_HOST">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Could not resolve host — Causes &amp; Fixes">
-    <meta property="og:description" content="Fix 'curl: (6) Could not resolve host' and git's 'Could not resolve host: github.com'. Covers typos, proxies, DNS config, and flushing caches.">
+    <meta property="og:title" content="curl: (6) Could Not Resolve Host — DNS &amp; Git Fixes">
+    <meta property="og:description" content="Fix curl error 6 and Git’s could not resolve host error. Check URL quoting, compare DNS results, and diagnose VPN, proxy, or container-only failures.">
     <meta property="og:url" content="https://ducktyped.xyz/errors/dns/could-not-resolve-host">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <link rel="canonical" href="https://ducktyped.xyz/errors/dns/could-not-resolve-host">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
 </head>
@@ -36,6 +35,7 @@
                 <li><a href="/utility/">Utility</a></li>
                 <li><a href="/learn/">Learn</a></li>
                 <li><a href="/errors/" class="active">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
             </ul>
             <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
                 <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
@@ -56,67 +56,77 @@
 
         <article class="learn-article">
             <h1>Could not resolve host</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
-            <p class="standalone-intro">The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.</p>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-23">September 23, 2026</time></p>
+            <p class="standalone-intro">curl error 6 means it could not resolve the target hostname. Start with the exact name in the error, then compare the same lookup from your machine and network.</p>
             <div class="error-aliases">
                 <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
                 <ul class="error-aliases-list"><li><code>curl: (6) Could not resolve host</code></li><li><code>Could not resolve host: github.com</code></li><li><code>wget: unable to resolve host address</code></li><li><code>git could not resolve host</code></li><li><code>curl error 6</code></li><li><code>CURLE_COULDNT_RESOLVE_HOST</code></li></ul>
             </div>
 
             <h2>What Does This Error Mean?</h2>
-            <p>Command-line tools like curl, git, and wget resolve the hostname in a URL before connecting. When that resolution fails, curl exits with code 6 and this message; git prints the same text when fetching or pushing. The cause is either the name itself (typo, deleted domain, internal-only name) or the machine's resolver setup (no DNS configured, VPN required, proxy required). Because the failure happens before any TCP connection, server-side problems can be ruled out immediately.</p>
+            <p>Command-line tools like curl, git, and wget resolve the hostname in a URL before connecting. When that resolution fails, curl exits with code 6 and this message; git prints the same text when fetching or pushing. The cause is either the name itself (typo, deleted domain, internal-only name) or the machine's resolver setup (no DNS configured, VPN required, proxy required). The web request has not reached the target application, but the domain’s authoritative DNS can still be the cause. DNS queries may already have crossed the network; this error does not prove that all network traffic stayed on your machine.</p>
 
             <h2>Common Causes</h2>
             <ul>
-                <li><strong>Typo in the URL or git remote</strong> — A misspelled hostname is the single most common cause — for git, the remote URL was saved once with a typo and fails on every operation afterwards.</li>
-                <li><strong>The machine's DNS is not working</strong> — If every hostname fails (try a second domain), the machine's resolver configuration is broken — not the specific site.</li>
+                <li><strong>Typo in the URL or git remote</strong> — A misspelled hostname or wrongly quoted command can make curl try to resolve the wrong name. For Git, inspect the saved remote URL before changing DNS settings.</li>
+                <li><strong>The machine's DNS is not working</strong> — If several public hostnames fail, compare resolver results and check the local network or VPN. One failure alone does not identify which DNS server is at fault.</li>
                 <li><strong>The name is internal and needs VPN or a proxy</strong> — Corporate GitLab, private registries, and intranet hosts only resolve through the company VPN or an HTTP proxy. Off VPN, resolution fails with this exact error.</li>
                 <li><strong>Stale negative DNS cache</strong> — If the domain was queried while its DNS was broken, a local cache (systemd-resolved, macOS mDNSResponder, or a browser) may keep serving the failure after the domain recovered.</li>
             </ul>
 
             <h2>How to Fix It</h2>
 
-            <h3>1. Confirm the exact spelling, then test resolution</h3>
-            <p>Check what name is actually being resolved, then look it up directly. For git, print the remote URL — the typo is usually visible.</p>
-            <pre><code>git remote -v
-dig +short github.com
-curl -v https://github.com 2&gt;&amp;1 | head -5</code></pre>
-            <h3>2. Test whether all DNS is down or just this name</h3>
-            <p>If a known-good domain also fails, fix the system resolver rather than chasing the specific hostname.</p>
-            <pre><code>dig example.com
-dig @1.1.1.1 example.com   # works -&gt; your resolver is the problem
+            <h3>1. Check the hostname and quote the URL</h3>
+            <p>Read the hostname printed after “Could not resolve host.” If it is a stray word from a command, check argument spacing and quoting first. Quote the entire URL so shell characters such as &amp; are not interpreted as commands. curl’s verbose output helps identify the request, but may contain private URLs or headers; redact it before sharing.</p>
+            <pre><code>curl -v --connect-timeout 10 &quot;https://example.com/&quot;
+# For Git, inspect the stored hostname:
+git remote -v</code></pre>
+            <h3>2. Compare local and public DNS results</h3>
+            <p>Test a public hostname through your default resolver and an independent one. Different results narrow the investigation to DNS configuration, filtering, or caching; they do not prove which component is broken. For internal company names, use the required VPN and company DNS. A public resolver is not a replacement for private DNS.</p>
+            <pre><code>nslookup example.com
+nslookup example.com 1.1.1.1
+# On Linux, inspect resolver configuration:
 cat /etc/resolv.conf</code></pre>
-            <h3>3. Set proxy variables if your network requires one</h3>
-            <p>Behind a corporate proxy, curl and git need the proxy address — with it set, the proxy does the DNS resolution instead of your machine.</p>
-            <pre><code>export https_proxy=http://proxy.company.com:8080
-export http_proxy=http://proxy.company.com:8080
-# git-specific alternative:
-git config --global http.proxy http://proxy.company.com:8080</code></pre>
+            <h3>3. Check the required VPN and proxy settings</h3>
+            <p>Connect to the required VPN for internal hosts. If your network uses a proxy, use the address supplied by its administrator. curl recognizes per-protocol proxy variables and no_proxy exclusions. A stale proxy setting can change the request path; do not add a proxy just to hide a DNS failure. <a href="https://everything.curl.dev/usingcurl/proxies/env.html">curl’s proxy-variable reference</a> describes the rules.</p>
+            <pre><code># Example only: substitute your organization’s actual proxy
+https_proxy=&quot;http://proxy.company.example:8080&quot; curl -I &quot;https://example.com/&quot;</code></pre>
             <h3>4. Flush the local DNS cache</h3>
-            <p>After a domain's DNS was fixed, clear cached negative answers.</p>
+            <p>After fixing the underlying DNS issue, clear a cached negative answer if your system runs a caching resolver. Flushing a cache cannot repair a misspelled domain, a missing DNS record, or a disconnected VPN. Run only the command for your operating system; resolvectl requires systemd-resolved.</p>
             <pre><code># Linux (systemd-resolved):
 sudo resolvectl flush-caches
 # macOS:
 sudo dscacheutil -flushcache &amp;&amp; sudo killall -HUP mDNSResponder
 # Windows:
 ipconfig /flushdns</code></pre>
+            <h3>5. Repeat the check where the failing command runs</h3>
+            <p>If curl works on the host but fails in Docker, WSL, or a CI runner, test DNS in that environment too. Its resolver and proxy settings may differ. Replace CONTAINER below with an existing container name; nslookup must already be available inside it.</p>
+            <pre><code>docker exec CONTAINER cat /etc/resolv.conf
+docker exec CONTAINER nslookup example.com</code></pre>
+
 
             <h2>Frequently Asked Questions</h2>
 
             <h3>What does curl exit code 6 mean exactly?</h3>
-            <p>Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: the hostname lookup failed before any connection was attempted. It never indicates a server-side problem — the request never left your machine.</p>
+            <p>Exit code 6 is CURLE_COULDNT_RESOLVE_HOST: curl could not resolve the remote hostname. It has not reached the target web application, but DNS traffic may already have left the machine. The cause may be local configuration, the network, or the domain’s DNS.</p>
             <h3>Why does git say 'Could not resolve host: github.com' when github.com loads in my browser?</h3>
-            <p>The browser may be using DNS-over-HTTPS or a different network path (VPN split tunneling), while git uses the system resolver. Test with 'dig github.com' — if that fails, fix the system DNS; if it works, check for a proxy requirement or an /etc/hosts override.</p>
+            <p>The browser can use a different resolver or proxy path from Git. Compare the hostname in git remote -v with the browser URL, then test resolution from the same terminal, container, or VPN context where Git fails. Browser access alone does not prove that Git’s network path works.</p>
             <h3>Why does it fail only sometimes?</h3>
-            <p>Intermittent failures point to an unreliable resolver (packet loss on UDP port 53, an overloaded router DNS, or a flaky VPN). Switching to a public resolver like 1.1.1.1 or 8.8.8.8 usually stabilizes it.</p>
+            <p>Intermittent failures can come from a resolver, network connectivity, caching, or a VPN. Compare results across resolvers and times before changing settings. Keep internal company hostnames on the company’s DNS; public resolvers cannot resolve private zones.</p>
+            <h3>How is curl error 6 different from errors 5 and 7?</h3>
+            <p>Error 5 means the proxy hostname could not be resolved. Error 6 concerns the target hostname. Error 7 means curl could not connect to the host or proxy after reaching the connection stage. Diagnose the stage named by the error instead of changing unrelated credentials or TLS settings.</p>
+
 
             <h2>Related Errors</h2>
             <ul>
                 <li><a href="/errors/dns/getaddrinfo-enotfound">getaddrinfo ENOTFOUND</a> — the same failure in Node.js.</li>
                 <li><a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a> — the Linux system-level variant.</li>
                 <li><a href="/errors/dns/nxdomain">NXDOMAIN</a> — what the DNS server answers for nonexistent names.</li>
+                <li><a href="/errors/devops/git-repository-not-found">Git repository not found</a> — The host is reachable but the repository URL or access rights need checking.</li>
             </ul>
                     <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+            <h2>Official References</h2>
+            <p><a href="https://curl.se/libcurl/c/libcurl-errors.html">curl: error-code reference</a>, <a href="https://everything.curl.dev/usingcurl/verbose/index.html">curl: verbose diagnostics</a>, <a href="https://everything.curl.dev/cmdline/urls/">curl: URL quoting</a>.</p>
         </article>
 
         <div class="recommended-tools">
@@ -140,7 +150,7 @@ ipconfig /flushdns</code></pre>
     </div>
 
     <footer class="standalone-page-footer">
-        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
     </footer>
 
     <script defer src="/utility/core.js"></script>

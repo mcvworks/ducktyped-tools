@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Privacy Policy", "url": "https://ducktyped.xyz/privacy/", "description": "What duckTyped and DTMonitor collect, what they do not, who else sees your data, and how long anything is kept. No accounts, no cookies, no ad or analytics trackers.", "dateModified": "2026-09-18", "publisher": {"@type": "Organization", "name": "duckTyped", "url": "https://ducktyped.xyz"}}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — duckTyped</title>
+    <meta name="description" content="What duckTyped and DTMonitor collect, what they do not, who else sees your data, and how long anything is kept. No accounts, no cookies, no ad or analytics trackers.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Privacy Policy — duckTyped">
+    <meta property="og:description" content="What duckTyped and DTMonitor collect, what they do not, who else sees your data, and how long anything is kept. No accounts, no cookies, no ad or analytics trackers.">
+    <meta property="og:url" content="https://ducktyped.xyz/privacy/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <link rel="canonical" href="https://ducktyped.xyz/privacy/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <article class="learn-article">
+            <h1>Privacy Policy</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-23">September 23, 2026</time></p>
+            <p class="standalone-intro">duckTyped is built to need as little of your data as possible. This page says exactly what that still leaves: what is collected, who else sees it, and how long it is kept. It covers <a href="/">ducktyped.xyz</a> and our status monitor, <a href="https://monitor.ducktyped.xyz/">DTMonitor</a>. It describes what the code actually does, including the parts that are less flattering.</p>
+
+            <h2>The Short Version</h2>
+            <ul>
+                <li><strong>No accounts, no cookies, no advertising.</strong> We do not build profiles and we do not sell or share data for marketing. The only analytics script is Cloudflare Web Analytics, which is cookieless and does not identify you; details below.</li>
+                <li><strong>Most tools run entirely in your browser</strong> and send nothing anywhere.</li>
+                <li><strong>Network tools have to leave your browser to work.</strong> A DNS lookup, port scan or SSL check is run by our server, so it sees the domain, IP or URL you entered, and sometimes passes it to the third-party service that answers the question.</li>
+                <li><strong>Our server keeps ordinary access logs</strong> (IP address, time, browser type) for up to 30 days, for security and debugging.</li>
+                <li><strong>Pages load almost nothing from third parties.</strong> Fonts, scripts and styles are served from our own domain. The exceptions are listed below.</li>
+                <li><strong>We count a few things anonymously</strong>, such as how often a tool is used. No IP address or identifier is attached.</li>
+            </ul>
+
+            <h2>Tools That Run Only in Your Browser</h2>
+            <p>Encoders, formatters, generators, decoders and converters process your input locally with JavaScript. What you type is never sent to us. This includes the JSON formatter, Base64 and URL encoders, JWT decoder, hash and HMAC generators, password generator, regex tester, QR code generator and scanner, subnet calculator, and similar tools.</p>
+            <ul>
+                <li><strong>Secure Note</strong> encrypts your note in your browser and puts the encrypted text in the link itself, after the <code>#</code>, which browsers never send to servers. We never receive the note or the password. A note created without a password can be read by anyone who has the link.</li>
+                <li><strong>Password breach checker:</strong> your password is hashed in your browser and only the first five characters of that hash are sent. The password itself never leaves your device.</li>
+                <li><strong>QR scanner</strong> asks for camera access. Video is processed on your device and never uploaded.</li>
+            </ul>
+
+            <h2>Tools That Use Our Server</h2>
+            <p>These need a server to make the network request: DNS lookup and propagation, WHOIS, SSL checker, port scanner, ping, traceroute, reverse DNS, HTTP latency, redirect and link checkers, security headers, technology detector, blacklist checker, ISP and MAC lookup, URL safety check, and the AI image detector.</p>
+            <p>When you use one, our server receives what you entered and your IP address. Your input is <strong>not written to our access logs or to a database</strong>. To avoid repeating identical lookups, results are cached: in server memory for between 5 minutes and 30 days depending on the tool, and for ISP, MAC, device and URL-safety lookups in a Cloudflare key-value store for between 12 hours and 90 days. Cached entries are keyed by the input (a domain, an IP, a hash of a URL), not by who asked.</p>
+            <p>Your browser also keeps a copy of recent results in its own local storage, for up to 30 days, so repeated lookups are instant. That copy stays on your device; clearing site data removes it.</p>
+
+            <h3>Third parties that may receive what you enter</h3>
+            <div class="comparison-table-wrap"><table class="comparison-table">
+                <thead><tr><th>Tool</th><th>Service</th><th>What it receives</th></tr></thead>
+                <tbody>
+                    <tr><td>ISP / IP lookup</td><td>ipinfo.io, ipapi.co, ipwho.is, ip-api.com</td><td>The IP address being looked up, sent to the first of these that answers. If you leave the field blank, that is your own IP. The last one, used only if the others fail, is reached over unencrypted HTTP.</td></tr>
+                    <tr><td>"What is my IP"</td><td>api.ipify.org, jsonip.com</td><td>Your browser contacts them directly, so they see your IP.</td></tr>
+                    <tr><td>DNS lookup</td><td>Google (8.8.8.8) and Cloudflare (1.1.1.1) public DNS</td><td>The domain you entered.</td></tr>
+                    <tr><td>DNS propagation</td><td>Google, Cloudflare and Quad9 DNS-over-HTTPS</td><td>Your browser queries them directly: they see your IP and the domain.</td></tr>
+                    <tr><td>Blacklist checker</td><td>Spamhaus, Barracuda, SpamCop and other DNS blocklists</td><td>The IP address being checked.</td></tr>
+                    <tr><td>WHOIS</td><td>Domain registry WHOIS servers</td><td>The domain you entered.</td></tr>
+                    <tr><td>Password breach checker</td><td>Have I Been Pwned</td><td>The first five characters of the password's SHA-1 hash. Never the password.</td></tr>
+                    <tr><td>URL safety check</td><td>VirusTotal, Google Safe Browsing</td><td>The full URL you entered.</td></tr>
+                    <tr><td>AI image detector</td><td>Hive Moderation, AI or Not</td><td>The image you upload. Our copy is deleted as soon as the check finishes, and at most 10 minutes later.</td></tr>
+                    <tr><td>MAC lookup</td><td>macvendors.com</td><td>The MAC address you entered.</td></tr>
+                    <tr><td>Device / warranty lookup</td><td>Dell</td><td>The service tag you entered.</td></tr>
+                    <tr><td>Port scan, ping, traceroute, SSL, HTTP tools</td><td>The host you entered</td><td>A connection from our server. The target sees our server's address, not yours.</td></tr>
+                </tbody>
+            </table></div>
+            <p>Please do not enter other people's personal data, or anything confidential, into a tool that uses our server.</p>
+
+            <h2>What Our Server Logs</h2>
+            <p>Our API server keeps a standard web access log: IP address, date and time, the request line, response status, the referring page, and your browser's user-agent string. The body of your request — the domain, IP or text you submitted — is not logged. We use these logs to keep the service running and to investigate abuse. They are deleted after 30 days. Each page also makes one background request to our API to check that the server tools are online; that request carries no information about you beyond what any web request reveals, and it is not logged.</p>
+            <p><strong>Rate limiting.</strong> To stop the tools being abused, the server counts requests per IP address. These counters live in a small database, expire within 15 minutes, and are erased within about an hour after that.</p>
+            <p><strong>Hosting.</strong> The site is served through Cloudflare, which processes your IP address and request details to deliver pages and block attacks.</p>
+            <p><strong>Cloudflare Web Analytics.</strong> Cloudflare adds a small measurement script to our pages, loaded from <code>static.cloudflareinsights.com</code>, which reports page views and page-load timings back through our own domain. It sets no cookies, stores nothing in your browser, does not fingerprint you and does not follow you across sites; we see only aggregate figures such as page counts, referring sites, countries and load times. It is the only analytics script on either site, and most content blockers stop it with no effect on the tools.</p>
+
+            <h2>Anonymous Usage Counters</h2>
+            <p>We keep a few counters so we know what is worth maintaining: how many times each tool is run, how many times a result is copied, "was this helpful" votes, and the terms typed into site search. Each is a bare number stored against a tool name or search term. <strong>No IP address, cookie, user-agent or identifier of any kind is recorded with them</strong>, so they cannot be linked to you or to each other. Search terms are deleted after 90 days. Because search text is stored as typed, please do not search for anything personal.</p>
+
+            <h2>Storage in Your Browser</h2>
+            <p>We set <strong>no cookies</strong>. We use your browser's local storage for things that make the site work for you: your theme, favourite and recently used tools, tool layout, which error guides you have viewed, cached results as described above, whether you have dismissed the donation note, and the contents of the Plain Notes scratchpad. A session-storage flag limits the donation note to once per tab session. None of it is sent to us. Clearing your browser's site data for ducktyped.xyz erases all of it.</p>
+
+            <h2>Third-Party Requests Your Browser Makes</h2>
+            <p>Pages, fonts, scripts and styles are all served from ducktyped.xyz. The exceptions:</p>
+            <ul>
+                <li><strong>Cloudflare Web Analytics</strong> (static.cloudflareinsights.com) on every page, described above.</li>
+                <li><strong>cdnjs and jsDelivr</strong>, only the first time you generate or scan a QR code, to load the QR library.</li>
+                <li><strong>Fazier</strong>, a launch badge image on the homepage only.</li>
+            </ul>
+            <p>Links you share with a value in them, such as <code>/dns-lookup/?domain=example.com</code>, carry that value in the address, so it is visible to us, to Cloudflare, and to any chat app that generates a link preview.</p>
+
+            <h2>Optional Donations</h2>
+            <p>Our donation links open Ko-fi in a new tab. We do not embed its payment form, scripts, or tracking pixels. Ko-fi and its payment provider handle the donation on their own sites; duckTyped's tools do not collect payment details.</p>
+
+            <h2>When You Contact Us</h2>
+            <p>The feedback and contact forms collect your message and, only if you provide them, your name and email address, along with the page you were on and your IP address. We use this solely to read and answer your message. It is stored on our server, emailed to us through Microsoft 365, and posted to a private Discord channel we use as an inbox (without the IP address). We remove the IP address after 30 days and delete the whole submission after 12 months.</p>
+
+            <h2>DTMonitor (monitor.ducktyped.xyz)</h2>
+            <p>The status monitor needs no account. Your dashboard and preferences are kept in your browser's local storage. Apart from the Cloudflare Web Analytics script described above, it loads no third-party scripts or fonts.</p>
+            <ul>
+                <li><strong>Email alerts:</strong> if you subscribe, we store your email address and your alert preferences, and send alerts through Resend, our email provider. Subscription is double opt-in. Every email contains a link that lets you change or <strong>delete your subscription immediately</strong>, with no login.</li>
+                <li><strong>Browser push alerts:</strong> we store the push endpoint and keys your browser gives us. Notifications are delivered through your browser vendor's push service (Google, Mozilla or Apple). Unsubscribing deletes them.</li>
+                <li><strong>Slack or Teams alerts:</strong> the webhook URL you give us is stored encrypted and used only to post your alerts.</li>
+                <li><strong>Feedback:</strong> we store your message, your email if you give one, the page, and your browser's user-agent.</li>
+                <li>IP addresses are used only for short-lived, in-memory rate limiting and are never stored.</li>
+            </ul>
+            <p>Alert and delivery logs are deleted after 30 days. Subscriptions are kept until you delete them. DTMonitor has no user accounts.</p>
+
+            <h2>Your Choices and Rights</h2>
+            <p>You can use almost all of duckTyped without giving us anything beyond what any web request reveals. You can clear local storage at any time, unsubscribe from DTMonitor alerts from any alert email, and ask us to delete a contact message or subscription, or to tell you what we hold about you. Depending on where you live, laws such as the GDPR or CCPA may give you further rights of access, correction, deletion and objection; we will honour such requests wherever you are. Where we rely on a legal basis, it is our legitimate interest in running and securing the service, and your consent for alerts you sign up for.</p>
+            <p>duckTyped is not directed at children under 13 and we do not knowingly collect their data.</p>
+
+            <h2>Changes and Contact</h2>
+            <p>If what we collect changes, this page changes first, and the date at the top changes with it. Questions and requests: <a href="mailto:privacy@ducktyped.xyz">privacy@ducktyped.xyz</a> or the <a href="/feedback/">feedback form</a>.</p>
+        </article>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

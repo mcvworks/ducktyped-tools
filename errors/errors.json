@@ -1654,7 +1654,7 @@
   "git_repository_not_found": {
     "category": "devops",
     "title": "fatal: repository not found",
-    "description": "Git cannot find the remote repository",
+    "description": "Git found the hosting service but cannot access this repository. Check the exact URL, the account used by Git, and that account’s repository permissions.",
     "url": "/errors/devops/git-repository-not-found",
     "keywords": [
       "fatal repository not found",
@@ -2059,7 +2059,7 @@
   "could_not_resolve_host": {
     "category": "dns",
     "title": "Could not resolve host",
-    "description": "The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.",
+    "description": "curl error 6 means it could not resolve the target hostname. Start with the exact name in the error, then compare the same lookup from your machine and network.",
     "url": "/errors/dns/could-not-resolve-host",
     "keywords": [
       "could not resolve host",

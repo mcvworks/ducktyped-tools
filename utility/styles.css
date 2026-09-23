@@ -90,6 +90,10 @@
 
         body {
             font-family: var(--font-body);
+            /* Base text colour: without it, anything a component forgets to
+               colour (result headings, JSON punctuation) falls back to
+               browser-default black and vanishes on the dark background. */
+            color: var(--text-primary);
             background: linear-gradient(180deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
             min-height: 100vh;
             padding: 20px;
@@ -415,6 +419,8 @@
         body.light-theme footer .footer-section p { color: #8892A0; }
         body.light-theme footer .footer-bottom { background: rgba(0,0,0,0.3); color: #8892A0; }
         body.light-theme footer .footer-bottom a { color: #F2C200; }
+        /* --primary-color is #0F1114 in light theme: invisible on the dark footer */
+        body.light-theme .standalone-page-footer a { color: #F2C200; }
         body.light-theme footer .footer-stat-num { color: #F2C200; }
         body.light-theme footer .footer-stat-label { color: #8892A0; }
 
@@ -574,7 +580,7 @@
 
         /* Theme toggle button */
         body.light-theme .theme-toggle-btn { background: transparent; }
-        body.light-theme .theme-toggle-btn:hover { filter: drop-shadow(0 0 6px rgba(15, 17, 20, 0.4)); }
+        body.light-theme .theme-toggle-btn:hover { filter: drop-shadow(0 0 6px rgba(15, 17, 20, 0.4)); background: transparent; box-shadow: none; transform: none; }
 
         /* Dev tools light theme */
         body.light-theme .json-output { background: #F8F9FB; border-color: #D0D5DD; }
@@ -622,6 +628,9 @@
 
         .theme-toggle-btn:hover {
             filter: drop-shadow(0 0 6px rgba(242, 194, 0, 0.6));
+            background: transparent;
+            box-shadow: none;
+            transform: none;
         }
 
         /* Minimal dot toggle states */
@@ -2367,11 +2376,24 @@
         }
 
         /* Light theme footer overrides */
-        body.light-theme .footer-shortcuts kbd {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: #ccc;
-            color: #0F1114;
-        }
+        /* The footer stays dark in light theme, so its contents keep their
+           dark-theme colours rather than inheriting light-theme text vars. */
+        body.light-theme .footer-shortcuts span,
+        body.light-theme .footer-contact-card p { color: #B8C0CC; }
+        body.light-theme .footer-shortcuts kbd { color: #E9EEF5; }
+
+        /* Error category badges: the neon dark-theme hues are unreadable on
+           white. Same hue families, darkened to >= 4.5:1. */
+        body.light-theme .badge-browser, body.light-theme .badge-dns { color: #0F766E; }
+        body.light-theme .badge-http { color: #8A6D00; }
+        body.light-theme .badge-email, body.light-theme .badge-cloudflare { color: #C2410C; }
+        body.light-theme .badge-ssl { color: #B91C1C; }
+        body.light-theme .badge-devops { color: #6D28D9; }
+        body.light-theme .badge-database { color: #0369A1; }
+        body.light-theme .badge-nginx { color: #15803D; }
+        body.light-theme .badge-apache { color: #A21CAF; }
+        body.light-theme .badge-node { color: #4338CA; }
+        body.light-theme .badge-python { color: #0E7490; }
 
         body.light-theme .footer-contact-card {
             background: #151A22;
@@ -2380,7 +2402,7 @@
         }
 
         body.light-theme .footer-contact-card h3 { color: #F2C200; }
-        body.light-theme .footer-contact-card p { color: #B8C0CC; }
+        .footer-contact-card p { color: var(--text-secondary); }
 
         body.light-theme .footer-contact-form input,
         body.light-theme .footer-contact-form textarea {
@@ -3231,9 +3253,15 @@
             flex-wrap: wrap;
         }
         .encode-decode-btns button { flex: 1; min-width: 0; }
+        /* Base look lives on the class itself: tools without an
+           .encode-decode-btns row get the button in a standalone wrapper, where
+           it would otherwise inherit the generic full-width primary button. */
         .encode-decode-btns .dt-share-btn {
             flex: 0 0 auto;
             min-width: auto;
+        }
+        .dt-share-btn {
+            width: auto;
             padding: 8px 14px;
             font-size: 0.85em;
             display: inline-flex;
@@ -3246,9 +3274,24 @@
             border-radius: 8px;
             transition: all 0.2s ease;
         }
-        .encode-decode-btns .dt-share-btn:hover {
+        .dt-share-btn:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
+            background: transparent;
+            box-shadow: none;
+            transform: none;
+        }
+        /* "body.light-theme button" out-ranks a bare class, so restate the
+           outline look for light mode. */
+        body.light-theme .dt-share-btn,
+        body.light-theme .try-example-btn {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+        body.light-theme .dt-share-btn:hover {
+            background: transparent;
+            color: var(--primary-color);
+            box-shadow: none;
         }
 
         @media (max-width: 480px) {
@@ -4353,6 +4396,41 @@
             font-size: 0.92em;
         }
 
+        /* Donation prompt under server-tool results. The dismiss control must
+           undo the generic button rules in both themes (see .dt-share-btn). */
+        .donation-prompt {
+            margin: 14px 0 0;
+            padding: 10px 34px 10px 14px;
+            position: relative;
+            font-size: 0.82em;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+        }
+        .donation-prompt a { color: var(--primary-color); font-weight: 500; }
+        .donation-prompt-dismiss,
+        body.light-theme .donation-prompt-dismiss {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            width: auto;
+            margin: 0;
+            padding: 2px 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            line-height: 1;
+            box-shadow: none;
+        }
+        .donation-prompt-dismiss:hover,
+        body.light-theme .donation-prompt-dismiss:hover {
+            background: transparent;
+            color: var(--text-primary);
+            box-shadow: none;
+            transform: none;
+        }
+
         /* Related guides cross-link */
         .related-guides {
             max-width: 760px;
@@ -5240,6 +5318,8 @@
            ============================================ */
         .try-example-btn {
             display: inline-flex;
+            width: auto;
+            margin: 0 6px 8px 0;
             align-items: center;
             gap: 5px;
             padding: 5px 12px;
@@ -5259,6 +5339,8 @@
             color: var(--primary-color);
             border-style: solid;
             background: rgba(242, 194, 0, 0.06);
+            box-shadow: none;
+            transform: none;
         }
         body.light-theme .try-example-btn:hover {
             border-color: #0F1114;

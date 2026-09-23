@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does GitHub show 'not found' instead of 'access denied'?","acceptedAnswer":{"@type":"Answer","text":"This is intentional. Revealing that a private repository exists (but you cannot access it) is an information leak. By returning 'not found' for both missing and inaccessible repos, GitHub protects the privacy of repository owners."}},{"@type":"Question","name":"Do I need a personal access token for GitHub?","acceptedAnswer":{"@type":"Answer","text":"Yes. GitHub stopped accepting account passwords for Git operations in August 2021. You need a personal access token (classic or fine-grained) or SSH key for authentication."}},{"@type":"Question","name":"How do I check if my SSH key is configured correctly?","acceptedAnswer":{"@type":"Answer","text":"Run 'ssh -T git@github.com' (or the appropriate host). If configured correctly, you will see a message confirming your username. If it fails, check that your key is added to ssh-agent and your GitHub account."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does GitHub show 'not found' instead of 'access denied'?","acceptedAnswer":{"@type":"Answer","text":"This is intentional. Revealing that a private repository exists (but you cannot access it) is an information leak. By returning 'not found' for both missing and inaccessible repos, GitHub protects the privacy of repository owners."}},{"@type":"Question","name":"Do I need a personal access token for GitHub?","acceptedAnswer":{"@type":"Answer","text":"You do not have to create a personal access token manually. GitHub CLI browser sign-in, a credential manager, or an SSH key can authenticate Git. If you choose token-based HTTPS authentication, use a token with access to the repository; an ordinary GitHub account password will not work."}},{"@type":"Question","name":"How do I check if my SSH key is configured correctly?","acceptedAnswer":{"@type":"Answer","text":"Run 'ssh -T git@github.com' (or the appropriate host). If configured correctly, you will see a message confirming your username. If it fails, check that your key is added to ssh-agent and your GitHub account."}},{"@type":"Question","name":"Why can I open the repository in my browser but Git cannot clone it?","acceptedAnswer":{"@type":"Answer","text":"The browser and Git can be signed into different accounts. Check the HTTPS credential helper or SSH identity used by the clone URL, then confirm that account has repository access. For organization repositories, also check SSO authorization or token approval."}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"fatal: repository not found — Causes & Fixes"}]}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix fatal: repository not found","step":[{"@type":"HowToStep","position":1,"name":"Verify the repository URL","text":"Check that the repository URL is correct by visiting it in a browser. Ensure the username and repository name are spelled correctly."},{"@type":"HowToStep","position":2,"name":"Re-authenticate with the remote","text":"If the repo is private, ensure your credentials are valid. For GitHub, use a personal access token instead of a password."},{"@type":"HowToStep","position":3,"name":"Check repository visibility and access","text":"Visit the repository URL in a browser while logged in. If it returns a 404 page, you either have the wrong URL or lack access. Ask the repository owner to grant you access."}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix fatal: repository not found","step":[{"@type":"HowToStep","position":1,"name":"Check the repository and remote URL","text":"Open the repository in a browser while signed into the intended account. Copy its clone URL from the Code menu. In an existing checkout, compare both fetch and push URLs. Replace OWNER and REPO below with the real values; for a failed initial clone, use the copied URL directly."},{"@type":"HowToStep","position":2,"name":"Check which GitHub account is active","text":"Your browser login and command-line credentials can belong to different accounts. If you use GitHub CLI, check its active account and whether it can see the repository. This checks the CLI’s identity; an HTTPS credential helper or SSH key can still use a different one."},{"@type":"HowToStep","position":3,"name":"Repair HTTPS authentication","text":"GitHub does not accept account passwords for HTTPS Git operations. With GitHub CLI installed, use browser sign-in and configure Git to use those credentials. Otherwise, update the entry for this host in your credential manager. Do not put a token in the remote URL or a pasted command."},{"@type":"HowToStep","position":4,"name":"Check the SSH identity when using an SSH remote","text":"For a git@github.com:OWNER/REPO.git remote, check which username GitHub recognizes. If it is the wrong account, select the correct key in your SSH configuration. The authenticated account still needs repository access. HTTPS login changes do not repair an SSH key."},{"@type":"HowToStep","position":5,"name":"Verify private-repository, token, and organization access","text":"Accept any pending repository invitation and confirm the account has read access; pushing requires write access. If using a fine-grained token, check its resource owner, selected repository, expiry, and Contents permission. Organization approval or SSO authorization may also be required. GitHub’s token guide explains the available restrictions."},{"@type":"HowToStep","position":6,"name":"Test access without changing local files","text":"In an existing checkout, list the remote references. This does not merge, reset, or replace your work. Success confirms read access, even if an empty repository returns no references. A later push failure can still mean missing write permission or a branch rule. For GitLab or another host, use that host’s URL, account, and credential settings."}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fatal: repository not found — 6 Fixes for GitHub, GitLab &amp; Git — duckTyped</title>
-    <meta name="description" content="Git says 'fatal: repository not found'? It is usually auth or a wrong URL. 6 fixes: check the remote URL, switch HTTPS/SSH credentials, verify access rights, and more.">
+    <title>Git Repository Not Found: Fix URL, HTTPS &amp; SSH Access — duckTyped</title>
+    <meta name="description" content="Fix fatal: repository not found when cloning, pulling, or pushing. Check the remote URL, GitHub account, HTTPS credentials, SSH key, and private-repo access.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="Git repository not found, fatal: repository not found, remote: Repository not found, ERROR: Repository not found, The requested URL returned error: 403">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="fatal: repository not found — 6 Fixes for GitHub, GitLab &amp; Git">
-    <meta property="og:description" content="Git says 'fatal: repository not found'? It is usually auth or a wrong URL. 6 fixes: check the remote URL, switch HTTPS/SSH credentials, verify access rights, and more.">
+    <meta property="og:title" content="Git Repository Not Found: Fix URL, HTTPS &amp; SSH Access">
+    <meta property="og:description" content="Fix fatal: repository not found when cloning, pulling, or pushing. Check the remote URL, GitHub account, HTTPS credentials, SSH key, and private-repo access.">
     <meta property="og:url" content="https://ducktyped.xyz/errors/devops/git-repository-not-found">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <link rel="canonical" href="https://ducktyped.xyz/errors/devops/git-repository-not-found">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
 </head>
@@ -37,6 +36,7 @@
                 <li><a href="/utility/">Utility</a></li>
                 <li><a href="/learn/">Learn</a></li>
                 <li><a href="/errors/" class="active">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
             </ul>
             <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
                 <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
@@ -57,8 +57,8 @@
 
         <article class="learn-article">
             <h1>fatal: repository not found</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
-            <p class="standalone-intro">Git cannot find the remote repository</p>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-23">September 23, 2026</time></p>
+            <p class="standalone-intro">Git found the hosting service but cannot access this repository. Check the exact URL, the account used by Git, and that account’s repository permissions.</p>
             <div class="error-aliases">
                 <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
                 <ul class="error-aliases-list"><li><code>Git repository not found</code></li><li><code>fatal: repository not found</code></li><li><code>remote: Repository not found</code></li><li><code>ERROR: Repository not found</code></li><li><code>The requested URL returned error: 403</code></li></ul>
@@ -77,38 +77,52 @@
 
             <h2>How to Fix It</h2>
 
-            <h3>1. Verify the repository URL</h3>
-            <p>Check that the repository URL is correct by visiting it in a browser. Ensure the username and repository name are spelled correctly.</p>
+            <h3>1. Check the repository and remote URL</h3>
+            <p>Open the repository in a browser while signed into the intended account. Copy its clone URL from the Code menu. In an existing checkout, compare both fetch and push URLs. Replace OWNER and REPO below with the real values; for a failed initial clone, use the copied URL directly.</p>
             <pre><code>git remote -v
-# Update if wrong:
-git remote set-url origin https://github.com/user/repo.git</code></pre>
-            <h3>2. Re-authenticate with the remote</h3>
-            <p>If the repo is private, ensure your credentials are valid. For GitHub, use a personal access token instead of a password.</p>
-            <pre><code># Clear cached credentials:
-git credential reject &lt;&lt;EOF
-host=github.com
-protocol=https
-EOF
+# Only if the existing origin URL is wrong:
+git remote set-url origin https://github.com/OWNER/REPO.git</code></pre>
+            <h3>2. Check which GitHub account is active</h3>
+            <p>Your browser login and command-line credentials can belong to different accounts. If you use GitHub CLI, check its active account and whether it can see the repository. This checks the CLI’s identity; an HTTPS credential helper or SSH key can still use a different one.</p>
+            <pre><code>gh auth status --hostname github.com
+gh repo view OWNER/REPO</code></pre>
+            <h3>3. Repair HTTPS authentication</h3>
+            <p>GitHub does not accept account passwords for HTTPS Git operations. With GitHub CLI installed, use browser sign-in and configure Git to use those credentials. Otherwise, update the entry for this host in your credential manager. Do not put a token in the remote URL or a pasted command.</p>
+            <pre><code>gh auth login --hostname github.com --git-protocol https --web
+gh auth setup-git --hostname github.com</code></pre>
+            <h3>4. Check the SSH identity when using an SSH remote</h3>
+            <p>For a git@github.com:OWNER/REPO.git remote, check which username GitHub recognizes. If it is the wrong account, select the correct key in your SSH configuration. The authenticated account still needs repository access. HTTPS login changes do not repair an SSH key.</p>
+            <pre><code>ssh -T git@github.com
+# Once the SSH identity and access are correct:
+git ls-remote git@github.com:OWNER/REPO.git</code></pre>
+            <h3>5. Verify private-repository, token, and organization access</h3>
+            <p>Accept any pending repository invitation and confirm the account has read access; pushing requires write access. If using a fine-grained token, check its resource owner, selected repository, expiry, and Contents permission. Organization approval or SSO authorization may also be required. <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">GitHub’s token guide</a> explains the available restrictions.</p>
+            <h3>6. Test access without changing local files</h3>
+            <p>In an existing checkout, list the remote references. This does not merge, reset, or replace your work. Success confirms read access, even if an empty repository returns no references. A later push failure can still mean missing write permission or a branch rule. For GitLab or another host, use that host’s URL, account, and credential settings.</p>
+            <pre><code>git ls-remote origin</code></pre>
 
-# Then retry - you'll be prompted for new credentials</code></pre>
-            <h3>3. Check repository visibility and access</h3>
-            <p>Visit the repository URL in a browser while logged in. If it returns a 404 page, you either have the wrong URL or lack access. Ask the repository owner to grant you access.</p>
 
             <h2>Frequently Asked Questions</h2>
 
             <h3>Why does GitHub show 'not found' instead of 'access denied'?</h3>
             <p>This is intentional. Revealing that a private repository exists (but you cannot access it) is an information leak. By returning 'not found' for both missing and inaccessible repos, GitHub protects the privacy of repository owners.</p>
             <h3>Do I need a personal access token for GitHub?</h3>
-            <p>Yes. GitHub stopped accepting account passwords for Git operations in August 2021. You need a personal access token (classic or fine-grained) or SSH key for authentication.</p>
+            <p>You do not have to create a personal access token manually. GitHub CLI browser sign-in, a credential manager, or an SSH key can authenticate Git. If you choose token-based HTTPS authentication, use a token with access to the repository; an ordinary GitHub account password will not work.</p>
             <h3>How do I check if my SSH key is configured correctly?</h3>
             <p>Run 'ssh -T git@github.com' (or the appropriate host). If configured correctly, you will see a message confirming your username. If it fails, check that your key is added to ssh-agent and your GitHub account.</p>
+            <h3>Why can I open the repository in my browser but Git cannot clone it?</h3>
+            <p>The browser and Git can be signed into different accounts. Check the HTTPS credential helper or SSH identity used by the clone URL, then confirm that account has repository access. For organization repositories, also check SSO authorization or token approval.</p>
+
 
             <h2>Related Errors</h2>
             <ul>
                 <li><a href="/errors/devops/git-remote-origin-already-exists">Remote Origin Already Exists</a> — Git remote origin is already configured</li>
                 <li><a href="/errors/devops/permission-denied-publickey">Permission Denied (publickey)</a> — SSH authentication failure</li>
                 <li><a href="/errors/devops/git-merge-conflict">Git Merge Conflict</a> — Conflicting changes in Git merge</li>
+                <li><a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> — Git cannot resolve the hosting service’s hostname; diagnose DNS before authentication.</li>
             </ul>
+            <h2>Official References</h2>
+            <p><a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/troubleshooting-cloning-errors">GitHub: troubleshooting cloning errors</a>, <a href="https://cli.github.com/manual/gh_auth_status">GitHub CLI: check authentication</a>, <a href="https://cli.github.com/manual/gh_auth_login">GitHub CLI: sign in</a>.</p>
         </article>
 
         <div class="recommended-tools">
@@ -128,7 +142,7 @@ EOF
     </div>
 
     <footer class="standalone-page-footer">
-        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved.</span>
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
     </footer>
 
     <script defer src="/utility/core.js"></script>

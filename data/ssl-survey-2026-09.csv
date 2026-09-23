@@ -1,0 +1,1001 @@
+rank,domain,host,status,chain_valid,chain_error,protocol,issuer,not_before,not_after,lifetime_days,days_remaining,key_type,key_bits,san_count,wildcard
+1,google.com,google.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+2,cloudflare.com,cloudflare.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-05,2026-12-04,90,77,EC,256,5,true
+3,facebook.com,facebook.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,EC,256,11,true
+4,gstatic.com,gstatic.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,3,true
+5,googleapis.com,googleapis.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,236,true
+6,microsoft.com,microsoft.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-06-23,2026-12-20,180,92,RSA,2048,163,false
+7,akamai.net,,no_certificate:dns
+8,amazonaws.com,amazonaws.com,certificate,true,,TLSv1.3,Amazon,2026-06-08,2026-12-22,198,95,RSA,2048,3,false
+9,youtube.com,youtube.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+10,apple.com,apple.com,certificate,true,,TLSv1.3,Apple Inc.,2026-08-13,2026-11-05,84,48,EC,256,1,false
+11,instagram.com,instagram.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,EC,256,6,true
+12,mail.ru,mail.ru,certificate,true,,TLSv1.2,Let's Encrypt,2026-07-14,2026-10-12,90,24,RSA,2048,28,true
+13,fbcdn.net,fbcdn.net,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,RSA,2048,3,false
+14,ezviz7.com,www.ezviz7.com,certificate,false,CERT_HAS_EXPIRED,TLSv1.2,GlobalSign nv-sa,2019-11-19,2020-11-11,358,-2138,RSA,2048,2,true
+15,twitter.com,twitter.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-14,2026-11-12,90,55,RSA,2048,3,true
+16,dzen.ru,dzen.ru,certificate,true,,TLSv1.3,Hellenic Academic and Research Institutions CA,2026-07-23,2027-02-07,199,141,RSA,2048,2,true
+17,linkedin.com,linkedin.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-20,2026-11-20,185,63,RSA,2048,1,false
+18,googlevideo.com,googlevideo.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,RSA,2048,1,false
+19,domaincontrol.com,,no_certificate:refused
+20,googletagmanager.com,googletagmanager.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,24,true
+21,office.com,office.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-28,2027-02-24,180,159,RSA,2048,20,true
+22,live.com,live.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-12,2027-02-26,198,161,RSA,2048,12,true
+23,akamaiedge.net,,no_certificate:dns
+24,amazon.com,amazon.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-18,198,61,RSA,2048,47,true
+25,gtld-servers.net,,no_certificate:dns
+26,akadns.net,,no_certificate:dns
+27,hicloudcam.com,www.hicloudcam.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2025-09-23,2026-10-25,397,36,RSA,2048,2,true
+28,azure.com,azure.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-09-03,2026-12-12,100,85,RSA,2048,159,false
+29,github.com,github.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-09-01,2026-11-29,90,72,EC,256,2,false
+30,wikipedia.org,wikipedia.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-05,2026-11-03,90,46,EC,256,41,true
+31,bing.com,bing.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-09-01,2027-02-28,180,163,RSA,2048,33,true
+32,whatsapp.net,whatsapp.net,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,EC,256,7,true
+33,apple-dns.net,,no_certificate:dns
+34,appsflyersdk.com,appsflyersdk.com,certificate,true,,TLSv1.3,Amazon,2026-08-09,2027-02-22,198,157,RSA,2048,1,false
+35,googleusercontent.com,googleusercontent.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,153,true
+36,fastly.net,fastly.net,certificate,true,,TLSv1.2,Certainly,2026-09-16,2026-10-16,30,27,RSA,2048,2,false
+37,doubleclick.net,,no_certificate:refused
+38,aaplimg.com,,no_certificate:dns
+39,microsoftonline.com,,no_certificate:dns
+40,office.net,,no_certificate:dns
+41,netflix.com,netflix.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-18,2027-02-18,366,153,EC,256,15,false
+42,trafficmanager.net,,no_certificate:dns
+43,cloud.microsoft,cloud.microsoft,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-26,2026-12-04,100,77,RSA,2048,3,false
+44,sharepoint.com,sharepoint.com,certificate,true,,TLSv1.3,Microsoft Corporation,2025-12-09,2026-12-04,360,77,RSA,2048,12,true
+45,gandi.net,gandi.net,certificate,true,,TLSv1.3,Gandi SAS,2026-05-20,2026-12-04,199,77,RSA,4096,2,false
+46,youtu.be,youtu.be,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+47,digicert.com,digicert.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-10,2026-10-26,47,38,RSA,2048,2,false
+48,wordpress.org,wordpress.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-25,2026-10-23,90,35,EC,256,2,true
+49,skype.com,skype.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-09-04,2026-12-13,100,85,RSA,2048,172,true
+50,x.com,x.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-14,2026-11-12,90,55,RSA,2048,6,true
+51,icloud.com,icloud.com,certificate,true,,TLSv1.3,Apple Inc.,2026-08-17,2026-11-12,87,55,EC,256,1,false
+52,cloudfront.net,,no_certificate:dns
+53,goo.gl,goo.gl,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+54,tiktok.com,tiktok.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-19,2026-12-03,199,76,EC,256,2,true
+55,whatsapp.com,whatsapp.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,EC,256,7,true
+56,pinterest.com,pinterest.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-13,2027-02-26,198,161,RSA,2048,96,true
+57,googledomains.com,googledomains.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,20,true
+58,cloudflare.net,cloudflare.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-28,2026-10-26,90,38,EC,256,1,false
+59,yahoo.com,yahoo.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-28,2026-10-21,86,33,EC,256,16,true
+60,roblox.com,roblox.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-07-27,2027-02-10,199,145,RSA,2048,2,true
+61,googlesyndication.com,googlesyndication.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,13,true
+62,gvt1.com,,no_certificate:dns
+63,pv-cdn.net,,no_certificate:dns
+64,spotify.com,spotify.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-09,2027-01-23,199,127,RSA,2048,2,true
+65,windows.net,windows.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Microsoft Corporation,2026-08-26,2026-12-04,100,77,RSA,2048,1,false
+66,windowsupdate.com,,no_certificate:dns
+67,wa.me,wa.me,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,EC,256,7,true
+68,adobe.com,adobe.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-01-05,2027-01-04,365,108,EC,256,2,true
+69,msn.com,msn.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-29,2027-02-25,180,160,RSA,2048,3,true
+70,ntp.org,ntp.org,certificate,true,,TLSv1.2,Let's Encrypt,2026-08-04,2026-11-02,90,44,RSA,2048,1,false
+71,myfritz.net,myfritz.net,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-17,2027-01-14,394,118,RSA,2048,5,false
+72,cloudflare-dns.com,cloudflare-dns.com,certificate,true,,TLSv1.3,SSL Corp,2025-12-31,2026-12-21,355,94,EC,256,11,true
+73,qq.com,qq.com,certificate,true,,TLSv1.2,"DigiCert, Inc.",2026-05-13,2026-11-27,199,70,RSA,2048,3,false
+74,nginx.org,nginx.org,certificate,true,,TLSv1.2,Let's Encrypt,2026-07-19,2026-10-17,90,28,EC,256,21,false
+75,chatgpt.com,chatgpt.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-16,2026-12-15,90,87,EC,256,2,true
+76,root-servers.net,,no_certificate:dns
+77,zoom.us,zoom.us,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-29,2026-12-29,366,102,RSA,2048,2,true
+78,cdninstagram.com,,no_certificate:dns
+79,workers.dev,workers.dev,certificate,true,,TLSv1.3,Google Trust Services,2026-09-01,2026-11-30,90,73,EC,256,2,true
+80,tiktokcdn.com,,no_certificate:dns
+81,akam.net,,no_certificate:dns
+82,tiktokv.com,tiktokv.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-26,2026-10-10,199,22,EC,256,2,true
+83,openai.com,openai.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-16,2026-12-15,90,87,EC,256,2,true
+84,gvt2.com,,no_certificate:refused
+85,edgekey.net,www.edgekey.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2026-05-18,2026-12-02,199,75,RSA,2048,2,true
+86,baidu.com,baidu.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-07-09,2027-01-24,199,127,RSA,2048,53,true
+87,yandex.net,yandex.net,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-01,2026-12-29,181,102,EC,256,52,true
+88,vimeo.com,vimeo.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-03,2026-12-02,90,75,EC,256,2,true
+89,ytimg.com,,no_certificate:dns
+90,windows.com,windows.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-09-11,2026-12-20,100,92,RSA,2048,192,false
+91,opera.com,opera.com,certificate,true,,TLSv1.3,Trust Provider B.V.,2026-01-07,2027-02-06,396,141,EC,256,2,true
+92,sentry.io,sentry.io,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-06,2027-02-20,199,155,RSA,2048,2,true
+93,f5.com,f5.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-11-06,2026-12-07,397,80,RSA,2048,8,false
+94,samsung.com,samsung.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-04-08,2026-10-23,199,35,RSA,2048,2,true
+95,nginx.com,nginx.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-29,2026-11-27,90,70,EC,256,2,true
+96,yandex.ru,yandex.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-01,2026-12-29,181,102,EC,256,52,true
+97,edgesuite.net,,no_certificate:dns
+98,highwebmedia.com,,no_certificate:dns
+99,blogspot.com,blogspot.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,139,true
+100,mozilla.org,mozilla.org,certificate,true,,TLSv1.3,Google Trust Services,2026-09-14,2026-12-13,90,85,RSA,2048,1,false
+101,wordpress.com,wordpress.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-04,2026-12-03,90,76,EC,256,2,true
+102,t.me,t.me,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-10-21,2026-11-22,397,65,RSA,2048,2,true
+103,gwfb.net,,no_certificate:dns
+104,achmea.nl,achmea.nl,certificate,true,,TLSv1.3,DigiCert Ireland Limited,2026-08-24,2027-03-10,199,173,RSA,2048,2,false
+105,dellemc.com,www.dellemc.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-09-22,2026-10-23,397,35,EC,256,26,true
+106,actify.nl,actify.nl,certificate,true,,TLSv1.3,DigiCert Ireland Limited,2026-09-16,2027-04-02,199,196,RSA,2048,2,false
+107,a2z.com,,no_certificate:dns
+108,b-cdn.net,b-cdn.net,certificate,true,,TLSv1.3,Sectigo Limited,2025-11-06,2026-11-11,371,54,RSA,2048,2,true
+109,reddit.com,reddit.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-21,2027-02-16,180,151,RSA,2048,2,true
+110,ui.com,ui.com,certificate,true,,TLSv1.3,Amazon,2026-07-28,2027-02-10,198,145,RSA,2048,2,false
+111,office365.com,office365.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-29,2027-02-25,180,160,RSA,2048,8,false
+112,nic.ru,nic.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-12-05,2027-01-06,397,110,RSA,2048,2,false
+113,yccdn.ru,,no_certificate:dns
+114,google-analytics.com,,no_certificate:refused
+115,aws.dev,,no_certificate:dns
+116,europa.eu,europa.eu,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-11,2027-02-26,199,160,RSA,2048,2,false
+117,bit.ly,bit.ly,certificate,true,,TLSv1.3,Amazon,2026-07-27,2027-02-09,198,144,RSA,2048,2,false
+118,okcdn.ru,okcdn.ru,certificate,true,,TLSv1.3,Hellenic Academic and Research Institutions CA,2025-10-23,2026-10-23,365,35,RSA,2048,4,true
+119,app-analytics-services.com,,no_certificate:refused
+120,outlook.com,outlook.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-26,2027-01-10,199,114,RSA,2048,20,true
+121,registrar-servers.com,registrar-servers.com,certificate,true,,TLSv1.3,SSL Corporation,2026-08-17,2027-02-28,195,163,EC,384,2,false
+122,app-measurement.com,,no_certificate:refused
+123,amazonvideo.com,amazonvideo.com,certificate,true,,TLSv1.3,Amazon,2026-07-29,2027-02-11,198,146,RSA,2048,3,false
+124,criteo.com,,no_certificate:refused
+125,github.io,github.io,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-02,2026-10-31,90,43,RSA,2048,6,true
+126,cdn77.org,,no_certificate:dns
+127,vk.com,vk.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-14,2026-10-12,90,23,EC,256,33,true
+128,apache.org,apache.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-12,2026-11-10,90,53,RSA,2048,1,false
+129,trbcdn.net,trbcdn.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Let's Encrypt,2026-09-03,2026-12-02,90,75,RSA,2048,1,false
+130,snapchat.com,snapchat.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-04-01,2026-10-16,199,28,RSA,2048,37,true
+131,amazon-adsystem.com,,no_certificate:refused
+132,unity3d.com,unity3d.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-11-28,2026-12-01,369,74,RSA,2048,2,true
+133,dnsowl.com,,no_certificate:dns
+134,amazon.dev,,no_certificate:dns
+135,intuit.com,intuit.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-04,2026-11-06,368,49,RSA,2048,99,false
+136,triplinkintl.com,triplinkintl.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-08-13,2027-02-27,199,162,RSA,2048,4,true
+137,dropbox.com,dropbox.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-19,2026-10-14,57,26,EC,256,3,true
+138,afternic.com,afternic.com,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-11-18,2026-12-20,397,92,RSA,2048,2,false
+139,msftncsi.com,www.msftncsi.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2025-12-22,2026-12-22,366,95,EC,256,5,true
+140,kaspersky.com,kaspersky.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-20,2027-02-19,365,154,RSA,2048,2,false
+141,epicgames.com,epicgames.com,certificate,true,,TLSv1.3,Amazon,2026-09-13,2027-03-29,198,192,RSA,2048,2,true
+142,reg.ru,reg.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-07,2026-12-09,397,81,RSA,4096,5,false
+143,dns.google,dns.google,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,12,true
+144,nih.gov,nih.gov,certificate,true,,TLSv1.2,"GoDaddy.com, Inc.",2026-02-05,2027-02-15,375,150,RSA,2048,28,false
+145,miit.gov.cn,www.miit.gov.cn,certificate,true,,TLSv1.3,sslTrus,2025-09-18,2026-10-19,397,31,RSA,2048,2,true
+146,discord.gg,discord.gg,certificate,true,,TLSv1.3,Google Trust Services,2026-08-20,2026-11-18,90,60,EC,256,2,true
+147,static.microsoft,,no_certificate:dns
+148,iiko.it,,no_certificate:dns
+149,forms.gle,forms.gle,certificate,true,,TLSv1.3,Google Trust Services,2026-08-17,2026-11-15,90,57,RSA,2048,1,false
+150,azurefd.net,www.azurefd.net,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-28,2027-02-24,180,159,EC,256,16,true
+151,archive.org,archive.org,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2026-01-08,2027-02-09,397,144,RSA,2048,2,true
+152,vkuserphoto.ru,vkuserphoto.ru,certificate,true,,TLSv1.3,Hellenic Academic and Research Institutions CA,2026-07-23,2027-02-07,199,141,RSA,2048,20,true
+153,xiaomi.com,www.xiaomi.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-11-29,2026-12-30,397,103,RSA,2048,2,true
+154,godaddy.com,www.godaddy.com,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-10-01,2026-11-02,397,45,RSA,2048,2,true
+155,steamserver.net,,no_certificate:dns
+156,one.one,one.one,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-10,2026-11-08,90,50,RSA,4096,1,false
+157,aliyuncs.com,aliyuncs.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-25,2026-10-03,39,14,EC,256,108,true
+158,gravatar.com,gravatar.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-08,2026-11-06,90,49,EC,256,2,true
+159,nytimes.com,nytimes.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-02,2027-03-19,199,182,RSA,2048,29,true
+160,msftconnecttest.com,www.msftconnecttest.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2025-12-22,2026-12-22,366,95,EC,256,5,true
+161,adtrafficquality.google,,no_certificate:refused
+162,tumblr.com,tumblr.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-07,2026-12-06,90,79,EC,256,2,true
+163,applovin.com,,no_certificate:refused
+164,jomodns.com,,no_certificate:dns
+165,tm-azurefd.net,,no_certificate:dns
+166,webex.com,webex.com,certificate,true,,TLSv1.2,IdenTrust,2026-09-05,2027-03-23,199,185,RSA,2048,21,false
+167,discord.com,discord.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-28,2026-11-27,90,69,EC,256,2,true
+168,dns-parking.com,,no_certificate:dns
+169,paypal.com,paypal.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-11,2026-11-25,199,68,RSA,2048,102,false
+170,mts.ru,mts.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-20,2026-11-05,199,48,RSA,2048,2,false
+171,ax-msedge.net,,no_certificate:dns
+172,example.com,example.com,certificate,true,,TLSv1.3,SSL Corporation,2026-07-29,2026-10-27,90,39,EC,256,2,true
+173,3gppnetwork.org,,no_certificate:dns
+174,vedcdnlb.com,,no_certificate:dns
+175,adobe.io,adobe.io,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-14,2026-11-28,199,71,RSA,2048,29,true
+176,azurewebsites.net,,no_certificate:dns
+177,vk.ru,vk.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-17,2026-10-15,90,27,RSA,2048,17,true
+178,telekom.net,telekom.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-25,2026-11-23,90,66,RSA,2048,1,false
+179,ggpht.com,,no_certificate:dns
+180,shopify.com,shopify.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-10,2026-11-08,90,51,EC,256,2,true
+181,spectrum.com,spectrum.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-03,2027-02-03,366,138,EC,256,2,true
+182,base.org,base.org,certificate,true,,TLSv1.3,Google Trust Services,2026-07-24,2026-10-22,90,33,EC,256,3,true
+183,hosting24.com,hosting24.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-22,2026-11-20,90,63,EC,256,2,true
+184,doctolib.net,,no_certificate:dns
+185,namebrightdns.com,,no_certificate:dns
+186,macromedia.com,www.macromedia.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-19,2027-03-05,199,168,EC,256,33,true
+187,soundcloud.com,soundcloud.com,certificate,true,,TLSv1.3,Amazon,2026-02-17,2027-03-18,395,181,RSA,2048,2,true
+188,cdn-apple.com,,no_certificate:dns
+189,flickr.com,flickr.com,certificate,true,,TLSv1.3,Amazon,2025-12-05,2027-01-02,394,106,RSA,2048,3,true
+190,googleadservices.com,www.googleadservices.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,1,false
+191,hichina.com,www.hichina.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-04-28,2026-11-13,199,55,EC,256,447,true
+192,w3.org,w3.org,certificate,true,,TLSv1.3,Google Trust Services,2026-09-06,2026-12-05,90,77,EC,256,2,true
+193,adsafeprotected.com,,no_certificate:refused
+194,nflxso.net,,no_certificate:dns
+195,lencr.org,lencr.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-04,2026-12-03,90,76,EC,256,10,false
+196,bytefcdn-oversea.com,,no_certificate:dns
+197,rubiconproject.com,rubiconproject.com,certificate,true,,TLSv1.3,Amazon,2026-05-20,2026-12-03,198,76,RSA,2048,1,false
+198,creativecommons.org,creativecommons.org,certificate,true,,TLSv1.3,Google Trust Services,2026-08-31,2026-11-29,90,72,EC,256,2,true
+199,medium.com,medium.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-05,2026-12-04,90,77,EC,256,2,true
+200,cnn.com,cnn.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-09-03,2027-03-21,199,183,EC,384,2,true
+201,vungle.com,,no_certificate:refused
+202,duckdns.org,duckdns.org,certificate,true,,TLSv1.2,Amazon,2026-06-30,2027-01-13,198,117,RSA,2048,2,false
+203,theguardian.com,theguardian.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-18,2027-03-05,199,167,RSA,2048,33,true
+204,ttdns2.com,,no_certificate:dns
+205,oracle.com,oracle.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-04,2026-12-19,199,92,RSA,2048,85,false
+206,taboola.com,,no_certificate:refused
+207,lsrelayaccess.com,,no_certificate:timeout
+208,ebay.com,ebay.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-05-20,2026-12-04,199,77,RSA,2048,37,false
+209,shifen.com,www.shifen.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,GlobalSign nv-sa,2026-07-09,2027-01-24,199,127,RSA,2048,53,true
+210,ksyuncdn.com,,no_certificate:dns
+211,t-online.de,t-online.de,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-14,2026-11-12,90,54,EC,256,95,false
+212,doi.org,doi.org,certificate,true,,TLSv1.3,Google Trust Services,2026-09-14,2026-12-13,90,86,EC,256,2,true
+213,youtube-nocookie.com,youtube-nocookie.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,RSA,2048,65,true
+214,bbc.com,bbc.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-21,2027-01-24,156,127,RSA,2048,22,false
+215,forbes.com,forbes.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2025-11-10,2026-12-12,397,85,RSA,2048,1,false
+216,ailawandorder.com,ailawandorder.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,Let's Encrypt,2026-07-26,2026-10-24,90,35,EC,256,2,false
+217,fastly-edge.com,,no_certificate:dns
+218,sciencedirect.com,sciencedirect.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-26,2026-11-24,90,67,EC,256,3,true
+219,sfx.ms,,no_certificate:dns
+220,capcutapi.com,,no_certificate:dns
+221,twitch.tv,twitch.tv,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-24,2026-11-09,199,52,RSA,2048,2,true
+222,cdngslb.com,,no_certificate:timeout
+223,gmail.com,gmail.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+224,researchgate.net,researchgate.net,certificate,true,,TLSv1.3,Google Trust Services,2026-08-16,2026-11-14,90,57,EC,256,2,true
+225,akamaized.net,,no_certificate:dns
+226,mit.edu,mit.edu,certificate,true,,TLSv1.2,DigiCert Inc,2026-04-29,2026-11-13,199,56,RSA,2048,34,false
+227,pages.dev,pages.dev,certificate,true,,TLSv1.3,Google Trust Services,2026-07-21,2026-10-19,90,30,EC,256,2,true
+228,ozon.ru,ozon.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-10-03,2026-11-04,397,47,RSA,2048,4,true
+229,yandexcloud.net,,no_certificate:dns
+230,miui.com,miui.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-11-29,2026-12-30,397,103,RSA,2048,2,false
+231,pki.goog,pki.goog,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+232,userapi.com,userapi.com,certificate,true,,TLSv1.3,Hellenic Academic and Research Institutions CA,2026-07-23,2027-02-07,199,141,RSA,2048,20,true
+233,ubuntu.com,ubuntu.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-16,2026-12-15,90,87,RSA,2048,2,false
+234,nr-data.net,,no_certificate:refused
+235,azureedge.net,www.azureedge.net,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-28,2027-02-24,180,158,EC,256,1,true
+236,bbc.co.uk,bbc.co.uk,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-21,2027-01-24,156,127,RSA,2048,22,false
+237,nist.gov,nist.gov,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-30,2026-11-28,90,70,EC,256,2,true
+238,stripe.com,stripe.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-28,2026-11-12,108,55,EC,256,2,false
+239,playstation.net,,no_certificate:dns
+240,pubmatic.com,,no_certificate:refused
+241,cpanel.net,cpanel.net,certificate,true,,TLSv1.3,Sectigo Limited,2026-01-07,2027-01-26,385,130,RSA,2048,2,true
+242,t.co,t.co,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-06,2026-12-05,90,77,EC,256,1,false
+243,canva.com,canva.com,certificate,true,,TLSv1.3,Amazon,2025-11-18,2026-12-17,395,90,RSA,2048,1,false
+244,wsdvs.com,,no_certificate:dns
+245,adsrvr.org,,no_certificate:refused
+246,rbxcdn.com,,no_certificate:dns
+247,meraki.com,meraki.com,certificate,true,,TLSv1.3,Amazon,2026-08-29,2027-03-14,198,177,RSA,2048,2,false
+248,imcmdb.net,,no_certificate:timeout
+249,sourceforge.net,sourceforge.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-12,2026-11-10,90,53,EC,256,3,true
+250,comcast.net,comcast.net,certificate,true,,TLSv1.2,Sectigo Limited,2026-06-24,2027-01-08,199,112,RSA,2048,1,false
+251,omtrdc.net,www.omtrdc.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,DigiCert Inc,2025-11-05,2026-12-06,397,79,RSA,2048,25,false
+252,roku.com,roku.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-15,2026-12-14,90,87,EC,256,2,false
+253,cisco.com,cisco.com,certificate,true,,TLSv1.2,IdenTrust,2026-09-03,2027-03-21,199,184,RSA,2048,17,false
+254,wikimedia.org,wikimedia.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-05,2026-11-03,90,46,EC,256,41,true
+255,ripn.net,,no_certificate:dns
+256,android.com,android.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+257,telegram.org,telegram.org,certificate,true,,TLSv1.3,GoDaddy.com,2026-08-25,2027-03-11,198,174,RSA,2048,2,true
+258,hubspot.com,hubspot.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,83,EC,256,2,true
+259,alidns.com,alidns.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-09-08,2027-03-26,199,188,EC,256,435,true
+260,hcaptcha.com,hcaptcha.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-13,2026-11-11,90,53,EC,256,3,true
+261,adnxs.com,,no_certificate:refused
+262,alibabadns.com,,no_certificate:dns
+263,scorecardresearch.com,scorecardresearch.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-06,2026-10-21,199,33,RSA,2048,2,true
+264,booking.com,booking.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-18,2026-10-30,317,42,RSA,2048,2,true
+265,imdb.com,imdb.com,certificate,true,,TLSv1.3,Amazon,2026-08-05,2027-02-18,198,153,RSA,2048,10,false
+266,who.int,who.int,certificate,true,,TLSv1.3,Google Trust Services,2026-07-31,2026-10-29,90,41,EC,256,1,false
+267,statsigapi.net,statsigapi.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-04,2026-11-02,90,45,RSA,2048,3,false
+268,name-services.com,,no_certificate:dns
+269,media-amazon.com,,no_certificate:dns
+270,forter.com,,no_certificate:refused
+271,wixsite.com,www.wixsite.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-08,2026-11-06,90,49,RSA,2048,6,true
+272,linktr.ee,linktr.ee,certificate,true,,TLSv1.2,Let's Encrypt,2026-08-29,2026-11-27,90,69,RSA,2048,1,false
+273,launchpad.net,launchpad.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-04,2026-12-03,90,75,RSA,2048,21,false
+274,ttvnw.net,,no_certificate:dns
+275,spov-msedge.net,,no_certificate:dns
+276,facebook.net,,no_certificate:dns
+277,amon.tech,amon.tech,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2026-02-16,2027-03-19,397,182,EC,256,2,true
+278,ibm.com,ibm.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-10-17,2026-10-17,366,29,EC,256,24,false
+279,mangosip.ru,,no_certificate:timeout
+280,aliyuncsslbintl.com,,no_certificate:dns
+281,msedge.net,,no_certificate:timeout
+282,reuters.com,reuters.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-09-03,2027-03-20,199,183,RSA,2048,171,true
+283,2mdn.net,,no_certificate:dns
+284,shiabank.com,,no_certificate:reset
+285,dnsmadeeasy.com,dnsmadeeasy.com,certificate,true,,TLSv1.3,"DigiCert, Inc.",2026-09-17,2026-11-02,47,45,RSA,2048,2,false
+286,appsflyer.com,appsflyer.com,certificate,true,,TLSv1.2,Amazon,2026-01-12,2027-02-09,394,144,RSA,2048,2,false
+287,telecid.ru,,no_certificate:refused
+288,etsy.com,etsy.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2025-11-03,2026-12-05,397,78,RSA,2048,8,true
+289,springer.com,springer.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,65,RSA,2048,1,false
+290,telegram.me,telegram.me,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-09-19,2026-10-21,397,33,RSA,2048,2,true
+291,tinyurl.com,tinyurl.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-12-03,90,76,EC,256,2,true
+292,drom.ru,drom.ru,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-01-06,2027-02-07,397,141,RSA,2048,6,true
+293,mzstatic.com,mzstatic.com,certificate,true,,TLSv1.3,Apple Inc.,2026-09-15,2026-12-08,84,81,EC,256,46,false
+294,salesforce.com,salesforce.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-18,2026-10-02,199,14,EC,256,73,false
+295,hp.com,hp.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-16,2027-01-30,199,134,RSA,2048,97,false
+296,tiktokcdn-us.com,,no_certificate:dns
+297,namecheap.com,namecheap.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-12-18,2027-01-09,388,113,EC,384,2,false
+298,amplitude.com,amplitude.com,certificate,true,,TLSv1.2,Amazon,2025-12-02,2026-12-30,394,103,RSA,2048,2,true
+299,nature.com,nature.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,65,RSA,2048,1,false
+300,crpt.ru,crpt.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-06,2026-11-04,90,47,RSA,2048,3,false
+301,byteoversea.net,,no_certificate:dns
+302,dell.com,dell.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-08-13,2027-02-27,199,162,RSA,2048,1,false
+303,inmobi.com,inmobi.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-08-10,2027-02-24,199,159,RSA,2048,7,false
+304,jsdelivr.net,,no_certificate:timeout
+305,steampowered.com,steampowered.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-14,2026-10-12,90,24,RSA,2048,48,false
+306,weibo.com,weibo.com,certificate,true,,TLSv1.3,"DigiCert, Inc.",2026-05-07,2026-11-21,199,64,EC,256,64,true
+307,autodesk.com,autodesk.com,certificate,true,,TLSv1.3,Amazon,2026-05-15,2026-11-28,198,71,RSA,2048,34,false
+308,www.gov.uk,www.gov.uk,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-26,2026-12-28,397,101,RSA,2048,13,true
+309,clarity.ms,,no_certificate:refused
+310,avast.com,avast.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-07-20,2027-02-03,199,138,RSA,2048,19,false
+311,ok.ru,ok.ru,certificate,true,,TLSv1.3,Hellenic Academic and Research Institutions CA,2025-11-07,2026-11-07,365,49,RSA,2048,42,true
+312,wac-msedge.net,,no_certificate:dns
+313,alibaba.com,alibaba.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-09-08,2027-03-26,199,188,EC,256,435,true
+314,weather.com,weather.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-01-05,2027-01-05,366,109,EC,256,24,true
+315,samsungcloud.com,samsungcloud.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-09-07,2027-03-24,199,187,RSA,2048,2,true
+316,arubanetworks.com,arubanetworks.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2026-08-21,2027-03-07,199,170,RSA,2048,1,false
+317,harvard.edu,harvard.edu,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-10,2026-12-09,90,81,EC,256,2,false
+318,debian.org,debian.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-20,2026-11-18,90,60,RSA,2048,2,false
+319,wiley.com,wiley.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-11,2026-11-24,379,67,RSA,2048,2,false
+320,ea.com,ea.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-24,2026-12-25,397,98,RSA,2048,100,true
+321,mozilla.com,mozilla.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-26,2026-10-24,90,35,RSA,2048,1,false
+322,mtgglobals.com,,no_certificate:refused
+323,douyincdn.com,,no_certificate:dns
+324,samsungqbe.com,,no_certificate:dns
+325,heytapmobile.com,,no_certificate:dns
+326,shalltry.com,shalltry.com,certificate,true,,TLSv1.3,Amazon,2026-04-24,2026-11-07,198,50,RSA,2048,2,false
+327,php.net,php.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-20,2026-11-18,90,60,EC,256,2,true
+328,datadoghq.com,datadoghq.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-08,2027-03-25,199,188,RSA,2048,2,true
+329,akamaihd.net,,no_certificate:dns
+330,aliyun.com,aliyun.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-08-12,2027-02-26,199,161,EC,256,236,true
+331,googleblog.com,googleblog.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,328,true
+332,amazon.co.uk,amazon.co.uk,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-18,198,61,RSA,2048,47,true
+333,hostinger.com,hostinger.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-02-02,2027-03-04,396,167,RSA,2048,2,true
+334,myshopify.com,myshopify.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-05,2026-12-04,90,77,EC,256,2,true
+335,trueconf.net,trueconf.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,GlobalSign nv-sa,2026-02-05,2027-03-09,397,172,RSA,2048,2,true
+336,spaceweb.pro,,no_certificate:reset
+337,worldnic.com,,no_certificate:timeout
+338,twc.com,www.twc.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-15,2026-10-31,199,43,EC,256,17,false
+339,awswaf.com,,no_certificate:dns
+340,smartadserver.com,,no_certificate:refused
+341,name.com,name.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-28,2026-10-26,90,38,EC,256,2,true
+342,crashlytics.com,crashlytics.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+343,bilibili.com,bilibili.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-11,2026-12-13,397,85,RSA,2048,3,true
+344,mobile.de,mobile.de,certificate,true,,TLSv1.3,Amazon,2025-11-05,2026-12-04,395,77,RSA,2048,2,true
+345,tbcache.com,,no_certificate:timeout
+346,gnu.org,,no_certificate:timeout
+347,trustpilot.com,trustpilot.com,certificate,true,,TLSv1.2,Amazon,2025-11-01,2026-11-29,394,72,RSA,2048,2,true
+348,doubleverify.com,,no_certificate:refused
+349,naver.com,naver.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-03,2026-12-02,90,74,EC,256,13,false
+350,inner-active.mobi,,no_certificate:refused
+351,slack.com,slack.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-06,2026-11-04,90,46,RSA,2048,2,true
+352,checkpoint.com,checkpoint.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-06-17,2027-01-02,199,105,RSA,2048,2,true
+353,media.net,media.net,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-14,2027-02-28,199,163,RSA,2048,2,true
+354,vecdnlb.com,,no_certificate:dns
+355,edgcdn.net,,no_certificate:dns
+356,licdn.com,www.licdn.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2026-09-02,2027-03-02,182,165,RSA,2048,24,false
+357,opendns.com,opendns.com,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-12,2026-12-11,90,84,RSA,2048,2,false
+358,un.org,un.org,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-09-04,2027-03-22,199,185,RSA,2048,2,true
+359,selectel.ru,selectel.ru,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-17,2026-12-16,90,89,RSA,2048,4,false
+360,casalemedia.com,,no_certificate:refused
+361,cdc.gov,cdc.gov,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-02,2027-03-19,199,182,EC,256,2,true
+362,hostgator.com,hostgator.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-25,2026-11-23,90,66,EC,256,2,true
+363,allawnos.com,,no_certificate:dns
+364,tradingview.com,tradingview.com,certificate,true,,TLSv1.3,Amazon,2025-12-12,2027-01-10,395,114,RSA,2048,2,true
+365,washingtonpost.com,washingtonpost.com,certificate,true,,TLSv1.3,Entrust Limited,2025-09-05,2026-10-05,396,17,EC,256,10,false
+366,weebly.com,weebly.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-08,2026-11-06,90,49,EC,256,2,true
+367,nvidia.com,nvidia.com,certificate,true,,TLSv1.2,Amazon,2026-07-17,2027-01-30,198,134,RSA,2048,10,false
+368,zendesk.com,zendesk.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-26,2026-11-24,90,67,EC,256,2,true
+369,live-video.net,live-video.net,certificate,true,,TLSv1.3,Amazon,2026-08-14,2027-02-28,198,163,RSA,2048,1,false
+370,dnspod.net,,no_certificate:dns
+371,indeed.com,indeed.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-03,2026-12-02,90,75,EC,256,2,false
+372,issuu.com,issuu.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-31,2027-03-18,199,181,RSA,2048,2,true
+373,wsj.com,wsj.com,certificate,true,,TLSv1.3,Amazon,2026-06-05,2026-12-19,198,92,RSA,2048,3,false
+374,cookiedatabase.org,cookiedatabase.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-03,2026-12-02,90,75,EC,256,2,true
+375,samsungcloudsolution.com,,no_certificate:dns
+376,bloomberg.com,bloomberg.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-23,2027-01-29,191,133,RSA,2048,51,false
+377,calendly.com,calendly.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-04,2026-12-03,90,76,EC,256,4,true
+378,cdnbuild.net,,no_certificate:dns
+379,stanford.edu,stanford.edu,certificate,true,,TLSv1.2,Internet2,2026-04-22,2026-11-06,199,49,RSA,2048,4,true
+380,tiktokv.us,,no_certificate:dns
+381,volcfcdndvs.com,,no_certificate:dns
+382,ip-api.com,ip-api.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-02-06,2027-03-09,397,172,RSA,2048,2,true
+383,gitlab.com,gitlab.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-26,2026-11-10,199,53,RSA,2048,6,false
+384,virginm.net,,no_certificate:dns
+385,mi.com,mi.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-10-02,2026-11-01,396,44,RSA,2048,2,false
+386,plesk.com,plesk.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-22,2026-11-20,90,63,EC,256,2,true
+387,online-metrix.net,,no_certificate:dns
+388,newrelic.com,newrelic.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-02-09,2027-02-08,365,143,RSA,2048,2,true
+389,yandex.com,yandex.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-01,2026-12-29,181,102,EC,256,52,true
+390,paloaltonetworks.com,paloaltonetworks.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-03,2026-11-17,199,60,RSA,2048,38,false
+391,amazontrust.com,amazontrust.com,certificate,true,,TLSv1.3,Amazon,2026-07-24,2027-02-06,198,141,RSA,2048,4,false
+392,amazon.de,amazon.de,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-18,198,61,RSA,2048,47,true
+393,launchdarkly.com,launchdarkly.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-16,2026-11-14,90,57,EC,256,5,false
+394,tp-link.com,tp-link.com,certificate,true,,TLSv1.3,Amazon,2026-06-19,2027-01-02,198,106,RSA,2048,2,true
+395,shopifysvc.com,,no_certificate:dns
+396,netangels.ru,netangels.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-27,2026-11-25,90,68,RSA,2048,1,false
+397,ibyteimg.com,,no_certificate:dns
+398,demdex.net,,no_certificate:refused
+399,xcal.tv,,no_certificate:dns
+400,bsky.app,bsky.app,certificate,true,,TLSv1.2,Amazon,2026-01-14,2027-02-12,395,147,RSA,2048,1,false
+401,gandi-ns.fr,,no_certificate:dns
+402,vivoglobal.com,vivoglobal.com,certificate,true,,TLSv1.2,"DigiCert, Inc.",2025-10-10,2026-11-09,396,52,EC,256,2,true
+403,espn.com,espn.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-11-10,2026-11-10,366,53,RSA,2048,98,true
+404,ipify.org,ipify.org,certificate,true,,TLSv1.3,Google Trust Services,2026-08-26,2026-11-24,90,66,EC,256,2,true
+405,onelink.me,onelink.me,certificate,true,,TLSv1.3,Amazon,2026-07-21,2027-02-03,198,138,RSA,2048,2,false
+406,vkuser.net,,no_certificate:timeout
+407,rocket-cdn.com,,no_certificate:dns
+408,kwai-pro.com,www.kwai-pro.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-18,2027-02-22,188,156,RSA,2048,2,true
+409,nasa.gov,nasa.gov,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-11,2026-11-09,90,52,EC,256,2,false
+410,aliexpress.com,aliexpress.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-05-18,2026-12-03,199,76,EC,256,92,true
+411,quickconnect.to,quickconnect.to,certificate,true,,TLSv1.2,Sectigo Limited,2026-01-09,2027-02-09,397,144,RSA,2048,2,true
+412,walmart.com,walmart.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-27,2027-02-11,199,145,EC,256,7,false
+413,nflxvideo.net,,no_certificate:tls
+414,wildberries.ru,wildberries.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-02,2026-10-31,90,42,EC,256,2,true
+415,globo.com,globo.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-02,2026-12-01,90,73,RSA,2048,1,false
+416,prodregistryv2.org,prodregistryv2.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-11,2026-11-09,90,51,RSA,2048,2,false
+417,unsplash.com,unsplash.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2025-12-08,2027-01-09,397,113,RSA,2048,1,false
+418,163.com,163.com,certificate,true,,TLSv1.2,"DigiCert, Inc.",2026-04-09,2026-10-24,199,36,RSA,2048,2,true
+419,heytapdl.com,,no_certificate:dns
+420,expireddomains.com,expireddomains.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-02,2026-09-30,90,11,EC,256,1,false
+421,ezvizlife.com,ezvizlife.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-05-29,2026-12-14,199,86,RSA,2048,2,true
+422,line.me,line.me,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-14,2027-03-01,199,163,RSA,2048,2,true
+423,brave.com,brave.com,certificate,true,,TLSv1.3,Amazon,2026-08-21,2027-03-06,198,169,RSA,2048,3,false
+424,tiktokv.eu,,no_certificate:dns
+425,google.cn,google.cn,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,81,true
+426,dailymotion.com,dailymotion.com,certificate,true,,TLSv1.3,ZeroSSL GmbH,2026-07-27,2026-10-25,91,37,RSA,2048,2,true
+427,steamcommunity.com,steamcommunity.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-14,2026-10-12,90,24,RSA,2048,48,false
+428,amazonalexa.com,amazonalexa.com,certificate,true,,TLSv1.2,Amazon,2026-08-20,2027-03-05,198,168,RSA,2048,12,false
+429,supercell.com,supercell.com,certificate,true,,TLSv1.3,Amazon,2026-07-04,2027-01-17,198,121,RSA,2048,2,false
+430,tiktokcdn-eu.com,,no_certificate:dns
+431,temu.com,temu.com,certificate,true,,TLSv1.3,GoDaddy.com,2026-07-15,2027-01-29,198,132,RSA,2048,2,true
+432,beian.gov.cn,,no_certificate:dns
+433,chinamobile.com,,no_certificate:timeout
+434,huawei.com,huawei.com,certificate,true,,TLSv1.2,Actalis S.p.A.,2026-05-12,2026-11-27,199,69,RSA,2048,2,true
+435,kaspersky-labs.com,www.kaspersky-labs.com,certificate,false,UNABLE_TO_GET_ISSUER_CERT_LOCALLY,TLSv1.3,Kaspersky Lab,2026-09-15,2026-10-15,30,27,EC,384,68,false
+436,claude.ai,claude.ai,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-10,2026-12-09,90,82,EC,256,3,false
+437,avcdn.net,www.avcdn.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,DigiCert Inc,2025-12-22,2026-12-22,366,95,EC,256,5,true
+438,pangle.io,,no_certificate:refused
+439,taobao.com,taobao.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-05-07,2026-11-22,199,64,EC,256,364,true
+440,intel.com,intel.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-09-03,2026-12-02,91,75,RSA,2048,59,false
+441,kwaipros.com,www.kwaipros.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-03-13,2027-04-14,397,207,RSA,2048,2,true
+442,byteglb.com,,no_certificate:dns
+443,dotaplabs.net,,no_certificate:dns
+444,go.com,go.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-08-26,2027-03-12,199,175,RSA,2048,200,true
+445,awsglobalaccelerator.com,,no_certificate:dns
+446,dropcatch.com,dropcatch.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-16,2026-12-15,90,87,EC,256,2,true
+447,netease.com,netease.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,"iTrusChina Co., Ltd.",2026-01-04,2027-02-03,395,137,RSA,2048,2,true
+448,wbx2.com,,no_certificate:timeout
+449,goodreads.com,goodreads.com,certificate,true,,TLSv1.3,Amazon,2026-07-18,2027-01-31,198,135,RSA,2048,3,false
+450,ipinfo.io,ipinfo.io,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-15,2026-12-14,90,87,RSA,2048,3,true
+451,substack.com,substack.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-22,2026-10-20,90,32,EC,256,2,true
+452,timeweb.ru,timeweb.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-06-17,2027-01-02,199,106,RSA,2048,2,true
+453,skyhigh.cloud,skyhigh.cloud,certificate,true,,TLSv1.3,Sectigo Limited,2026-01-28,2027-01-28,366,132,RSA,4096,3,false
+454,myqcloud.com,,no_certificate:timeout
+455,cloudns.net,cloudns.net,certificate,true,,TLSv1.3,Sectigo Limited,2025-09-30,2026-10-29,395,41,RSA,4096,2,true
+456,yahoo.co.jp,yahoo.co.jp,certificate,true,,TLSv1.3,"Cybertrust Japan Co., Ltd.",2026-08-07,2027-02-21,198,156,RSA,2048,95,true
+457,enacdn.net,,no_certificate:dns
+458,businessinsider.com,businessinsider.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-02-11,2027-03-15,397,178,RSA,2048,1,false
+459,sina.com.cn,sina.com.cn,certificate,true,,TLSv1.3,"DigiCert, Inc.",2025-12-02,2026-12-30,394,103,EC,256,62,true
+460,gcdn.co,,no_certificate:tls
+461,adobe.net,adobe.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,DigiCert Inc,2025-11-05,2026-12-06,397,79,RSA,2048,25,false
+462,wp.com,wp.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-01,2026-10-30,90,42,EC,256,2,true
+463,tencent-cloud.net,,no_certificate:timeout
+464,pixabay.com,pixabay.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,82,EC,256,3,true
+465,edgecdn.ru,,no_certificate:tls
+466,aol.com,aol.com,certificate,true,,TLSv1.3,Amazon,2026-05-26,2026-12-09,198,82,RSA,2048,1,false
+467,avsxappcaptiveportal.com,,no_certificate:timeout
+468,speedtest.net,speedtest.net,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-10-07,2026-11-08,397,51,RSA,2048,16,true
+469,g.page,g.page,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,328,true
+470,cloudflareinsights.com,cloudflareinsights.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-14,2026-11-12,90,54,EC,256,2,true
+471,vercel-dns-016.com,www.vercel-dns-016.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-12,2026-12-11,90,84,RSA,2048,2,true
+472,eye4.cn,eye4.cn,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-02,2027-03-03,395,166,RSA,2048,2,true
+473,gamepass.com,gamepass.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Microsoft Corporation,2026-08-26,2026-12-04,100,77,RSA,2048,1,false
+474,duolingo.com,duolingo.com,certificate,true,,TLSv1.2,Amazon,2025-11-25,2026-12-24,395,97,RSA,2048,1,false
+475,mikrotik.com,mikrotik.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-01-05,2027-02-05,397,140,RSA,2048,5,false
+476,bluehost.com,bluehost.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-05,2026-12-04,90,77,EC,256,3,true
+477,nflximg.com,www.nflximg.com,certificate,false,SELF_SIGNED_CERT_IN_CHAIN,TLSv1.3,Netflix Inc,2026-09-18,2026-09-25,7,6,EC,256,20,false
+478,sohu.com,sohu.com,certificate,true,,TLSv1.3,"DigiCert, Inc.",2026-07-14,2027-01-28,199,132,RSA,2048,2,true
+479,arxiv.org,arxiv.org,certificate,true,,TLSv1.3,Certainly,2026-09-15,2026-10-15,30,26,RSA,2048,2,true
+480,firetvcaptiveportal.com,,no_certificate:timeout
+481,dual-s-msedge.net,,no_certificate:dns
+482,ack.de,ack.de,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-02,2026-12-01,90,73,EC,384,2,false
+483,cnbc.com,cnbc.com,certificate,true,,TLSv1.3,Amazon,2026-07-28,2027-02-10,198,145,RSA,2048,2,true
+484,kwai.net,,no_certificate:timeout
+485,bdydns.com,,no_certificate:dns
+486,statista.com,statista.com,certificate,true,,TLSv1.3,Amazon,2026-05-12,2026-11-25,198,68,RSA,2048,46,true
+487,list-manage.com,,no_certificate:timeout
+488,addtoany.com,addtoany.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-11,2026-11-09,90,51,EC,256,2,false
+489,ietf.org,ietf.org,certificate,true,,TLSv1.3,Google Trust Services,2026-09-18,2026-12-17,90,89,EC,256,2,false
+490,okta.com,okta.com,certificate,true,,TLSv1.3,Amazon,2025-11-03,2026-12-02,395,75,RSA,2048,3,false
+491,nease.net,,no_certificate:timeout
+492,sc-gw.com,,no_certificate:dns
+493,atlassian.net,atlassian.net,certificate,true,,TLSv1.3,Amazon,2026-07-24,2027-02-06,198,141,RSA,2048,8,true
+494,duckduckgo.com,duckduckgo.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-19,199,62,RSA,2048,2,true
+495,quora.com,quora.com,certificate,true,,TLSv1.2,Google Trust Services,2026-07-29,2026-10-27,90,38,RSA,2048,11,true
+496,adriver.ru,adriver.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-03,2026-10-19,199,30,RSA,2048,2,true
+497,mcafee.com,mcafee.com,certificate,true,,TLSv1.2,"McAfee, Inc.",2025-11-06,2026-11-06,366,49,RSA,2048,14,false
+498,amazon.co.jp,amazon.co.jp,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-18,198,61,RSA,2048,47,true
+499,markmonitor.com,markmonitor.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-15,2026-11-29,199,72,RSA,2048,2,false
+500,scribd.com,scribd.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-26,2026-11-24,90,67,RSA,2048,2,true
+501,dynatrace.com,dynatrace.com,certificate,true,,TLSv1.3,Amazon,2026-06-25,2027-01-08,198,112,RSA,2048,84,false
+502,ivi.ru,ivi.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-02-02,2027-03-06,397,169,RSA,2048,2,true
+503,impervadns.net,,no_certificate:dns
+504,npr.org,npr.org,certificate,true,,TLSv1.3,Amazon,2026-01-31,2027-03-01,395,164,RSA,2048,2,true
+505,shein.com,shein.com,certificate,true,,TLSv1.3,"DigiCert, Inc.",2026-07-21,2027-01-21,185,125,RSA,2048,2,true
+506,mediatek.com,mediatek.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-02-26,2027-03-30,397,192,RSA,2048,2,true
+507,docker.com,docker.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-30,2026-10-28,90,39,RSA,2048,2,false
+508,run.app,run.app,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,105,true
+509,libp2p.direct,,no_certificate:dns
+510,stackoverflow.com,stackoverflow.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-15,2026-11-13,90,56,EC,256,2,true
+511,eventbrite.com,eventbrite.com,certificate,true,,TLSv1.3,Amazon,2026-06-13,2026-12-27,198,100,RSA,2048,66,true
+512,behance.net,behance.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-05,2026-12-04,90,76,RSA,2048,2,true
+513,google.de,google.de,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+514,foxnews.com,foxnews.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-24,2027-02-24,366,159,EC,256,43,true
+515,gosuslugi.ru,,no_certificate:timeout
+516,ampproject.org,ampproject.org,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,328,true
+517,indiatimes.com,indiatimes.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-28,2027-01-05,162,109,EC,256,60,false
+518,amzn.to,amzn.to,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-29,2026-11-27,90,69,RSA,2048,1,false
+519,mysql.com,mysql.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-04,2026-12-19,199,92,RSA,2048,85,false
+520,exp-tas.com,,no_certificate:dns
+521,ngenix.net,ngenix.net,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-22,2026-11-07,199,49,RSA,2048,2,true
+522,ipv4only.arpa,,no_certificate:timeout
+523,amazon.co.za,amazon.co.za,certificate,true,,TLSv1.3,Amazon,2026-06-19,2027-01-02,198,106,RSA,2048,3,false
+524,tplinkcloud.com,tplinkcloud.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-09-16,2026-10-17,397,29,RSA,2048,2,true
+525,discord.media,discord.media,certificate,true,,TLSv1.3,Google Trust Services,2026-07-23,2026-10-21,90,32,EC,256,2,true
+526,fandom.com,fandom.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-14,2026-11-12,90,55,EC,256,2,true
+527,adobedtm.com,,no_certificate:dns
+528,ft.com,ft.com,certificate,true,,TLSv1.3,Amazon,2026-05-28,2026-12-11,198,84,RSA,2048,1,false
+529,squarespacedns.com,,no_certificate:dns
+530,trendmicro.com,trendmicro.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-09-17,2027-04-03,199,197,EC,256,2,false
+531,elasticbeanstalk.com,,no_certificate:timeout
+532,slideshare.net,slideshare.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-07,2026-12-06,90,79,RSA,2048,2,true
+533,icloud-content.com,icloud-content.com,certificate,true,,TLSv1.3,Apple Inc.,2026-08-26,2026-11-24,90,66,RSA,2048,57,false
+534,ui-dns.com,,no_certificate:dns
+535,capcut.com,capcut.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-04-13,2026-10-28,199,40,EC,256,2,true
+536,noaa.gov,noaa.gov,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-01,2026-11-30,90,72,RSA,2048,1,false
+537,visualstudio.com,visualstudio.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-28,2026-12-06,100,78,RSA,2048,4,true
+538,share.google,share.google,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+539,on.aws,,no_certificate:dns
+540,openx.net,,no_certificate:refused
+541,google.com.hk,google.com.hk,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+542,firefox.com,firefox.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-08,2026-12-07,90,80,RSA,2048,1,false
+543,oup.com,oup.com,certificate,true,,TLSv1.2,Amazon,2026-07-26,2027-02-08,198,143,RSA,2048,2,true
+544,squarespace.com,squarespace.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-10,2027-03-03,387,166,RSA,2048,14,true
+545,whecloud.com,,no_certificate:dns
+546,adobedc.net,,no_certificate:dns
+547,shop.app,shop.app,certificate,true,,TLSv1.3,Google Trust Services,2026-09-02,2026-12-01,90,73,EC,256,1,false
+548,jquery.com,jquery.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-12-03,90,76,EC,256,2,true
+549,fast.com,fast.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-03-25,2026-10-09,199,21,RSA,2048,2,false
+550,wired.com,wired.com,certificate,true,,TLSv1.3,Amazon,2025-10-23,2026-11-21,395,64,RSA,2048,92,true
+551,netflix.net,netflix.net,certificate,true,,TLSv1.3,Google Trust Services,2026-07-28,2026-10-26,90,38,EC,256,1,false
+552,azure-dns.com,,no_certificate:dns
+553,spo-msedge.net,,no_certificate:dns
+554,vidaahub.com,,no_certificate:dns
+555,blogger.com,blogger.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,4,true
+556,skybridge.click,skybridge.click,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-16,2026-11-14,90,57,EC,256,1,false
+557,tandfonline.com,tandfonline.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-17,2026-12-16,90,88,EC,256,1,false
+558,svc.ms,www.svc.ms,certificate,true,,TLSv1.3,Microsoft Corporation,2025-12-09,2026-12-04,360,77,RSA,2048,12,true
+559,palmplaystore.com,palmplaystore.com,certificate,true,,TLSv1.2,"DigiCert, Inc.",2025-12-25,2027-01-23,395,127,EC,256,2,true
+560,live.net,,no_certificate:dns
+561,myhuaweicloud.com,www.myhuaweicloud.com,certificate,false,CERT_HAS_EXPIRED,TLSv1.2,DigiCert Inc,2018-11-14,2020-01-13,426,-2440,RSA,2048,2,true
+562,grammarly.com,grammarly.com,certificate,true,,TLSv1.3,Amazon,2026-06-23,2027-01-06,198,110,RSA,2048,2,false
+563,360yield.com,,no_certificate:refused
+564,oraclecloud.com,oraclecloud.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-04,2026-12-19,199,92,RSA,2048,85,false
+565,uol.com.br,uol.com.br,certificate,true,,TLSv1.2,DigiCert Inc,2026-02-20,2027-03-09,383,172,RSA,2048,2,false
+566,translate.goog,translate.goog,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,153,true
+567,mynetname.net,,no_certificate:dns
+568,eset.com,eset.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,65,RSA,3072,1,false
+569,time.com,time.com,certificate,true,,TLSv1.3,Certainly,2026-09-12,2026-10-12,30,24,RSA,2048,2,true
+570,rakuten.co.jp,rakuten.co.jp,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-26,2026-12-10,199,83,RSA,2048,2,true
+571,nstld.com,,no_certificate:dns
+572,hicloud.com,www.hicloud.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-07-23,2027-02-07,199,141,RSA,3072,22,true
+573,bitrix24.ru,bitrix24.ru,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-09-03,2026-10-05,397,16,RSA,2048,2,true
+574,digitalocean.com,digitalocean.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,82,EC,256,2,true
+575,deviantart.com,deviantart.com,certificate,true,,TLSv1.3,Amazon,2026-06-24,2027-01-07,198,111,RSA,2048,2,true
+576,qlivecdn.com,,no_certificate:dns
+577,cornell.edu,cornell.edu,certificate,true,,TLSv1.2,"InCommon, LLC",2026-06-04,2026-12-19,199,92,RSA,2048,1,false
+578,yahoodns.net,,no_certificate:dns
+579,t-msedge.net,,no_certificate:dns
+580,aboutads.info,aboutads.info,certificate,true,,TLSv1.3,Google Trust Services,2026-09-08,2026-12-07,90,80,EC,256,2,true
+581,cookielaw.org,cookielaw.org,certificate,true,,TLSv1.3,Google Trust Services,2026-07-22,2026-10-20,90,32,EC,256,2,true
+582,usatoday.com,usatoday.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-02,2026-10-31,90,42,RSA,2048,30,true
+583,teamviewer.com,teamviewer.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-16,2026-10-31,199,43,RSA,2048,2,true
+584,sberbank.ru,sberbank.ru,certificate,false,SELF_SIGNED_CERT_IN_CHAIN,TLSv1.3,The Ministry of Digital Development and Communications,2026-07-27,2027-07-27,365,311,RSA,2048,4,false
+585,target.com,target.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-24,2027-03-11,199,174,RSA,2048,68,false
+586,tripadvisor.com,tripadvisor.com,certificate,true,,TLSv1.3,Amazon,2026-08-19,2027-03-04,198,167,RSA,2048,44,false
+587,free.fr,free.fr,certificate,true,,TLSv1.3,Sectigo Limited,2026-08-03,2026-11-01,91,44,RSA,2048,2,true
+588,my.com,,no_certificate:dns
+589,rlcdn.com,,no_certificate:refused
+590,3lift.com,,no_certificate:refused
+591,bitdefender.net,bitdefender.net,certificate,true,,TLSv1.3,DigiCert Inc,2025-10-09,2026-11-09,397,52,RSA,2048,2,true
+592,hotjar.com,,no_certificate:refused
+593,klaviyo.com,klaviyo.com,certificate,true,,TLSv1.3,Amazon,2026-01-17,2027-02-15,395,150,RSA,2048,1,false
+594,dreamhost.com,dreamhost.com,certificate,true,,TLSv1.3,Amazon,2026-08-19,2027-03-04,198,167,RSA,2048,2,true
+595,ca.gov,ca.gov,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-10,2027-03-10,182,173,RSA,2048,1,false
+596,braze.com,braze.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-07,2026-11-05,90,47,EC,256,2,true
+597,vercel-dns-3.com,,no_certificate:dns
+598,imgsmail.ru,imgsmail.ru,certificate,true,,TLSv1.2,Let's Encrypt,2026-07-14,2026-10-12,90,23,RSA,2048,2,true
+599,bx-msedge.net,,no_certificate:dns
+600,easebar.com,,no_certificate:dns
+601,avito.ru,avito.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-12-23,2027-01-24,397,128,RSA,2048,2,true
+602,cdn20.com,,no_certificate:dns
+603,ieee.org,ieee.org,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-04-14,2026-10-30,199,42,RSA,2048,4,true
+604,berkeley.edu,berkeley.edu,certificate,true,,TLSv1.3,Google Trust Services,2026-08-13,2026-11-11,90,53,EC,256,1,false
+605,playstation.com,playstation.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-13,2026-12-28,199,101,RSA,2048,4,false
+606,force.com,force.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-18,2026-10-02,199,14,EC,256,73,false
+607,xiaomi.net,xiaomi.net,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,DigiCert Inc,2025-09-22,2026-10-22,396,34,RSA,2048,2,false
+608,openstreetmap.org,openstreetmap.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-02,2026-10-31,90,43,RSA,2048,12,false
+609,h264.io,,no_certificate:dns
+610,anthropic.com,anthropic.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-05,2026-12-04,90,77,EC,256,1,false
+611,footprintdns.com,,no_certificate:refused
+612,telegraph.co.uk,telegraph.co.uk,certificate,true,,TLSv1.3,Amazon,2025-10-20,2026-11-17,394,60,RSA,2048,1,false
+613,mdpi.com,mdpi.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-14,2026-12-15,367,88,EC,256,2,true
+614,threads.com,threads.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,RSA,2048,2,true
+615,scdn.co,www.scdn.co,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-12-14,2027-01-15,397,118,RSA,2048,1,true
+616,2gis.com,2gis.com,certificate,true,,TLSv1.3,ZeroSSL GmbH,2026-07-08,2026-10-06,91,18,EC,256,2,true
+617,cdnvideo.ru,cdnvideo.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-03,2026-12-02,90,75,RSA,2048,1,false
+618,pushy.io,pushy.io,certificate,true,,TLSv1.2,Amazon,2026-08-01,2027-02-14,198,149,RSA,2048,10,true
+619,samsungapps.com,,no_certificate:timeout
+620,nintendo.com,nintendo.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-11,2026-12-26,199,99,RSA,2048,2,true
+621,onetrust.com,onetrust.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,83,EC,256,3,true
+622,patreon.com,patreon.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,82,EC,256,2,true
+623,atlassian.com,atlassian.com,certificate,true,,TLSv1.3,Amazon,2026-07-27,2027-02-09,198,144,RSA,2048,54,true
+624,wswebcdn.com,,no_certificate:dns
+625,e2ro.com,,no_certificate:dns
+626,amazon.fr,amazon.fr,certificate,true,,TLSv1.3,Amazon,2026-08-04,2027-02-17,198,152,RSA,2048,9,true
+627,comcast.com,www.comcast.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-08-17,2027-03-03,199,166,RSA,2048,100,false
+628,accuweather.com,accuweather.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-16,2027-01-10,179,114,EC,256,2,true
+629,alicdn.com,,no_certificate:timeout
+630,wix.com,wix.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-08,2026-11-06,90,49,RSA,2048,6,true
+631,supertms.com,,no_certificate:dns
+632,mega.co.nz,mega.co.nz,certificate,true,,TLSv1.3,Sectigo Limited,2025-11-11,2026-12-11,396,84,RSA,2048,2,false
+633,sharethrough.com,,no_certificate:refused
+634,doctolib.fr,doctolib.fr,certificate,true,,TLSv1.3,Google Trust Services,2026-07-30,2026-10-28,90,39,EC,256,4,true
+635,unesco.org,unesco.org,certificate,true,,TLSv1.2,Let's Encrypt,2026-08-04,2026-11-02,90,44,EC,384,1,false
+636,ikea.com,ikea.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-26,2026-10-24,90,35,EC,256,1,false
+637,dyndns.org,dyndns.org,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-04,2026-12-17,317,90,RSA,2048,21,false
+638,nike.com,nike.com,certificate,true,,TLSv1.3,Amazon,2026-04-19,2026-11-02,198,45,RSA,2048,2,true
+639,branch.io,branch.io,certificate,true,,TLSv1.3,Amazon,2026-06-22,2027-01-05,198,109,RSA,2048,16,true
+640,msidentity.com,,no_certificate:dns
+641,tencent.com,www.tencent.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-06-09,2026-12-25,199,97,RSA,2048,12,false
+642,jotform.com,jotform.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-08-06,2027-02-20,199,155,RSA,2048,49,true
+643,withgoogle.com,www.withgoogle.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,46,true
+644,bytedns1.com,,no_certificate:dns
+645,xhamster.com,xhamster.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-24,2026-10-22,90,34,EC,256,1,false
+646,loc.gov,loc.gov,certificate,true,,TLSv1.3,Google Trust Services,2026-09-17,2026-12-17,90,89,EC,256,3,true
+647,vercel-dns-017.com,www.vercel-dns-017.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-10,2026-12-09,90,81,RSA,2048,2,true
+648,shopee.com.br,shopee.com.br,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-03-20,2026-10-05,199,16,RSA,2048,2,true
+649,amazon.ca,amazon.ca,certificate,true,,TLSv1.3,Amazon,2026-06-27,2027-01-10,198,114,RSA,2048,10,true
+650,ups.com,ups.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-04-20,2026-11-04,199,47,RSA,2048,97,false
+651,ovh.net,ovh.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-12,2026-12-11,90,84,RSA,4096,2,false
+652,sagepub.com,sagepub.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-14,2026-11-12,90,54,EC,256,2,true
+653,googletagservices.com,www.googletagservices.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,13,true
+654,techcrunch.com,techcrunch.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-23,2026-10-21,90,32,EC,256,2,false
+655,bidswitch.net,,no_certificate:refused
+656,vercel.app,vercel.app,certificate,true,,TLSv1.3,Google Trust Services,2026-08-28,2026-11-26,90,69,RSA,2048,2,true
+657,mhverifier.ru,mhverifier.ru,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Let's Encrypt,2026-08-12,2026-11-10,90,53,EC,256,2,true
+658,allegro.pl,allegro.pl,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-12,2027-02-26,199,161,RSA,2048,2,true
+659,browser-intake-datadoghq.com,,no_certificate:refused
+660,intercom.io,intercom.io,certificate,true,,TLSv1.3,Amazon,2025-11-13,2026-12-11,394,84,RSA,2048,4,true
+661,yelp.com,yelp.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-16,2026-12-05,355,78,RSA,2048,6,true
+662,ioref.io,,no_certificate:dns
+663,redhat.com,redhat.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-20,2027-03-06,199,169,RSA,4096,1,false
+664,britannica.com,britannica.com,certificate,true,,TLSv1.2,Amazon,2026-07-12,2027-01-25,198,129,RSA,2048,2,true
+665,stackadapt.com,,no_certificate:refused
+666,service.gov.uk,service.gov.uk,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-26,2026-12-28,397,101,RSA,2048,13,true
+667,telephony.goog,telephony.goog,certificate,true,,TLSv1.2,Google Trust Services,2026-09-15,2026-11-24,70,66,EC,256,50,true
+668,uk.com,uk.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-23,2026-10-21,90,32,RSA,2048,2,false
+669,vedsalb.com,,no_certificate:dns
+670,resolver.arpa,,no_certificate:dns
+671,elpais.com,elpais.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-02,2026-12-01,90,73,RSA,2048,67,false
+672,primevideo.com,primevideo.com,certificate,true,,TLSv1.3,Amazon,2026-07-29,2027-02-11,198,146,RSA,2048,3,false
+673,surveymonkey.com,surveymonkey.com,certificate,true,,TLSv1.3,Amazon,2025-10-28,2026-11-26,395,69,RSA,2048,31,true
+674,hstgr.net,,no_certificate:tls
+675,cmediahub.ru,www.cmediahub.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-12,2026-11-10,90,53,EC,256,2,true
+676,share-dns.com,www.share-dns.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-29,2026-10-27,90,38,EC,256,2,true
+677,ks-cdn.com,,no_certificate:dns
+678,anydesk.com,anydesk.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-12,2026-12-11,90,84,EC,256,2,true
+679,bunnyinfra.net,,no_certificate:dns
+680,linode.com,linode.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-18,2026-11-16,90,59,RSA,2048,29,false
+681,viber.com,viber.com,certificate,true,,TLSv1.3,Amazon,2026-07-08,2027-01-21,198,125,RSA,2048,4,true
+682,cambridge.org,cambridge.org,certificate,true,,TLSv1.2,Google Trust Services,2026-09-09,2026-12-08,90,80,EC,256,2,false
+683,pvp.net,,no_certificate:dns
+684,geobasket.ru,,no_certificate:dns
+685,dailymail.co.uk,dailymail.co.uk,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-01,2026-11-15,199,58,EC,256,2,true
+686,perplexity.ai,perplexity.ai,certificate,true,,TLSv1.3,Google Trust Services,2026-09-05,2026-12-04,90,76,EC,256,2,false
+687,xboxlive.com,xboxlive.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,Microsoft Corporation,2026-08-26,2026-12-04,100,77,RSA,2048,1,false
+688,360.cn,360.cn,certificate,true,,TLSv1.2,WoTrus CA Limited,2026-01-20,2027-02-20,397,155,RSA,2048,2,true
+689,optimizely.com,optimizely.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-22,2026-11-20,90,62,RSA,2048,1,false
+690,consultant.ru,consultant.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-12-23,2027-01-24,397,127,RSA,2048,2,true
+691,hihonorcloud.com,hihonorcloud.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-01-09,2027-02-10,397,144,RSA,2048,2,true
+692,googlezip.net,,no_certificate:dns
+693,outbrain.com,,no_certificate:refused
+694,amazon.in,amazon.in,certificate,true,,TLSv1.3,Amazon,2026-08-11,2027-02-24,198,159,RSA,2048,11,true
+695,typekit.net,,no_certificate:timeout
+696,dotomi.com,,no_certificate:refused
+697,imgur.com,imgur.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-02-13,2027-02-15,368,150,RSA,2048,2,true
+698,featureassets.org,featureassets.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-11,2026-11-09,90,51,RSA,2048,2,false
+699,wp.pl,wp.pl,certificate,true,,TLSv1.3,DigiCert Inc,2026-09-11,2027-03-17,188,180,RSA,2048,2,true
+700,vkontakte.ru,vkontakte.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-16,2026-10-14,90,25,RSA,2048,10,true
+701,twimg.com,,no_certificate:dns
+702,seznam.cz,seznam.cz,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-01,2026-10-30,90,41,RSA,4096,18,false
+703,alipaydns.com,alipaydns.com,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.2,"DigiCert, Inc.",2026-08-18,2027-03-04,199,167,RSA,2048,54,true
+704,wps.com,wps.com,certificate,true,,TLSv1.3,"DigiCert, Inc.",2026-09-15,2027-04-01,199,195,RSA,2048,2,true
+705,wpguardian.io,wpguardian.io,certificate,true,,TLSv1.3,Google Trust Services,2026-08-08,2026-11-06,90,48,EC,256,2,true
+706,cbsnews.com,cbsnews.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-02-03,2027-02-03,366,138,RSA,2048,2,true
+707,lemonde.fr,lemonde.fr,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-17,2026-11-15,90,57,RSA,2048,1,false
+708,fontawesome.com,fontawesome.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-12,2026-11-10,90,53,EC,256,2,true
+709,dailymail.com,dailymail.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-01,2026-11-15,199,58,EC,256,2,true
+710,kick.com,kick.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-06,2026-12-05,90,77,EC,256,2,true
+711,samsungacr.com,,no_certificate:refused
+712,id5-sync.com,,no_certificate:refused
+713,cdnhwc1.com,www.cdnhwc1.com,certificate,false,CERT_HAS_EXPIRED,TLSv1.2,DigiCert Inc,2018-11-14,2020-01-13,426,-2440,RSA,2048,2,true
+714,sophos.com,sophos.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-19,2026-11-17,90,59,RSA,2048,27,false
+715,ring.com,ring.com,certificate,true,,TLSv1.3,Amazon,2026-06-23,2027-01-06,198,110,RSA,2048,2,false
+716,fb.com,fb.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,RSA,2048,2,true
+717,att.com,att.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-02-20,2027-03-23,397,186,RSA,2048,2,false
+718,iso.org,iso.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-01,2026-11-30,90,72,EC,256,2,true
+719,pinimg.com,pinimg.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-13,2027-02-26,198,161,RSA,2048,96,true
+720,marriott.com,marriott.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-02-05,2027-02-05,366,140,RSA,2048,89,false
+721,verisign.com,verisign.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-26,2026-11-25,365,68,RSA,2048,67,false
+722,amazon.es,amazon.es,certificate,true,,TLSv1.3,Amazon,2026-08-23,2027-03-08,198,171,RSA,2048,9,true
+723,ya.ru,ya.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-01,2026-12-29,181,102,EC,256,52,true
+724,uber.com,uber.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-15,2027-02-16,367,151,RSA,2048,2,true
+725,quantserve.com,,no_certificate:refused
+726,nel.goog,,no_certificate:dns
+727,amazon.it,amazon.it,certificate,true,,TLSv1.3,Amazon,2026-08-09,2027-02-22,198,157,RSA,2048,9,true
+728,cnet.com,cnet.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-28,2026-11-27,90,69,EC,256,2,true
+729,independent.co.uk,independent.co.uk,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-02-18,2027-03-22,397,185,RSA,2048,1,false
+730,itch.io,itch.io,certificate,true,,TLSv1.3,Google Trust Services,2026-08-20,2026-11-18,90,61,EC,256,2,true
+731,wpguardian.com,wpguardian.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,83,EC,256,2,true
+732,asus.com,asus.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-12-18,2027-01-18,397,122,RSA,2048,2,false
+733,bamgrid.com,,no_certificate:dns
+734,porkbun.com,porkbun.com,certificate,true,,TLSv1.2,Amazon,2026-08-22,2027-03-07,198,170,RSA,2048,2,true
+735,mailchimp.com,mailchimp.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-01-09,2027-01-16,373,120,RSA,2048,1,false
+736,globalsign.com,globalsign.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-09-03,2027-03-21,199,183,RSA,2048,39,false
+737,dbankcloud.com,www.dbankcloud.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-08-12,2027-02-27,199,161,RSA,3072,9,false
+738,stripchat.com,stripchat.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-06,2026-12-05,90,77,EC,256,3,true
+739,creativecdn.com,,no_certificate:refused
+740,mlb.com,mlb.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-12,2026-12-11,90,84,RSA,2048,1,false
+741,githubusercontent.com,www.githubusercontent.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-02,2026-10-31,90,43,RSA,2048,6,true
+742,agkn.com,,no_certificate:refused
+743,shopee.co.id,shopee.co.id,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-03-27,2026-10-12,199,24,RSA,2048,2,true
+744,1rx.io,,no_certificate:refused
+745,bidr.io,,no_certificate:refused
+746,bandcamp.com,bandcamp.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-05-09,2026-11-24,199,67,RSA,2048,2,true
+747,grammarly.io,,no_certificate:dns
+748,g.co,g.co,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,65,true
+749,imrworldwide.com,,no_certificate:dns
+750,crwdcntrl.net,,no_certificate:refused
+751,python.org,python.org,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-01-13,2027-02-14,397,149,RSA,2048,3,true
+752,bugsnag.com,bugsnag.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-27,2026-10-11,199,23,RSA,2048,4,true
+753,nmrodam.com,,no_certificate:refused
+754,zillow.com,zillow.com,certificate,true,,TLSv1.3,Amazon,2026-06-17,2026-12-31,198,104,RSA,2048,5,false
+755,safebrowsing.apple,,no_certificate:dns
+756,hostgator.com.br,hostgator.com.br,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-10,2026-10-25,199,37,RSA,2048,2,true
+757,google.co.uk,google.co.uk,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+758,webempresa.eu,www.webempresa.eu,certificate,true,,TLSv1.3,Soluciones Corporativas IP SL,2026-05-12,2026-11-26,199,69,RSA,2048,2,true
+759,lijit.com,,no_certificate:refused
+760,homedepot.com,www.homedepot.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-27,2027-02-10,199,145,EC,256,19,false
+761,gumgum.com,,no_certificate:refused
+762,curseforge.com,curseforge.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-06,2026-12-05,90,77,EC,256,2,true
+763,steamstatic.com,,no_certificate:dns
+764,bild.de,bild.de,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-24,2027-01-24,397,128,RSA,2048,21,true
+765,mediafire.com,mediafire.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-07-27,2027-02-10,199,145,RSA,2048,2,true
+766,ddnss.de,ddnss.de,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-07,2026-12-06,90,78,RSA,4096,1,false
+767,criteo.net,,no_certificate:refused
+768,herokudns.com,,no_certificate:dns
+769,airbnb.com,airbnb.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-25,2026-10-22,120,34,RSA,2048,78,false
+770,usgovcloudapi.net,,no_certificate:dns
+771,wattpad.com,wattpad.com,certificate,true,,TLSv1.3,Amazon,2026-07-24,2027-02-06,198,141,RSA,2048,2,true
+772,box.com,box.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-20,2026-12-22,368,95,RSA,2048,9,true
+773,buydomains.com,buydomains.com,certificate,true,,TLSv1.3,Google Trust Services,2026-07-26,2026-10-24,90,36,EC,256,2,true
+774,cursor.sh,cursor.sh,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,64,RSA,2048,1,false
+775,fda.gov,fda.gov,certificate,true,,TLSv1.3,IdenTrust,2026-02-11,2027-03-13,395,176,EC,256,17,false
+776,akamaitech.net,,no_certificate:dns
+777,nikkei.com,nikkei.com,certificate,true,,TLSv1.3,Amazon,2025-10-25,2026-11-22,394,65,RSA,2048,1,false
+778,bestbuy.com,bestbuy.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-11,2027-02-11,366,146,EC,256,23,false
+779,sedo.com,sedo.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-07,2026-10-22,199,34,RSA,4096,2,true
+780,ozone.ru,ozone.ru,certificate,false,ERR_TLS_CERT_ALTNAME_INVALID,TLSv1.3,GlobalSign nv-sa,2025-10-03,2026-11-04,397,47,RSA,2048,4,true
+781,usercontent.goog,usercontent.goog,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,153,true
+782,ovscdns.com,,no_certificate:dns
+783,singular.net,singular.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-28,2026-11-26,90,69,EC,256,1,false
+784,ad-tech.ru,,no_certificate:refused
+785,shopeemobile.com,,no_certificate:timeout
+786,allaboutcookies.org,allaboutcookies.org,certificate,true,,TLSv1.3,Google Trust Services,2026-07-22,2026-10-20,90,31,EC,256,2,true
+787,wcdnga.com,,no_certificate:dns
+788,craigslist.org,craigslist.org,certificate,true,,TLSv1.2,DigiCert Inc,2025-12-31,2027-01-31,397,135,EC,256,10,true
+789,appcenter.ms,appcenter.ms,certificate,true,,TLSv1.3,Microsoft Corporation,2026-08-28,2027-02-24,180,158,RSA,2048,1,false
+790,mckinsey.com,mckinsey.com,certificate,true,,TLSv1.2,Sectigo Limited,2025-10-10,2026-10-10,366,22,RSA,2048,3,true
+791,sc-cdn.net,,no_certificate:dns
+792,parklogic.com,,no_certificate:refused
+793,lenovo.com,lenovo.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-17,2027-01-31,199,135,RSA,2048,2,true
+794,fiverr.com,fiverr.com,certificate,true,,TLSv1.2,Google Trust Services,2026-07-28,2026-10-26,90,38,EC,256,29,true
+795,ted.com,ted.com,certificate,true,,TLSv1.2,Amazon,2026-06-03,2026-12-17,198,90,RSA,2048,3,true
+796,google.com.br,google.com.br,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,2,true
+797,rt.ru,www.rt.ru,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-01,2027-01-16,199,119,RSA,2048,2,true
+798,liadm.com,,no_certificate:refused
+799,recaptcha.net,recaptcha.net,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,406,true
+800,apnews.com,apnews.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-18,2026-11-16,90,59,EC,256,2,true
+801,visma.com,visma.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-16,2026-12-15,90,88,EC,256,1,false
+802,welt.de,welt.de,certificate,true,,TLSv1.2,Amazon,2026-02-01,2027-03-02,395,165,RSA,2048,1,false
+803,ameblo.jp,ameblo.jp,certificate,true,,TLSv1.2,DigiCert Inc,2026-08-03,2027-02-16,198,151,RSA,2048,2,true
+804,no-ip.com,no-ip.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-02-23,2027-03-10,381,173,RSA,2048,2,true
+805,mixpanel.com,mixpanel.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-01-14,2027-01-13,365,117,RSA,2048,2,true
+806,adform.net,,no_certificate:refused
+807,networkadvertising.org,networkadvertising.org,certificate,true,,TLSv1.3,Amazon,2026-06-07,2026-12-21,198,94,RSA,2048,2,false
+808,keenetic.io,,no_certificate:dns
+809,disneyplus.com,disneyplus.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-15,2026-12-14,90,87,RSA,2048,1,false
+810,people.com,people.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-14,2026-11-12,90,55,EC,256,2,true
+811,cloudsink.net,,no_certificate:dns
+812,adjust.com,adjust.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-31,2026-10-15,199,27,RSA,2048,2,true
+813,xbox.com,xbox.com,certificate,true,,TLSv1.3,Microsoft Corporation,2026-09-11,2026-12-20,100,92,RSA,2048,192,false
+814,rakuten.com,rakuten.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-08-27,2027-03-13,199,176,RSA,2048,2,true
+815,prnewswire.com,prnewswire.com,certificate,true,,TLSv1.2,Google Trust Services,2026-08-12,2026-11-10,90,53,EC,256,2,true
+816,33across.com,,no_certificate:refused
+817,moloco.com,,no_certificate:refused
+818,erome.com,erome.com,certificate,true,,TLSv1.3,ZeroSSL GmbH,2026-08-12,2026-11-10,91,53,EC,256,1,false
+819,teads.tv,,no_certificate:refused
+820,zoho.com,zoho.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-09-22,2026-10-22,396,34,RSA,2048,2,true
+821,a-mo.net,,no_certificate:refused
+822,goskope.com,,no_certificate:dns
+823,wb.ru,wb.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-08,2026-12-07,90,80,EC,256,2,true
+824,unpkg.com,unpkg.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-08,2026-12-07,90,80,EC,256,3,true
+825,oxylabs.io,oxylabs.io,certificate,true,,TLSv1.3,Google Trust Services,2026-08-07,2026-11-05,90,48,EC,256,4,true
+826,discordapp.com,discordapp.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-28,2026-11-26,90,69,EC,256,2,true
+827,deepl.com,deepl.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-21,2026-11-19,90,62,EC,256,1,false
+828,usps.com,usps.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-09-08,2027-03-25,199,188,RSA,2048,2,true
+829,vivo.com.cn,vivo.com.cn,certificate,true,,TLSv1.2,"DigiCert, Inc.",2026-06-05,2026-12-20,199,93,EC,256,2,true
+830,grab.co,,no_certificate:dns
+831,ryanair.com,ryanair.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-18,2027-02-17,365,152,RSA,2048,3,false
+832,liftoff.io,,no_certificate:refused
+833,academia.edu,www.academia.edu,certificate,true,,TLSv1.3,Google Trust Services,2026-08-28,2026-11-26,90,68,EC,256,2,true
+834,daum.net,daum.net,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-10,2027-02-24,199,159,RSA,2048,2,true
+835,blackberry.com,blackberry.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-08-18,2027-03-04,199,167,RSA,2048,2,true
+836,turn.com,,no_certificate:refused
+837,odoo.com,odoo.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-27,2026-10-25,90,37,RSA,2048,2,true
+838,lefigaro.fr,lefigaro.fr,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-09,2027-02-09,366,144,EC,256,24,true
+839,orderbox-dns.com,,no_certificate:dns
+840,me.com,me.com,certificate,true,,TLSv1.3,Apple Inc.,2026-08-05,2026-11-03,90,45,RSA,2048,59,false
+841,focus.de,focus.de,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-12,2026-11-12,366,55,EC,256,2,true
+842,a-msedge.net,,no_certificate:dns
+843,opera-api2.com,,no_certificate:timeout
+844,usda.gov,www.usda.gov,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-19,2027-01-16,151,120,RSA,2048,68,false
+845,lgtvcommon.com,,no_certificate:dns
+846,theverge.com,theverge.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-06-26,2027-01-11,199,115,RSA,2048,23,true
+847,amazon.com.au,amazon.com.au,certificate,true,,TLSv1.3,DigiCert Inc,2026-05-05,2026-11-18,198,61,RSA,2048,47,true
+848,onlyfans.com,onlyfans.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-14,2026-12-13,90,86,EC,256,1,false
+849,agoda.com,agoda.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-09-05,2026-10-05,396,17,RSA,2048,67,true
+850,pccc.com,pccc.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-04,2027-02-13,375,148,RSA,2048,2,true
+851,eeroup.com,eeroup.com,certificate,true,,TLSv1.3,Amazon,2025-11-30,2026-12-28,394,101,RSA,2048,2,true
+852,discogs.com,discogs.com,certificate,true,,TLSv1.2,Amazon,2026-07-19,2027-02-01,198,136,RSA,2048,2,true
+853,zoom.com,zoom.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-05-23,2026-11-21,183,64,RSA,2048,2,true
+854,onetag-sys.com,,no_certificate:refused
+855,jetbrains.com,jetbrains.com,certificate,true,,TLSv1.3,Amazon,2026-06-29,2027-01-12,198,116,RSA,2048,2,false
+856,msftauth.net,,no_certificate:dns
+857,livejournal.com,livejournal.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-02-24,2027-03-28,397,191,RSA,2048,2,true
+858,nintendo.net,,no_certificate:dns
+859,pendo.io,pendo.io,certificate,true,,TLSv1.3,Google Trust Services,2026-09-13,2026-12-12,90,85,RSA,2048,2,true
+860,spiegel.de,spiegel.de,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-05,2026-12-04,365,77,RSA,2048,3,false
+861,blackhub.team,blackhub.team,certificate,true,,TLSv1.3,Google Trust Services,2026-09-03,2026-12-02,90,74,EC,256,2,true
+862,amazon.com.br,amazon.com.br,certificate,true,,TLSv1.3,Amazon,2026-09-06,2027-03-22,198,185,RSA,2048,11,true
+863,ebay.co.uk,ebay.co.uk,certificate,true,,TLSv1.3,Sectigo Limited,2026-05-20,2026-12-04,199,77,RSA,2048,37,false
+864,figma.com,figma.com,certificate,true,,TLSv1.3,Amazon,2026-07-21,2027-02-03,198,138,RSA,2048,2,true
+865,ebay.de,ebay.de,certificate,true,,TLSv1.3,Sectigo Limited,2026-05-20,2026-12-04,199,77,RSA,2048,37,false
+866,pexels.com,pexels.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-11,2026-12-10,90,82,EC,256,3,false
+867,adgrx.com,,no_certificate:refused
+868,mercadolivre.com.br,mercadolivre.com.br,certificate,true,,TLSv1.3,Amazon,2026-09-06,2027-03-22,198,185,RSA,2048,2,true
+869,yellowblue.io,,no_certificate:refused
+870,auvik.com,www.auvik.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-14,2026-11-12,90,54,EC,256,1,false
+871,it.com,it.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-11,2026-10-09,90,21,EC,256,1,false
+872,chess.com,chess.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-14,2026-12-14,90,86,EC,256,2,false
+873,tbank.ru,tbank.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-06-30,2026-09-28,90,9,RSA,2048,2,true
+874,pikabu.ru,pikabu.ru,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-22,2026-10-20,90,31,RSA,2048,8,false
+875,synology.com,synology.com,certificate,true,,TLSv1.2,Amazon,2026-09-14,2027-03-30,198,193,RSA,2048,1,false
+876,xvideos.com,xvideos.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-01-01,2027-01-27,392,131,RSA,2048,2,true
+877,disqus.com,disqus.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-04-01,2026-10-16,199,28,RSA,2048,2,true
+878,hbr.org,hbr.org,certificate,true,,TLSv1.3,Amazon,2026-09-15,2027-03-31,198,194,RSA,2048,2,true
+879,lg.com,lg.com,certificate,true,,TLSv1.2,Amazon,2025-12-06,2027-01-03,394,107,RSA,2048,1,false
+880,appspot.com,appspot.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-04,2026-11-27,84,69,EC,256,46,true
+881,fbsbx.com,fbsbx.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,RSA,2048,3,false
+882,frontiersin.org,frontiersin.org,certificate,true,,TLSv1.3,"GoDaddy.com, Inc.",2025-10-27,2026-11-28,397,71,RSA,2048,2,true
+883,life360.com,life360.com,certificate,true,,TLSv1.2,Amazon,2026-06-17,2026-12-31,198,104,RSA,2048,2,true
+884,www.gov.br,www.gov.br,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-07-02,2027-01-17,199,121,RSA,2048,2,false
+885,att.net,att.net,certificate,true,,TLSv1.2,DigiCert Inc,2026-02-20,2027-03-23,397,186,RSA,2048,2,false
+886,nbcnews.com,nbcnews.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-09-14,2027-03-31,199,194,RSA,2048,2,true
+887,spotifycdn.com,www.spotifycdn.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-12-14,2027-01-15,397,119,RSA,2048,1,true
+888,ys7.com,ys7.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-09-19,2026-10-21,397,32,RSA,2048,2,true
+889,myspace.com,myspace.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-17,2026-11-15,90,58,RSA,2048,2,true
+890,biblegateway.com,biblegateway.com,certificate,true,,TLSv1.3,Amazon,2026-07-25,2027-02-07,198,142,RSA,2048,2,true
+891,azure-devices.net,,no_certificate:dns
+892,abovedomains.com,abovedomains.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-09,2026-12-08,90,80,EC,256,90,true
+893,mayoclinic.org,mayoclinic.org,certificate,true,,TLSv1.2,Sectigo Limited,2026-07-20,2027-02-03,199,138,RSA,2048,25,true
+894,ssl-images-amazon.com,,no_certificate:dns
+895,360safe.com,,no_certificate:timeout
+896,readthedocs.io,readthedocs.io,certificate,true,,TLSv1.3,Google Trust Services,2026-07-27,2026-10-25,90,37,EC,256,2,true
+897,bankofamerica.com,www.bankofamerica.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-24,2027-02-07,199,142,RSA,2048,7,false
+898,gotinder.com,gotinder.com,certificate,true,,TLSv1.2,Amazon,2026-01-22,2027-02-20,395,155,RSA,2048,2,true
+899,kleinanzeigen.de,kleinanzeigen.de,certificate,true,,TLSv1.3,DigiCert Inc,2026-08-12,2026-11-18,99,61,EC,256,26,false
+900,pornhub.com,pornhub.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-29,2027-01-29,397,133,EC,256,2,true
+901,expedia.com,expedia.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-07-21,2026-10-19,90,31,EC,256,1,false
+902,dnse0.com,,no_certificate:dns
+903,washington.edu,washington.edu,certificate,true,,TLSv1.3,"InCommon, LLC",2026-06-29,2027-01-13,199,117,RSA,2048,4,false
+904,agora.io,agora.io,certificate,true,,TLSv1.2,GoDaddy.com,2026-06-04,2026-12-19,198,91,RSA,2048,2,true
+905,immedia-semi.com,,no_certificate:dns
+906,worldbank.org,worldbank.org,certificate,true,,TLSv1.3,Google Trust Services,2026-07-31,2026-10-29,90,41,EC,256,2,true
+907,internetwarriors.net,internetwarriors.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,64,EC,256,1,false
+908,meta.com,meta.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-27,2026-09-25,91,7,RSA,2048,2,true
+909,dv.tech,,no_certificate:reset
+910,princeton.edu,princeton.edu,certificate,true,,TLSv1.2,"InCommon, LLC",2026-05-28,2026-12-12,199,85,RSA,2048,1,false
+911,fwmrm.net,www.fwmrm.net,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-04,2026-11-02,90,45,EC,256,1,false
+912,amagi.tv,,no_certificate:dns
+913,dbankcloud.ru,,no_certificate:dns
+914,coupang.com,coupang.com,certificate,true,,TLSv1.3,Amazon,2026-07-06,2027-01-19,198,123,RSA,2048,2,true
+915,queniuaa.com,,no_certificate:dns
+916,eu-1-id5-sync.com,,no_certificate:refused
+917,latimes.com,latimes.com,certificate,true,,TLSv1.2,Amazon,2026-04-29,2026-11-12,198,55,RSA,2048,5,false
+918,zpath.net,,no_certificate:dns
+919,t-s1-msedge.net,,no_certificate:dns
+920,herokuapp.com,www.herokuapp.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-12,2026-12-11,90,83,RSA,2048,1,false
+921,bytefcdn.com,,no_certificate:dns
+922,samsungosp.com,www.samsungosp.com,certificate,true,,TLSv1.2,DigiCert Inc,2025-12-23,2027-01-19,393,123,RSA,2048,2,true
+923,samsungiotcloud.com,,no_certificate:dns
+924,starlink.com,starlink.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-01,2026-11-30,90,72,RSA,2048,6,false
+925,wyzecam.com,wyzecam.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-03-19,2026-10-03,199,15,RSA,2048,2,true
+926,arcgis.com,arcgis.com,certificate,true,,TLSv1.3,Amazon,2025-10-20,2026-11-18,395,61,RSA,2048,4,true
+927,qualtrics.com,qualtrics.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-12-03,2026-12-02,365,75,RSA,2048,38,true
+928,hilton.com,hilton.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-09-10,2027-03-27,199,190,RSA,2048,1,false
+929,playrix.com,playrix.com,certificate,true,,TLSv1.3,Amazon,2025-12-03,2026-12-31,394,104,RSA,2048,2,true
+930,seedtag.com,,no_certificate:refused
+931,epam.com,epam.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-05,2026-12-04,90,77,EC,256,4,true
+932,dnse2.com,,no_certificate:dns
+933,volcgslb.com,,no_certificate:dns
+934,onet.pl,onet.pl,certificate,true,,TLSv1.3,DigiCert Inc,2026-04-21,2026-11-05,199,48,EC,256,2,true
+935,flashtalking.com,,no_certificate:refused
+936,epa.gov,epa.gov,certificate,true,,TLSv1.3,DigiCert Inc,2026-04-16,2026-10-21,189,33,RSA,4096,13,true
+937,docker.io,docker.io,certificate,true,,TLSv1.3,Amazon,2026-02-03,2027-03-04,395,167,RSA,2048,8,true
+938,netlify.app,netlify.app,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-16,2027-03-19,397,182,EC,256,2,true
+939,smartthings.com,smartthings.com,certificate,true,,TLSv1.3,Amazon,2025-11-22,2026-12-20,394,93,RSA,2048,2,true
+940,miwifi.com,miwifi.com,certificate,true,,TLSv1.2,DigiCert Inc,2026-06-26,2027-01-10,199,114,RSA,2048,2,true
+941,tiktokw.us,www.tiktokw.us,certificate,true,,TLSv1.3,DigiCert Inc,2026-06-09,2026-12-24,199,97,EC,256,2,true
+942,lwsdns.com,lwsdns.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-16,2026-11-14,90,56,RSA,3072,2,false
+943,genius.com,genius.com,certificate,true,,TLSv1.2,Google Trust Services,2026-09-09,2026-12-08,90,80,EC,256,2,true
+944,deloitte.com,deloitte.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-07-29,2027-02-12,199,147,RSA,2048,2,false
+945,go-mpulse.net,,no_certificate:refused
+946,zenecn.net,,no_certificate:dns
+947,youku.com,youku.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-01-19,2027-02-20,397,154,EC,256,74,true
+948,lowes.com,lowes.com,certificate,true,,TLSv1.3,Sectigo Limited,2026-02-02,2027-03-05,397,168,EC,256,54,false
+949,state.gov,state.gov,certificate,true,,TLSv1.3,Amazon,2026-08-29,2027-03-14,198,177,RSA,2048,2,true
+950,kunluncan.com,,no_certificate:timeout
+951,cdn-vk.ru,,no_certificate:dns
+952,leiniao.com,www.leiniao.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-13,2026-11-11,90,53,RSA,2048,21,false
+953,eporner.com,eporner.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-10-01,2026-11-02,397,45,RSA,2048,2,true
+954,sentinelone.net,www.sentinelone.net,certificate,true,,TLSv1.3,Sectigo Limited,2026-01-14,2027-01-14,366,118,RSA,2048,2,true
+955,webmd.com,webmd.com,certificate,true,,TLSv1.2,Let's Encrypt,2026-09-02,2026-12-01,90,73,RSA,2048,85,true
+956,tailscale.com,tailscale.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-14,2026-12-13,90,86,RSA,2048,1,false
+957,mercadolibre.com.ar,mercadolibre.com.ar,certificate,true,,TLSv1.3,Amazon,2026-09-06,2027-03-22,198,185,RSA,2048,2,true
+958,character.ai,character.ai,certificate,true,,TLSv1.3,Google Trust Services,2026-09-13,2026-12-13,90,85,EC,256,2,true
+959,chaturbate.com,chaturbate.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-08-28,2026-09-21,390,3,EC,256,4,true
+960,jd.com,jd.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-18,2026-12-20,397,92,RSA,2048,46,true
+961,note.com,note.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-11-04,2026-12-06,397,78,RSA,2048,2,true
+962,mailchi.mp,mailchi.mp,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-20,2026-11-18,90,61,RSA,2048,2,false
+963,fidelity.com,fidelity.com,certificate,true,,TLSv1.3,DigiCert Inc,2025-11-15,2026-12-08,389,81,RSA,2048,6,false
+964,hm.com,hm.com,certificate,true,,TLSv1.3,DigiCert Inc,2026-07-21,2027-02-04,199,139,RSA,2048,2,true
+965,repubblica.it,repubblica.it,certificate,true,,TLSv1.3,Amazon,2026-08-23,2027-03-08,198,171,RSA,2048,2,false
+966,trendyol.com,trendyol.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2025-10-09,2026-11-10,397,52,RSA,2048,2,true
+967,thenai.org,thenai.org,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-28,2026-11-26,90,69,EC,256,1,false
+968,xerox.com,xerox.com,certificate,true,,TLSv1.2,Sectigo Limited,2026-03-19,2026-10-03,199,15,RSA,2048,13,false
+969,smaato.net,,no_certificate:refused
+970,xhamster46.desi,xhamster46.desi,certificate,true,,TLSv1.3,Google Trust Services,2026-09-17,2026-12-16,90,89,EC,256,2,true
+971,change.org,change.org,certificate,true,,TLSv1.3,Amazon,2026-09-10,2027-03-26,198,189,RSA,2048,3,true
+972,ancestry.com,ancestry.com,certificate,true,,TLSv1.3,Google Trust Services,2026-09-02,2026-12-01,90,73,EC,256,3,true
+973,4dex.io,,no_certificate:refused
+974,stbid.ru,,no_certificate:refused
+975,investopedia.com,investopedia.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-14,2026-11-12,90,55,EC,256,2,true
+976,corriere.it,corriere.it,certificate,true,,TLSv1.2,Let's Encrypt,2026-08-03,2026-11-01,90,44,RSA,2048,2,true
+977,nexusmods.com,nexusmods.com,certificate,true,,TLSv1.3,Google Trust Services,2026-08-25,2026-11-23,90,66,EC,256,3,true
+978,xnxx.com,xnxx.com,certificate,true,,TLSv1.3,Sectigo Limited,2025-11-18,2026-12-19,397,92,RSA,2048,2,true
+979,warnerbros.com,warnerbros.com,certificate,true,,TLSv1.3,GlobalSign nv-sa,2026-05-23,2026-12-08,199,80,RSA,2048,10,true
+980,caixa.gov.br,caixa.gov.br,certificate,true,,TLSv1.3,Sectigo Limited,2026-05-15,2026-11-29,199,72,RSA,2048,2,false
+981,nationalgeographic.com,nationalgeographic.com,certificate,true,,TLSv1.3,Amazon,2025-11-03,2026-12-02,395,75,RSA,2048,54,true
+982,presage.io,,no_certificate:refused
+983,btloader.com,,no_certificate:refused
+984,fifa.com,fifa.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-24,2026-11-22,90,64,EC,256,1,false
+985,ddns.net,,no_certificate:timeout
+986,aiv-delivery.net,,no_certificate:dns
+987,healthline.com,healthline.com,certificate,true,,TLSv1.3,Amazon,2026-08-20,2027-03-05,198,168,RSA,2048,2,true
+988,ubi.com,ubi.com,certificate,true,,TLSv1.3,Amazon,2026-01-28,2027-02-26,395,161,RSA,2048,6,true
+989,ln-msedge.net,,no_certificate:dns
+990,otto.de,otto.de,certificate,true,,TLSv1.3,DigiCert Inc,2026-02-12,2027-03-15,397,178,RSA,2048,4,false
+991,kwai.com,kwai.com,certificate,true,,TLSv1.2,GlobalSign nv-sa,2026-08-25,2027-03-12,199,174,RSA,2048,2,true
+992,sofascore.com,sofascore.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-09-15,2026-12-14,90,86,RSA,2048,8,true
+993,app-ads-services.com,,no_certificate:refused
+994,bol.com,bol.com,certificate,true,,TLSv1.3,Let's Encrypt,2026-08-30,2026-11-28,90,70,RSA,2048,1,false
+995,opera-api.com,,no_certificate:timeout
+996,tsyndicate.com,,no_certificate:refused
+997,pixiv.net,pixiv.net,certificate,true,,TLSv1.2,Google Trust Services,2026-08-03,2026-11-01,90,44,EC,256,8,true
+998,nexthink.cloud,,no_certificate:dns
+999,transsion-os.com,,no_certificate:dns
+1000,conviva.com,,no_certificate:refused

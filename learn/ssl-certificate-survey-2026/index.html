@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificates on the Top 1,000 Websites — 2026 Survey","description":"We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","datePublished":"2026-09-18","dateModified":"2026-09-18","author":{"@type":"Organization","name":"duckTyped"},"publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"TLS certificates of the Tranco top 1,000 websites, 2026-09-18","description":"Leaf TLS certificate details (issuer, validity dates, lifetime, key type, negotiated protocol, chain validity) observed for the Tranco top 1,000 domains on 2026-09-18.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","creator":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"datePublished":"2026-09-18","temporalCoverage":"2026-09-18","isAccessibleForFree":true,"distribution":[{"@type":"DataDownload","encodingFormat":"text/csv","contentUrl":"https://ducktyped.xyz/data/ssl-survey-2026-09.csv"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"SSL Certificate Survey 2026","item":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the maximum SSL certificate validity in 2026?","acceptedAnswer":{"@type":"Answer","text":"For publicly trusted certificates issued on or after March 15, 2026, the maximum is 200 days. It falls to 100 days on March 15, 2027 and to 47 days on March 15, 2029, under CA/Browser Forum ballot SC-081v3. Certificates issued before each date keep their original lifetime until they expire."}},{"@type":"Question","name":"Which certificate authority is most common on top websites?","acceptedAnswer":{"@type":"Answer","text":"In this September 2026 scan of the Tranco top 1,000, DigiCert issued 22.2% of the 712 certificates observed, followed by Google Trust Services (18.8%) and Let's Encrypt (17.0%)."}},{"@type":"Question","name":"How many top websites support TLS 1.3?","acceptedAnswer":{"@type":"Answer","text":"82.2% of the 712 sites that presented a certificate negotiated TLS 1.3 with a client offering it. The remaining 17.8% negotiated TLS 1.2. The scan did not offer TLS 1.0 or 1.1, so it cannot say how many servers still accept them."}},{"@type":"Question","name":"Can I reuse this data?","acceptedAnswer":{"@type":"Answer","text":"Yes. The full per-domain dataset is a free CSV download, and you are welcome to cite or reuse the figures with a link back to this page."}}]}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Certificates on the Top 1,000 Websites — 2026 Survey — duckTyped</title>
+    <meta name="description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SSL Certificates on the Top 1,000 Websites — 2026 Survey">
+    <meta property="og:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-certificate-survey-2026/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SSL Certificates on the Top 1,000 Websites — 2026 Survey">
+    <meta name="twitter:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <link rel="canonical" href="https://ducktyped.xyz/learn/ssl-certificate-survey-2026/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        /* Chart tokens. Series colours are validated against these exact
+           surfaces (lightness band, chroma, CVD separation, 3:1 contrast). */
+        .dv { --dv-surface:#10141A; --dv-ink:#E9EEF5; --dv-ink2:#B8C0CC; --dv-muted:#8b929e; --dv-grid:#232A35; --dv-axis:#3a4352; --dv-s1:#3987e5; --dv-s2:#d95926; --dv-neutral:#5a6473; }
+        body.light-theme .dv { --dv-surface:#F8F9FB; --dv-ink:#0F1114; --dv-ink2:#45474c; --dv-muted:#676a70; --dv-grid:#e3e5ea; --dv-axis:#c2c6ce; --dv-s1:#2a78d6; --dv-s2:#eb6834; --dv-neutral:#a3a8b2; }
+        .dv-figure { margin: 22px 0 8px; padding: 20px 20px 14px; background: var(--dv-surface); border: 1px solid var(--dv-grid); border-radius: 12px; position: relative; }
+        .learn-article .dv-title { margin: 0 0 2px; font-size: 1.02em; font-weight: 600; color: var(--dv-ink); }
+        .learn-article .dv-sub { margin: 0 0 12px; font-size: 0.86em; color: var(--dv-ink2); }
+        .dv-svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-body), system-ui, sans-serif; }
+        .dv-s1 { fill: var(--dv-s1); } .dv-s2 { fill: var(--dv-s2); } .dv-neutral { fill: var(--dv-neutral); }
+        .dv-mark { outline: none; transition: opacity 0.12s; }
+        .dv-mark:hover, .dv-mark:focus-visible { opacity: 0.78; }
+        .dv-mark:focus-visible { stroke: var(--dv-ink); stroke-width: 1.5; }
+        .dv-grid { stroke: var(--dv-grid); stroke-width: 1; } .dv-axis { stroke: var(--dv-axis); stroke-width: 1; }
+        .dv-cat { fill: var(--dv-ink2); font-size: 13px; } .dv-val { fill: var(--dv-ink); font-size: 13px; font-weight: 600; }
+        .dv-tick { fill: var(--dv-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+        .dv-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 10px; padding: 0; list-style: none; font-size: 0.84em; color: var(--dv-ink2); }
+        .dv-legend li { display: flex; align-items: center; gap: 7px; margin: 0; }
+        .dv-swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+        .dv-tip { position: fixed; z-index: 5; pointer-events: none; padding: 7px 10px; border-radius: 8px; background: var(--dv-ink); color: var(--dv-surface); font-size: 0.82em; line-height: 1.35; max-width: 240px; opacity: 0; transition: opacity 0.1s; }
+        .dv-tip.is-on { opacity: 1; } .dv-tip strong { display: block; font-size: 1.08em; color: inherit; } .dv-tip span { opacity: 0.8; }
+        .dv-table { margin-top: 10px; font-size: 0.86em; color: var(--dv-ink2); } .dv-table summary { cursor: pointer; }
+        .dv-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 20px 0; }
+        .dv-tile { padding: 16px; background: var(--dv-surface); border: 1px solid var(--dv-grid); border-radius: 12px; }
+        .dv-tile-label { font-size: 0.8em; color: var(--dv-ink2); } .dv-tile-value { margin: 4px 0 2px; font-size: 1.85em; font-weight: 600; line-height: 1.1; color: var(--dv-ink); }
+        .dv-tile-detail { font-size: 0.78em; color: var(--dv-muted); }
+        .learn-article .dv-source { margin: 8px 0 0; font-size: 0.78em; color: var(--dv-muted); }
+    </style>
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container dv">
+        <div class="learn-breadcrumb">
+            <a href="/learn/">Learn</a> <span>/</span> <span>SSL Certificate Survey 2026</span>
+        </div>
+
+        <article class="learn-article">
+            <h1>SSL Certificates on the Top 1,000 Websites: 2026 Survey</h1>
+            <p class="page-last-updated">Data collected: <time datetime="2026-09-18">September 18, 2026</time></p>
+            <p class="standalone-intro">On September 18, 2026 we connected to the 1,000 most popular domains on the internet and recorded the TLS certificate each one presented. Six months after the industry cut the maximum certificate lifetime to 200 days, 76.5% of the certificates on top sites already fit under the new limit, and the median lifetime of a newly issued certificate has dropped from 395 days to 91.</p>
+
+            <p>The full per-domain dataset is a <a href="/data/ssl-survey-2026-09.csv" download>free CSV download</a>. To check any single domain yourself, use the <a href="/ssl-checker/">SSL Certificate Checker</a>.</p>
+
+            <h2>Key Findings</h2>
+            <div class="dv-tiles">
+                <div class="dv-tile"><div class="dv-tile-label">Sites presenting a certificate</div><div class="dv-tile-value">712</div><div class="dv-tile-detail">of 1,000 domains scanned</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Median lifetime, issued after the cap</div><div class="dv-tile-value">91 days</div><div class="dv-tile-detail">was 395 days before March 15, 2026</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Valid certificate chain</div><div class="dv-tile-value">95.9%</div><div class="dv-tile-detail">29 sites failed validation</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Negotiated TLS 1.3</div><div class="dv-tile-value">82.2%</div><div class="dv-tile-detail">the rest negotiated TLS 1.2</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Within 30 days of expiry</div><div class="dv-tile-value">48</div><div class="dv-tile-detail">11 of them within 7 days</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Wildcard certificates</div><div class="dv-tile-value">62.4%</div><div class="dv-tile-detail">cover *.domain names</div></div>
+            </div>
+
+            <h2>The 200-Day Limit Is Already Visible</h2>
+            <p>In April 2025 the CA/Browser Forum passed ballot SC-081v3, which shortens the maximum lifetime of publicly trusted TLS certificates in three steps. The first step took effect on March 15, 2026.</p>
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead><tr><th>Issued on or after</th><th>Maximum lifetime</th><th>Practical renewal cadence</th></tr></thead>
+                    <tbody>
+                        <tr><td>(before March 15, 2026)</td><td>398 days</td><td>Yearly</td></tr>
+                        <tr><td><strong>March 15, 2026</strong></td><td><strong>200 days</strong></td><td>Twice a year</td></tr>
+                        <tr><td>March 15, 2027</td><td>100 days</td><td>Quarterly</td></tr>
+                        <tr><td>March 15, 2029</td><td>47 days</td><td>Monthly — automation required</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The data shows the rule biting exactly where you would expect. Of the 167 certificates with a lifetime over 200 days, 166 were issued before the cap and are simply running out their original term. The single exception, <code>sberbank.ru</code>, is signed by a national certificate authority that browsers do not trust — and the rule only binds publicly trusted CAs.</p>
+
+            <figure class="dv-figure">
+                <p class="dv-title">Certificate lifetime on the top 1,000 sites</p>
+                <p class="dv-sub">Number of certificates by lifetime in days (n = 712)</p>
+                <ul class="dv-legend">
+                    <li><span class="dv-swatch" style="background:var(--dv-s1)"></span>Issued before March 15, 2026 (166)</li>
+                    <li><span class="dv-swatch" style="background:var(--dv-s2)"></span>Issued on or after March 15, 2026 (546)</li>
+                </ul>
+                <svg class="dv-svg" viewBox="0 0 720 336" role="group" aria-label="Stacked column chart: certificate lifetime in days, split by issuance date">
+        <line class="dv-axis" x1="48" y1="274" x2="704" y2="274"/>
+        <text class="dv-tick" x="40" y="274" text-anchor="end" dominant-baseline="central">0</text>
+        <line class="dv-grid" x1="48" y1="192" x2="704" y2="192"/>
+        <text class="dv-tick" x="40" y="192" text-anchor="end" dominant-baseline="central">100</text>
+        <line class="dv-grid" x1="48" y1="110" x2="704" y2="110"/>
+        <text class="dv-tick" x="40" y="110" text-anchor="end" dominant-baseline="central">200</text>
+        <line class="dv-grid" x1="48" y1="28" x2="704" y2="28"/>
+        <text class="dv-tick" x="40" y="28" text-anchor="end" dominant-baseline="central">300</text>
+        <path class="dv-mark dv-s2" d="M101.6,274v-3.2800000000000002a3.2800000000000002,3.2800000000000002 0 0 1 3.2800000000000002,-3.2800000000000002h17.439999999999998a3.2800000000000002,3.2800000000000002 0 0 1 3.2800000000000002,3.2800000000000002v3.2800000000000002z" tabindex="0" role="img" aria-label="≤ 47 days, issued on or after 2026-03-15: 8 certificates" data-tip-value="8 certificates" data-tip-label="≤ 47 days, issued on or after 2026-03-15"/>
+        <text class="dv-val" x="113.6" y="259.44" text-anchor="middle">8</text>
+        <text class="dv-cat" x="113.6" y="294" text-anchor="middle">≤ 47 days</text>
+        <text class="dv-tick" x="113.6" y="312" text-anchor="middle">2029 limit</text>
+        <path class="dv-mark dv-s2" d="M232.79999999999998,274v-232.98000000000002a4,4 0 0 1 4,-4h16a4,4 0 0 1 4,4v232.98000000000002z" tabindex="0" role="img" aria-label="48–100, issued on or after 2026-03-15: 289 certificates" data-tip-value="289 certificates" data-tip-label="48–100, issued on or after 2026-03-15"/>
+        <text class="dv-val" x="244.79999999999998" y="29.019999999999982" text-anchor="middle">289</text>
+        <text class="dv-cat" x="244.79999999999998" y="294" text-anchor="middle">48–100</text>
+        <text class="dv-tick" x="244.79999999999998" y="312" text-anchor="middle">2027 limit</text>
+        <path class="dv-mark dv-s2" d="M364,274v-199.35999999999999a4,4 0 0 1 4,-4h16a4,4 0 0 1 4,4v199.35999999999999z" tabindex="0" role="img" aria-label="101–200, issued on or after 2026-03-15: 248 certificates" data-tip-value="248 certificates" data-tip-label="101–200, issued on or after 2026-03-15"/>
+        <text class="dv-val" x="376" y="62.640000000000015" text-anchor="middle">248</text>
+        <text class="dv-cat" x="376" y="294" text-anchor="middle">101–200</text>
+        <text class="dv-tick" x="376" y="312" text-anchor="middle">current limit</text>
+        <path class="dv-mark dv-s1" d="M495.19999999999993,139.52h24v134.48h-24z" tabindex="0" role="img" aria-label="201–398, issued before 2026-03-15: 164 certificates" data-tip-value="164 certificates" data-tip-label="201–398, issued before 2026-03-15"/>
+        <path class="dv-mark dv-s2" d="M495.19999999999993,137.52v-1a1,1 0 0 1 1,-1h22a1,1 0 0 1 1,1v1z" tabindex="0" role="img" aria-label="201–398, issued on or after 2026-03-15: 1 certificates" data-tip-value="1 certificates" data-tip-label="201–398, issued on or after 2026-03-15"/>
+        <text class="dv-val" x="507.19999999999993" y="127.52000000000001" text-anchor="middle">165</text>
+        <text class="dv-cat" x="507.19999999999993" y="294" text-anchor="middle">201–398</text>
+        <text class="dv-tick" x="507.19999999999993" y="312" text-anchor="middle">pre-2026 limit</text>
+        <path class="dv-mark dv-s1" d="M626.4,274v-1a1,1 0 0 1 1,-1h22a1,1 0 0 1 1,1v1z" tabindex="0" role="img" aria-label="&gt; 398, issued before 2026-03-15: 2 certificates" data-tip-value="2 certificates" data-tip-label="&gt; 398, issued before 2026-03-15"/>
+        <text class="dv-val" x="638.4" y="264" text-anchor="middle">2</text>
+        <text class="dv-cat" x="638.4" y="294" text-anchor="middle">&gt; 398</text>
+        <text class="dv-tick" x="638.4" y="312" text-anchor="middle">pre-2020 rules</text>
+        <text class="dv-tick" x="48" y="12">certificates</text>
+      </svg>
+                <details class="dv-table">
+        <summary>View this data as a table</summary>
+        <div class="comparison-table-wrap"><table class="comparison-table">
+          <thead><tr><th>Lifetime</th><th>Policy era</th><th>Issued before cap</th><th>Issued after cap</th><th>Total</th></tr></thead>
+          <tbody><tr><td>≤ 47 days</td><td>2029 limit</td><td>0</td><td>8</td><td>8</td></tr><tr><td>48–100</td><td>2027 limit</td><td>0</td><td>289</td><td>289</td></tr><tr><td>101–200</td><td>current limit</td><td>0</td><td>248</td><td>248</td></tr><tr><td>201–398</td><td>pre-2026 limit</td><td>164</td><td>1</td><td>165</td></tr><tr><td>&gt; 398</td><td>pre-2020 rules</td><td>2</td><td>0</td><td>2</td></tr></tbody>
+        </table></div>
+      </details>
+                <p class="dv-source">Source: duckTyped scan of the Tranco top 1,000 (list V3YPN), 2026-09-18.</p>
+            </figure>
+
+            <p>Certificates issued since the cap fall into two clean clusters: <strong>289</strong> at roughly 90 days (the automated-issuance default used by Let's Encrypt and Google Trust Services) and <strong>248</strong> at just under 200 days, where the commercial CAs now issue right up to the ceiling. The one-year certificate is gone from new issuance.</p>
+
+            <h3>Some operators are already at the 2029 limit</h3>
+            <p>8 sites present certificates of 47 days or less — three years before they have to: <code>nflximg.com</code>, <code>fastly.net</code>, <code>kaspersky-labs.com</code>, <code>arxiv.org</code>, <code>time.com</code>, <code>aliyuncs.com</code>, <code>digicert.com</code>, <code>dnsmadeeasy.com</code>. Two patterns stand out. <code>digicert.com</code> runs a 47-day certificate on its own site, and several Fastly-hosted properties use 30-day certificates from Certainly, the certificate authority Fastly operates. Nobody renews a 30-day certificate by hand; these are fully automated pipelines.</p>
+
+            <h2>Who Issues the Web's Certificates</h2>
+            <p>Six issuers account for 89.9% of the certificates on top sites. The split is more even than the long-tail web, where free automated issuance dominates: large operators still buy from commercial CAs, or run their own.</p>
+
+            <figure class="dv-figure">
+                <p class="dv-title">Certificate issuer share</p>
+                <p class="dv-sub">Share of the 712 certificates observed, by issuing organization</p>
+                <svg class="dv-svg" viewBox="0 0 720 260" role="group" aria-label="Bar chart: certificate issuer share">
+        <line class="dv-axis" x1="176" y1="8" x2="176" y2="260"/>
+        <text class="dv-cat" x="164" y="26" text-anchor="end" dominant-baseline="central">DigiCert</text>
+        <path class="dv-mark dv-s1" d="M176,17h436.00000000000006a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-436.00000000000006z" tabindex="0" role="img" aria-label="DigiCert: 158 sites (22.2%)" data-tip-value="158 sites (22.2%)" data-tip-label="DigiCert"/>
+        <text class="dv-val" x="624" y="26" dominant-baseline="central">22.2%</text>
+        <text class="dv-cat" x="164" y="62" text-anchor="end" dominant-baseline="central">Google Trust Services</text>
+        <path class="dv-mark dv-s1" d="M176,53h369.16455696202536a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-369.16455696202536z" tabindex="0" role="img" aria-label="Google Trust Services: 134 sites (18.8%)" data-tip-value="134 sites (18.8%)" data-tip-label="Google Trust Services"/>
+        <text class="dv-val" x="557.1645569620254" y="62" dominant-baseline="central">18.8%</text>
+        <text class="dv-cat" x="164" y="98" text-anchor="end" dominant-baseline="central">Let's Encrypt</text>
+        <path class="dv-mark dv-s1" d="M176,89h332.9620253164557a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-332.9620253164557z" tabindex="0" role="img" aria-label="Let's Encrypt: 121 sites (17.0%)" data-tip-value="121 sites (17.0%)" data-tip-label="Let's Encrypt"/>
+        <text class="dv-val" x="520.9620253164558" y="98" dominant-baseline="central">17.0%</text>
+        <text class="dv-cat" x="164" y="134" text-anchor="end" dominant-baseline="central">Amazon Trust Services</text>
+        <path class="dv-mark dv-s1" d="M176,125h266.126582278481a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-266.126582278481z" tabindex="0" role="img" aria-label="Amazon Trust Services: 97 sites (13.6%)" data-tip-value="97 sites (13.6%)" data-tip-label="Amazon Trust Services"/>
+        <text class="dv-val" x="454.126582278481" y="134" dominant-baseline="central">13.6%</text>
+        <text class="dv-cat" x="164" y="170" text-anchor="end" dominant-baseline="central">GlobalSign</text>
+        <path class="dv-mark dv-s1" d="M176,161h213.21518987341773a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-213.21518987341773z" tabindex="0" role="img" aria-label="GlobalSign: 78 sites (11.0%)" data-tip-value="78 sites (11.0%)" data-tip-label="GlobalSign"/>
+        <text class="dv-val" x="401.2151898734177" y="170" dominant-baseline="central">11.0%</text>
+        <text class="dv-cat" x="164" y="206" text-anchor="end" dominant-baseline="central">Sectigo</text>
+        <path class="dv-mark dv-s1" d="M176,197h140.81012658227849a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-140.81012658227849z" tabindex="0" role="img" aria-label="Sectigo: 52 sites (7.3%)" data-tip-value="52 sites (7.3%)" data-tip-label="Sectigo"/>
+        <text class="dv-val" x="328.8101265822785" y="206" dominant-baseline="central">7.3%</text>
+        <text class="dv-cat" x="164" y="242" text-anchor="end" dominant-baseline="central">All other issuers</text>
+        <path class="dv-mark dv-neutral" d="M176,233h196.50632911392407a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-196.50632911392407z" tabindex="0" role="img" aria-label="All other issuers: 72 sites (10.1%)" data-tip-value="72 sites (10.1%)" data-tip-label="All other issuers"/>
+        <text class="dv-val" x="384.50632911392404" y="242" dominant-baseline="central">10.1%</text>
+      </svg>
+                <details class="dv-table">
+        <summary>View this data as a table</summary>
+        <div class="comparison-table-wrap"><table class="comparison-table">
+          <thead><tr><th>Issuer</th><th>Sites</th><th>Share</th></tr></thead>
+          <tbody><tr><td>DigiCert</td><td>158</td><td>22.2%</td></tr><tr><td>Google Trust Services</td><td>134</td><td>18.8%</td></tr><tr><td>Let's Encrypt</td><td>121</td><td>17.0%</td></tr><tr><td>Amazon Trust Services</td><td>97</td><td>13.6%</td></tr><tr><td>GlobalSign</td><td>78</td><td>11.0%</td></tr><tr><td>Sectigo</td><td>52</td><td>7.3%</td></tr><tr><td>All other issuers</td><td>72</td><td>10.1%</td></tr></tbody>
+        </table></div>
+      </details>
+                <p class="dv-source">Source: duckTyped scan of the Tranco top 1,000 (list V3YPN), 2026-09-18. Issuer is the organization named in the leaf certificate's issuer field.</p>
+            </figure>
+
+            <h2>Cutting It Close: Expiry Margins</h2>
+            <p>Among sites with a valid chain, the median certificate had 77 days left. But 48 were within 30 days of expiry and 11 within a week — including Meta's main properties (<code>facebook.com</code>, <code>instagram.com</code>, <code>whatsapp.com</code>), which all shared a 91-day certificate with 7 days remaining.</p>
+            <p>That is not negligence. It is what automated rotation looks like: when renewal is a scheduled job, there is no reason to renew early. It is also exactly the margin that ends in an outage when renewal is a calendar reminder instead. If your renewals involve a human, a single-digit margin means a missed email away from <a href="/errors/ssl/ssl-certificate-expired">an expired certificate error</a>.</p>
+
+            <h2>What Fails Validation</h2>
+            <p>29 of 712 sites (4.1%) presented a certificate that a standard client would reject:</p>
+            <ul>
+                <li><strong>23 hostname mismatches.</strong> Almost all are infrastructure domains rather than websites — <code>googlevideo.com</code>, <code>windows.net</code>, <code>edgekey.net</code>, <code>trbcdn.net</code> — where the bare domain answers on port 443 with a certificate for a different name. Nobody browses to them, so nobody notices. See <a href="/errors/ssl/ssl-certificate-invalid">SSL certificate invalid</a>.</li>
+                <li><strong>3 expired certificates</strong>, all long abandoned: the most recent expired 2,138 days before the scan. 2 of them carry lifetimes of 426 days, issued under rules that predate even the 398-day limit.</li>
+                <li><strong>3 untrusted or incomplete chains</strong>, including state-operated CAs absent from browser trust stores. See <a href="/errors/ssl/certificate-chain-invalid">certificate chain invalid</a> and <a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a>.</li>
+            </ul>
+
+            <h2>Protocol Versions and Key Types</h2>
+            <p><strong>82.2%</strong> of sites negotiated TLS 1.3 when offered it; the remaining 17.8% negotiated TLS 1.2. The scanner did not offer TLS 1.0 or 1.1, so a server limited to those would appear among the 7 handshake failures rather than here. For how the two differ, see <a href="/learn/ssl-tls-handshake/">How SSL/TLS Handshakes Work</a>.</p>
+            <p>Key types are changing more slowly than protocols. RSA-2048 is still the most common leaf key at 61.9%, with ECDSA P-256 at 35.1%.</p>
+            <details class="dv-table" open>
+        <summary>View this data as a table</summary>
+        <div class="comparison-table-wrap"><table class="comparison-table">
+          <thead><tr><th>Leaf key</th><th>Sites</th><th>Share</th></tr></thead>
+          <tbody><tr><td>RSA-2048</td><td>441</td><td>61.9%</td></tr><tr><td>ECDSA P-256</td><td>250</td><td>35.1%</td></tr><tr><td>RSA-4096</td><td>11</td><td>1.5%</td></tr><tr><td>ECDSA P-384</td><td>6</td><td>0.8%</td></tr><tr><td>RSA-3072</td><td>4</td><td>0.6%</td></tr></tbody>
+        </table></div>
+      </details>
+
+            <h2>What This Means for Your Certificates</h2>
+            <ol>
+                <li><strong>Automate renewal now, not in 2029.</strong> The 100-day limit arrives in March 2027. If any certificate you own is renewed by a person, that process has about one more cycle left in it. ACME clients (certbot, acme.sh, Caddy, your CDN's managed certificates) remove the problem entirely.</li>
+                <li><strong>Monitor expiry independently of renewal.</strong> Automation fails silently — a changed DNS record or an expired API token stops renewals without telling anyone. Check what your server is actually presenting with the <a href="/ssl-checker/">SSL Certificate Checker</a>.</li>
+                <li><strong>Audit the names nobody visits.</strong> Most broken certificates in this scan were on hostnames that are not websites. Apex domains, legacy subdomains and redirect hosts are where expired certificates hide.</li>
+                <li><strong>Reissuing? Check the request first.</strong> Shorter lifetimes mean more CSRs. Verify the names and key size with the <a href="/csr-decoder/">CSR Decoder</a> before submitting.</li>
+            </ol>
+
+            <h2>Methodology and Limitations</h2>
+            <ul>
+                <li><strong>Domain list:</strong> the first 1,000 entries of the <a href="https://tranco-list.eu/list/V3YPN" rel="noopener" target="_blank">Tranco list V3YPN</a>, a research-oriented ranking that aggregates several popularity sources.</li>
+                <li><strong>Measurement:</strong> one ordinary TLS handshake per host on port 443 with SNI, the same thing a browser does on a first visit. No HTTP request was sent. The bare domain was tried first, then <code>www.</code>; 53 sites answered only on <code>www</code>.</li>
+                <li><strong>Coverage:</strong> 288 domains presented no certificate — 174 had no address record, 76 refused the connection, 31 timed out and 7 failed the handshake. A popularity ranking counts DNS and CDN infrastructure names (<code>gstatic.com</code>, <code>akamai.net</code>) that were never websites. All percentages use the 712 sites that presented a certificate as the denominator.</li>
+                <li><strong>Validation:</strong> chain validity is judged against the Mozilla root store bundled with Node.js 20, including hostname matching. Only the leaf certificate was analysed. Lifetime is <code>notAfter − notBefore</code>.</li>
+                <li><strong>Limitations:</strong> one vantage point, one moment, IPv4 first. Large sites serve different certificates by region and by CDN edge, so another scanner may see a different certificate for the same domain. "Negotiated TLS 1.3" means the server chose it when offered; this scan did not test which older versions a server would still accept.</li>
+            </ul>
+            <p>You are welcome to cite or reuse these figures with a link to this page. Download the <a href="/data/ssl-survey-2026-09.csv" download>per-domain CSV</a> (1,000 rows).</p>
+
+            <h2>Frequently Asked Questions</h2>
+            <h3>What is the maximum SSL certificate validity in 2026?</h3>
+            <p>For publicly trusted certificates issued on or after March 15, 2026, the maximum is 200 days. It falls to 100 days on March 15, 2027 and to 47 days on March 15, 2029, under CA/Browser Forum ballot SC-081v3. Certificates issued before each date keep their original lifetime until they expire.</p>
+            <h3>Which certificate authority is most common on top websites?</h3>
+            <p>In this September 2026 scan of the Tranco top 1,000, DigiCert issued 22.2% of the 712 certificates observed, followed by Google Trust Services (18.8%) and Let's Encrypt (17.0%).</p>
+            <h3>How many top websites support TLS 1.3?</h3>
+            <p>82.2% of the 712 sites that presented a certificate negotiated TLS 1.3 with a client offering it. The remaining 17.8% negotiated TLS 1.2. The scan did not offer TLS 1.0 or 1.1, so it cannot say how many servers still accept them.</p>
+            <h3>Can I reuse this data?</h3>
+            <p>Yes. The full per-domain dataset is a free CSV download, and you are welcome to cite or reuse the figures with a link back to this page.</p>
+
+            <h2>Related Tools and Guides</h2>
+            <ul>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — issuer, expiry and chain details for any domain</li>
+                <li><a href="/csr-decoder/">CSR Decoder</a> — inspect a certificate signing request before submitting it</li>
+                <li><a href="/security-headers/">Security Headers Checker</a> — HSTS and the rest of your HTTPS posture</li>
+                <li><a href="/learn/ssl-tls-handshake/">How SSL/TLS Handshakes Work</a> and the <a href="/learn/ssl-tls-cheat-sheet/">SSL/TLS Cheat Sheet</a></li>
+                <li><a href="/learn/ssl-certificate-expired/">Fixing an expired SSL certificate</a> and all <a href="/errors/ssl/">SSL error guides</a></li>
+            </ul>
+        </article>
+    </div>
+    <div class="dv"><div class="dv-tip" id="dvTip" role="status" aria-live="polite"></div></div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+<script>
+    // Chart tooltips: same detail on hover and keyboard focus. Text goes in via
+    // textContent only; every value shown is also in the table view.
+    (function () {
+        var tip = document.getElementById('dvTip');
+        function show(markEl, x, y) {
+            tip.textContent = '';
+            var value = document.createElement('strong');
+            value.textContent = markEl.getAttribute('data-tip-value');
+            var label = document.createElement('span');
+            label.textContent = markEl.getAttribute('data-tip-label');
+            tip.appendChild(value); tip.appendChild(label);
+            tip.style.left = Math.min(x + 14, window.innerWidth - 250) + 'px';
+            tip.style.top = (y + 14) + 'px';
+            tip.classList.add('is-on');
+        }
+        function hide() { tip.classList.remove('is-on'); }
+        document.querySelectorAll('.dv-mark').forEach(function (markEl) {
+            markEl.addEventListener('pointermove', function (e) { show(markEl, e.clientX, e.clientY); });
+            markEl.addEventListener('pointerleave', hide);
+            markEl.addEventListener('focus', function () { var r = markEl.getBoundingClientRect(); show(markEl, r.right, r.top); });
+            markEl.addEventListener('blur', hide);
+        });
+    })();
+    </script>
+</body>
+</html>

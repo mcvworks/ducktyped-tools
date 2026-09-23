@@ -23,9 +23,8 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"duckTyped","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"55+ free developer and IT tools including DNS checker, SSL certificate validator, JSON formatter, email diagnostics, password generator, WHOIS lookup, port scanner, and more. No sign-up required.","browserRequirements":"Requires JavaScript","softwareVersion":"3.0","author":{"@type":"Organization","name":"duckTyped"}}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 :root{--bg-0:#0F1114;--bg-1:#12161C;--panel:rgba(21,26,34,.70);--panel-solid:#151A22;--border:#232A35;--text-0:#E9EEF5;--text-1:#B8C0CC;--muted:#8892A0;--brand-yellow:#F2C200;--brand-teal:#48E0C7;--brand-orange:#FA6216;--radius-xl:20px;--radius-lg:16px;--radius-md:12px;--font-display:'Orbitron',monospace;--font-body:'Space Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -110,6 +109,20 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
 .disc-card--tool:hover{border-color:rgba(242,194,0,.3)}
 .disc-card-name{font-weight:600;font-size:.95rem;color:var(--text-0);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .disc-card-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.monitor-feature-section{margin-top:-32px;padding:0 0 80px}
+.monitor-feature{position:relative;display:flex;align-items:center;gap:24px;overflow:hidden;padding:32px 36px;background:var(--panel-solid);border:1px solid rgba(72,224,199,.34);border-radius:var(--radius-lg);color:inherit;text-decoration:none;box-shadow:0 18px 50px rgba(0,0,0,.34);transition:transform .2s,border-color .2s,box-shadow .25s}
+.monitor-feature::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 55% 25%,rgba(72,224,199,.08),transparent 60%);pointer-events:none}
+.monitor-feature::after{content:'';position:absolute;inset:-1px;border-radius:var(--radius-lg);background:linear-gradient(90deg,var(--brand-yellow) 0 24px,transparent 24px calc(100% - 24px),var(--brand-yellow) calc(100% - 24px)) top/100% 2px no-repeat,linear-gradient(90deg,var(--brand-yellow) 0 24px,transparent 24px calc(100% - 24px),var(--brand-yellow) calc(100% - 24px)) bottom/100% 2px no-repeat;opacity:.75;pointer-events:none}
+.monitor-feature:hover{transform:translateY(-3px);border-color:rgba(72,224,199,.58);box-shadow:0 24px 64px rgba(0,0,0,.44)}
+.monitor-feature-icon{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:68px;height:68px;flex:0 0 68px;border:1px solid rgba(72,224,199,.46);border-radius:50%;color:var(--brand-yellow);background:rgba(15,17,20,.72)}
+.monitor-feature-copy{position:relative;z-index:1;min-width:0;flex:1}
+.monitor-feature-label{display:block;margin-bottom:7px;font-family:var(--font-display);font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--brand-teal)}
+.monitor-feature-title{display:block;margin-bottom:6px;font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:700;line-height:1.2;color:var(--text-0)}
+.monitor-feature-desc{display:block;max-width:640px;font-size:.93rem;line-height:1.55;color:var(--text-1)}
+.monitor-feature-cta{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;padding:12px 20px;border-radius:var(--radius-md);background:var(--brand-yellow);color:#111318;font-size:.82rem;font-weight:700;white-space:nowrap;transition:background .2s,box-shadow .2s}
+.monitor-feature:hover .monitor-feature-cta{background:#FFD020;box-shadow:0 10px 28px rgba(242,194,0,.2)}
+@media(max-width:720px){.monitor-feature-section{margin-top:-40px;padding-bottom:64px}.monitor-feature{align-items:flex-start;flex-wrap:wrap;padding:26px 24px}.monitor-feature-icon{width:52px;height:52px;flex-basis:52px}.monitor-feature-copy{flex-basis:calc(100% - 76px)}.monitor-feature-cta{margin-left:76px}}
+@media(max-width:480px){.monitor-feature{gap:16px}.monitor-feature-copy{flex-basis:100%}.monitor-feature-icon{display:none}.monitor-feature-cta{width:100%;margin-left:0}}
 /* Nav search (injected by site-search.js) */
 .nav-search-wrap{position:relative;display:flex;align-items:center;margin-left:4px}
 .nav-search-icon-btn{display:none;background:none;border:none;cursor:pointer;color:var(--text-1);padding:6px;border-radius:10px;transition:color .2s,background .2s;line-height:0}
@@ -150,6 +163,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
     <li><a href="/utility/">Utility</a></li>
     <li><a href="/learn/">Learn</a></li>
     <li><a href="/errors/">Troubleshoot</a></li>
+    <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
   </ul>
   <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </div></nav>
@@ -157,7 +171,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
   <div class="hero-bg-glow"></div>
   <h1 class="hero-wordmark fade-up">duckTyped<span class="cursor">_</span></h1>
   <p class="hero-headline fade-up delay-1">Developer tools that <span class="accent">just work.</span></p>
-  <p class="hero-sub">DNS, SSL, JSON, email diagnostics, and more — <span data-dt-count="tools">55</span> free tools that run in your browser. <strong>No accounts. No cookies. No data stored.</strong></p>
+  <p class="hero-sub">DNS, SSL, JSON, email diagnostics, and more — <span data-dt-count="tools">55</span> free tools. Most run locally in your browser; network lookups use our API. <strong>No accounts. No cookies. No ads.</strong></p>
   <div class="hero-ctas">
     <a href="/utility/" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg> <span>Browse <span data-dt-count="tools">55</span>+ Tools</span></a>
     <a href="/errors/" class="btn btn-ghost">Troubleshoot an Error</a>
@@ -221,6 +235,21 @@ Crack time: <span class="demo-result">&gt; 10,000 centuries</span></div>
     <a href="/tools/network-tools/" class="cat-pill"><span class="cat-emoji">🔍</span> Lookup <span class="cat-count" data-dt-cat="lookup"></span></a>
   </div>
 </div></section>
+<section class="monitor-feature-section"><div class="container">
+  <a href="https://monitor.ducktyped.xyz/" class="monitor-feature" aria-label="Open the duckTyped Cloud and SaaS Status Monitor">
+    <span class="monitor-feature-icon" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12h4l2.2-6 4.1 12 2.2-6H21"/>
+      </svg>
+    </span>
+    <span class="monitor-feature-copy">
+      <span class="monitor-feature-label">More from duckTyped · Live status</span>
+      <span class="monitor-feature-title">Cloud &amp; SaaS Status Monitor</span>
+      <span class="monitor-feature-desc">Check live outages and incident history for AWS, Azure, Cloudflare, GitHub, Slack, OpenAI, and more.</span>
+    </span>
+    <span class="monitor-feature-cta">View live status →</span>
+  </a>
+</div></section>
 <section class="discovery"><div class="container">
   <div class="discovery-header">
     <div class="discovery-label">Popular Tools</div>
@@ -254,7 +283,10 @@ Crack time: <span class="demo-result">&gt; 10,000 centuries</span></div>
     <li><a href="/utility/#dnsChecker">DNS</a></li>
     <li><a href="/utility/#sslChecker">SSL</a></li>
     <li><a href="/utility/#passwordGen">Passwords</a></li>
+    <li><a href="/badges/">Badges</a></li>
     <li><a href="/feedback/">Suggest &amp; Feedback</a></li>
+    <li><a href="/privacy/">Privacy</a></li>
+    <li><a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></li>
   </ul>
   <p class="footer-copy">&copy; <span class="footer-year"></span> duckTyped. All rights reserved.</p>
   <p class="footer-badge">

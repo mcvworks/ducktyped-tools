@@ -3781,7 +3781,7 @@
     "type": "error",
     "title": "fatal: repository not found",
     "url": "/errors/devops/git-repository-not-found",
-    "description": "Git cannot find the remote repository",
+    "description": "Git found the hosting service but cannot access this repository. Check the exact URL, the account used by Git, and that account’s repository permissions.",
     "keywords": [
       "fatal repository not found",
       "git repo not found",
@@ -4331,7 +4331,7 @@
     "type": "error",
     "title": "Could not resolve host",
     "url": "/errors/dns/could-not-resolve-host",
-    "description": "The error curl, git, and wget print when a hostname cannot be converted to an IP address — curl reports it as exit code 6.",
+    "description": "curl error 6 means it could not resolve the target hostname. Start with the exact name in the error, then compare the same lookup from your machine and network.",
     "keywords": [
       "could not resolve host",
       "curl 6 could not resolve host",
@@ -5481,5 +5481,62 @@
       "full strict redirect loop",
       "x-forwarded-proto redirect"
     ]
+  },
+  {
+    "type": "learn",
+    "title": "SSL Certificates on the Top 1,000 Websites: 2026 Survey",
+    "url": "/learn/ssl-certificate-survey-2026/",
+    "description": "Original data: certificate lifetimes, issuer share, TLS versions and key types across the top 1,000 sites, six months after the 200-day limit.",
+    "keywords": [
+      "ssl survey",
+      "certificate lifetime",
+      "200 day certificate",
+      "47 day certificate",
+      "sc-081",
+      "certificate authority market share",
+      "tls 1.3 adoption",
+      "ssl statistics"
+    ],
+    "category": "security"
+  },
+  {
+    "type": "tool",
+    "title": "Embeddable Badges",
+    "url": "/badges/",
+    "description": "Free static SVG badges for your README or site that link to an SSL, DNS, or security headers check of your domain.",
+    "keywords": [
+      "badge",
+      "badges",
+      "readme badge",
+      "svg badge",
+      "embed",
+      "shields",
+      "ssl badge",
+      "dns badge",
+      "security headers badge",
+      "github readme",
+      "markdown badge"
+    ],
+    "aliases": [
+      "status badge",
+      "site badge",
+      "embed badge"
+    ]
+  },
+  {
+    "type": "learn",
+    "title": "Privacy Policy",
+    "url": "/privacy/",
+    "description": "What duckTyped and DTMonitor collect, who else sees it, and how long it is kept.",
+    "keywords": [
+      "privacy",
+      "privacy policy",
+      "data",
+      "cookies",
+      "gdpr",
+      "logging",
+      "tracking"
+    ],
+    "category": "security"
   }
 ]

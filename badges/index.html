@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"duckTyped Badges","url":"https://ducktyped.xyz/badges/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free embeddable SVG badges that link to a live SSL, DNS, or security headers check of your domain. Static image, no tracking.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do duckTyped badges track my visitors?","acceptedAnswer":{"@type":"Answer","text":"No. Each badge is a static SVG file with no script, no cookies, and no tracking pixel. Every visitor receives the same image and the image URL carries no identifier. duckTyped does not run analytics."}},{"@type":"Question","name":"Does the badge show the live status of my domain?","acceptedAnswer":{"@type":"Answer","text":"No. The image is static and looks the same for every domain, so it never shows a pass or fail result. Clicking the badge opens the duckTyped tool with your domain already filled in, where the visitor can run the live check."}},{"@type":"Question","name":"Where can I use the badges?","acceptedAnswer":{"@type":"Answer","text":"Anywhere that renders Markdown or HTML images: GitHub, GitLab, and Codeberg READMEs, documentation sites, status pages, and blog footers. Use the Markdown snippet for READMEs and the HTML snippet for web pages."}},{"@type":"Question","name":"Are the badges free, and can I host them myself?","acceptedAnswer":{"@type":"Answer","text":"Yes. The badges are free to use with no account or sign-up. Each SVG is fully self-contained, with no external fonts, images, or scripts, so you can also download the file and serve it from your own site."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embeddable Badges — SSL, DNS &amp; Security Headers — duckTyped</title>
+    <meta name="description" content="Free embeddable SVG badges for your README or site. Link visitors to a live SSL, DNS, or security headers check of your domain. Static image, no tracking.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Embeddable Badges — SSL, DNS &amp; Security Headers — duckTyped">
+    <meta property="og:description" content="Free embeddable SVG badges that link to a live SSL, DNS, or security headers check of your domain. Static image, no tracking.">
+    <meta property="og:url" content="https://ducktyped.xyz/badges/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="Embeddable Badges — duckTyped">
+    <meta name="twitter:description" content="Free static SVG badges that link to an SSL, DNS, or security headers check of your domain.">
+    <link rel="canonical" href="https://ducktyped.xyz/badges/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+    <style>
+        /* Page-local styles. styles.css does not redefine its colour variables
+           for the light theme, so this page carries its own token pair. */
+        .badge-gen {
+            --bdg-surface: #10141A;
+            --bdg-border: #232A35;
+            --bdg-text: #E9EEF5;
+            --bdg-muted: #B8C0CC;
+            --bdg-accent: #F2C200;
+            --bdg-accent-soft: rgba(242, 194, 0, 0.08);
+            --bdg-error: #ff6b6b;
+        }
+        body.light-theme .badge-gen {
+            --bdg-surface: #F8F9FB;
+            --bdg-border: #D0D5DD;
+            --bdg-text: #0F1114;
+            --bdg-muted: #555;
+            --bdg-accent: #0F1114;
+            --bdg-accent-soft: rgba(15, 17, 20, 0.05);
+            --bdg-error: #c0392b;
+        }
+
+        .badge-gen h3 {
+            margin: 0;
+            font-size: 0.95em;
+            color: var(--bdg-text);
+        }
+        .badge-gen p,
+        .badge-gen li { color: var(--bdg-muted); line-height: 1.6; font-size: 0.92em; }
+        .badge-gen p { margin: 0 0 12px; }
+        .badge-gen p:last-child { margin-bottom: 0; }
+        .badge-gen a:not(.bdg-preview-link) { color: var(--bdg-accent); }
+        .badge-gen code { font-family: var(--font-mono); font-size: 0.92em; color: var(--bdg-text); }
+
+        .bdg-error {
+            margin: 6px 0 0;
+            color: var(--bdg-error) !important;
+            font-size: 0.85em;
+        }
+        .bdg-error[hidden] { display: none; }
+
+        /* Badge-type picker: radio cards */
+        .bdg-picker { border: 0; padding: 0; margin: 0 0 18px; min-width: 0; }
+        .bdg-picker legend {
+            padding: 0;
+            margin-bottom: 6px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.72em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--bdg-muted);
+        }
+        .bdg-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .bdg-option {
+            position: relative;
+            display: block;
+            margin: 0;
+            font: inherit;
+            letter-spacing: 0;
+            text-transform: none;
+            cursor: pointer;
+        }
+        .bdg-option input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+        }
+        .bdg-option-body {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            height: 100%;
+            padding: 12px 14px;
+            background: var(--bdg-surface);
+            border: 1.5px solid var(--bdg-border);
+            border-radius: 8px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .bdg-option-body img { display: block; max-width: 100%; height: 20px; }
+        .bdg-option-desc { font-size: 0.82em; font-weight: 400; color: var(--bdg-muted); line-height: 1.4; }
+        .bdg-option:hover .bdg-option-body { border-color: var(--bdg-muted); }
+        .bdg-option input:checked + .bdg-option-body {
+            border-color: var(--bdg-accent);
+            background: var(--bdg-accent-soft);
+        }
+        .bdg-option input:focus-visible + .bdg-option-body {
+            outline: 2px solid var(--bdg-accent);
+            outline-offset: 2px;
+        }
+
+        /* Preview + snippets */
+        .bdg-block { margin-top: 18px; }
+        .bdg-block-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-height: 30px;
+            margin-bottom: 6px;
+        }
+        .bdg-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 16px 14px;
+            background: var(--bdg-surface);
+            border: 1px solid var(--bdg-border);
+            border-radius: 8px;
+        }
+        .bdg-preview-link { display: inline-flex; line-height: 0; border-radius: 3px; }
+        .bdg-preview-link img { display: block; max-width: 100%; height: 20px; }
+        .bdg-target {
+            margin: 0 !important;
+            font-family: var(--font-mono);
+            font-size: 0.8em !important;
+            overflow-wrap: anywhere;
+        }
+        .bdg-status { margin: 8px 0 0 !important; font-size: 0.85em !important; }
+        .bdg-code {
+            margin: 0;
+            padding: 12px 14px;
+            background: var(--bdg-surface);
+            border: 1px solid var(--bdg-border);
+            border-radius: 8px;
+            /* A true monospace stack: the site's --font-mono is Space Grotesk,
+               whose straight quotes read as curly in copy-paste snippets. */
+            font-family: ui-monospace, 'SF Mono', 'Fira Code', 'JetBrains Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+            font-size: 0.8em;
+            line-height: 1.6;
+            color: var(--bdg-text);
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-all;
+        }
+        .bdg-code.is-placeholder { color: var(--bdg-muted); font-family: inherit; }
+
+        /* Copy buttons reuse .copy-btn (already themed for light + dark); only
+           pin the size and neutralise the generic hover on a disabled button. */
+        .badge-gen .bdg-copy { flex: 0 0 auto; width: auto; margin: 0; }
+        .badge-gen .bdg-copy:disabled:hover,
+        body.light-theme .badge-gen .bdg-copy:disabled:hover {
+            background: transparent;
+            box-shadow: none;
+            transform: none;
+        }
+        .badge-gen .bdg-copy:disabled:hover { color: var(--primary-color); border-color: var(--primary-border); }
+        body.light-theme .badge-gen .bdg-copy:disabled:hover { color: #0F1114; border-color: #0F1114; }
+
+        /* styles.css carries a second, modal-scoped .faq-item rule that adds
+           20px padding and a fill; flatten it so each Q&A reads as one block. */
+        .bdg-faq { margin-top: 4px; }
+        .bdg-faq .faq-item {
+            padding: 0;
+            margin-bottom: 10px;
+            background: transparent;
+            border-color: var(--bdg-border);
+            overflow: hidden;
+        }
+        .bdg-faq .faq-item:last-child { margin-bottom: 0; }
+        .bdg-faq .faq-answer-static { margin: 0; }
+        .bdg-faq .faq-question-static,
+        .bdg-faq .faq-answer-static p { border-radius: 0; }
+
+        @media (max-width: 640px) {
+            .bdg-options { grid-template-columns: minmax(0, 1fr); }
+        }
+    </style>
+</head>
+<body>    <nav class="unified-nav"><div class="unified-nav-inner"><a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a><div class="unified-mobile-overlay" id="mobileOverlay"></div><ul class="unified-nav-links" id="navLinks"><li><a href="/utility/">Utility</a></li><li><a href="/learn/">Learn</a></li><li><a href="/errors/">Troubleshoot</a></li><li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li></ul><button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button><button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div></nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>duckTyped Badges</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-18">September 18, 2026</time></p>
+            <p class="standalone-intro">Add a small badge to your README or website that links to a live SSL, DNS, or security headers check of your own domain. Pick a badge, enter your domain, and copy the Markdown or HTML snippet.</p>
+            <div class="example-box"><strong>Example uses:</strong><p>Letting README readers verify your project site's certificate in one click, linking a status page to a DNS record check, or showing customers how your security headers score.</p></div>
+        </div>
+
+        <!-- Generator -->
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card badge-gen" id="badgeGenerator"><h2>Badge Snippet Generator</h2>
+            <p class="tool-description" style="margin-bottom: 15px;">Everything on this page runs in your browser. The domain you type is never sent anywhere.</p>
+
+            <div class="input-group">
+                <label for="badgeDomain">Your domain:</label>
+                <input type="text" id="badgeDomain" placeholder="example.com" autocomplete="off" autocapitalize="none" spellcheck="false" inputmode="url" aria-describedby="badgeDomainHint badgeDomainError">
+                <span class="tool-input-hint" id="badgeDomainHint">Domain only. A pasted URL is trimmed down to its hostname.</span>
+                <p class="bdg-error" id="badgeDomainError" role="alert" hidden></p>
+            </div>
+
+            <fieldset class="bdg-picker">
+                <legend>Badge type:</legend>
+                <div class="bdg-options">
+                    <label class="bdg-option"><input type="radio" name="badgeType" value="ssl" checked><span class="bdg-option-body"><img src="/badges/ssl.svg" width="167" height="20" alt="SSL: check with duckTyped"><span class="bdg-option-desc">Opens the SSL Certificate Checker for your domain</span></span></label>
+                    <label class="bdg-option"><input type="radio" name="badgeType" value="dns"><span class="bdg-option-body"><img src="/badges/dns.svg" width="170" height="20" alt="DNS: check with duckTyped"><span class="bdg-option-desc">Opens the DNS Record Checker for your domain</span></span></label>
+                    <label class="bdg-option"><input type="radio" name="badgeType" value="security-headers"><span class="bdg-option-body"><img src="/badges/security-headers.svg" width="190" height="20" alt="headers: check with duckTyped"><span class="bdg-option-desc">Opens the Security Headers Checker for your site</span></span></label>
+                    <label class="bdg-option"><input type="radio" name="badgeType" value="tools"><span class="bdg-option-body"><img src="/badges/tools.svg" width="134" height="20" alt="dev tools: duckTyped"><span class="bdg-option-desc">Links to the duckTyped tool collection (no domain needed)</span></span></label>
+                </div>
+            </fieldset>
+
+            <div class="bdg-block">
+                <div class="bdg-block-head"><h3>Preview</h3></div>
+                <div class="bdg-preview">
+                    <a class="bdg-preview-link" id="badgePreviewLink" target="_blank" rel="noopener"><img id="badgePreviewImg" src="/badges/ssl.svg" width="167" height="20" alt="SSL: check with duckTyped"></a>
+                    <p class="bdg-target" id="badgeTarget"></p>
+                </div>
+                <p class="bdg-status" id="badgeStatus" aria-live="polite"></p>
+            </div>
+
+            <div class="bdg-block">
+                <div class="bdg-block-head"><h3 id="badgeMarkdownLabel">Markdown</h3><button type="button" class="copy-btn copy-btn-inline bdg-copy" id="copyMarkdownBtn" data-copy-target="badgeMarkdown">Copy</button></div>
+                <pre class="bdg-code" id="badgeMarkdown" aria-labelledby="badgeMarkdownLabel"></pre>
+            </div>
+
+            <div class="bdg-block">
+                <div class="bdg-block-head"><h3 id="badgeHtmlLabel">HTML</h3><button type="button" class="copy-btn copy-btn-inline bdg-copy" id="copyHtmlBtn" data-copy-target="badgeHtml">Copy</button></div>
+                <pre class="bdg-code" id="badgeHtml" aria-labelledby="badgeHtmlLabel"></pre>
+            </div>
+        </div></div>
+
+        <!-- Explanation + example -->
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card badge-gen"><h2>How the Badges Work</h2>
+            <p>Each badge is a small SVG image served from <code>ducktyped.xyz/badges/</code>. The snippet wraps it in a link to a duckTyped tool with your domain in the query string, so anyone who clicks it lands on the <a href="/ssl-checker/">SSL Certificate Checker</a>, <a href="/dns-lookup/">DNS Record Checker</a>, or <a href="/security-headers/">Security Headers Checker</a> with your domain already filled in, ready to run the check themselves.</p>
+            <p>The badge is a static image: no tracking pixel, no script, no cookies. Every visitor gets the same file and the image URL carries no identifier. The SVG is self-contained, with no external fonts or images, so it renders the same in a GitHub README, a docs site, or an email.</p>
+            <div class="bdg-block">
+                <div class="bdg-block-head"><h3>Example</h3></div>
+                <p>This line in a <code>README.md</code> for a project hosted at example.com:</p>
+                <pre class="bdg-code">[![Check the SSL certificate of example.com with duckTyped](https://ducktyped.xyz/badges/ssl.svg)](https://ducktyped.xyz/ssl-checker/?domain=example.com)</pre>
+                <p style="margin-top: 12px;">renders as this clickable badge:</p>
+                <div class="bdg-preview"><a class="bdg-preview-link" href="/ssl-checker/?domain=example.com"><img src="/badges/ssl.svg" width="167" height="20" alt="Check the SSL certificate of example.com with duckTyped"></a></div>
+            </div>
+        </div></div>
+
+        <!-- FAQ -->
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card badge-gen"><h2>Badge FAQ</h2>
+            <div class="bdg-faq">
+                <div class="faq-item">
+                    <div class="faq-question-static"><strong>Do duckTyped badges track my visitors?</strong></div>
+                    <div class="faq-answer-static"><p>No. Each badge is a static SVG file with no script, no cookies, and no tracking pixel. Every visitor receives the same image and the image URL carries no identifier. duckTyped does not run analytics.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question-static"><strong>Does the badge show the live status of my domain?</strong></div>
+                    <div class="faq-answer-static"><p>No. The image is static and looks the same for every domain, so it never shows a pass or fail result. Clicking the badge opens the duckTyped tool with your domain already filled in, where the visitor can run the live check.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question-static"><strong>Where can I use the badges?</strong></div>
+                    <div class="faq-answer-static"><p>Anywhere that renders Markdown or HTML images: GitHub, GitLab, and Codeberg READMEs, documentation sites, status pages, and blog footers. Use the Markdown snippet for READMEs and the HTML snippet for web pages.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question-static"><strong>Are the badges free, and can I host them myself?</strong></div>
+                    <div class="faq-answer-static"><p>Yes. The badges are free to use with no account or sign-up. Each SVG is fully self-contained, with no external fonts, images, or scripts, so you can also download the file and serve it from your own site.</p></div>
+                </div>
+            </div>
+        </div></div>
+
+        <!-- Tools the badges link to -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Tools Behind the Badges</div>
+            <div class="recommended-tools-grid">
+                <a href="/ssl-checker/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">SSL Certificate Checker</span>
+                    <span class="recommended-tool-desc">Check SSL/TLS certificate validity, expiry date, and certificate chain for any domain</span>
+                </a>
+                <a href="/dns-lookup/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">DNS Record Checker</span>
+                    <span class="recommended-tool-desc">Look up A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, and DKIM records for any domain</span>
+                </a>
+                <a href="/security-headers/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Security Headers Checker</span>
+                    <span class="recommended-tool-desc">Inspect HTTP security headers for any URL including HSTS, CSP, and X-Frame-Options</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="standalone-footer-cta"><p>duckTyped has <strong>55+ free tools</strong>. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        var SITE_ORIGIN = 'https://ducktyped.xyz';
+        var EXAMPLE_DOMAIN = 'example.com';
+        var ERROR_DELAY_MS = 700;
+        var COPIED_LABEL_MS = 1500;
+        var MAX_HOSTNAME_LENGTH = 253;
+        var INVALID_DOMAIN_MESSAGE = 'Enter a domain like example.com. Only letters, digits, hyphens, and dots are allowed.';
+        var SNIPPET_PLACEHOLDER = 'Enter a valid domain to generate this snippet.';
+
+        var BADGES = {
+            'ssl': {
+                file: 'ssl.svg', width: 167, needsDomain: true,
+                alt: function (domain) { return 'Check the SSL certificate of ' + domain + ' with duckTyped'; },
+                target: function (domain) { return SITE_ORIGIN + '/ssl-checker/?domain=' + encodeURIComponent(domain); }
+            },
+            'dns': {
+                file: 'dns.svg', width: 170, needsDomain: true,
+                alt: function (domain) { return 'Check the DNS records of ' + domain + ' with duckTyped'; },
+                target: function (domain) { return SITE_ORIGIN + '/dns-lookup/?domain=' + encodeURIComponent(domain); }
+            },
+            'security-headers': {
+                file: 'security-headers.svg', width: 190, needsDomain: true,
+                alt: function (domain) { return 'Check the security headers of ' + domain + ' with duckTyped'; },
+                target: function (domain) { return SITE_ORIGIN + '/security-headers/?url=' + encodeURIComponent('https://' + domain); }
+            },
+            'tools': {
+                file: 'tools.svg', width: 134, needsDomain: false,
+                alt: function () { return 'Free developer tools by duckTyped'; },
+                target: function () { return SITE_ORIGIN + '/'; }
+            }
+        };
+        var BADGE_HEIGHT = 20;
+
+        var domainInput = document.getElementById('badgeDomain');
+        var errorEl = document.getElementById('badgeDomainError');
+        var statusEl = document.getElementById('badgeStatus');
+        var previewLink = document.getElementById('badgePreviewLink');
+        var previewImg = document.getElementById('badgePreviewImg');
+        var targetEl = document.getElementById('badgeTarget');
+        var markdownEl = document.getElementById('badgeMarkdown');
+        var htmlEl = document.getElementById('badgeHtml');
+        var copyButtons = document.querySelectorAll('.bdg-copy');
+        var typeRadios = document.querySelectorAll('input[name="badgeType"]');
+        var errorTimer = null;
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Markdown alt text and link targets cannot contain raw brackets/parens.
+        function escapeMarkdownText(text) {
+            return String(text).replace(/([\\\[\]()])/g, '\\$1');
+        }
+
+        function isValidHostname(host) {
+            if (!host || host.length > MAX_HOSTNAME_LENGTH) return false;
+            var labels = host.split('.');
+            if (labels.length < 2) return false;
+            for (var i = 0; i < labels.length; i++) {
+                if (!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(labels[i])) return false;
+            }
+            // The TLD must be alphabetic (or punycode), which also rules out IPv4 addresses.
+            return /^(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/.test(labels[labels.length - 1]);
+        }
+
+        /**
+         * Reduce whatever was typed or pasted to a bare hostname.
+         * Returns { empty: true }, { host: '...' } or { error: '...' }.
+         */
+        function parseDomainInput(raw) {
+            var value = String(raw).trim().toLowerCase();
+            if (!value) return { empty: true };
+
+            value = value.replace(/^https?:\/\//, '');   // scheme
+            value = value.split(/[\/?#]/)[0];            // path, query, fragment
+            value = value.replace(/:\d{1,5}$/, '');      // port
+            value = value.replace(/\.$/, '');            // root dot
+
+            if (/[^\x00-\x7f]/.test(value)) {
+                // Internationalised name: let the URL parser convert it to punycode.
+                try { value = new URL('http://' + value).hostname; } catch (e) { return { error: INVALID_DOMAIN_MESSAGE }; }
+            }
+            return isValidHostname(value) ? { host: value } : { error: INVALID_DOMAIN_MESSAGE };
+        }
+
+        function selectedBadge() {
+            for (var i = 0; i < typeRadios.length; i++) {
+                if (typeRadios[i].checked) return BADGES[typeRadios[i].value] || BADGES.ssl;
+            }
+            return BADGES.ssl;
+        }
+
+        function buildSnippets(badge, domain) {
+            var imageUrl = SITE_ORIGIN + '/badges/' + badge.file;
+            var targetUrl = badge.target(domain);
+            var altText = badge.alt(domain);
+            return {
+                targetUrl: targetUrl,
+                altText: altText,
+                markdown: '[![' + escapeMarkdownText(altText) + '](' + imageUrl + ')](' + targetUrl + ')',
+                html: '<a href="' + escapeHtml(targetUrl) + '"><img src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(altText) +
+                      '" width="' + badge.width + '" height="' + BADGE_HEIGHT + '"></a>'
+            };
+        }
+
+        function setCopyEnabled(enabled) {
+            for (var i = 0; i < copyButtons.length; i++) {
+                copyButtons[i].disabled = !enabled;
+                copyButtons[i].title = enabled ? '' : 'Enter your domain first';
+            }
+        }
+
+        function showError(message) {
+            errorEl.textContent = message;
+            errorEl.hidden = false;
+            domainInput.setAttribute('aria-invalid', 'true');
+        }
+
+        function clearError() {
+            clearTimeout(errorTimer);
+            errorEl.textContent = '';
+            errorEl.hidden = true;
+            domainInput.removeAttribute('aria-invalid');
+        }
+
+        function renderPreviewImage(badge, altText) {
+            previewImg.setAttribute('src', '/badges/' + badge.file);
+            previewImg.setAttribute('width', String(badge.width));
+            previewImg.setAttribute('alt', altText);
+        }
+
+        function renderSnippets(badge, domain) {
+            var snippets = buildSnippets(badge, domain);
+            renderPreviewImage(badge, snippets.altText);
+            previewLink.setAttribute('href', snippets.targetUrl);
+            targetEl.textContent = 'Links to: ' + snippets.targetUrl;
+            markdownEl.textContent = snippets.markdown;
+            htmlEl.textContent = snippets.html;
+            markdownEl.classList.remove('is-placeholder');
+            htmlEl.classList.remove('is-placeholder');
+        }
+
+        function renderInvalid(badge) {
+            renderPreviewImage(badge, 'duckTyped badge preview');
+            previewLink.removeAttribute('href');
+            targetEl.textContent = 'Links to: (waiting for a valid domain)';
+            markdownEl.textContent = SNIPPET_PLACEHOLDER;
+            htmlEl.textContent = SNIPPET_PLACEHOLDER;
+            markdownEl.classList.add('is-placeholder');
+            htmlEl.classList.add('is-placeholder');
+        }
+
+        /**
+         * @param {boolean} showErrorNow - false while typing (the error is
+         *   delayed so half-typed domains are not flagged on every keystroke).
+         */
+        function render(showErrorNow) {
+            var badge = selectedBadge();
+            var parsed = parseDomainInput(domainInput.value);
+
+            if (!badge.needsDomain) {
+                clearError();
+                renderSnippets(badge, '');
+                statusEl.textContent = 'This badge links to the duckTyped homepage, so it does not use your domain.';
+                setCopyEnabled(true);
+                return;
+            }
+            if (parsed.empty) {
+                clearError();
+                renderSnippets(badge, EXAMPLE_DOMAIN);
+                statusEl.textContent = 'Showing ' + EXAMPLE_DOMAIN + ' as a placeholder. Enter your domain to get your own snippet.';
+                setCopyEnabled(false);
+                return;
+            }
+            if (parsed.error) {
+                renderInvalid(badge);
+                statusEl.textContent = '';
+                setCopyEnabled(false);
+                clearTimeout(errorTimer);
+                if (showErrorNow || !errorEl.hidden) {
+                    showError(parsed.error);
+                } else {
+                    errorTimer = setTimeout(function () { showError(parsed.error); }, ERROR_DELAY_MS);
+                }
+                return;
+            }
+            clearError();
+            renderSnippets(badge, parsed.host);
+            statusEl.textContent = 'Snippet ready for ' + parsed.host + '.';
+            setCopyEnabled(true);
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            return new Promise(function (resolve, reject) {
+                var helper = document.createElement('textarea');
+                helper.value = text;
+                helper.setAttribute('readonly', '');
+                helper.style.position = 'fixed';
+                helper.style.opacity = '0';
+                document.body.appendChild(helper);
+                helper.select();
+                var copied = false;
+                try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+                document.body.removeChild(helper);
+                if (copied) { resolve(); } else { reject(new Error('Copy command was rejected')); }
+            });
+        }
+
+        function notify(message, type) {
+            if (typeof window.showToast === 'function') window.showToast(message, type);
+        }
+
+        function handleCopyClick(event) {
+            var button = event.currentTarget;
+            var source = document.getElementById(button.getAttribute('data-copy-target'));
+            if (!source || button.disabled) return;
+            copyText(source.textContent).then(function () {
+                button.textContent = 'Copied';
+                notify('Copied!', 'success');
+                setTimeout(function () { button.textContent = 'Copy'; }, COPIED_LABEL_MS);
+            }).catch(function () {
+                notify('Could not copy. Select the snippet and copy it manually.', 'error');
+            });
+        }
+
+        domainInput.addEventListener('input', function () { render(false); });
+        domainInput.addEventListener('blur', function () { render(true); });
+        for (var r = 0; r < typeRadios.length; r++) {
+            typeRadios[r].addEventListener('change', function () { render(true); });
+        }
+        for (var c = 0; c < copyButtons.length; c++) {
+            copyButtons[c].addEventListener('click', handleCopyClick);
+        }
+        render(false);
+    })();
+    </script>
+</body>
+</html>
