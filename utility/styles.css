@@ -1695,6 +1695,7 @@
 
         .popular-tool-card {
             display: flex;
+            min-width: 0;
             align-items: center;
             gap: 12px;
             padding: 14px 16px;
@@ -1764,7 +1765,7 @@
 
         @media (max-width: 600px) {
             .popular-tools-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 8px;
             }
             .popular-tool-card {
@@ -1772,7 +1773,11 @@
                 gap: 8px;
             }
             .popular-tool-card .pop-icon { font-size: 1.1em; }
-            .popular-tool-card .pop-name { font-size: 0.72em; }
+            .popular-tool-card .pop-name {
+                font-size: 0.72em;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
             .popular-tool-card .pop-desc { display: none; }
         }
 
@@ -4062,6 +4067,23 @@
                 background: rgba(0,0,0,.4);
                 z-index: 150;
             }
+        }
+
+        .utility-heading {
+            margin-bottom: 20px;
+        }
+
+        .utility-heading h1 {
+            margin: 0 0 8px;
+            color: var(--text-primary);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            line-height: 1.2;
+        }
+
+        .utility-heading p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
         /* ============================================
