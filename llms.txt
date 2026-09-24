@@ -1,0 +1,35 @@
+# duckTyped
+
+> Free developer tools, troubleshooting guides, and original technical research.
+
+The links below provide Markdown copies of selected public pages. Each copy
+identifies its canonical HTML source and includes the same article content.
+Commands use example targets unless stated otherwise. Public lookup results may
+be cached and do not reproduce a private network or every user's connection.
+The September 2026 SSL survey is an archived snapshot, not a live status check.
+Browser tools and public documentation are available; there is no supported
+public agent API or MCP service advertised by this site.
+
+## Start here
+
+- [Use DuckTyped with AI Assistants](https://ducktyped.xyz/for-agents/index.md): Read DuckTyped guides as Markdown, find original research data, cite sources accurately, and understand the limits of browser and network tools.
+
+## Troubleshooting
+
+- [Website Not Loading? A Step-by-Step Diagnostic Guide](https://ducktyped.xyz/learn/website-not-loading/index.md): Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.
+- [SSL Certificate Expired: Diagnose the Warning](https://ducktyped.xyz/errors/ssl/ssl-certificate-expired.md): Diagnose an expired SSL certificate, check the hostname and clock, and find the right renewal steps. Includes OpenSSL output and current validity limits.
+- [Renew an Expired SSL Certificate and Verify the Fix](https://ducktyped.xyz/learn/ssl-certificate-expired/index.md): Renew, deploy, and verify an expired TLS certificate. Diagnose ACME failures, reload the right server, and check CDN, origin, and automatic renewal.
+- [Docker Daemon Not Running](https://ducktyped.xyz/errors/devops/docker-daemon-not-running.md): Fix Cannot connect to the Docker daemon on Linux, macOS, and Windows. Check Docker contexts, Desktop and WSL, socket permissions, rootless mode, and logs.
+- [Database Connection Timeout](https://ducktyped.xyz/errors/database/database-connection-timeout.md): Diagnose PostgreSQL and MySQL connection timeouts with DNS, TCP, TLS, login, and connection-pool checks. Includes commands and how to interpret the results.
+
+## Research
+
+- [SSL Certificates on the Top 1,000 Websites: 2026 Survey](https://ducktyped.xyz/learn/ssl-certificate-survey-2026/index.md): TLS certificate survey: 1,000 ranked domains checked on September 18, 2026; 712 certificates observed. Lifetime and issuer data, CSV, methods, and limits.
+- [Survey CSV](https://ducktyped.xyz/data/ssl-survey-2026-09.csv): 1,000 attempted domains; use the report’s data dictionary and status field.
+- [Chart counts](https://ducktyped.xyz/data/ssl-survey-2026-09/chart-data.json): Counts and captions for the 712 observed certificates.
+
+## Optional
+
+- [Privacy](https://ducktyped.xyz/privacy/): Input handling, caching, and third-party services.
+- [Tool directory](https://ducktyped.xyz/utility/): Interactive browser tools.
+- [All guides](https://ducktyped.xyz/learn/): Full HTML guide index.

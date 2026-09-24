@@ -23,6 +23,10 @@
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/errors/database/database-connection-timeout.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>
     <nav class="unified-nav">
@@ -127,7 +131,10 @@ psql &quot;host=db.example.com port=5432 dbname=appdb user=app_user connect_time
             <li><a href="https://dev.mysql.com/doc/refman/8.4/en/using-encrypted-connections.html">MySQL encrypted connections</a></li>
             <li><a href="https://node-postgres.com/features/pooling">node-postgres pooling</a></li>
             </ul>
-        </article>
+        <!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/errors/database/database-connection-timeout.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
 
         <div class="recommended-tools"><div class="recommended-tools-heading">Related Tools</div><div class="recommended-tools-grid"><a href="/dns-lookup/" class="recommended-tool-card"><span class="recommended-tool-name">DNS Lookup</span><span class="recommended-tool-desc">Inspect public records; private DNS may differ</span></a><a href="/port-scanner/" class="recommended-tool-card"><span class="recommended-tool-name">Port Scanner</span><span class="recommended-tool-desc">Check public reachability from DuckTyped, not your app network</span></a></div></div>
         <div class="learn-cta"><a href="/errors/" class="learn-more-link">Browse all errors</a></div>

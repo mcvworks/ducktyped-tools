@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/learn/ssl-certificate-expired/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -103,6 +107,9 @@ sudo certbot renew --cert-name example.com</code></pre>
 <h3>How early should I receive an expiry alert?</h3><p>Choose thresholds that fit the actual certificate lifetime and normal renewal window. A 30-day threshold is unsuitable for a certificate issued for 30 days or less. Monitor failed renewal/deployment attempts as well as the served expiry date.</p>
 <h2>Sources and Review</h2><p>Reviewed September 24, 2026. Replace example hostnames and paths with your deployment values. Sample output is illustrative.</p><ul><li><a href="https://eff-certbot.readthedocs.io/en/stable/using.html#renewing-certificates">Certbot renewal, dry runs, and hooks</a></li><li><a href="https://letsencrypt.org/docs/challenge-types/">ACME challenge requirements</a></li><li><a href="https://nginx.org/en/docs/beginners_guide.html#control">NGINX configuration and reload</a></li><li><a href="https://caddyserver.com/docs/automatic-https">Caddy automatic HTTPS</a></li><li><a href="https://curl.se/docs/sslcerts.html">curl trust verification</a></li><li><a href="https://letsencrypt.org/2025/12/02/from-90-to-45/">Let’s Encrypt lifetime transition</a></li><li><a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/">CA/Browser Forum lifetime schedule</a></li></ul>
 
+<!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/learn/ssl-certificate-expired/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
 </article>
 
         <div class="learn-cta">

@@ -4275,6 +4275,8 @@
         }
         .learn-card {
             display: block;
+            min-width: 0;
+            overflow-wrap: anywhere;
             padding: 22px 20px;
             background: var(--card-background);
             border: 1px solid var(--border-color);
@@ -4749,7 +4751,7 @@
 
             /* Learn responsive */
             .learn-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 12px;
             }
             .learn-article {

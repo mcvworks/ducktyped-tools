@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificates on the Top 1,000 Websites — 2026 Survey","description":"We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","datePublished":"2026-09-18","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped"},"publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificates on the Top 1,000 Websites — 2026 Survey","description":"TLS certificate survey: 1,000 ranked domains checked on September 18, 2026; 712 certificates observed. Lifetime and issuer data, CSV, methods, and limits.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","datePublished":"2026-09-18","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped"},"publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"TLS certificates of the Tranco top 1,000 websites, 2026-09-18","description":"Leaf TLS certificate details (issuer, validity dates, lifetime, key type, negotiated protocol, chain validity) observed for the Tranco top 1,000 domains on 2026-09-18.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","creator":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"datePublished":"2026-09-18","temporalCoverage":"2026-09-18","isAccessibleForFree":true,"distribution":[{"@type":"DataDownload","encodingFormat":"text/csv","contentUrl":"https://ducktyped.xyz/data/ssl-survey-2026-09.csv"}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"SSL Certificate Survey 2026","item":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/"}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the maximum SSL certificate validity in 2026?","acceptedAnswer":{"@type":"Answer","text":"For publicly trusted certificates issued on or after March 15, 2026, the maximum is 200 days. It falls to 100 days on March 15, 2027 and to 47 days on March 15, 2029, under CA/Browser Forum ballot SC-081v3. Certificates issued before each date keep their original lifetime until they expire."}},{"@type":"Question","name":"Which certificate authority is most common on top websites?","acceptedAnswer":{"@type":"Answer","text":"In this September 2026 scan of the Tranco top 1,000, DigiCert issued 22.2% of the 712 certificates observed, followed by Google Trust Services (18.8%) and Let's Encrypt (17.0%)."}},{"@type":"Question","name":"How many top websites support TLS 1.3?","acceptedAnswer":{"@type":"Answer","text":"82.2% of the 712 sites that presented a certificate negotiated TLS 1.3 with a client offering it. The remaining 17.8% negotiated TLS 1.2. The scan did not offer TLS 1.0 or 1.1, so it cannot say how many servers still accept them."}},{"@type":"Question","name":"Can I reuse this data?","acceptedAnswer":{"@type":"Answer","text":"Yes. The full per-domain dataset is a free CSV download, and you are welcome to cite or reuse the figures with a link back to this page."}}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSL Certificates on the Top 1,000 Websites — 2026 Survey — duckTyped</title>
-    <meta name="description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <meta name="description" content="TLS certificate survey: 1,000 ranked domains checked on September 18, 2026; 712 certificates observed. Lifetime and issuer data, CSV, methods, and limits.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="article">
     <meta property="og:title" content="SSL Certificates on the Top 1,000 Websites — 2026 Survey">
-    <meta property="og:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <meta property="og:description" content="TLS certificate survey: 1,000 ranked domains checked on September 18, 2026; 712 certificates observed. Lifetime and issuer data, CSV, methods, and limits.">
     <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-certificate-survey-2026/">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/data/ssl-survey-2026-09/certificate-lifetimes.png">
@@ -24,7 +24,7 @@
     <meta name="twitter:image:alt" content="TLS certificate lifetimes in the September 18, 2026 sample of 712 observed certificates.">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SSL Certificates on the Top 1,000 Websites — 2026 Survey">
-    <meta name="twitter:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
+    <meta name="twitter:description" content="TLS certificate survey: 1,000 ranked domains checked on September 18, 2026; 712 certificates observed. Lifetime and issuer data, CSV, methods, and limits.">
     <link rel="canonical" href="https://ducktyped.xyz/learn/ssl-certificate-survey-2026/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -59,6 +59,10 @@
         .dv-tile-detail { font-size: 0.78em; color: var(--dv-muted); }
         .learn-article .dv-source { margin: 8px 0 0; font-size: 0.78em; color: var(--dv-muted); }
     </style>
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/learn/ssl-certificate-survey-2026/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -111,12 +115,12 @@
             <p>In April 2025 the CA/Browser Forum passed <a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/">ballot SC-081v3</a>, which shortens the maximum lifetime of publicly trusted TLS certificates in three steps. The first step took effect on March 15, 2026.</p>
             <div class="comparison-table-wrap">
                 <table class="comparison-table">
-                    <thead><tr><th>Issued on or after</th><th>Maximum lifetime</th><th>Practical renewal cadence</th></tr></thead>
+                    <thead><tr><th>Issued on or after</th><th>Maximum lifetime</th><th>Operational note</th></tr></thead>
                     <tbody>
-                        <tr><td>(before March 15, 2026)</td><td>398 days</td><td>Yearly</td></tr>
-                        <tr><td><strong>March 15, 2026</strong></td><td><strong>200 days</strong></td><td>Twice a year</td></tr>
-                        <tr><td>March 15, 2027</td><td>100 days</td><td>Quarterly</td></tr>
-                        <tr><td>March 15, 2029</td><td>47 days</td><td>Monthly — automation required</td></tr>
+                        <tr><td>(before March 15, 2026)</td><td>398 days</td><td>Previously issued certificates keep their original expiry.</td></tr>
+                        <tr><td><strong>March 15, 2026</strong></td><td><strong>200 days</strong></td><td>Issuers can choose shorter lifetimes.</td></tr>
+                        <tr><td>March 15, 2027</td><td>100 days</td><td>Prepare for more frequent renewal and deployment.</td></tr>
+                        <tr><td>March 15, 2029</td><td>47 days</td><td>Test automated renewal and monitor the served certificate.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -258,13 +262,40 @@
             <h2>Methodology and Limitations</h2>
             <ul>
                 <li><strong>Domain list:</strong> the first 1,000 entries of the <a href="https://tranco-list.eu/list/V3YPN" rel="noopener" target="_blank">Tranco list V3YPN</a>, a research-oriented ranking that aggregates several popularity sources.</li>
-                <li><strong>Measurement:</strong> one ordinary TLS handshake per host on port 443 with SNI, the initial certificate exchange used by an HTTPS client; browser trust and connection behavior can differ. No HTTP request was sent. The bare domain was tried first, then <code>www.</code>; 53 sites answered only on <code>www</code>.</li>
-                <li><strong>Coverage:</strong> 288 domains presented no certificate — 174 had no address record, 76 refused the connection, 31 timed out and 7 failed the handshake. A popularity ranking counts DNS and CDN infrastructure names (<code>gstatic.com</code>, <code>akamai.net</code>) that were never websites. All percentages use the 712 sites that presented a certificate as the denominator.</li>
+                <li><strong>Measurement:</strong> TLS handshakes on port 443 with SNI. No HTTP request was sent. The scanner tried the bare domain first, then <code>www.</code> if no certificate was observed; a timeout could trigger one retry. Browser trust and connection behavior can differ; 53 sites answered only on <code>www</code>.</li>
+                <li><strong>Coverage:</strong> 288 domains presented no certificate — 174 could not be resolved by the scanner, 76 refused the connection, 31 timed out and 7 failed the handshake. A popularity ranking counts DNS and CDN infrastructure names (<code>gstatic.com</code>, <code>akamai.net</code>) that were never websites. All percentages use the 712 sites that presented a certificate as the denominator.</li>
                 <li><strong>Validation:</strong> chain validity is judged against the Mozilla root store bundled with Node.js 20, including hostname matching. Only the leaf certificate was analysed. Lifetime is <code>notAfter − notBefore</code>.</li>
                 <li><strong>Cohort comparison:</strong> older and newer issuance groups were observed on the same scan date. Older short-lived certificates may already have been replaced, so this is not a longitudinal before-and-after measurement.</li>
                 <li><strong>Limitations:</strong> one vantage point, one moment, IPv4 first. Large sites serve different certificates by region and by CDN edge, so another scanner may see a different certificate for the same domain. "Negotiated TLS 1.3" means the server chose it when offered; this scan did not test which older versions a server would still accept.</li>
             </ul>
             <p>You are welcome to cite or reuse these figures with a link to this page. Download the <a href="/data/ssl-survey-2026-09.csv" download>per-domain CSV</a> (1,000 rows).</p>
+
+            <h2 id="data-dictionary">Read and Reproduce the CSV</h2>
+            <p>Start with <code>status</code>. The <code>certificate</code> rows are the 712 observations used for certificate percentages, including certificates that failed validation. Restrict to <code>chain_valid=true</code> only when answering a question about the scanner’s authorized connections. The remaining 288 rows record unsuccessful observations, not confirmed website outages.</p>
+            <p>The unsuccessful rows contain only the first four fields; CSV readers may represent later fields as missing or empty. Treat both as unavailable, never as <code>false</code> or zero. In Python, use the CSV parser rather than splitting on commas: issuer names can contain quoted commas, and the strings <code>"true"</code> and <code>"false"</code> are not Python booleans.</p>
+            <details class="dv-table">
+                <summary>CSV column definitions</summary>
+                <div class="comparison-table-wrap"><table class="comparison-table">
+                    <thead><tr><th>Column</th><th>Format</th><th>Meaning</th></tr></thead>
+                    <tbody><tr><td>rank</td><td>Integer</td><td>Position in the sampled Tranco list; one row per attempted domain.</td></tr><tr><td>domain</td><td>Hostname</td><td>The ranked domain from the input list.</td></tr><tr><td>host</td><td>Hostname or missing</td><td>The apex or www hostname that returned the observed certificate. Missing when neither yielded a certificate.</td></tr><tr><td>status</td><td>Text</td><td>certificate means a certificate was observed, even if validation failed. no_certificate:&lt;reason&gt; means neither attempt yielded one; the reason records the apex attempt.</td></tr><tr><td>chain_valid</td><td>true / false or missing</td><td>Node.js socket authorization result using the scanner’s bundled trust store and hostname check. Not a complete browser or revocation audit.</td></tr><tr><td>chain_error</td><td>Text or missing</td><td>Reported authorization error for an observed certificate, or empty when authorized. Absent on no-certificate rows.</td></tr><tr><td>protocol</td><td>Text or missing</td><td>TLS version negotiated on this connection; does not enumerate all versions the server accepts.</td></tr><tr><td>issuer</td><td>Text or missing</td><td>Issuer organization, falling back to issuer common name. The report groups some issuer aliases; the CSV retains the scanner’s value.</td></tr><tr><td>not_before / not_after</td><td>YYYY-MM-DD or missing</td><td>Certificate validity dates in UTC, with time-of-day omitted. These are not the observation date.</td></tr><tr><td>lifetime_days</td><td>Integer or missing</td><td>Full validity duration rounded to the nearest day before date strings were truncated. Subtracting the displayed dates can differ by one day.</td></tr><tr><td>days_remaining</td><td>Integer or missing</td><td>Days until expiry at the time of the handshake, rounded down. Negative means expired then; zero can mean less than one day remained. Not a live countdown.</td></tr><tr><td>key_type</td><td>EC / RSA or missing</td><td>Scanner classification: EC when curve information is present, otherwise RSA. Not a general inventory of every possible key algorithm.</td></tr><tr><td>key_bits</td><td>Integer or missing</td><td>Key size reported by the TLS certificate parser. Missing is not a zero-length key.</td></tr><tr><td>san_count</td><td>Integer or missing</td><td>Number of parsed Subject Alternative Name entries, including non-DNS entries where present.</td></tr><tr><td>wildcard</td><td>true / false or missing</td><td>Whether any parsed DNS SAN begins with a wildcard. Does not imply coverage of every subdomain.</td></tr></tbody>
+                </table></div>
+            </details>
+            <h3>Reproduce the 200-day Lifetime Count</h3>
+            <p>Download the CSV, save it as <code>ssl-survey-2026-09.csv</code>, and run this Python 3 example in the same directory. It reads the saved file and makes no network requests.</p>
+            <pre><code>import csv
+
+with open(&quot;ssl-survey-2026-09.csv&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as source:
+    rows = list(csv.DictReader(source))
+
+certificates = [row for row in rows if row[&quot;status&quot;] == &quot;certificate&quot;]
+within_200_days = sum(int(row[&quot;lifetime_days&quot;]) &lt;= 200 for row in certificates)
+print(f&quot;Domains: {len(rows)}; certificates observed: {len(certificates)}&quot;)
+print(f&quot;Lifetimes &lt;= 200 days: {within_200_days}/{len(certificates)} &quot;
+      f&quot;({within_200_days / len(certificates):.1%})&quot;)</code></pre>
+            <p>Expected output for this archived sample:</p>
+            <pre><code>Domains: 1000; certificates observed: 712
+Lifetimes &lt;= 200 days: 545/712 (76.5%)</code></pre>
+            <p>Keep the September 18, 2026 observation date with this result. Recomputing a count from the archive does not check any domain’s certificate today.</p>
 
             <h2>Frequently Asked Questions</h2>
             <h3>What is the maximum SSL certificate validity in 2026?</h3>
@@ -278,13 +309,16 @@
 
             <h2>Related Tools and Guides</h2>
             <ul>
-                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — issuer, expiry and chain details for any domain</li>
+                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — inspect the served certificate and its dates</li>
                 <li><a href="/csr-decoder/">CSR Decoder</a> — inspect a certificate signing request before submitting it</li>
                 <li><a href="/security-headers/">Security Headers Checker</a> — HSTS and the rest of your HTTPS posture</li>
                 <li><a href="/learn/ssl-tls-handshake/">How SSL/TLS Handshakes Work</a> and the <a href="/learn/ssl-tls-cheat-sheet/">SSL/TLS Cheat Sheet</a></li>
                 <li><a href="/learn/ssl-certificate-expired/">Fixing an expired SSL certificate</a> and all <a href="/errors/ssl/">SSL error guides</a></li>
             </ul>
-        </article>
+        <!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/learn/ssl-certificate-survey-2026/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
     </div>
     <div class="dv"><div class="dv-tip" id="dvTip" role="status" aria-live="polite"></div></div>
 

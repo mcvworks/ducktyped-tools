@@ -89,7 +89,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
 .cat-pill .cat-count{margin-left:auto;font-size:.72rem;color:var(--muted);font-family:var(--font-display);letter-spacing:1px}
 .footer{border-top:1px solid var(--border);padding:36px 0;text-align:center}
 .footer-brand{font-family:var(--font-display);font-weight:600;font-size:.8rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
-.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:14px;list-style:none}
+.footer-links{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:center;margin-bottom:14px;list-style:none}
 .footer-links a{color:var(--muted);text-decoration:none;font-size:.82rem;transition:color .2s}
 .footer-links a:hover{color:var(--text-0)}
 .footer-copy{font-size:.75rem;color:rgba(136,146,160,.5)}
@@ -97,7 +97,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 .delay-1{animation-delay:.08s}.delay-2{animation-delay:.16s}
 @media(max-width:640px){.unified-nav-inner{padding:10px 14px}.unified-nav-brand-text{display:none}.unified-nav-links{display:none}.unified-nav-toggle{display:block}.unified-nav-links.open{display:flex;position:fixed;top:0;right:0;bottom:0;width:240px;background:#151A22;border-left:1px solid var(--border);flex-direction:column;padding:70px 20px 40px;gap:4px;z-index:200;animation:slideIn .3s ease}.unified-mobile-overlay{display:none}.unified-mobile-overlay.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}}
-@media(max-width:768px){.hero{padding:60px 16px 40px}.showcase{max-width:100%}.showcase-body{padding:16px;min-height:170px}.stats-bar{gap:24px}.cat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.hero{padding:60px 16px 40px}.showcase{max-width:100%}.showcase-body{padding:16px;min-height:170px}.stats-bar{gap:24px}.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cat-pill{min-width:0}}
 @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .discovery{padding:0 0 80px}
 .discovery-header{text-align:center;margin-bottom:36px}
@@ -122,6 +122,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;background-image:linear
 .monitor-feature-cta{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;padding:12px 20px;border-radius:var(--radius-md);background:var(--brand-yellow);color:#111318;font-size:.82rem;font-weight:700;white-space:nowrap;transition:background .2s,box-shadow .2s}
 .monitor-feature:hover .monitor-feature-cta{background:#FFD020;box-shadow:0 10px 28px rgba(242,194,0,.2)}
 @media(max-width:720px){.monitor-feature-section{margin-top:-40px;padding-bottom:64px}.monitor-feature{align-items:flex-start;flex-wrap:wrap;padding:26px 24px}.monitor-feature-icon{width:52px;height:52px;flex-basis:52px}.monitor-feature-copy{flex-basis:calc(100% - 76px)}.monitor-feature-cta{margin-left:76px}}
+@media(max-width:380px){.cat-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:480px){.monitor-feature{gap:16px}.monitor-feature-copy{flex-basis:100%}.monitor-feature-icon{display:none}.monitor-feature-cta{width:100%;margin-left:0}}
 /* Nav search (injected by site-search.js) */
 .nav-search-wrap{position:relative;display:flex;align-items:center;margin-left:4px}
@@ -286,6 +287,7 @@ Crack time: <span class="demo-result">&gt; 10,000 centuries</span></div>
     <li><a href="/badges/">Badges</a></li>
     <li><a href="/feedback/">Suggest &amp; Feedback</a></li>
     <li><a href="/privacy/">Privacy</a></li>
+    <li><a href="/for-agents/">For AI assistants</a></li>
     <li><a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></li>
   </ul>
   <p class="footer-copy">&copy; <span class="footer-year"></span> duckTyped. All rights reserved.</p>

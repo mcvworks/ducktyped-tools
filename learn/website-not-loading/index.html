@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Website Not Loading? Diagnostic Guide","description":"Step-by-step guide to diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues with duckTyped's free tools.","datePublished":"2026-04-05","dateModified":"2026-04-05","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/website-not-loading/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Website Not Loading? Diagnose DNS, TLS, and HTTP Failures","description":"Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.","datePublished":"2026-04-05","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/website-not-loading/"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Website Not Loading"}]}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why is my website not loading?","acceptedAnswer":{"@type":"Answer","text":"The most common causes are DNS misconfiguration, an expired or invalid SSL certificate, the origin server being down, a firewall blocking the port, a misconfigured CDN or proxy, or a 5xx HTTP error from the application itself. Work through the stack from DNS to application layer to isolate the fault."}},{"@type":"Question","name":"How do I know if it's a DNS issue?","acceptedAnswer":{"@type":"Answer","text":"If your domain returns NXDOMAIN, has no A or AAAA record, or resolves to the wrong IP, the problem is DNS. Use a DNS lookup tool to confirm the record exists and matches your server. If DNS resolves correctly but the page still won't load, the issue is below the DNS layer."}},{"@type":"Question","name":"How do I check if my server is reachable?","acceptedAnswer":{"@type":"Answer","text":"Use a port scanner to verify ports 80 (HTTP) and 443 (HTTPS) are open and accepting connections. Use traceroute to see where the network path is breaking. If the port shows as closed or filtered, the problem is a firewall, security group, or the server process being down."}},{"@type":"Question","name":"What does 502 Bad Gateway mean?","acceptedAnswer":{"@type":"Answer","text":"A 502 error means an upstream server returned an invalid response to a reverse proxy or load balancer. The site's DNS, SSL, and proxy are working, but the backend application crashed, is unreachable, or returned a malformed response. Check the origin server logs."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does a public checker say the site works while my browser fails?","acceptedAnswer":{"@type":"Answer","text":"The checker and browser can use different DNS resolvers, networks, address families, trust stores, proxies, and authentication. Compare the exact failing request from the affected environment; one successful external check does not establish availability for every client."}},{"@type":"Question","name":"Do asterisks in traceroute prove the network is broken?","acceptedAnswer":{"@type":"Answer","text":"No. Routers may forward traffic without replying to traceroute probes. Missing intermediate replies alone do not prove that the destination’s HTTPS traffic is blocked."}},{"@type":"Question","name":"Does HTTP 200 mean the whole website works?","acceptedAnswer":{"@type":"Answer","text":"No. It describes one response. JavaScript, images, login, or requests to a separate API can still fail. Inspect the browser’s Network and Console panels for the specific failing request."}},{"@type":"Question","name":"Why does curl return 405 when the page opens in a browser?","acceptedAnswer":{"@type":"Answer","text":"The --head option sends HEAD. Some servers reject HEAD but accept the GET request normally used for a page. Compare a GET request before treating the 405 response as an outage."}}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped</title>
-    <meta name="description" content="Diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues with duckTyped's free troubleshooting tools.">
+    <title>Website Not Loading? Diagnose DNS, TLS, and HTTP Failures — duckTyped</title>
+    <meta name="description" content="Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped">
-    <meta property="og:description" content="Diagnose why a website won't load. Check DNS, SSL, server reachability, HTTP errors, and routing issues.">
+    <meta property="og:title" content="Website Not Loading? Diagnose DNS, TLS, and HTTP Failures">
+    <meta property="og:description" content="Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.">
     <meta property="og:url" content="https://ducktyped.xyz/learn/website-not-loading/">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Website Not Loading? Step-by-Step Diagnostic Guide — duckTyped">
-    <meta name="twitter:description" content="Step-by-step guide to diagnose and fix websites that won't load.">
+    <meta name="twitter:title" content="Website Not Loading? Diagnose DNS, TLS, and HTTP Failures">
+    <meta name="twitter:description" content="Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.">
     <link rel="canonical" href="https://ducktyped.xyz/learn/website-not-loading/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/learn/website-not-loading/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -57,107 +61,95 @@
         </div>
 
         <article class="learn-article">
-            <h1>Website Not Loading? A Step-by-Step Diagnostic Guide</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-04-05">April 5, 2026</time></p>
-            <p class="standalone-intro">When a website won't load, the problem is somewhere in a stack: DNS → network routing → TCP connection → TLS handshake → HTTP response → application. This guide walks you down that stack, one layer at a time, so you can isolate exactly where things are breaking and fix it fast.</p>
+<h1>Website Not Loading? A Step-by-Step Diagnostic Guide</h1>
+<p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p>
+<p class="standalone-intro">Start with the exact error and the connection that fails. A public checker, your browser, and an application server can see different DNS answers, network paths, certificates, and HTTP responses. Use the steps below to find the first failing stage before changing settings.</p>
 
-            <h2>First: What Is the Browser Showing You?</h2>
-            <p>The error message in the browser is your biggest clue. Each one points at a specific layer:</p>
-            <ul>
-                <li><a href="/errors/browser/dns_probe_finished_nxdomain">DNS_PROBE_FINISHED_NXDOMAIN</a> — domain doesn't exist (DNS problem).</li>
-                <li><a href="/errors/browser/err_name_not_resolved">ERR_NAME_NOT_RESOLVED</a> — DNS resolver couldn't find an answer.</li>
-                <li><a href="/errors/browser/err_connection_refused">ERR_CONNECTION_REFUSED</a> — server is reachable but actively refusing connections.</li>
-                <li><a href="/errors/browser/err_connection_timed_out">ERR_CONNECTION_TIMED_OUT</a> — server isn't responding at all (firewall or dead host).</li>
-                <li><a href="/errors/browser/err_ssl_version_or_cipher_mismatch">ERR_SSL_*</a> — TLS handshake failed (certificate or cipher problem).</li>
-                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a>, <a href="/errors/http/503-service-unavailable">503 Service Unavailable</a>, <a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — upstream/backend failures.</li>
-            </ul>
-            <p>If the browser shows a specific error, jump to the matching layer below. If the page just spins forever, start from Step 1 and work down.</p>
+<h2>Start with the Symptom</h2>
+<div class="comparison-table-wrap"><table class="comparison-table">
+<thead><tr><th>What you see</th><th>What it establishes</th><th>Next check</th></tr></thead><tbody>
+<tr><td>Name not resolved, NXDOMAIN, or curl error 6</td><td>The requested name could not be resolved in that environment.</td><td>Compare the hostname, resolver, and DNS answers.</td></tr>
+<tr><td>Connection refused or curl error 7</td><td>A connection could not be established; a refusal is one possible cause.</td><td>Check the destination address, port, listener, and network policy.</td></tr>
+<tr><td>Timeout or curl error 28</td><td>A time limit was reached. DNS, connection setup, or the response may be involved.</td><td>Identify the stage that stalled; compare from another permitted network.</td></tr>
+<tr><td>Certificate warning or curl error 60</td><td>The client could not validate the server certificate.</td><td>Check hostname, clock, expiry, chain, and trust store.</td></tr>
+<tr><td>HTTP 4xx or 5xx response</td><td>An HTTP server or intermediary answered.</td><td>Inspect the status, headers, request ID, and relevant logs.</td></tr>
+<tr><td>HTTP 200 but a blank or broken page</td><td>The initial response arrived; the application may still be failing.</td><td>Inspect browser Console and Network for failed scripts or API requests.</td></tr>
+</tbody></table></div>
+<p>Replace <code>example.com</code> with the exact hostname you are troubleshooting. Run commands from the affected machine or application environment. The examples use curl on a POSIX shell; on Windows, use <code>curl.exe</code> to avoid a PowerShell alias.</p>
 
-            <h2>Step 1 — Check DNS Resolution</h2>
-            <p>Every request starts with DNS. If the domain can't be resolved to an IP address, nothing else matters. Use the <a href="/dns-lookup/">DNS Record Checker</a> to verify:</p>
-            <ul>
-                <li>An <strong>A record</strong> exists and points to your server's IPv4 address.</li>
-                <li>If you serve IPv6, an <strong>AAAA record</strong> points to the correct IPv6 address.</li>
-                <li><strong>NS records</strong> at your registrar point to the nameservers that actually hold your zone.</li>
-                <li>If you use a CDN (Cloudflare, Fastly, CloudFront), the records point to the CDN, not your origin.</li>
-            </ul>
-            <p>If you just made a DNS change, the problem may be <strong>propagation delay</strong> — old cached records can linger for the length of the previous TTL. Read our <a href="/learn/dns-propagation/">DNS propagation guide</a> for how to speed this up.</p>
+<h2>1. Compare DNS Answers</h2>
+<p>Start with a lookup through the resolver available to the failing machine:</p>
+<pre><code>nslookup example.com</code></pre>
+<p>A successful lookup returns an address or a record chain ending in one. A negative answer and a DNS server timeout are different results. On Windows, <code>nslookup</code> queries the configured server without using the Windows client DNS cache; a browser can also use its own secure-DNS settings. A successful lookup therefore does not prove every application uses the same answer.</p>
+<p>Compare with the <a href="/dns-lookup/">DNS Record Checker</a>. For a public site, inspect the intended A/AAAA records and authoritative nameservers. A CDN or load balancer may correctly return its own addresses instead of your origin. An IPv6-only service does not need an A record, but its clients need working IPv6. For a private hostname, use its VPN or internal resolver; public tools cannot reproduce that environment.</p>
+<p>After a DNS change, existing positive or negative answers can remain cached until their TTL expires. Check the actual answer and authoritative configuration before repeatedly editing records. See <a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> and <a href="/errors/dns/temporary-failure-in-name-resolution">Temporary failure in name resolution</a>.</p>
 
-            <h2>Step 2 — Test Network Reachability</h2>
-            <p>DNS resolves. Can you actually reach the server?</p>
+<h2>2. Test the HTTPS Request from the Failing Environment</h2>
+<pre><code>curl --head --connect-timeout 5 --max-time 15 https://example.com/</code></pre>
+<p>This requests headers with a five-second connection budget and a fifteen-second overall limit. The connection budget includes name resolution and protocol handshakes. curl verifies the certificate by default. An HTTP status line means an HTTP response arrived; without <code>--fail</code>, curl can exit successfully even for HTTP 404 or 500.</p>
+<p>A server may reject HEAD with 405 while accepting GET. In a POSIX shell, retry a GET while discarding its body:</p>
+<pre><code>curl --silent --show-error --dump-header - --output /dev/null --connect-timeout 5 --max-time 15 https://example.com/</code></pre>
+<p>On Windows, use <code>curl.exe</code> and replace <code>/dev/null</code> with <code>NUL</code>. These requests do not sign in or reproduce a browser session. A corporate proxy, VPN, authentication requirement, or bot policy can produce a different response. Record that difference rather than treating one result as proof that the other client is wrong.</p>
+<p>If both A and AAAA records are intended to work, compare address families from a machine with the relevant connectivity:</p>
+<pre><code>curl -4 --head --connect-timeout 5 --max-time 15 https://example.com/
+curl -6 --head --connect-timeout 5 --max-time 15 https://example.com/</code></pre>
+<p>An IPv6 failure on a client without IPv6 connectivity is not evidence of a broken website. Compare both the local network capability and the published destination.</p>
 
-            <h3>Traceroute</h3>
-            <p>Use the <a href="/traceroute/">Traceroute tool</a> to see the path packets take from a public vantage point to your server. If the trace dies partway through (shown as <code>* * *</code>), routing is broken upstream. If it reaches your server's IP but packets get dropped there, your firewall or network is the problem.</p>
+<h2>3. Interpret Reachability and Certificate Results Carefully</h2>
+<p>The <a href="/port-scanner/">Port Scanner</a> checks from DuckTyped’s server. An open TCP port shows that a connection was accepted from that location; it does not establish that TLS or the application works. A closed or filtered result narrows the investigation, but cannot identify a specific firewall or process on its own. HTTP port 80 need not be open for HTTPS on 443 to work.</p>
+<p>The <a href="/traceroute/">Traceroute tool</a> can add context. Missing replies such as <code>* * *</code> can mean routers do not answer those probes. They do not by themselves prove that forwarded website traffic is blocked. Compare the destination’s actual HTTPS response.</p>
+<p>Use the <a href="/ssl-checker/">SSL Certificate Checker</a> to inspect the served certificate and its dates. It is not a complete browser trust, hostname, revocation, or protocol audit. Confirm the actual client error with curl or the browser’s certificate details. A valid-looking expiry date alone does not establish trust. Do not disable verification to declare a repair successful.</p>
+<p>For an expiry problem, follow <a href="/errors/ssl/ssl-certificate-expired">SSL certificate expired diagnosis</a>, then the <a href="/learn/ssl-certificate-expired/">renewal and deployment guide</a>. For an internal CA, use the organization’s approved trust setup. For a CDN, distinguish the certificate served to visitors from the separate origin connection.</p>
 
-            <h3>Port Scan</h3>
-            <p>Use the <a href="/port-scanner/">Port Scanner</a> to confirm that ports 80 (HTTP) and 443 (HTTPS) are open and listening. Results:</p>
-            <ul>
-                <li><strong>Open</strong> — the server is listening and accepting connections. Move to the next step.</li>
-                <li><strong>Closed</strong> — the server received the packet but nothing is listening on that port. Your web server process (nginx, Apache, Caddy, Node, etc.) is down or bound to the wrong interface.</li>
-                <li><strong>Filtered</strong> — a firewall silently dropped the packet. Check iptables, security groups (AWS, GCP, Azure), or your hosting provider's firewall.</li>
-            </ul>
+<h2>4. Follow the HTTP Response to the Next Component</h2>
+<ul>
+<li><strong>301, 302, 307, or 308:</strong> inspect the <code>Location</code> header and the <a href="/redirect-checker/">redirect chain</a>. A redirect can lead to a different failing hostname or a loop.</li>
+<li><strong>401 or 403:</strong> check authentication, permissions, and proxy/CDN policy. A denied request is different from a server that cannot be reached.</li>
+<li><strong>404:</strong> confirm the path, routing, and deployment. The response can come from a proxy or application.</li>
+<li><strong>429:</strong> inspect rate limits and any <code>Retry-After</code> header; repeated retries can prolong the problem.</li>
+<li><strong>500:</strong> inspect the responding component’s logs for an unexpected condition. The status alone does not prove a process crashed.</li>
+<li><strong>502 or 504:</strong> a gateway reports an invalid upstream response or an upstream timeout. The response does not establish that the origin’s DNS, TLS, or application is healthy.</li>
+<li><strong>503:</strong> the responding service is temporarily unable to handle the request; inspect availability, capacity, and maintenance state.</li>
+</ul>
+<p>The <a href="/http-latency/">HTTP Latency tool</a> provides an external server-side request for comparison; it is not a global availability test. The <a href="/http-request-builder/">HTTP Request Builder</a> runs in the browser and is subject to browser rules such as CORS. A CORS error in that tool does not establish an outage.</p>
 
-            <h2>Step 3 — Verify SSL/TLS Certificate</h2>
-            <p>If HTTP works but HTTPS doesn't — or the browser shows a security warning — the TLS layer is broken. Use the <a href="/ssl-checker/">SSL Certificate Checker</a> to verify:</p>
-            <ul>
-                <li>The certificate is not expired (and not yet valid).</li>
-                <li>The <strong>certificate chain</strong> is complete (missing intermediates are one of the most common causes of "works on Firefox, fails on curl" problems).</li>
-                <li>The hostname matches the certificate's Common Name or a Subject Alternative Name.</li>
-                <li>The certificate was issued by a CA the browser trusts.</li>
-                <li>The server supports a modern TLS version (1.2 or 1.3) and reasonable cipher suites.</li>
-            </ul>
-            <p>If the certificate is expired, our <a href="/learn/ssl-certificate-expired/">SSL expired fix guide</a> covers renewal. For chain errors, see our <a href="/learn/ssl-tls-handshake/">TLS handshake guide</a>.</p>
+<h2>5. If the Page Loads but the App Fails</h2>
+<p>Open the browser’s Network and Console panels. Look for failed JavaScript files, API requests, redirect loops, mixed content, or a Content Security Policy blocking a required resource. The top-level HTML can return 200 while a separate API host fails DNS or returns 500. Follow that specific failing request through the earlier steps.</p>
+<p>Compare another browser profile or a second network where permitted, and note VPN, proxy, or extension differences. A public checker’s success cannot rule out an issue limited to your device, network, account, or region. Third-party dependency incidents may also be listed on <a href="https://monitor.ducktyped.xyz/">DTMonitor</a>; an incident listing is context, not proof of the cause.</p>
 
-            <h2>Step 4 — Check HTTP Response</h2>
-            <p>DNS is fine, the port is open, the cert is valid — but the browser shows a 4xx or 5xx error. Now the problem is above the transport layer.</p>
-            <p>Use the <a href="/http-request-builder/">HTTP Request Builder</a> to send a raw request and inspect the full response, including headers. The <a href="/http-latency/">HTTP Latency</a> tool shows response time from multiple vantage points — useful for detecting regional outages.</p>
-            <p>Common HTTP errors and where to look:</p>
-            <ul>
-                <li><a href="/errors/http/500-internal-server-error">500 Internal Server Error</a> — application crashed. Check application logs.</li>
-                <li><a href="/errors/http/502-bad-gateway">502 Bad Gateway</a> — reverse proxy (nginx, ALB, Cloudflare) got a bad response from upstream. The backend is down or misconfigured.</li>
-                <li><a href="/errors/http/503-service-unavailable">503 Service Unavailable</a> — server is up but refusing to serve (maintenance mode, overloaded, rate-limited).</li>
-                <li><a href="/errors/http/504-gateway-timeout">504 Gateway Timeout</a> — upstream didn't respond in time. Slow database, blocked network call, or deadlocked thread pool.</li>
-                <li><a href="/errors/http/404-not-found">404 Not Found</a> — the URL is wrong or the route isn't deployed.</li>
-                <li><a href="/errors/http/403-forbidden">403 Forbidden</a> — access control, WAF rule, or file permissions blocking the request.</li>
-            </ul>
+<h2>Collect Evidence for Support</h2>
+<p>A useful report lets someone repeat the failing request. Record:</p>
+<ul>
+<li>The affected hostname/path, time and time zone, and when it last worked.</li>
+<li>The exact error or HTTP status, the test method (HEAD or GET), and any request ID.</li>
+<li>Whether it fails in the browser, command line, or application, and on which network.</li>
+<li>The relevant DNS answer, certificate dates, and differences between working and failing clients.</li>
+<li>Recent DNS, certificate, proxy, deployment, or authentication changes.</li>
+</ul>
+<p>Remove passwords, cookies, authorization headers, private query parameters, and personal data before sharing output. A complete browser network export can contain these values. The <a href="/privacy/">privacy page</a> explains which DuckTyped tools use a server and how results are cached.</p>
 
-            <h2>Step 5 — Check Security Headers and Redirects</h2>
-            <p>If the page loads but something is broken (mixed content warnings, infinite redirects, blocked resources), inspect:</p>
-            <ul>
-                <li><a href="/security-headers/">Security Headers checker</a> — CSP, HSTS, X-Frame-Options, and other headers that can block legitimate content if misconfigured.</li>
-                <li><a href="/redirect-checker/">Redirect Checker</a> — follow every hop in a redirect chain. Loops and mixed-protocol redirects are common causes of <a href="/errors/browser/err_too_many_redirects">ERR_TOO_MANY_REDIRECTS</a>.</li>
-            </ul>
-
-            <h2>Step 6 — Is It Just You?</h2>
-            <p>Sometimes the site works fine — you just can't reach it. Before blaming the server:</p>
-            <ul>
-                <li>Try from a different network (mobile data, VPN, another office).</li>
-                <li>Flush your local DNS cache (<code>ipconfig /flushdns</code> on Windows, <code>sudo dscacheutil -flushcache</code> on macOS, <code>sudo systemd-resolve --flush-caches</code> on Linux).</li>
-                <li>Run the <a href="/dns-lookup/">DNS Record Checker</a> from our tool (which queries from a neutral vantage point) and compare to what your local resolver returns. A mismatch means cached stale records on your resolver.</li>
-                <li>Check if your ISP or workplace is blocking the domain.</li>
-            </ul>
-
-            <h2>The Full Diagnostic Checklist</h2>
-            <ol>
-                <li><strong>DNS resolves?</strong> → <a href="/dns-lookup/">DNS Checker</a></li>
-                <li><strong>Network reachable?</strong> → <a href="/traceroute/">Traceroute</a> + <a href="/port-scanner/">Port Scanner</a></li>
-                <li><strong>TLS working?</strong> → <a href="/ssl-checker/">SSL Checker</a></li>
-                <li><strong>HTTP responds correctly?</strong> → <a href="/http-request-builder/">HTTP Request Builder</a> + <a href="/http-latency/">HTTP Latency</a></li>
-                <li><strong>No redirect/header issues?</strong> → <a href="/redirect-checker/">Redirect Checker</a> + <a href="/security-headers/">Security Headers</a></li>
-                <li><strong>Not a local issue?</strong> → Test from a second network</li>
-            </ol>
-
-            <h2>Related Tools</h2>
-            <ul>
-                <li><a href="/dns-lookup/">DNS Record Checker</a> — A, AAAA, NS, CNAME lookups.</li>
-                <li><a href="/ssl-checker/">SSL Certificate Checker</a> — certificate chain and TLS configuration.</li>
-                <li><a href="/port-scanner/">Port Scanner</a> — test port 80/443 reachability.</li>
-                <li><a href="/traceroute/">Traceroute</a> — network path diagnosis.</li>
-                <li><a href="/http-latency/">HTTP Latency</a> — multi-region response timing.</li>
-                <li><a href="/redirect-checker/">Redirect Checker</a> — follow redirect chains.</li>
-            </ul>
-            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/ssl-checker/">SSL certificates</a>, <a href="/learn/ssl-tls-handshake/">TLS handshake</a>, <a href="/learn/dns-propagation/">DNS propagation</a>, <a href="/learn/http-status-codes/">HTTP status codes</a>, <a href="/learn/ssl-certificate-expired/">SSL certificate expired fix</a></p>
-        </article>
+<h2>Sources and Review</h2>
+<p>Reviewed September 24, 2026. These checks help isolate a failure; a result describes its test environment and time.</p>
+<ul>
+<li><a href="https://curl.se/docs/manpage.html">curl options, timeouts, and exit codes</a></li>
+<li><a href="https://curl.se/docs/sslcerts.html">curl certificate verification</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/networking/dns/troubleshoot/troubleshoot-dns-client">Microsoft DNS client troubleshooting</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert">Microsoft tracert and nonresponding routers</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9110.html">HTTP semantics and status codes (RFC 9110)</a></li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<h3>Why does a public checker say the site works while my browser fails?</h3>
+<p>The checker and browser can use different DNS resolvers, networks, address families, trust stores, proxies, and authentication. Compare the exact failing request from the affected environment; one successful external check does not establish availability for every client.</p>
+<h3>Do asterisks in traceroute prove the network is broken?</h3>
+<p>No. Routers may forward traffic without replying to traceroute probes. Missing intermediate replies alone do not prove that the destination’s HTTPS traffic is blocked.</p>
+<h3>Does HTTP 200 mean the whole website works?</h3>
+<p>No. It describes one response. JavaScript, images, login, or requests to a separate API can still fail. Inspect the browser’s Network and Console panels for the specific failing request.</p>
+<h3>Why does curl return 405 when the page opens in a browser?</h3>
+<p>The --head option sends HEAD. Some servers reject HEAD but accept the GET request normally used for a page. Compare a GET request before treating the 405 response as an outage.</p>
+<!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/learn/website-not-loading/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
 
         <div class="learn-cta">
             <a href="/dns-lookup/" class="cta-btn-primary">Start with a DNS check</a>

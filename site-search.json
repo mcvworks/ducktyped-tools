@@ -5498,7 +5498,7 @@
     "type": "learn",
     "title": "SSL Certificates on the Top 1,000 Websites: 2026 Survey",
     "url": "/learn/ssl-certificate-survey-2026/",
-    "description": "Original data: certificate lifetimes, issuer share, TLS versions and key types across the top 1,000 sites, six months after the 200-day limit.",
+    "description": "September 18, 2026 TLS survey: 1,000 domains checked, 712 certificates observed. Includes CSV field definitions, reproducible counts, charts, and limitations.",
     "keywords": [
       "ssl survey",
       "certificate lifetime",
@@ -5562,6 +5562,34 @@
       "ACME renewal failed",
       "certificate deployment",
       "HSTS"
+    ]
+  },
+  {
+    "type": "learn",
+    "url": "/learn/website-not-loading/",
+    "title": "Website Not Loading? Diagnose DNS, TLS, and HTTP Failures",
+    "description": "Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.",
+    "keywords": [
+      "website not loading",
+      "site down",
+      "DNS TLS HTTP",
+      "curl error",
+      "CORS",
+      "traceroute"
+    ]
+  },
+  {
+    "type": "learn",
+    "url": "/for-agents/",
+    "title": "Resources for AI Assistants",
+    "description": "Markdown troubleshooting guides, original survey data, citation guidance, and tool limitations.",
+    "keywords": [
+      "AI assistants",
+      "agents",
+      "llms.txt",
+      "Markdown",
+      "research data",
+      "citations"
     ]
   }
 ]

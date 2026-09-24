@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources for AI Assistants — Guides, Markdown, and Data — duckTyped</title>
+    <meta name="description" content="Read DuckTyped guides as Markdown, find original research data, cite sources accurately, and understand the limits of browser and network tools.">
+    <meta name="author" content="duckTyped">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Resources for AI Assistants — Guides, Markdown, and Data">
+    <meta property="og:description" content="Read DuckTyped guides as Markdown, find original research data, cite sources accurately, and understand the limits of browser and network tools.">
+    <meta property="og:url" content="https://ducktyped.xyz/for-agents/">
+    <meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Resources for AI Assistants — Guides, Markdown, and Data">
+    <meta name="twitter:description" content="Read DuckTyped guides as Markdown, find original research data, cite sources accurately, and understand the limits of browser and network tools.">
+    <link rel="canonical" href="https://ducktyped.xyz/for-agents/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/for-agents/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand">
+                <img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo">
+                <span class="unified-nav-brand-text">duckTyped</span>
+            </a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/">Utility</a></li>
+                <li><a href="/learn/" class="active">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                <svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>
+    (function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');
+    t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});
+    o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();
+    </script>
+
+    <div class="container">
+        <div class="learn-breadcrumb"><a href="/">duckTyped</a> <span>/</span> <span>Resources for AI assistants</span></div>
+
+        <article class="learn-article">
+<h1>Use DuckTyped with AI Assistants</h1>
+<p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p>
+<p class="standalone-intro">Find technical guides, inspect the evidence behind our research, and link back to the source. Selected pages are available as plain Markdown for readers and assistants that prefer text without navigation or interactive charts.</p>
+
+<h2>Find the Right Resource</h2>
+<div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Task</th><th>Guide and purpose</th></tr></thead><tbody>
+<tr><td>Diagnose a website request</td><td><a href="/learn/website-not-loading/">Website not loading</a><br>Separate DNS, connection, TLS, HTTP, and browser application failures.</td></tr>
+<tr><td>Understand an expired certificate</td><td><a href="/errors/ssl/ssl-certificate-expired">Expiry diagnosis</a> and <a href="/learn/ssl-certificate-expired/">renewal guide</a><br>Check the served certificate, repair renewal/deployment, and verify from the client.</td></tr>
+<tr><td>Fix Docker engine access</td><td><a href="/errors/devops/docker-daemon-not-running">Docker daemon guide</a><br>Identify the selected engine before changing services, contexts, or permissions.</td></tr>
+<tr><td>Investigate a database timeout</td><td><a href="/errors/database/database-connection-timeout">Database timeout guide</a><br>Distinguish connection setup, TLS/login, pool acquisition, and query execution.</td></tr>
+<tr><td>Cite certificate research</td><td><a href="/learn/ssl-certificate-survey-2026/">September 2026 SSL survey</a><br>A dated sample, downloadable CSV, field definitions, and reproducible counts.</td></tr>
+</tbody></table></div>
+
+<h2>Choose a Format</h2>
+<ul>
+<li><a href="/llms.txt">Document index (llms.txt)</a>: a short, curated list of Markdown resources.</li>
+<li><strong>Markdown:</strong> use “Read as Markdown” on a supported guide. Copies are generated from the published article and identify its canonical HTML source. Charts are represented by the article’s data tables.</li>
+<li><strong>HTML:</strong> the <a href="/learn/">Learn directory</a> and <a href="/errors/">Troubleshoot directory</a> contain the full collection. The <a href="/sitemap.xml">sitemap</a> lists public indexable pages.</li>
+<li><strong>Research data:</strong> download the <a href="/data/ssl-survey-2026-09.csv">survey CSV</a> and <a href="/data/ssl-survey-2026-09/chart-data.json">chart counts and captions</a>. Read the <a href="/learn/ssl-certificate-survey-2026/#data-dictionary">data dictionary</a> before interpreting missing values or percentages.</li>
+</ul>
+
+<h2>Use the Evidence in Context</h2>
+<p>Keep the source URL, review or measurement date, and limitations with a result. The SSL survey observed 712 certificates from 1,000 attempted domains on September 18, 2026. It does not describe the certificates served today, global CA market share, or a confirmed outage for each unsuccessful connection.</p>
+<p>Troubleshooting commands use example hostnames and paths. Choose the steps that match the reader’s operating system, deployment, and permissions. A guide can explain an error without establishing what caused it on a particular server. Prefer the linked official documentation for product-specific details.</p>
+<p>For research citations, use the report’s suggested citation and link to its canonical page. For a troubleshooting answer, link to the relevant guide and distinguish observed output from a possible explanation.</p>
+
+<h2>Interactive Tools and Their Limits</h2>
+<p>The <a href="/utility/">tool directory</a> contains interactive browser utilities. Encoders and formatters generally process input locally; network tools need a server or an external service. Public network checks do not reproduce a private network, VPN, authenticated browser session, or every geographic location. Results may be cached. Read the <a href="/privacy/">privacy and caching details</a> before entering sensitive information.</p>
+<p>DuckTyped currently provides browser tools and public documents. It does not advertise a supported public agent API or MCP service. The documentation index is for finding and reading resources; it is not an API endpoint.</p>
+
+<h2>For Website Owners Using This Format</h2>
+<p>The <a href="https://llmstxt.org/">llms.txt proposal</a> provides a way to organize resources for assistants. It does not guarantee that an assistant will discover, cite, or recommend a site. Google’s <a href="https://developers.google.com/search/docs/appearance/ai-features">AI search guidance</a> says no special AI text file is required; accessible, helpful pages remain the foundation.</p>
+
+<!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/for-agents/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
+
+        <div class="learn-cta"><a href="/llms.txt" class="cta-btn-primary">Open the document index</a><a href="/learn/" class="learn-more-link">Browse all guides</a></div>
+    </div>
+
+    <footer class="standalone-page-footer">
+        <span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span>
+    </footer>
+
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+</body>
+</html>

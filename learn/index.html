@@ -20,8 +20,8 @@
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
-    <link rel="preload" href="/utility/styles.css" as="style">
-    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="preload" href="/utility/styles.css?v=20260924-guides" as="style">
+    <link rel="stylesheet" href="/utility/styles.css?v=20260924-guides">
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -53,6 +53,17 @@
             <h1>Learn</h1>
             <p class="standalone-intro">In-depth guides for every tool on duckTyped. Understand the technology behind each tool, learn how to use it effectively, and see real-world examples.</p>
         </div>
+
+        <section class="learn-category-section" aria-labelledby="problem-guides">
+            <h2 id="problem-guides">Start with the problem</h2>
+            <div class="learn-grid">
+                <a href="/learn/website-not-loading/" class="learn-card"><span class="category-badge">Website</span><h3>A website will not load</h3><p>Find the first failing stage: DNS, connection, TLS, HTTP, or the browser app.</p></a>
+                <a href="/learn/ssl-certificate-expired/" class="learn-card"><span class="category-badge">Certificates</span><h3>A certificate expired</h3><p>Renew, deploy, and verify the certificate actually served to visitors.</p></a>
+                <a href="/errors/devops/docker-daemon-not-running" class="learn-card"><span class="category-badge">Docker</span><h3>Docker cannot reach its engine</h3><p>Check the selected context, Desktop or rootless setup, and socket access.</p></a>
+                <a href="/errors/database/database-connection-timeout" class="learn-card"><span class="category-badge">Database</span><h3>A database request times out</h3><p>Separate network and login failures from pool waits and slow queries.</p></a>
+            </div>
+            <p class="related-guides"><a href="/for-agents/">Resources for AI assistants</a> includes Markdown guides and research downloads.</p>
+        </section>
 
         <!-- Network Tools -->
         <div class="learn-category-section">

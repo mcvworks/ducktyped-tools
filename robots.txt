@@ -34,7 +34,21 @@ Allow: /
 User-agent: Slackbot
 Allow: /
 
-# Block AI training scrapers that don't respect content
+# Separate search discovery from model-training preferences
+# These search/user-request agents retain the public access allowed above.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /cdn-cgi/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /cdn-cgi/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /cdn-cgi/
+
+# Existing opt-outs remain in place.
 User-agent: GPTBot
 Disallow: /
 
