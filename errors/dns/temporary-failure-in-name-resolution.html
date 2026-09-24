@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does Python's socket.gaierror: [Errno -3] mean?","acceptedAnswer":{"@type":"Answer","text":"Errno -3 (EAI_AGAIN) is the same underlying failure: getaddrinfo could not resolve the hostname because no DNS server answered. Fix the system resolver configuration; the Python code itself is usually fine."}},{"@type":"Question","name":"How is this different from 'Name or service not known'?","acceptedAnswer":{"@type":"Answer","text":"'Name or service not known' (EAI_NONAME) means a DNS server answered and said the name does not exist — like NXDOMAIN. 'Temporary failure in name resolution' (EAI_AGAIN) means no usable answer arrived at all, pointing to resolver or connectivity problems rather than a wrong hostname."}},{"@type":"Question","name":"Why does this happen after every reboot?","acceptedAnswer":{"@type":"Answer","text":"Something is rewriting /etc/resolv.conf at boot — typically NetworkManager, dhclient, or WSL2's auto-generation. Fix the source (NetworkManager DNS settings, or wsl.conf) instead of editing resolv.conf by hand each time."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does Python’s socket.gaierror: [Errno -3] mean?","acceptedAnswer":{"@type":"Answer","text":"On common Linux systems it corresponds to EAI_AGAIN, a temporary failure in the hostname lookup. Test from the same machine or container as Python. It does not by itself identify a typo, a broken DNS server, or a problem in the Python code."}},{"@type":"Question","name":"Is EAI_AGAIN the same as a nonexistent domain?","acceptedAnswer":{"@type":"Answer","text":"No. EAI_AGAIN indicates a temporary lookup failure. EAI_NONAME means a name or service was not known, and can arise for reasons beyond an NXDOMAIN response. Inspect the actual hostname and resolver response instead of treating those errors as interchangeable."}},{"@type":"Question","name":"Does a failed ping prove that DNS or the network is down?","acceptedAnswer":{"@type":"Answer","text":"No. ICMP traffic may be blocked while DNS and HTTPS still work. Use a hostname lookup or a DNS query to test resolution, and inspect the route and resolver configuration separately."}},{"@type":"Question","name":"Why does an online DNS tool work while my application fails?","acceptedAnswer":{"@type":"Answer","text":"An online tool queries from another server and network. Its success does not verify your local resolver, VPN, container DNS, or private hostname access. Reproduce the lookup where your application runs."}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DNS","item":"https://ducktyped.xyz/errors/#dns"},{"@type":"ListItem","position":3,"name":"Temporary failure in name resolution — Causes & Fixes"}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporary failure in name resolution — Causes &amp; Fixes — duckTyped</title>
-    <meta name="description" content="Fix 'Temporary failure in name resolution' on Linux. Covers empty resolv.conf, systemd-resolved failures, WSL2 quirks, and Python socket.gaierror -3.">
+    <title>Temporary Failure in Name Resolution: Linux &amp; WSL Fixes — duckTyped</title>
+    <meta name="description" content="Diagnose temporary failure in name resolution and EAI_AGAIN on Linux, WSL, and Docker. Check DNS step by step without blindly replacing resolv.conf.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="Temporary failure in name resolution, ping: temporary failure in name resolution, socket.gaierror: [Errno -3], EAI_AGAIN linux, apt temporary failure resolving, Temporary failure in name resolution WSL">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Temporary failure in name resolution — Causes &amp; Fixes">
-    <meta property="og:description" content="Fix 'Temporary failure in name resolution' on Linux. Covers empty resolv.conf, systemd-resolved failures, WSL2 quirks, and Python socket.gaierror -3.">
+    <meta property="og:title" content="Temporary Failure in Name Resolution: Linux &amp; WSL Fixes">
+    <meta property="og:description" content="Diagnose temporary failure in name resolution and EAI_AGAIN on Linux, WSL, and Docker. Check DNS step by step without blindly replacing resolv.conf.">
     <meta property="og:url" content="https://ducktyped.xyz/errors/dns/temporary-failure-in-name-resolution">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
@@ -56,61 +56,64 @@
 
         <article class="learn-article">
             <h1>Temporary failure in name resolution</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-07-01">July 1, 2026</time></p>
-            <p class="standalone-intro">A Linux system error meaning the resolver could not translate a hostname into an IP address — usually because no DNS server is configured or reachable.</p>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-23">September 23, 2026</time></p>
+            <p class="standalone-intro">A temporary hostname lookup failure on Linux. Check the affected application, network, resolver, VPN, WSL, or container before changing DNS settings.</p>
             <div class="error-aliases">
                 <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
                 <ul class="error-aliases-list"><li><code>Temporary failure in name resolution</code></li><li><code>ping: temporary failure in name resolution</code></li><li><code>socket.gaierror: [Errno -3]</code></li><li><code>EAI_AGAIN linux</code></li><li><code>apt temporary failure resolving</code></li><li><code>Temporary failure in name resolution WSL</code></li></ul>
             </div>
 
             <h2>What Does This Error Mean?</h2>
-            <p>This message comes from the C library resolver (getaddrinfo) on Linux when a hostname lookup fails at the system level. You will see it from ping, apt, curl, and Python (socket.gaierror: [Errno -3]). Unlike NXDOMAIN — where a DNS server answered 'this name does not exist' — this error usually means the system never got a usable answer at all: there is no nameserver configured, the configured nameserver is unreachable, or the local resolver daemon is down.</p>
+            <p>Linux applications can report this message when getaddrinfo returns EAI_AGAIN, a temporary name-resolution failure. It can reflect a timeout or a temporary failure reported by a DNS server; it does not prove that no server replied or that the domain is missing. Python may expose it as socket.gaierror, and package managers may report a temporary failure resolving a repository host. See the <a href="https://man7.org/linux/man-pages/man3/getaddrinfo.3.html">getaddrinfo error definitions</a>.</p>
 
             <h2>Common Causes</h2>
             <ul>
-                <li><strong>Empty or missing /etc/resolv.conf</strong> — The resolver reads nameserver addresses from /etc/resolv.conf. If the file is empty, missing, or contains no valid 'nameserver' line, every lookup fails immediately.</li>
-                <li><strong>systemd-resolved is stopped or broken</strong> — On most modern distributions /etc/resolv.conf is a symlink to a stub file managed by systemd-resolved (127.0.0.53). If the service is stopped or crashed, the stub answers nothing and all name resolution fails.</li>
-                <li><strong>No network connectivity</strong> — If the machine has no route to the network (interface down, DHCP failed, VPN dropped), the configured DNS server is unreachable even though the configuration is correct.</li>
-                <li><strong>WSL2 regenerated or broke resolv.conf</strong> — WSL2 auto-generates /etc/resolv.conf pointing at the Windows host. VPN clients and some corporate setups break this bridge, leaving Linux-side lookups failing while Windows resolves fine.</li>
+                <li><strong>The configured resolver cannot complete the lookup</strong> — A DNS timeout, temporary upstream failure, or unavailable local resolver can interrupt resolution even when other parts of the network still work.</li>
+                <li><strong>The network or VPN changed</strong> — DHCP, a disconnected VPN, or an incorrect route can leave the machine using an unreachable resolver. Private names may require the DNS servers supplied by the VPN.</li>
+                <li><strong>Resolver configuration is inconsistent</strong> — A stale symlink, incorrect upstream address, or failed service can break the lookup path. First identify whether NetworkManager, systemd-resolved, WSL, or another component manages it.</li>
+                <li><strong>The failure is inside a different runtime</strong> — A container or WSL distribution can have different resolver settings from the host. Test from the environment where the application actually fails.</li>
             </ul>
 
             <h2>How to Fix It</h2>
 
-            <h3>1. Check that resolv.conf contains a nameserver</h3>
-            <p>Inspect the file first — most cases are visible immediately. If there is no nameserver line, add a public resolver as a quick test.</p>
-            <pre><code>cat /etc/resolv.conf
-# quick test entry:
-echo &quot;nameserver 1.1.1.1&quot; | sudo tee /etc/resolv.conf
-ping -c1 example.com</code></pre>
-            <h3>2. Restart systemd-resolved</h3>
-            <p>If resolv.conf points at 127.0.0.53, the stub resolver must be running. Restart it and check its status and upstream servers.</p>
-            <pre><code>sudo systemctl restart systemd-resolved
+            <h3>1. Check whether one hostname or every hostname fails</h3>
+            <p>Run these on the affected Linux system, then replace example.com with the hostname from your error. If public names work but one name fails, investigate that name and its DNS zone. If everything fails, continue with the network and resolver checks. A missing getent utility is not itself a DNS failure.</p>
+            <pre><code>getent ahosts example.com
+getent ahosts example.org
+ip route show</code></pre>
+            <h3>2. Inspect the resolver configuration before editing it</h3>
+            <p>Check whether the file is a symlink and which nameservers it lists. A loopback nameserver can be a legitimate local resolver. Make lasting corrections in the component that owns the configuration, such as NetworkManager, DHCP, or your VPN. Blindly replacing the file can lose private DNS settings and will often be overwritten later.</p>
+            <pre><code>ls -l /etc/resolv.conf
+cat /etc/resolv.conf</code></pre>
+            <h3>3. Check systemd-resolved if this system uses it</h3>
+            <p>Use status and a query to inspect the service and its upstream configuration. If the service is not installed or this system uses a different resolver, skip this step. Restart only a failed service that is part of your configured lookup path; a restart cannot repair an unreachable upstream DNS server. The <a href="https://man7.org/linux/man-pages/man1/resolvectl.1.html">resolvectl manual</a> explains the query and status commands.</p>
+            <pre><code>systemctl status systemd-resolved --no-pager
 resolvectl status
-resolvectl query example.com</code></pre>
-            <h3>3. Verify basic connectivity to the DNS server</h3>
-            <p>Confirm the machine can actually reach the configured resolver. If ping to the resolver IP fails, the problem is the network path, not DNS itself.</p>
-            <pre><code>ip route show
-ping -c2 1.1.1.1
-dig @1.1.1.1 example.com</code></pre>
-            <h3>4. Fix WSL2 DNS permanently</h3>
-            <p>In WSL2, disable auto-generation and set your own nameserver so VPN software cannot break it on every restart.</p>
-            <pre><code># /etc/wsl.conf
-[network]
-generateResolvConf = false
+resolvectl query example.com
 
-# then recreate /etc/resolv.conf:
-sudo rm /etc/resolv.conf
-echo &quot;nameserver 1.1.1.1&quot; | sudo tee /etc/resolv.conf
-# restart WSL from Windows: wsl --shutdown</code></pre>
+# Only if this configured service has failed:
+sudo systemctl restart systemd-resolved</code></pre>
+            <h3>4. Compare a DNS query through the current and another resolver</h3>
+            <p>If dig is available and your network permits public DNS queries, compare these results for a public name. If only the second succeeds, investigate your configured resolver or the path to it. If both fail, inspect routing, firewall, and DNS policy. A failed ping is inconclusive because ICMP may be blocked. Keep private hostnames on the organization’s resolver.</p>
+            <pre><code>dig example.com
+dig @1.1.1.1 example.com</code></pre>
+            <h3>5. For WSL, check Windows resolution and DNS tunneling</h3>
+            <p>Compare the same hostname in Windows and WSL. Modern supported WSL setups offer DNS tunneling to improve VPN compatibility; check its configuration before applying older workarounds that replace resolv.conf. Microsoft notes that generateResolvConf must not be disabled for tunneling to work. Follow the <a href="https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#networking-considerations-with-dns-tunneling">WSL DNS troubleshooting guidance</a>. After an intentional WSL configuration change, save your work before running wsl --shutdown in Windows: it stops running WSL sessions.</p>
+            <h3>6. Reproduce the failure inside the application or container</h3>
+            <p>If the host resolves correctly, repeat the test inside the failing container. Replace my-app with its name; minimal images may not include getent. Check the container network and resolver before changing the host’s DNS. Docker has its own <a href="https://docs.docker.com/engine/network/#dns-services">DNS behavior</a>. For intermittent application errors, use bounded retries and record the affected hostname and time; avoid an endless retry loop.</p>
+            <pre><code>docker exec my-app cat /etc/resolv.conf
+docker exec my-app getent ahosts example.com</code></pre>
 
             <h2>Frequently Asked Questions</h2>
 
-            <h3>What does Python's socket.gaierror: [Errno -3] mean?</h3>
-            <p>Errno -3 (EAI_AGAIN) is the same underlying failure: getaddrinfo could not resolve the hostname because no DNS server answered. Fix the system resolver configuration; the Python code itself is usually fine.</p>
-            <h3>How is this different from 'Name or service not known'?</h3>
-            <p>'Name or service not known' (EAI_NONAME) means a DNS server answered and said the name does not exist — like NXDOMAIN. 'Temporary failure in name resolution' (EAI_AGAIN) means no usable answer arrived at all, pointing to resolver or connectivity problems rather than a wrong hostname.</p>
-            <h3>Why does this happen after every reboot?</h3>
-            <p>Something is rewriting /etc/resolv.conf at boot — typically NetworkManager, dhclient, or WSL2's auto-generation. Fix the source (NetworkManager DNS settings, or wsl.conf) instead of editing resolv.conf by hand each time.</p>
+            <h3>What does Python’s socket.gaierror: [Errno -3] mean?</h3>
+            <p>On common Linux systems it corresponds to EAI_AGAIN, a temporary failure in the hostname lookup. Test from the same machine or container as Python. It does not by itself identify a typo, a broken DNS server, or a problem in the Python code.</p>
+            <h3>Is EAI_AGAIN the same as a nonexistent domain?</h3>
+            <p>No. EAI_AGAIN indicates a temporary lookup failure. EAI_NONAME means a name or service was not known, and can arise for reasons beyond an NXDOMAIN response. Inspect the actual hostname and resolver response instead of treating those errors as interchangeable.</p>
+            <h3>Does a failed ping prove that DNS or the network is down?</h3>
+            <p>No. ICMP traffic may be blocked while DNS and HTTPS still work. Use a hostname lookup or a DNS query to test resolution, and inspect the route and resolver configuration separately.</p>
+            <h3>Why does an online DNS tool work while my application fails?</h3>
+            <p>An online tool queries from another server and network. Its success does not verify your local resolver, VPN, container DNS, or private hostname access. Reproduce the lookup where your application runs.</p>
 
             <h2>Related Errors</h2>
             <ul>
@@ -119,6 +122,8 @@ echo &quot;nameserver 1.1.1.1&quot; | sudo tee /etc/resolv.conf
                 <li><a href="/errors/dns/could-not-resolve-host">Could not resolve host</a> — the same failure as reported by curl and git.</li>
             </ul>
                     <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS records explained</a>, <a href="/learn/website-not-loading/">Website not loading? Step-by-step diagnostic</a></p>
+            <h2>Official References</h2>
+            <p><a href="https://man7.org/linux/man-pages/man3/getaddrinfo.3.html">Linux getaddrinfo errors</a>, <a href="https://man7.org/linux/man-pages/man1/resolvectl.1.html">resolvectl manual</a>, <a href="https://learn.microsoft.com/en-us/windows/wsl/networking#dns-tunneling">Microsoft WSL DNS tunneling</a>, <a href="https://docs.docker.com/engine/network/#dns-services">Docker DNS services</a>.</p>
         </article>
 
         <div class="recommended-tools">

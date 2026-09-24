@@ -2011,15 +2011,16 @@
   "temporary_failure_in_name_resolution": {
     "category": "dns",
     "title": "Temporary failure in name resolution",
-    "description": "A Linux system error meaning the resolver could not translate a hostname into an IP address — usually because no DNS server is configured or reachable.",
+    "description": "A temporary hostname lookup failure on Linux. Check the affected application, network, resolver, VPN, WSL, or container before changing DNS settings.",
     "url": "/errors/dns/temporary-failure-in-name-resolution",
     "keywords": [
       "temporary failure in name resolution",
-      "linux dns not working",
-      "resolv.conf empty",
-      "systemd-resolved not resolving",
-      "socket.gaierror errno -3",
-      "wsl2 dns not working"
+      "EAI_AGAIN",
+      "linux DNS troubleshooting",
+      "systemd-resolved",
+      "Python socket.gaierror",
+      "WSL DNS tunneling",
+      "Docker DNS"
     ]
   },
   "getaddrinfo_enotfound": {

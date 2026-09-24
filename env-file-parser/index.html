@@ -66,7 +66,7 @@
     <script defer src="/utility/standalone-init.js"></script>
     <script>
     function doParse() {
-        var input = document.getElementById('envInput').value, lines = input.split('\n'), parsed = {}, warnings = [], keys = [];
+        var input = document.getElementById('envInput').value, lines = input.split('\n'), parsed = Object.create(null), warnings = [], keys = [];
         lines.forEach(function(line, i) {
             line = line.trim();
             if (!line || line.startsWith('#')) return;
