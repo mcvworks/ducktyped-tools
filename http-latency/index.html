@@ -49,8 +49,8 @@
             <a href="/learn/http-latency/" class="learn-more-link">Learn about HTTP latency and response times</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="pingChecker"><h2>Ping / Latency Checker</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;"><strong>ICMP Ping</strong> — sends real ping packets to measure round-trip time and packet loss.<br><strong>HTTP Latency</strong> — measures how long a server takes to respond to an HTTP request; useful for URLs that block ICMP.</p>
-            <div class="input-group"><label>Mode:</label><select id="pingMode" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;"><option value="icmp">ICMP Ping (RTT + packet loss)</option><option value="http">HTTP Latency (response time)</option></select></div>
-            <div class="input-group"><label>Target host or URL:</label><input type="text" id="pingHost" placeholder="google.com or 8.8.8.8" aria-label="Target host or URL" onkeypress="if(event.key==='Enter') checkPing()"></div>
+            <div class="input-group"><label for="pingMode">Mode:</label><select id="pingMode" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;"><option value="icmp">ICMP Ping (RTT + packet loss)</option><option value="http">HTTP Latency (response time)</option></select></div>
+            <div class="input-group"><label for="pingHost">Target host or URL:</label><input type="text" id="pingHost" placeholder="google.com or 8.8.8.8" aria-label="Target host or URL" onkeypress="if(event.key==='Enter') checkPing()"></div>
             <button onclick="checkPing()">Run</button>
             <div id="pingResults"></div></div></div>
         <!-- related-links:start -->

@@ -35,7 +35,7 @@
             <a href="/learn/cron-parser/" class="learn-more-link">Learn cron expression syntax and timezone gotchas</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Cron Expression Parser</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a 5-field cron expression (minute hour day-of-month month day-of-week).</p>
-            <div class="input-group"><label>Cron Expression:</label><input type="text" id="cronInput" value="0 9 * * 1-5" placeholder="0 9 * * 1-5" onkeypress="if(event.key==='Enter') parseCron()"></div>
+            <div class="input-group"><label for="cronInput">Cron Expression:</label><input type="text" id="cronInput" value="0 9 * * 1-5" placeholder="0 9 * * 1-5" onkeypress="if(event.key==='Enter') parseCron()"></div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px;">
                 <button onclick="setCron('* * * * *')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">Every min</button>
                 <button onclick="setCron('0 * * * *')" class="preset-btn blue" style="padding:6px 12px;font-size:0.8em;">Every hour</button>

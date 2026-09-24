@@ -33,7 +33,7 @@
             <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Process text lines with multiple operations: sort, remove duplicates, reverse, remove blank lines, trim whitespace, and more.</p><div class="example-box"><strong>Example uses:</strong><p>Cleaning up log files, removing duplicate entries from lists, sorting configuration values, preparing data for CSV import.</p></div></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Line Tools</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste text below and click any operation to process it.</p>
-            <div class="input-group"><label>Input:</label><textarea id="lineInput" rows="8" placeholder="Paste your text here, one item per line..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div class="input-group"><label for="lineInput">Input:</label><textarea id="lineInput" rows="8" placeholder="Paste your text here, one item per line..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
             <div class="line-ops-grid">
                 <div class="line-ops-group">
                     <span class="line-ops-label">Sort</span>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="input-group"><label>Output:</label><textarea id="lineOutput" rows="8" readonly style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div class="input-group"><label for="lineOutput">Output:</label><textarea id="lineOutput" rows="8" readonly style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
             <div style="display:flex;gap:10px;align-items:center;">
                 <button onclick="navigator.clipboard.writeText(document.getElementById('lineOutput').value)">Copy Output</button>
                 <span id="lineStats" style="color:var(--text-secondary);font-size:0.9em;"></span>

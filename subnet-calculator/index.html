@@ -49,7 +49,7 @@
             <a href="/learn/subnet-calculator/" class="learn-more-link">Learn about CIDR notation and IP subnetting</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="subnetCalc"><h2>Subnet Calculator</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Calculate network address, broadcast address, subnet mask, and usable host range from an IP address and CIDR notation.</p>
-            <div class="input-group"><label>IP Address:</label><input type="text" id="subnetIp" placeholder="192.168.1.0" aria-label="IP address" onkeypress="if(event.key==='Enter') calculateSubnet()"></div>
+            <div class="input-group"><label for="subnetIp">IP Address:</label><input type="text" id="subnetIp" placeholder="192.168.1.0" aria-label="IP address" onkeypress="if(event.key==='Enter') calculateSubnet()"></div>
             <div class="input-group"><label>CIDR Prefix Length:</label><div style="display: flex; gap: 8px; align-items: center;"><span style="font-size: 1.1em; font-weight: 600;">/</span><input type="number" id="subnetCidr" placeholder="24" min="0" max="32" value="24" style="max-width: 100px;" onkeypress="if(event.key==='Enter') calculateSubnet()"></div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
                 <button onclick="document.getElementById('subnetCidr').value='8'; calculateSubnet()" class="preset-btn green">/8</button>

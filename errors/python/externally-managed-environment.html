@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did distros start blocking pip installs?","acceptedAnswer":{"@type":"Answer","text":"The OS itself runs Python tools (apt plugins, firewalld, dnf...). A pip install that upgrades or replaces a library those tools depend on can break the package manager itself — a notoriously painful failure. PEP 668 formalized the boundary: distro packages own the system interpreter, pip owns environments you create."}},{"@type":"Question","name":"Is --break-system-packages ever legitimate?","acceptedAnswer":{"@type":"Answer","text":"In ephemeral containers where the 'system' is your application image and nothing else uses the interpreter, it is defensible (though a venv is still cleaner and one line more). On a real machine, prefer venv/pipx every time — the flag's name is an honest warning."}},{"@type":"Question","name":"What about pip install --user?","acceptedAnswer":{"@type":"Answer","text":"On PEP 668 systems, --user is typically also blocked — user site-packages still shadow system libraries for OS tools running as your user. pipx delivers the same 'personal tools' goal without the shadowing problem."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does pip install --user still fail?","acceptedAnswer":{"@type":"Answer","text":"A user installation can still shadow libraries used by the managed interpreter. The externally managed policy also covers this case outside a virtual environment. Use a project venv for libraries or pipx for an application."}},{"@type":"Question","name":"Do I have to activate the virtual environment?","acceptedAnswer":{"@type":"Answer","text":"No. Calling .venv/bin/python directly on Unix or macOS selects that environment. On Windows, use .venv\\Scripts\\python.exe. Activation is a convenience that changes which commands your shell finds."}},{"@type":"Question","name":"Why do I still get the error after creating a venv?","acceptedAnswer":{"@type":"Answer","text":"Check the interpreter used by the failing command. A new shell, editor, sudo command, or container step may still select system Python. Run the venv’s Python with -m pip and configure the application to use that same interpreter."}},{"@type":"Question","name":"Should I use --break-system-packages?","acceptedAnswer":{"@type":"Answer","text":"That option permits modifying an externally managed installation. It does not prevent package conflicts. For ordinary project work, a venv or pipx avoids changing the managed environment."}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"Python","item":"https://ducktyped.xyz/errors/#python"},{"@type":"ListItem","position":3,"name":"Python error: externally-managed-environment — Causes & Fixes"}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python error: externally-managed-environment — Causes &amp; Fixes — duckTyped</title>
-    <meta name="description" content="Fix pip 'error: externally-managed-environment' (PEP 668). Use venv or pipx the right way — and why --break-system-packages is usually the wrong fix.">
+    <title>Fix pip externally-managed-environment: venv, pipx, and Docker — duckTyped</title>
+    <meta name="description" content="Fix pip externally-managed-environment with the right interpreter, a project venv, or pipx. Includes missing-venv help, --user limits, and a complete Docker example.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="error: externally-managed-environment, externally managed environment pip, This environment is externally managed, pep 668, pip break-system-packages">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Python error: externally-managed-environment — Causes &amp; Fixes">
-    <meta property="og:description" content="Fix pip 'error: externally-managed-environment' (PEP 668). Use venv or pipx the right way — and why --break-system-packages is usually the wrong fix.">
+    <meta property="og:title" content="Fix pip externally-managed-environment: venv, pipx, and Docker">
+    <meta property="og:description" content="Fix pip externally-managed-environment with the right interpreter, a project venv, or pipx. Includes missing-venv help, --user limits, and a complete Docker example.">
     <meta property="og:url" content="https://ducktyped.xyz/errors/python/externally-managed-environment">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
@@ -20,8 +20,8 @@
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
-    <link rel="preload" href="/utility/styles.css" as="style">
-    <link rel="stylesheet" href="/utility/styles.css">
+    <link rel="preload" href="/utility/styles.css?v=20260924" as="style">
+    <link rel="stylesheet" href="/utility/styles.css?v=20260924">
 </head>
 <body>
     <nav class="unified-nav">
@@ -56,57 +56,74 @@
 
         <article class="learn-article">
             <h1>Python error: externally-managed-environment</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
-            <p class="standalone-intro">The pip refusal 'error: externally-managed-environment' — the system Python (Debian 12+, Ubuntu 23.04+, Fedora 38+, Homebrew) blocks pip installs outside a virtual environment.</p>
+            <p class="page-last-updated">Last updated: <time datetime="2026-09-24">September 24, 2026</time></p>
+            <p class="standalone-intro">pip is protecting a Python installation managed by your operating system or package manager. Choose a virtual environment for project libraries or pipx for command-line applications.</p>
             <div class="error-aliases">
                 <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
                 <ul class="error-aliases-list"><li><code>error: externally-managed-environment</code></li><li><code>externally managed environment pip</code></li><li><code>This environment is externally managed</code></li><li><code>pep 668</code></li><li><code>pip break-system-packages</code></li></ul>
             </div>
 
             <h2>What Does This Error Mean?</h2>
-            <p>PEP 668 lets operating systems mark their Python as externally managed: the distro package manager owns site-packages, and pip refuses to write there because past pip installs into system Python broke apt/dnf tooling regularly. The error is a guardrail, not a malfunction. The intended workflows are: a virtual environment for project dependencies, and pipx for standalone command-line tools. The much-advertised --break-system-packages flag does exactly what it says and should be a last resort.</p>
+            <p>This error means the Python interpreter is marked <code>EXTERNALLY-MANAGED</code> and pip is running outside a virtual environment. The marker asks Python installers to leave that environment under its package manager’s control. It is not a permissions error, so adding sudo does not solve the underlying problem. See the <a href="https://packaging.python.org/en/latest/specifications/externally-managed-environments/">externally managed environments specification</a>.</p>
 
             <h2>Common Causes</h2>
             <ul>
-                <li><strong>pip install into the system interpreter</strong> — Running 'pip install requests' (even with sudo, or --user on some distros) against /usr/bin/python3 on a distro that ships the PEP 668 marker file.</li>
-                <li><strong>Old habits from pre-marker systems</strong> — Scripts, docs, and muscle memory written for Ubuntu 22.04 and earlier, where system-wide pip installs still worked.</li>
-                <li><strong>Dockerfiles based on distro images</strong> — debian:12/ubuntu:24.04 base images carry the marker; pip steps that worked on older bases start failing at build.</li>
+                <li><strong>The project is using the system Python</strong> — A bare pip or pip3 command can target a different interpreter from the one your project uses. Check the interpreter and the installation path first.</li>
+                <li><strong>The virtual environment was never selected</strong> — An editor, new terminal, scheduled job, or container step may use the system interpreter even if a virtual environment exists.</li>
+                <li><strong>A command-line application is being installed as a system library</strong> — A tool such as HTTPie usually fits pipx, which gives each application its own environment.</li>
+                <li><strong>A distribution-based container uses a managed interpreter</strong> — A container does not automatically bypass this policy. Build the application’s environment explicitly.</li>
             </ul>
 
             <h2>How to Fix It</h2>
 
-            <h3>1. Use a virtual environment for project dependencies</h3>
-            <p>The standard fix — isolated, disposable, no root needed.</p>
+            <h3>1. Check which Python and pip are running</h3>
+            <p>Run these commands in the same terminal or container where the install fails. The executable path identifies Python; the pip output identifies its installation directory. For a venv, sys.prefix differs from sys.base_prefix. A shell prompt containing “.venv” alone is not proof.</p>
+            <pre><code>python3 -c &quot;import sys; print(sys.executable); print(sys.prefix != sys.base_prefix)&quot;
+python3 -m pip --version</code></pre>
+            <h3>2. Create a virtual environment for project dependencies</h3>
+            <p>From your project directory, create a new .venv if you do not already have one. Use its Python directly so shell activation is optional. This Unix/macOS example installs requests; if the project supplies requirements.txt, use the last command instead. Configure your editor or job to use the same interpreter.</p>
             <pre><code>python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-# later, leave it with: deactivate</code></pre>
-            <h3>2. Use pipx for standalone CLI tools</h3>
-            <p>pipx puts each tool in its own hidden venv and exposes just the command — perfect for black, httpie, poetry, ansible.</p>
-            <pre><code>sudo apt install pipx   # or: brew install pipx
+.venv/bin/python -m pip --version
+.venv/bin/python -m pip install requests
+
+# For a project that has requirements.txt:
+.venv/bin/python -m pip install -r requirements.txt</code></pre>
+            <h3>3. Install venv support if creation fails</h3>
+            <p>If Debian or Ubuntu reports that ensurepip is unavailable, install venv support for the interpreter you selected. For the distribution’s default Python, use the command below, then retry creating the environment. A separately installed Python version may need its matching venv package. Other operating systems use their own Python packaging instructions.</p>
+            <pre><code>sudo apt update
+sudo apt install python3-venv
+python3 -m venv .venv</code></pre>
+            <h3>4. Use pipx for a command-line application</h3>
+            <p>Install pipx through your package manager: <code>sudo apt install pipx</code> on supported Debian/Ubuntu releases or <code>brew install pipx</code> on macOS. Run ensurepath and open a new terminal if the installed command is not found. pipx is for applications; install libraries your code imports into the project venv. See the <a href="https://pipx.pypa.io/latest/how-to/install-pipx.html">pipx installation guide</a>.</p>
+            <pre><code>pipx ensurepath
 pipx install httpie
 http --version</code></pre>
-            <h3>3. In Docker, prefer a venv (or the official python image)</h3>
-            <p>The official python:3.x images do not set the marker; on distro bases, create a venv and put it on PATH.</p>
+            <h3>5. Give Docker its own application environment</h3>
+            <p>This example assumes requirements.txt and app.py exist in the build context. It copies dependencies before installing them and sets PATH for later build steps and the running container; activating a venv in one RUN step would not persist into the next. Pin application dependencies and choose a base image appropriate for your project.</p>
             <pre><code>FROM ubuntu:24.04
-RUN apt-get update &amp;&amp; apt-get install -y python3-venv
+RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends python3-venv ca-certificates \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
 RUN python3 -m venv /opt/venv
 ENV PATH=&quot;/opt/venv/bin:$PATH&quot;
-RUN pip install -r requirements.txt</code></pre>
-            <h3>4. Last resort: override the guardrail</h3>
-            <p>Only when you fully accept the risk of breaking distro tooling — e.g. a throwaway container you control end to end.</p>
-            <pre><code>pip install --break-system-packages somepkg
-# system packages via the distro instead, where available:
-sudo apt install python3-requests</code></pre>
+WORKDIR /app
+COPY requirements.txt .
+RUN python -m pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD [&quot;python&quot;, &quot;app.py&quot;]</code></pre>
+            <h3>6. Use the system package manager for system packages</h3>
+            <p>If the software is intended for the system interpreter, use its package manager and the package name it provides. On Debian/Ubuntu, for example, requests may be installed as <code>sudo apt install python3-requests</code>. Do not remove the EXTERNALLY-MANAGED marker to make pip ignore the policy. The <code>--break-system-packages</code> option explicitly permits pip to modify a managed installation; it does not isolate dependencies or resolve conflicts.</p>
 
             <h2>Frequently Asked Questions</h2>
 
-            <h3>Why did distros start blocking pip installs?</h3>
-            <p>The OS itself runs Python tools (apt plugins, firewalld, dnf...). A pip install that upgrades or replaces a library those tools depend on can break the package manager itself — a notoriously painful failure. PEP 668 formalized the boundary: distro packages own the system interpreter, pip owns environments you create.</p>
-            <h3>Is --break-system-packages ever legitimate?</h3>
-            <p>In ephemeral containers where the 'system' is your application image and nothing else uses the interpreter, it is defensible (though a venv is still cleaner and one line more). On a real machine, prefer venv/pipx every time — the flag's name is an honest warning.</p>
-            <h3>What about pip install --user?</h3>
-            <p>On PEP 668 systems, --user is typically also blocked — user site-packages still shadow system libraries for OS tools running as your user. pipx delivers the same 'personal tools' goal without the shadowing problem.</p>
+            <h3>Why does pip install --user still fail?</h3>
+            <p>A user installation can still shadow libraries used by the managed interpreter. The externally managed policy also covers this case outside a virtual environment. Use a project venv for libraries or pipx for an application.</p>
+            <h3>Do I have to activate the virtual environment?</h3>
+            <p>No. Calling .venv/bin/python directly on Unix or macOS selects that environment. On Windows, use .venv\Scripts\python.exe. Activation is a convenience that changes which commands your shell finds.</p>
+            <h3>Why do I still get the error after creating a venv?</h3>
+            <p>Check the interpreter used by the failing command. A new shell, editor, sudo command, or container step may still select system Python. Run the venv’s Python with -m pip and configure the application to use that same interpreter.</p>
+            <h3>Should I use --break-system-packages?</h3>
+            <p>That option permits modifying an externally managed installation. It does not prevent package conflicts. For ordinary project work, a venv or pipx avoids changing the managed environment.</p>
 
             <h2>Related Errors</h2>
             <ul>
@@ -114,6 +131,8 @@ sudo apt install python3-requests</code></pre>
                 <li><a href="/errors/python/no-module-named-pip">No Module Named pip</a> — pip itself missing from an environment.</li>
                 <li><a href="/errors/python/venv-activate-scripts-disabled">venv Activate Scripts Disabled</a> — activation blocked on Windows.</li>
             </ul>
+            <h2>Official References</h2>
+            <p><a href="https://packaging.python.org/en/latest/specifications/externally-managed-environments/">Externally managed environments specification</a>, <a href="https://docs.python.org/3/library/venv.html">Python venv documentation</a>, <a href="https://pipx.pypa.io/latest/how-to/install-pipx.html">Install pipx</a>, <a href="https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-break-system-packages">pip install options</a>, <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile reference</a>.</p>
         </article>
 
         <div class="recommended-tools">

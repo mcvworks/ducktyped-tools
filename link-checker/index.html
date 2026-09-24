@@ -49,7 +49,7 @@
             <a href="/learn/link-checker/" class="learn-more-link">Learn about broken links and HTTP status codes</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="urlStatus"><h2>Broken Link Checker</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check if a URL is working or broken. Get HTTP status code, response time, and server information. Quick uptime verification.</p>
-            <div class="input-group"><label>URL to Test:</label><input type="url" id="urlToTest" placeholder="https://example.com" aria-label="URL to Test:" onkeypress="if(event.key==='Enter') checkLinkStatus()"></div>
+            <div class="input-group"><label for="urlToTest">URL to Test:</label><input type="url" id="urlToTest" placeholder="https://example.com" aria-label="URL to Test:" onkeypress="if(event.key==='Enter') checkLinkStatus()"></div>
             <button onclick="checkLinkStatus()">✓ Check Link Status</button>
             <div id="urlStatusResults"></div></div></div>
         <!-- related-links:start -->

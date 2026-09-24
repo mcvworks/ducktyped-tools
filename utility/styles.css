@@ -689,7 +689,38 @@
             transform: rotate(45deg);
         }
 
-        .site-info-header h3 {
+        .disclosure-heading {
+            margin: 0;
+            font-size: inherit;
+        }
+
+        .disclosure-heading .site-info-header,
+        .disclosure-heading .faq-section-header {
+            width: 100%;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            text-align: left;
+            font-size: inherit;
+            color: var(--text-primary);
+        }
+
+        .disclosure-heading .site-info-header:hover,
+        .disclosure-heading .faq-section-header:hover {
+            background: transparent;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .disclosure-heading button:focus-visible,
+        .cat-browse-card:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 4px;
+        }
+
+        .site-info-heading {
             font-family: var(--font-display);
             margin: 0;
             font-family: var(--font-mono);
@@ -701,13 +732,11 @@
         }
 
         .site-info-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+            display: none;
         }
 
         .site-info-content.expanded {
-            max-height: 2000px;
+            display: block;
             margin-top: 15px;
         }
 
@@ -794,13 +823,11 @@
         }
 
         .faq-questions-container {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+            display: none;
         }
 
         .faq-questions-container.expanded {
-            max-height: 1200px;
+            display: block;
         }
 
         .faq-item {
@@ -1833,6 +1860,9 @@
 
         .cat-browse-card {
             display: flex;
+            width: auto;
+            font: inherit;
+            text-align: left;
             align-items: center;
             gap: 10px;
             padding: 12px 18px;
@@ -5486,8 +5516,10 @@
         }
         .error-aliases-list li {
             display: inline-block;
+            max-width: 100%;
         }
         .error-aliases-list code {
+            display: block;
             background: var(--input-background);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -5495,7 +5527,8 @@
             font-size: 0.8rem;
             color: var(--primary-color);
             font-family: var(--font-mono);
-            white-space: nowrap;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
         body.light-theme .error-aliases {
             background: #f5f5f5;

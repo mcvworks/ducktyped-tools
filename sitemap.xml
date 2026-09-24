@@ -5,72 +5,72 @@
   <!-- Section hubs -->
   <url><loc>https://ducktyped.xyz/utility/</loc><lastmod>2026-09-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <!-- Tool category hubs -->
-  <url><loc>https://ducktyped.xyz/tools/data-tools/</loc><lastmod>2026-03-08</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/tools/data-tools/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/tools/dev-tools/</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/tools/email-tools/</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/tools/email-tools/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/tools/network-tools/</loc><lastmod>2026-03-08</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/tools/security-tools/</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <!-- Tool pages -->
-  <url><loc>https://ducktyped.xyz/ascii-table/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/ascii-table/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/badges/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/base32-encoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/base64-encoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/blacklist-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/base32-encoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/base64-encoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/blacklist-checker/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/breach-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/character-counter/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/color-converter/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/cron-parser/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/csr-decoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/device-lookup/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/dns-lookup/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/dns-propagation/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/docker-compose-validator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/email-header-analyzer/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/email-validator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/env-file-parser/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/color-converter/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/cron-parser/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/csr-decoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/device-lookup/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/dns-lookup/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/dns-propagation/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/docker-compose-validator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/email-header-analyzer/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/email-validator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/env-file-parser/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/feedback/</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/hash-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/hmac-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/http-latency/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/http-request-builder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/ip-range-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/isp-lookup/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/json-formatter/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/jwt-decoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/jwt-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/line-tools/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/link-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/mac-lookup/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/metadata-extractor/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/hash-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/hmac-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/http-latency/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/http-request-builder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/ip-range-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/isp-lookup/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/json-formatter/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/jwt-decoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/jwt-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/line-tools/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/link-checker/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/mac-lookup/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/metadata-extractor/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/password-entropy/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/password-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/plain-notes/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/port-scanner/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/plain-notes/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/port-scanner/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ducktyped.xyz/privacy/</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/public-key-decoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/qr-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/qr-scanner/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/query-string-parser/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/redirect-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/regex-tester/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/reverse-dns/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/robots-analyzer/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/secure-note/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/security-headers/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/smtp-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/ssl-checker/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/subnet-calculator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/tech-detector/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/text-diff/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/timestamp-converter/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/timezone-converter/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/traceroute/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/url-encoder/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/url-parser/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/url-safety/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/uuid-generator/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/webhook-tester/</loc><lastmod>2026-09-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ducktyped.xyz/whois-lookup/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/public-key-decoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/qr-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/qr-scanner/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/query-string-parser/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/redirect-checker/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/regex-tester/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/reverse-dns/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/robots-analyzer/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/secure-note/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/security-headers/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/smtp-checker/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/ssl-checker/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/subnet-calculator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/tech-detector/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/text-diff/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/timestamp-converter/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/timezone-converter/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/traceroute/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/url-encoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/url-parser/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/url-safety/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/uuid-generator/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/webhook-tester/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ducktyped.xyz/whois-lookup/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <!-- Learn hub -->
   <url><loc>https://ducktyped.xyz/learn/</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <!-- Learn pages -->
@@ -137,7 +137,7 @@
   <url><loc>https://ducktyped.xyz/learn/tech-detector/</loc><lastmod>2026-03-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/learn/timestamp-converter/</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/learn/traceroute/</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ducktyped.xyz/learn/url-encoder/</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ducktyped.xyz/learn/url-encoder/</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/learn/url-parser/</loc><lastmod>2026-06-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/learn/url-safety/</loc><lastmod>2026-03-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/learn/webhook-tester/</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -373,7 +373,7 @@
   <url><loc>https://ducktyped.xyz/errors/python/attributeerror-nonetype</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/errors/python/certificate-verify-failed</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/errors/python/command-python-not-found</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ducktyped.xyz/errors/python/externally-managed-environment</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ducktyped.xyz/errors/python/externally-managed-environment</loc><lastmod>2026-09-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/errors/python/indentationerror</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/errors/python/maximum-recursion-depth</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ducktyped.xyz/errors/python/microsoft-visual-c-required</loc><lastmod>2026-07-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>

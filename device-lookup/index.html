@@ -58,7 +58,7 @@
         </div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="deviceLookup"><h2>Device Lookup</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Auto-detect and decode IMEI numbers, Apple serial numbers, and Dell service tags. Identify device manufacturer, model, and more.</p>
-            <div class="input-group"><label>Device Identifier:</label><input type="text" id="deviceInput" placeholder="Enter IMEI, Apple Serial, or Dell Service Tag" aria-label="Device identifier" onkeypress="if(event.key==='Enter') runDeviceLookup()"></div>
+            <div class="input-group"><label for="deviceInput">Device Identifier:</label><input type="text" id="deviceInput" placeholder="Enter IMEI, Apple Serial, or Dell Service Tag" aria-label="Device identifier" onkeypress="if(event.key==='Enter') runDeviceLookup()"></div>
             <div id="deviceDetectedType" style="display:none; margin-bottom: 10px; padding: 6px 12px; background: var(--input-background); border-radius: 6px; font-size: 0.9em; color: var(--text-secondary);"></div>
             <button onclick="runDeviceLookup()">Lookup</button>
             <div id="deviceResults"></div>

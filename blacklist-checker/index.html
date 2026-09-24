@@ -53,7 +53,7 @@
         </div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="blacklistChecker"><h2>Blacklist / RBL Checker</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check if an IP address is listed on major email blacklists (DNSBL/RBL). Checks Spamhaus, Barracuda, SpamCop, SORBS, and more.</p>
-            <div class="input-group"><label>IP Address:</label>
+            <div class="input-group"><label for="blacklistIp">IP Address:</label>
                 <input type="text" id="blacklistIp" placeholder="203.0.113.1" aria-label="IP address for blacklist check" onkeypress="if(event.key==='Enter') checkBlacklist()">
             </div>
             <button onclick="checkBlacklist()">📋 Check Blacklists</button>

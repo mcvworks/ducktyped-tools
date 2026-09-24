@@ -75,17 +75,17 @@
                     <button class="try-example-btn" onclick="document.getElementById('regexPattern').value='(\\d{4})-(\\d{2})-(\\d{2})';document.getElementById('regexFlags').value='g';document.getElementById('regexTestString').value='Deployed on 2026-03-08 and updated 2026-01-15.';testRegex()">Try: Date capture</button>
                 </div>
                 <div class="input-group">
-                    <label>Pattern:</label>
+                    <label for="regexPattern">Pattern:</label>
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
                         <input type="text" id="regexPattern" placeholder="[a-z]+@[a-z]+\.[a-z]+" style="flex: 1; font-family: var(--font-mono);" oninput="testRegex()">
                         <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
-                        <input type="text" id="regexFlags" value="g" placeholder="gi" style="width: 60px; text-align: center; font-family: var(--font-mono);" oninput="testRegex()">
+                        <input type="text" id="regexFlags" aria-label="Regular expression flags" value="g" placeholder="gi" style="width: 60px; text-align: center; font-family: var(--font-mono);" oninput="testRegex()">
                     </div>
                     <span class="tool-input-hint">Flags: <code>g</code> global, <code>i</code> case-insensitive, <code>m</code> multiline, <code>s</code> dotAll, <code>u</code> unicode</span>
                 </div>
                 <div class="input-group">
-                    <label>Test String:</label>
+                    <label for="regexTestString">Test String:</label>
                     <textarea id="regexTestString" placeholder="Enter text to test your regex against..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;" oninput="testRegex()"></textarea>
                 </div>
                 <div id="regexResults"></div>

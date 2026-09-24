@@ -49,7 +49,7 @@
             <a href="/learn/isp-lookup/" class="learn-more-link">Learn about ISP lookups and IP geolocation</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="ispChecker"><h2>ISP Checker by IP</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Identify ISP provider, organization, and geolocation from any IP address. Leave blank to automatically check your own IP.</p>
-            <div class="input-group"><label>IP Address:</label><input type="text" id="ispInput" placeholder="8.8.8.8 or leave blank for your IP" aria-label="IP Address:" onkeypress="if(event.key==='Enter') checkISP()"></div>
+            <div class="input-group"><label for="ispInput">IP Address:</label><input type="text" id="ispInput" placeholder="8.8.8.8 or leave blank for your IP" aria-label="IP Address:" onkeypress="if(event.key==='Enter') checkISP()"></div>
             <button onclick="checkISP()">Check ISP Info</button>
             <div id="ispResults"></div></div></div>
         <!-- related-links:start -->

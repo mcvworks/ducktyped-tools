@@ -27,8 +27,8 @@
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Text Diff</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste the original and modified text, then click Compare.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="input-group"><label>Original:</label><textarea id="diffA" rows="10" placeholder="Paste original text here..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
-                <div class="input-group"><label>Modified:</label><textarea id="diffB" rows="10" placeholder="Paste modified text here..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+                <div class="input-group"><label for="diffA">Original:</label><textarea id="diffA" rows="10" placeholder="Paste original text here..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+                <div class="input-group"><label for="diffB">Modified:</label><textarea id="diffB" rows="10" placeholder="Paste modified text here..." style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
             </div>
             <button onclick="computeDiff()">Compare</button>
             <div id="diffResult" style="margin-top:15px;"></div>

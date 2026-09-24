@@ -27,17 +27,17 @@
             <a href="/learn/webhook-tester/" class="learn-more-link">Learn about webhooks and signature verification</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Webhook Payload Builder</h2>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                <div class="input-group"><label>Service:</label><select id="whService" onchange="updateEvents()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+                <div class="input-group"><label for="whService">Service:</label><select id="whService" onchange="updateEvents()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
                     <option value="github">GitHub</option><option value="stripe">Stripe</option><option value="slack">Slack</option><option value="discord">Discord</option><option value="generic">Generic</option>
                 </select></div>
-                <div class="input-group"><label>Event:</label><select id="whEvent" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
+                <div class="input-group"><label for="whEvent">Event:</label><select id="whEvent" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
             </div>
             <button onclick="generatePayload()">Generate Payload</button>
-            <div class="input-group" style="margin-top:12px;"><label>Payload (editable):</label><textarea id="whOutput" rows="18" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.85em;resize:vertical;"></textarea></div>
+            <div class="input-group" style="margin-top:12px;"><label for="whOutput">Payload (editable):</label><textarea id="whOutput" rows="18" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.85em;resize:vertical;"></textarea></div>
             <button onclick="navigator.clipboard.writeText(document.getElementById('whOutput').value)">Copy Payload</button>
             <hr style="border:none;border-top:1px solid var(--border-color);margin:20px 0;">
             <h3 style="margin-bottom:10px;">Generate HMAC Signature</h3>
-            <div class="input-group"><label>Secret Key:</label><input type="text" id="hmacSecret" placeholder="your-webhook-secret"></div>
+            <div class="input-group"><label for="hmacSecret">Secret Key:</label><input type="text" id="hmacSecret" placeholder="your-webhook-secret"></div>
             <button onclick="generateSig()">Generate Signature</button>
             <div id="sigResult"></div>
         </div></div>

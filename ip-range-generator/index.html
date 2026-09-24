@@ -76,7 +76,7 @@
 
                 <div id="cidrMode">
                     <div class="input-group">
-                        <label>CIDR Notation:</label>
+                        <label for="cidrInput">CIDR Notation:</label>
                         <input type="text" id="cidrInput" placeholder="192.168.1.0/24" onkeypress="if(event.key==='Enter') generateRange()">
                     </div>
                     <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
@@ -88,11 +88,11 @@
 
                 <div id="rangeMode" style="display: none;">
                     <div class="input-group">
-                        <label>Start IP:</label>
+                        <label for="startIp">Start IP:</label>
                         <input type="text" id="startIp" placeholder="192.168.1.1" onkeypress="if(event.key==='Enter') generateRange()">
                     </div>
                     <div class="input-group">
-                        <label>End IP:</label>
+                        <label for="endIp">End IP:</label>
                         <input type="text" id="endIp" placeholder="192.168.1.50" onkeypress="if(event.key==='Enter') generateRange()">
                     </div>
                 </div>

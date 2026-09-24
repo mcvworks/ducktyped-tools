@@ -26,7 +26,7 @@
             <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Parse URL query strings into readable key-value pairs, or build query strings by entering parameters.</p><div class="example-box"><strong>Example uses:</strong><p>Debugging API request parameters, extracting tracking parameters from URLs, building query strings for API calls.</p></div></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Query String Parser</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Paste a URL or query string to parse, or build one from key-value pairs.</p>
-            <div class="input-group"><label>URL or Query String:</label><textarea id="qsInput" rows="3" placeholder="https://example.com/search?q=hello&lang=en&page=1" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div class="input-group"><label for="qsInput">URL or Query String:</label><textarea id="qsInput" rows="3" placeholder="https://example.com/search?q=hello&lang=en&page=1" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
             <button onclick="parseQS()">Parse</button>
             <div id="qsResult"></div>
             <hr style="border:none;border-top:1px solid var(--border-color);margin:20px 0;">

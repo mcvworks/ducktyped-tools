@@ -27,11 +27,11 @@
             <a href="/learn/hmac-generator/" class="learn-more-link">Learn how HMAC works and when to use it</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>HMAC Generator</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a secret key and message to generate an HMAC signature.</p>
-            <div class="input-group"><label>Algorithm:</label><select id="hmacAlgo" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+            <div class="input-group"><label for="hmacAlgo">Algorithm:</label><select id="hmacAlgo" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
                 <option value="SHA-256">SHA-256</option><option value="SHA-384">SHA-384</option><option value="SHA-512">SHA-512</option><option value="SHA-1">SHA-1</option>
             </select></div>
-            <div class="input-group"><label>Secret Key:</label><input type="text" id="hmacKey" placeholder="your-secret-key"></div>
-            <div class="input-group"><label>Message:</label><textarea id="hmacMsg" rows="4" placeholder="The message to authenticate" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div class="input-group"><label for="hmacKey">Secret Key:</label><input type="text" id="hmacKey" placeholder="your-secret-key"></div>
+            <div class="input-group"><label for="hmacMsg">Message:</label><textarea id="hmacMsg" rows="4" placeholder="The message to authenticate" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
             <div style="margin-bottom:12px;"><label style="font-weight:600;color:var(--text-primary);margin-right:15px;">Output Format:</label>
                 <label style="color:var(--text-secondary);margin-right:15px;cursor:pointer;"><input type="radio" name="hmacFmt" value="hex" checked> Hex</label>
                 <label style="color:var(--text-secondary);cursor:pointer;"><input type="radio" name="hmacFmt" value="base64"> Base64</label>

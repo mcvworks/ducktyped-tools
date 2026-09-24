@@ -53,7 +53,7 @@
                 <button class="try-example-btn" onclick="document.getElementById('sslDomain').value='google.com';checkSSL()">Try: google.com</button>
                 <button class="try-example-btn" onclick="document.getElementById('sslDomain').value='github.com';checkSSL()">Try: github.com</button>
             </div>
-            <div class="input-group"><label>Domain Name:</label><input type="text" id="sslDomain" placeholder="example.com" aria-label="Domain Name:" onkeypress="if(event.key==='Enter') checkSSL()">
+            <div class="input-group"><label for="sslDomain">Domain Name:</label><input type="text" id="sslDomain" placeholder="example.com" aria-label="Domain Name:" onkeypress="if(event.key==='Enter') checkSSL()">
                 <span class="tool-input-hint">Enter domain only — no https:// prefix needed</span>
             </div>
             <button onclick="checkSSL()">Check SSL Certificate</button>

@@ -98,10 +98,10 @@
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="apple-touch-icon" href="/dtlogo_lg.svg">
     
-    <link rel="preload" href="styles.css?v=20260308" as="style">
+    <link rel="preload" href="styles.css?v=20260924" as="style">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
-    <link rel="stylesheet" href="styles.css?v=20260308">
+    <link rel="stylesheet" href="styles.css?v=20260924">
     <!-- AdSense: uncomment and replace ca-pub-XXXXXXXXXX with your publisher ID when ready
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
          crossorigin="anonymous"></script>
@@ -168,15 +168,15 @@
                     <div class="tool-count-badge" id="toolCountBadge"><span id="visibleToolCount">57</span> tools</div>
                 </div>
                 <div class="filter-row" id="filterRow">
-                    <button class="filter-pill active" onclick="filterByCat(this, 'all')">All</button>
-                    <button class="filter-pill" data-filter="favorites" onclick="filterByCat(this, 'favorites')">&#9733; Favorites</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'network')">🌐 Network</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'security')">🔒 Security</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'email')">📧 Email</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'url')">🔗 Web / URL</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'lookup')">🔍 Lookup</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'qr')">📱 QR</button>
-                    <button class="filter-pill" onclick="filterByCat(this, 'dev')">🛠️ Dev</button>
+                    <button class="filter-pill active" aria-pressed="true" onclick="filterByCat(this, 'all')">All</button>
+                    <button class="filter-pill" aria-pressed="false" data-filter="favorites" onclick="filterByCat(this, 'favorites')">&#9733; Favorites</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'network')">🌐 Network</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'security')">🔒 Security</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'email')">📧 Email</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'url')">🔗 Web / URL</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'lookup')">🔍 Lookup</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'qr')">📱 QR</button>
+                    <button class="filter-pill" aria-pressed="false" onclick="filterByCat(this, 'dev')">🛠️ Dev</button>
                 </div>
                 <div class="active-filter-bar" id="activeFilterBar" style="display:none;">
                     <span class="active-filter-label" id="activeFilterLabel"></span>
@@ -216,41 +216,41 @@
                 <span>Browse by Category</span>
             </div>
             <div class="category-browse-grid">
-                <div class="cat-browse-card" data-cat="network" onclick="browseCat('network')">
+                <button type="button" class="cat-browse-card" data-cat="network" onclick="browseCat('network')">
                     <span class="cat-icon">🌐</span>
                     <span class="cat-label">Network</span>
                     <span class="cat-num">16</span>
-                </div>
-                <div class="cat-browse-card" data-cat="security" onclick="browseCat('security')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="security" onclick="browseCat('security')">
                     <span class="cat-icon">🔒</span>
                     <span class="cat-label">Security</span>
                     <span class="cat-num">18</span>
-                </div>
-                <div class="cat-browse-card" data-cat="email" onclick="browseCat('email')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="email" onclick="browseCat('email')">
                     <span class="cat-icon">📧</span>
                     <span class="cat-label">Email</span>
                     <span class="cat-num">6</span>
-                </div>
-                <div class="cat-browse-card" data-cat="url" onclick="browseCat('url')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="url" onclick="browseCat('url')">
                     <span class="cat-icon">🔗</span>
                     <span class="cat-label">Web / URL</span>
                     <span class="cat-num">10</span>
-                </div>
-                <div class="cat-browse-card" data-cat="lookup" onclick="browseCat('lookup')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="lookup" onclick="browseCat('lookup')">
                     <span class="cat-icon">🔍</span>
                     <span class="cat-label">Lookup</span>
                     <span class="cat-num">11</span>
-                </div>
-                <div class="cat-browse-card" data-cat="qr" onclick="browseCat('qr')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="qr" onclick="browseCat('qr')">
                     <span class="cat-icon">📱</span>
                     <span class="cat-label">QR</span>
                     <span class="cat-num">2</span>
-                </div>
-                <div class="cat-browse-card" data-cat="dev" onclick="browseCat('dev')">
+                </button>
+                <button type="button" class="cat-browse-card" data-cat="dev" onclick="browseCat('dev')">
                     <span class="cat-icon">🛠️</span>
                     <span class="cat-label">Dev</span>
                     <span class="cat-num">24</span>
-                </div>
+                </button>
             </div>
         </div>
 
@@ -269,11 +269,11 @@
         </div>
         <!-- Customize panel: organize mode, show/hide all, per-tool visibility -->
         <div class="site-info-section" style="margin-bottom: 15px;">
-            <div class="site-info-header" onclick="toggleFilterCustomize()">
-                <span class="site-info-toggle" id="filterCustomizeToggle">+</span>
-                <h3>&#9881; Customize</h3>
-            </div>
-            <div class="site-info-content" id="filterContent">
+            <h3 class="disclosure-heading"><button type="button" class="site-info-header" onclick="toggleFilterCustomize()" aria-expanded="false" aria-controls="filterContent">
+                <span class="site-info-toggle" id="filterCustomizeToggle" aria-hidden="true">+</span>
+                <span class="site-info-heading">&#9881; Customize</span>
+            </button></h3>
+            <div class="site-info-content" id="filterContent" inert>
         <!-- Organize Mode Bar -->
         <div class="organize-bar" id="organizeBar" style="justify-content: flex-start; margin: 4px 0 14px; padding: 0;">
             <label class="organize-switch" title="Toggle drag-and-drop reordering">
@@ -526,7 +526,7 @@
                 </p>
                 <div id="encryptView">
                     <div class="input-group">
-                        <label>Your Message:</label>
+                        <label for="noteMessage">Your Message:</label>
                         <textarea id="noteMessage" placeholder="Enter your confidential message here..." aria-label="Secret message to encrypt"></textarea>
                     </div>
                     
@@ -541,17 +541,17 @@
                     </div>
                     
                     <div class="input-group" id="passwordFieldGroup">
-                        <label>Encryption Password:</label>
+                        <label for="encryptPassword">Encryption Password:</label>
                         <input type="text" id="encryptPassword" placeholder="Create a strong password" aria-label="Encryption password">
                     </div>
                     
                     <div class="input-group" style="display: flex; gap: 12px;">
                         <div style="flex: 1;">
-                            <label>Expires after (hours):</label>
+                            <label for="expirationTime">Expires after (hours):</label>
                             <input type="number" id="expirationTime" value="24" min="1" max="8760" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 2px solid var(--border-color); border-radius: 8px; font-size: 1em;">
                         </div>
                         <div style="flex: 1;">
-                            <label>Expires after (opens):</label>
+                            <label for="expirationOpens">Expires after (opens):</label>
                             <input type="number" id="expirationOpens" value="1" min="0" max="999" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 2px solid var(--border-color); border-radius: 8px; font-size: 1em;">
                             <small style="color: var(--text-secondary); font-size: 0.8em; display: block; margin-top: 4px;">0 = unlimited</small>
                         </div>
@@ -582,7 +582,7 @@
                         Enter the password to decrypt and read the message.
                     </div>
                     <div class="input-group">
-                        <label>Decryption Password:</label>
+                        <label for="decryptPassword">Decryption Password:</label>
                         <input type="text" id="decryptPassword" placeholder="Enter the password shared with you" aria-label="Decryption password">
                     </div>
                     <button onclick="decryptNote()" id="decryptBtn">Decrypt Message</button>
@@ -603,7 +603,7 @@
                     Check SSL certificate validity, expiration dates, and issuer information for any domain. Free SSL certificate validator for website security monitoring.
                 </p>
                 <div class="input-group">
-                    <label>Domain Name:</label>
+                    <label for="sslDomain">Domain Name:</label>
                     <input type="text" id="sslDomain" placeholder="example.com" aria-label="Domain for SSL check" onkeypress="if(event.key==='Enter') checkSSL()">
                 </div>
                 <button onclick="checkSSL()">Check SSL Certificate</button>
@@ -619,7 +619,7 @@
                     Lookup domain registration information, IP address details, ISP, location, and network information. Leave blank to automatically check your own IP. Free WHOIS lookup tool for domain research.
                 </p>
                 <div class="input-group">
-                    <label>Domain or IP Address:</label>
+                    <label for="whoisInput">Domain or IP Address:</label>
                     <input type="text" id="whoisInput" placeholder="example.com, 8.8.8.8, or leave blank for your IP" aria-label="Domain or IP for WHOIS lookup" onkeypress="if(event.key==='Enter') lookupWhois()">
                 </div>
                 <button onclick="lookupWhois()">Lookup Information</button>
@@ -635,7 +635,7 @@
                     Check if specific ports are open or closed on any server. Select which ports to scan below.
                 </p>
                 <div class="input-group">
-                    <label>Host (Domain or IP):</label>
+                    <label for="portScanHost">Host (Domain or IP):</label>
                     <input type="text" id="portScanHost" placeholder="example.com or 192.168.1.1" aria-label="Host for port scan" onkeypress="if(event.key==='Enter') scanSelectedPorts()">
                 </div>
                 
@@ -730,7 +730,7 @@
                     Simple notepad with auto-save functionality. Your notes are saved locally in your browser with automatic backup every 30 seconds.
                 </p>
                 <div class="input-group">
-                    <label>Your Notes:</label>
+                    <label for="notesTextarea">Your Notes:</label>
                     <textarea id="notesTextarea" aria-label="Plain notes" placeholder="Type your notes here... (auto-saves every 30 seconds)" style="min-height: 300px;"></textarea>
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
@@ -753,14 +753,14 @@
                     <strong>HTTP Latency</strong> — measures how long a server takes to respond to an HTTP request; useful for URLs that block ICMP.
                 </p>
                 <div class="input-group">
-                    <label>Mode:</label>
+                    <label for="pingMode">Mode:</label>
                     <select id="pingMode" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                         <option value="icmp">ICMP Ping (RTT + packet loss)</option>
                         <option value="http">HTTP Latency (response time)</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Target host or URL:</label>
+                    <label for="pingHost">Target host or URL:</label>
                     <input type="text" id="pingHost" placeholder="google.com or 8.8.8.8" aria-label="Host for ping or latency check" onkeypress="if(event.key==='Enter') checkPing()">
                 </div>
                 <button onclick="checkPing()">Run</button>
@@ -776,7 +776,7 @@
                     Identify ISP provider, organization, and geolocation from any IP address. Leave blank to automatically check your own IP, or enter any public IP address.
                 </p>
                 <div class="input-group">
-                    <label>IP Address:</label>
+                    <label for="ispInput">IP Address:</label>
                     <input type="text" id="ispInput" placeholder="8.8.8.8 or leave blank for your IP" aria-label="IP address for ISP lookup" onkeypress="if(event.key==='Enter') checkISP()">
                 </div>
                 <button onclick="checkISP()">Check ISP Info</button>
@@ -792,7 +792,7 @@
                     Find network device manufacturer and vendor information from MAC addresses. Lookup OUI (Organizationally Unique Identifier) database.
                 </p>
                 <div class="input-group">
-                    <label>MAC Address:</label>
+                    <label for="macInput">MAC Address:</label>
                     <input type="text" id="macInput" placeholder="00:1A:2B:3C:4D:5E or 001A2B3C4D5E" aria-label="MAC address to look up" onkeypress="if(event.key==='Enter') lookupMAC()">
                 </div>
                 <button onclick="lookupMAC()">Lookup Vendor</button>
@@ -826,7 +826,7 @@
                     Identify device make, model, and specs from IMEI, Apple serial number, or Dell service tag.
                 </p>
                 <div class="input-group">
-                    <label>Device Identifier:</label>
+                    <label for="dashDeviceInput">Device Identifier:</label>
                     <input type="text" id="dashDeviceInput" placeholder="Enter IMEI, Apple Serial, or Dell Service Tag" aria-label="Device identifier" onkeypress="if(event.key==='Enter') dashDeviceLookup()">
                 </div>
                 <button onclick="dashDeviceLookup()">Lookup</button>
@@ -858,7 +858,7 @@
                     Parse and analyze email headers to troubleshoot delivery issues. Check SPF, DKIM, DMARC authentication and trace email routing path.
                 </p>
                 <div class="input-group">
-                    <label>Email Headers:</label>
+                    <label for="emailHeaders">Email Headers:</label>
                     <textarea id="emailHeaders" aria-label="Email headers to analyze" placeholder="Paste full email headers here (including Received:, From:, To:, Subject:, etc.)..." style="min-height: 200px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
                 </div>
                 <button onclick="analyzeEmailHeaders()">Analyze Headers</button>
@@ -891,7 +891,7 @@
                     Test SMTP server connectivity and verify email server configuration. Check if your mail server accepts connections on common SMTP ports (25, 465, 587).
                 </p>
                 <div class="input-group">
-                    <label>Mail Server (MX Record or Domain):</label>
+                    <label for="smtpHost">Mail Server (MX Record or Domain):</label>
                     <input type="text" id="smtpHost" placeholder="mail.example.com or example.com" aria-label="SMTP host to check" onkeypress="if(event.key==='Enter') checkSMTP()">
                 </div>
                 <div style="margin-bottom: 15px;">
@@ -924,7 +924,7 @@
                     Validate email address format, check domain existence, and verify MX records. Performs syntax validation, DNS lookup, and disposable email detection.
                 </p>
                 <div class="input-group">
-                    <label>Email Address:</label>
+                    <label for="emailToValidate">Email Address:</label>
                     <input type="email" id="emailToValidate" placeholder="user@example.com" aria-label="Email address to validate" onkeypress="if(event.key==='Enter') validateEmail()">
                 </div>
                 <button onclick="validateEmail()">Validate Email</button>
@@ -940,7 +940,7 @@
                     Check all DNS records for any domain including A, AAAA, MX, NS, TXT, SPF, DKIM, and DMARC. Free DNS lookup tool for troubleshooting email delivery and domain configuration.
                 </p>
                 <div class="input-group">
-                    <label>Domain Name:</label>
+                    <label for="domainName">Domain Name:</label>
                     <input type="text" id="domainName" placeholder="example.com" aria-label="Domain for DNS lookup" onkeypress="if(event.key==='Enter') checkDNS()">
                 </div>
                 <button onclick="checkDNS()">Check All DNS Records</button>
@@ -971,7 +971,7 @@
                 <!-- Text/URL Mode -->
                 <div id="qrModeTextContent">
                     <div class="input-group">
-                        <label>QR Code Type:</label>
+                        <label for="qrType">QR Code Type:</label>
                         <select id="qrType" onchange="updateQRInputs()" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                             <option value="url">URL / Website</option>
                             <option value="text">Plain Text</option>
@@ -982,7 +982,7 @@
                     </div>
                     <div id="qrInputContainer">
                         <div class="input-group">
-                            <label>URL:</label>
+                            <label for="qrURL">URL:</label>
                             <input type="url" id="qrURL" placeholder="https://example.com" aria-label="URL for QR code">
                         </div>
                     </div>
@@ -991,15 +991,15 @@
                 <!-- WiFi Mode -->
                 <div id="qrModeWifiContent" style="display: none;">
                     <div class="input-group">
-                        <label>Network Name (SSID):</label>
+                        <label for="wifiSSID">Network Name (SSID):</label>
                         <input type="text" id="wifiSSID" placeholder="MyWiFiNetwork" aria-label="WiFi network name">
                     </div>
                     <div class="input-group">
-                        <label>Password:</label>
+                        <label for="wifiPassword">Password:</label>
                         <input type="text" id="wifiPassword" placeholder="YourWiFiPassword" aria-label="WiFi password">
                     </div>
                     <div class="input-group">
-                        <label>Security Type:</label>
+                        <label for="wifiSecurity">Security Type:</label>
                         <select id="wifiSecurity" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                             <option value="WPA">WPA/WPA2</option>
                             <option value="WEP">WEP</option>
@@ -1017,38 +1017,38 @@
                 <!-- vCard Mode -->
                 <div id="qrModeVcardContent" style="display: none;">
                     <div class="input-group">
-                        <label>Full Name:</label>
+                        <label for="vcardName">Full Name:</label>
                         <input type="text" id="vcardName" placeholder="John Doe" aria-label="Contact full name">
                     </div>
                     <div class="input-group">
-                        <label>Organization/Company:</label>
+                        <label for="vcardOrg">Organization/Company:</label>
                         <input type="text" id="vcardOrg" placeholder="Acme Corp (optional)" aria-label="Organization name">
                     </div>
                     <div class="input-group">
-                        <label>Job Title:</label>
+                        <label for="vcardTitle">Job Title:</label>
                         <input type="text" id="vcardTitle" placeholder="CEO (optional)" aria-label="Job title">
                     </div>
                     <div class="input-group">
-                        <label>Phone Number:</label>
+                        <label for="vcardPhone">Phone Number:</label>
                         <input type="tel" id="vcardPhone" placeholder="+1-555-123-4567" aria-label="Phone number">
                     </div>
                     <div class="input-group">
-                        <label>Email:</label>
+                        <label for="vcardEmail">Email:</label>
                         <input type="email" id="vcardEmail" placeholder="john@example.com" aria-label="Email address">
                     </div>
                     <div class="input-group">
-                        <label>Website:</label>
+                        <label for="vcardWebsite">Website:</label>
                         <input type="url" id="vcardWebsite" placeholder="https://example.com (optional)" aria-label="Website URL">
                     </div>
                     <div class="input-group">
-                        <label>Address:</label>
+                        <label for="vcardAddress">Address:</label>
                         <textarea id="vcardAddress" aria-label="Mailing address" placeholder="123 Main St, City, State, ZIP (optional)" style="min-height: 60px;"></textarea>
                     </div>
                 </div>
                 
                 <!-- Common QR Settings -->
                 <div class="input-group">
-                    <label>Size:</label>
+                    <label for="qrSize">Size:</label>
                     <select id="qrSize" style="width: 100%; padding: 10px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                         <option value="200">Small (200x200)</option>
                         <option value="300" selected>Medium (300x300)</option>
@@ -1070,7 +1070,7 @@
                     Scan and decode QR codes from images. Upload a QR code image or use your camera to scan. Free QR code reader and decoder.
                 </p>
                 <div class="input-group">
-                    <label>Upload QR Code Image:</label>
+                    <label for="qrImageUpload">Upload QR Code Image:</label>
                     <input type="file" id="qrImageUpload" accept="image/*" aria-label="Upload image to scan for QR code" onchange="scanQRFromFile()" style="padding: 8px;">
                 </div>
                 <div style="text-align: center; margin: 15px 0;">
@@ -1093,7 +1093,7 @@
                     Check if a URL is safe before clicking. Detects phishing, malware, suspicious patterns, and verifies SSL certificates. Protect yourself from malicious links.
                 </p>
                 <div class="input-group">
-                    <label>URL to Check:</label>
+                    <label for="urlToCheck">URL to Check:</label>
                     <input type="url" id="urlToCheck" placeholder="https://example.com" aria-label="URL to check safety" onkeypress="if(event.key==='Enter') checkURLSafety()">
                 </div>
                 <button onclick="checkURLSafety()">🔒 Check URL Safety</button>
@@ -1109,7 +1109,7 @@
                     Follow URL redirects and see the complete redirect chain. Identify all 301, 302, and other HTTP redirects. Essential for SEO and debugging.
                 </p>
                 <div class="input-group">
-                    <label>URL to Trace:</label>
+                    <label for="urlToTrace">URL to Trace:</label>
                     <input type="url" id="urlToTrace" placeholder="https://example.com" aria-label="URL to trace redirects" onkeypress="if(event.key==='Enter') checkRedirects()">
                 </div>
                 <button onclick="checkRedirects()">🔄 Trace Redirects</button>
@@ -1125,7 +1125,7 @@
                     Check if a URL is working or broken. Get HTTP status code, response time, and server information. Quick uptime verification.
                 </p>
                 <div class="input-group">
-                    <label>URL to Test:</label>
+                    <label for="urlToTest">URL to Test:</label>
                     <input type="url" id="urlToTest" placeholder="https://example.com" aria-label="URL to test for broken links" onkeypress="if(event.key==='Enter') checkLinkStatus()">
                 </div>
                 <button onclick="checkLinkStatus()">✓ Check Link Status</button>
@@ -1141,7 +1141,7 @@
                     Extract page title, description, Open Graph tags, and metadata from any URL. See how links appear when shared on social media.
                 </p>
                 <div class="input-group">
-                    <label>URL to Extract:</label>
+                    <label for="urlToExtract">URL to Extract:</label>
                     <input type="url" id="urlToExtract" placeholder="https://example.com" aria-label="URL to extract metadata from" onkeypress="if(event.key==='Enter') extractMetadata()">
                 </div>
                 <button onclick="extractMetadata()">📄 Extract Metadata</button>
@@ -1157,7 +1157,7 @@
                     Trace the network path to any host. See every hop your data takes, with IP addresses and response times. Essential for diagnosing routing issues.
                 </p>
                 <div class="input-group">
-                    <label>Host (Domain or IP):</label>
+                    <label for="tracerouteHost">Host (Domain or IP):</label>
                     <input type="text" id="tracerouteHost" placeholder="example.com or 8.8.8.8" aria-label="Host for traceroute" onkeypress="if(event.key==='Enter') runTraceroute()">
                 </div>
                 <button onclick="runTraceroute()">🛤️ Run Traceroute</button>
@@ -1173,7 +1173,7 @@
                     Look up the hostname associated with an IP address. Reverse DNS (PTR record) lookup helps identify servers and verify email sending infrastructure.
                 </p>
                 <div class="input-group">
-                    <label>IP Address:</label>
+                    <label for="reverseDnsInput">IP Address:</label>
                     <input type="text" id="reverseDnsInput" placeholder="8.8.8.8" aria-label="IP address for reverse DNS" onkeypress="if(event.key==='Enter') lookupReverseDns()">
                 </div>
                 <button onclick="lookupReverseDns()">🔄 Lookup Hostname</button>
@@ -1189,11 +1189,11 @@
                     Calculate network address, broadcast address, subnet mask, and usable host range from an IP address and CIDR notation.
                 </p>
                 <div class="input-group">
-                    <label>IP Address:</label>
+                    <label for="subnetIp">IP Address:</label>
                     <input type="text" id="subnetIp" placeholder="192.168.1.0" aria-label="IP address for subnet calculation" onkeypress="if(event.key==='Enter') calculateSubnet()">
                 </div>
                 <div class="input-group">
-                    <label>CIDR Prefix Length:</label>
+                    <label for="subnetCidr">CIDR Prefix Length:</label>
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <span style="font-size: 1.1em; font-weight: 600;">/</span>
                         <input type="number" id="subnetCidr" placeholder="24" min="0" max="32" value="24" aria-label="CIDR prefix" style="max-width: 100px;" onkeypress="if(event.key==='Enter') calculateSubnet()">
@@ -1220,7 +1220,7 @@
                     Analyze a website's HTTP security headers and get a grade from A+ to F. Check for HSTS, CSP, X-Frame-Options, and more.
                 </p>
                 <div class="input-group">
-                    <label>Website URL:</label>
+                    <label for="secHeadersUrl">Website URL:</label>
                     <input type="url" id="secHeadersUrl" placeholder="https://example.com" aria-label="URL for security headers check" onkeypress="if(event.key==='Enter') checkSecurityHeaders()">
                 </div>
                 <button onclick="checkSecurityHeaders()">🛡️ Check Security Headers</button>
@@ -1236,7 +1236,7 @@
                     Check if a password has appeared in known data breaches using the Have I Been Pwned API. Uses k-anonymity — your full password is never sent over the network.
                 </p>
                 <div class="input-group">
-                    <label>Password to Check:</label>
+                    <label for="breachPassword">Password to Check:</label>
                     <div style="position: relative;">
                         <input type="password" id="breachPassword" placeholder="Enter a password to check" aria-label="Password to check for breaches" onkeypress="if(event.key==='Enter') checkPasswordBreach()">
                         <button onclick="toggleBreachPasswordVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px 8px; width: auto; min-width: auto; margin-top: 0;">👁️</button>
@@ -1260,7 +1260,7 @@
                     Check if an IP address is listed on major email blacklists (DNSBL/RBL). Checks Spamhaus, Barracuda, SpamCop, SORBS, and more.
                 </p>
                 <div class="input-group">
-                    <label>IP Address:</label>
+                    <label for="blacklistIp">IP Address:</label>
                     <input type="text" id="blacklistIp" placeholder="203.0.113.1" aria-label="IP address for blacklist check" onkeypress="if(event.key==='Enter') checkBlacklist()">
                 </div>
                 <button onclick="checkBlacklist()">📋 Check Blacklists</button>
@@ -1276,7 +1276,7 @@
                     Detect what technologies a website uses — CMS, frameworks, analytics, CDNs, hosting, and more. Analyze server headers and HTML source.
                 </p>
                 <div class="input-group">
-                    <label>Website URL:</label>
+                    <label for="techDetectUrl">Website URL:</label>
                     <input type="url" id="techDetectUrl" placeholder="https://example.com" aria-label="URL for technology detection" onkeypress="if(event.key==='Enter') detectTechStack()">
                 </div>
                 <button onclick="detectTechStack()">🔍 Detect Technologies</button>
@@ -1292,7 +1292,7 @@
                     Analyze a website's robots.txt file and sitemap. Check crawl rules, find sitemaps, and see how search engines interact with the site.
                 </p>
                 <div class="input-group">
-                    <label>Website URL:</label>
+                    <label for="robotsUrl">Website URL:</label>
                     <input type="url" id="robotsUrl" placeholder="https://example.com" aria-label="URL for robots.txt analysis" onkeypress="if(event.key==='Enter') analyzeRobots()">
                 </div>
                 <button onclick="analyzeRobots()">🤖 Analyze Robots & Sitemap</button>
@@ -1308,7 +1308,7 @@
                     Encode text to Base64 or decode Base64 back to text. Supports Unicode characters. Useful for encoding data in URLs, APIs, and data URIs.
                 </p>
                 <div class="input-group">
-                    <label>Input:</label>
+                    <label for="base64Input">Input:</label>
                     <textarea id="base64Input" placeholder="Enter text to encode, or Base64 string to decode..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
                 </div>
                 <div class="encode-decode-btns">
@@ -1327,7 +1327,7 @@
                     Encode special characters for safe use in URLs, or decode percent-encoded strings back to readable text. Essential for working with query strings and API parameters.
                 </p>
                 <div class="input-group">
-                    <label>Input:</label>
+                    <label for="urlEncodeInput">Input:</label>
                     <textarea id="urlEncodeInput" placeholder="Enter text to URL-encode, or encoded string to decode..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
                 </div>
                 <div class="encode-decode-btns">
@@ -1346,7 +1346,7 @@
                     Format, validate, and minify JSON data. Paste messy JSON and get clean, syntax-highlighted output with instant error detection.
                 </p>
                 <div class="input-group">
-                    <label>JSON Input:</label>
+                    <label for="jsonInput">JSON Input:</label>
                     <textarea id="jsonInput" placeholder='{"key": "value", "nested": {"array": [1, 2, 3]}}' style="min-height: 180px; font-family: var(--font-mono); font-size: 0.88em;"></textarea>
                 </div>
                 <div class="encode-decode-btns">
@@ -1365,16 +1365,16 @@
                     Test regular expressions against sample text in real time. See highlighted matches, capture groups, and match count.
                 </p>
                 <div class="input-group">
-                    <label>Pattern:</label>
+                    <label for="regexPattern">Pattern:</label>
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
                         <input type="text" id="regexPattern" placeholder="[a-z]+@[a-z]+\.[a-z]+" style="flex: 1; font-family: var(--font-mono);" oninput="testRegex()">
                         <span style="font-size: 1.2em; color: var(--text-secondary);">/</span>
-                        <input type="text" id="regexFlags" value="g" placeholder="gi" style="width: 60px; text-align: center; font-family: var(--font-mono);" oninput="testRegex()">
+                        <input type="text" id="regexFlags" aria-label="Regular expression flags" value="g" placeholder="gi" style="width: 60px; text-align: center; font-family: var(--font-mono);" oninput="testRegex()">
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Test String:</label>
+                    <label for="regexTestString">Test String:</label>
                     <textarea id="regexTestString" placeholder="Enter text to test your regex against..." style="min-height: 120px; font-family: var(--font-mono); font-size: 0.88em;" oninput="testRegex()"></textarea>
                 </div>
                 <div id="regexResults"></div>
@@ -1389,7 +1389,7 @@
                     Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text using the Web Crypto API. All hashing is done locally in your browser.
                 </p>
                 <div class="input-group">
-                    <label>Text to Hash:</label>
+                    <label for="hashInput">Text to Hash:</label>
                     <textarea id="hashInput" placeholder="Enter text to generate hashes..." style="min-height: 100px;"></textarea>
                 </div>
                 <button onclick="generateHashes()">Generate Hashes</button>
@@ -1405,7 +1405,7 @@
                     Decode JSON Web Tokens to inspect header, payload, and claims. Check expiration status and issued-at time. Runs entirely in your browser.
                 </p>
                 <div class="input-group">
-                    <label>JWT Token:</label>
+                    <label for="jwtInput">JWT Token:</label>
                     <textarea id="jwtInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="min-height: 100px; font-family: var(--font-mono); font-size: 0.85em; word-break: break-all;"></textarea>
                 </div>
                 <button onclick="decodeJWT()">Decode JWT</button>
@@ -1422,12 +1422,12 @@
                 </p>
                 <div class="timestamp-live" id="timestampLive">Current Epoch: --</div>
                 <div class="input-group">
-                    <label>Unix Timestamp:</label>
+                    <label for="timestampInput">Unix Timestamp:</label>
                     <input type="text" id="timestampInput" placeholder="1700000000" aria-label="Unix timestamp" onkeypress="if(event.key==='Enter') convertTimestamp()">
                 </div>
                 <button onclick="convertTimestamp()">Timestamp → Date</button>
                 <div class="input-group" style="margin-top: 15px;">
-                    <label>Date/Time:</label>
+                    <label for="dateInput">Date/Time:</label>
                     <input type="datetime-local" id="dateInput" aria-label="Date and time" style="font-family: var(--font-mono);">
                 </div>
                 <button onclick="convertDateToTimestamp()">Date → Timestamp</button>
@@ -1444,12 +1444,12 @@
                 </p>
                 <div style="display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap;">
                     <div class="input-group" style="flex: 1; min-width: 200px;">
-                        <label>Color Value:</label>
+                        <label for="colorInput">Color Value:</label>
                         <input type="text" id="colorInput" placeholder="#F2C200, rgb(242,194,0), hsl(48,100%,47%)" aria-label="Color value" onkeypress="if(event.key==='Enter') convertColor()" oninput="convertColor()">
                     </div>
                     <div class="input-group" style="width: 60px;">
-                        <label>Pick:</label>
-                        <input type="color" id="colorPicker" value="#F2C200" oninput="updateColorFromPicker()" style="width: 50px; height: 40px; padding: 2px; cursor: pointer; border: 2px solid var(--border-color); border-radius: 6px; background: var(--input-background);">
+                        <label for="colorPicker">Pick:</label>
+                        <input type="color" id="colorPicker" aria-label="Choose a color" value="#F2C200" oninput="updateColorFromPicker()" style="width: 50px; height: 40px; padding: 2px; cursor: pointer; border: 2px solid var(--border-color); border-radius: 6px; background: var(--input-background);">
                     </div>
                 </div>
                 <div id="colorResults"></div>
@@ -1629,11 +1629,11 @@
     <div class="container">
         <!-- Site Info Section -->
         <div class="site-info-section">
-            <div class="site-info-header" onclick="toggleSiteInfo()">
-                <span class="site-info-toggle" id="siteInfoToggle">+</span>
-                <h3>Site Info & FAQ</h3>
-            </div>
-            <div class="site-info-content" id="siteInfoContent">
+            <h3 class="disclosure-heading"><button type="button" class="site-info-header" onclick="toggleSiteInfo()" aria-expanded="false" aria-controls="siteInfoContent">
+                <span class="site-info-toggle" id="siteInfoToggle" aria-hidden="true">+</span>
+                <span class="site-info-heading">Site Info & FAQ</span>
+            </button></h3>
+            <div class="site-info-content" id="siteInfoContent" inert>
                 <p><strong>🔒 Privacy & Security:</strong> Most tools run entirely in your browser and send nothing anywhere. Network tools (DNS, WHOIS, SSL, port scan and similar) are run by our server, so it sees what you look up. No accounts, no cookies, no ad or analytics trackers. <a href="/privacy/">Full details</a>.</p>
                 
                 <p><strong>💾 Settings Storage:</strong> Your preferences (tool visibility, theme, layout) are saved locally in your browser using localStorage. These settings persist across visits.</p>
@@ -1673,12 +1673,12 @@
                 
                 <div class="faq-divider"></div>
                 
-                <div class="faq-section-header" onclick="toggleFAQSection()">
-                    <span class="faq-section-toggle" id="faqSectionToggle">+</span>
-                    <h4 class="faq-section-title">❓ Frequently Asked Questions</h4>
-                </div>
+                <h4 class="disclosure-heading"><button type="button" class="faq-section-header" onclick="toggleFAQSection()" aria-expanded="false" aria-controls="faqQuestionsContainer">
+                <span class="faq-section-toggle" id="faqSectionToggle" aria-hidden="true">+</span>
+                <span class="faq-section-title">❓ Frequently Asked Questions</span>
+            </button></h4>
                 
-                <div class="faq-questions-container" id="faqQuestionsContainer">
+                <div class="faq-questions-container" id="faqQuestionsContainer" inert>
                     <div class="faq-item">
                         <div class="faq-question-static">
                             <strong>What is duckTyped?</strong>
@@ -1855,6 +1855,7 @@
                                 type="text"
                                 name="_honey"
                                 id="contactHoneypot"
+                                aria-hidden="true"
                                 tabindex="-1"
                                 autocomplete="off"
                                 style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;">
@@ -1894,7 +1895,7 @@
     <script defer src="tools-dev.js"></script>
     <script defer src="tools-device.js"></script>
     <!-- UI (depends on everything above) - must load last -->
-    <script defer src="ui.js"></script>
+    <script defer src="ui.js?v=20260924"></script>
     <script defer src="/utility/site-search.js"></script>
 
     <script>

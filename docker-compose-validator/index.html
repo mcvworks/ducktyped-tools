@@ -27,7 +27,7 @@
             <a href="/learn/docker-compose-validator/" class="learn-more-link">Learn Docker Compose structure and common errors</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Docker Compose Validator</h2>
             <div style="display:flex;gap:10px;margin-bottom:12px;"><button onclick="loadExample()">Load Example</button></div>
-            <div class="input-group"><label>docker-compose.yml:</label><textarea id="composeInput" rows="18" placeholder="version: '3.8'&#10;services:&#10;  web:&#10;    image: nginx:latest&#10;    ports:&#10;      - '80:80'" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
+            <div class="input-group"><label for="composeInput">docker-compose.yml:</label><textarea id="composeInput" rows="18" placeholder="version: '3.8'&#10;services:&#10;  web:&#10;    image: nginx:latest&#10;    ports:&#10;      - '80:80'" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;font-family:monospace;font-size:0.9em;"></textarea></div>
             <button onclick="validateCompose()">Validate</button>
             <div id="composeResult"></div>
         </div></div>

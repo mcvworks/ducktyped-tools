@@ -27,7 +27,7 @@
             <a href="/learn/url-parser/" class="learn-more-link">Learn URL anatomy and encoding rules</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>URL Parser</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter a URL to break it down into components.</p>
-            <div class="input-group"><label>URL:</label><input type="text" id="urlInput" value="https://example.com:8080/path/to/page?key=value&name=test#section" onkeypress="if(event.key==='Enter') parseURL()"></div>
+            <div class="input-group"><label for="urlInput">URL:</label><input type="text" id="urlInput" value="https://example.com:8080/path/to/page?key=value&name=test#section" onkeypress="if(event.key==='Enter') parseURL()"></div>
             <button onclick="parseURL()">Parse URL</button>
             <div id="urlResult"></div>
         </div></div>

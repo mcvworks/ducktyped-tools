@@ -49,7 +49,7 @@
             <a href="/learn/plain-notes/" class="learn-more-link">Learn about browser-based note taking</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="plainNotes"><h2>Plain Notes</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Simple notepad with auto-save functionality. Your notes are saved locally in your browser.</p>
-            <div class="input-group"><label>Your Notes:</label><textarea id="notesTextarea" aria-label="Plain notes" placeholder="Type your notes here... (auto-saves every 30 seconds)" style="min-height: 300px;"></textarea></div>
+            <div class="input-group"><label for="notesTextarea">Your Notes:</label><textarea id="notesTextarea" aria-label="Plain notes" placeholder="Type your notes here... (auto-saves every 30 seconds)" style="min-height: 300px;"></textarea></div>
             <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"><button onclick="saveNotes()" style="flex: 1; min-width: 120px;">💾 Save Notes</button><button onclick="clearNotes()" style="flex: 1; min-width: 120px; background: var(--error-color); color: #ffffff;">🗑️ Clear</button><button onclick="downloadNotes()" style="flex: 1; min-width: 120px;">⬇️ Download</button></div>
             <div id="notesSaveStatus" style="margin-top: 10px; font-size: 0.9em; color: var(--success-color); display: none;">✓ Notes saved!</div></div></div>
         <!-- related-links:start -->

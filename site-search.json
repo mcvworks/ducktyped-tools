@@ -1353,7 +1353,7 @@
     "type": "learn",
     "title": "URL Encoding (Percent-Encoding)",
     "url": "/learn/url-encoder/",
-    "description": "Learn how percent-encoding works in URLs, which characters need encoding, and the RFC 3986 standard.",
+    "description": "URL encoding examples for %20 vs +, query parameters, Unicode, and double encoding. Learn when to use URLSearchParams, encodeURIComponent, or encodeURI.",
     "keywords": [
       "url encoding",
       "percent encoding",
@@ -5153,7 +5153,7 @@
     "type": "error",
     "title": "Python error: externally-managed-environment",
     "url": "/errors/python/externally-managed-environment",
-    "description": "The pip refusal 'error: externally-managed-environment' — the system Python (Debian 12+, Ubuntu 23.04+, Fedora 38+, Homebrew) blocks pip installs outside a virtual environment.",
+    "description": "pip is protecting a Python installation managed by your operating system or package manager. Choose a virtual environment for project libraries or pipx for command-line applications.",
     "keywords": [
       "externally-managed-environment",
       "pip error externally managed environment",

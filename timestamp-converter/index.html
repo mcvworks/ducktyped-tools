@@ -71,12 +71,12 @@
                 </p>
                 <div class="timestamp-live" id="timestampLive">Current Epoch: --</div>
                 <div class="input-group">
-                    <label>Unix Timestamp:</label>
+                    <label for="timestampInput">Unix Timestamp:</label>
                     <input type="text" id="timestampInput" placeholder="1700000000" aria-label="Unix timestamp" onkeypress="if(event.key==='Enter') convertTimestamp()">
                 </div>
                 <button onclick="convertTimestamp()">Timestamp &rarr; Date</button>
                 <div class="input-group" style="margin-top: 15px;">
-                    <label>Date/Time:</label>
+                    <label for="dateInput">Date/Time:</label>
                     <input type="datetime-local" id="dateInput" aria-label="Date and time" style="font-family: var(--font-mono);">
                 </div>
                 <button onclick="convertDateToTimestamp()">Date &rarr; Timestamp</button>

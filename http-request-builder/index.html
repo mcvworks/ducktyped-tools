@@ -26,15 +26,15 @@
             <a href="/learn/http-request-builder/" class="learn-more-link">Learn the anatomy of an HTTP request</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>HTTP Request Builder</h2>
             <div style="display:grid;grid-template-columns:120px 1fr;gap:10px;margin-bottom:12px;">
-                <div class="input-group"><label>Method:</label><select id="httpMethod" onchange="toggleBody()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
+                <div class="input-group"><label for="httpMethod">Method:</label><select id="httpMethod" onchange="toggleBody()" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;">
                     <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option>
                 </select></div>
-                <div class="input-group"><label>URL:</label><input type="text" id="httpUrl" value="https://api.example.com/users" placeholder="https://api.example.com/endpoint"></div>
+                <div class="input-group"><label for="httpUrl">URL:</label><input type="text" id="httpUrl" value="https://api.example.com/users" placeholder="https://api.example.com/endpoint"></div>
             </div>
             <div class="input-group"><label>Headers:</label><div id="headerRows"></div>
                 <button onclick="addHeader()" style="padding:6px 12px;font-size:0.8em;margin-top:6px;">+ Add Header</button>
             </div>
-            <div id="bodySection" style="display:none;" class="input-group"><label>Body:</label><textarea id="httpBody" rows="5" placeholder='{"key": "value"}' style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.9em;resize:vertical;"></textarea></div>
+            <div id="bodySection" style="display:none;" class="input-group"><label for="httpBody">Body:</label><textarea id="httpBody" rows="5" placeholder='{"key": "value"}' style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;font-family:monospace;font-size:0.9em;resize:vertical;"></textarea></div>
             <button onclick="generate()">Generate Code</button>
             <div id="httpResult"></div>
         </div></div>

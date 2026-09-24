@@ -461,6 +461,8 @@ function toggleSiteInfo() {
             toggle.classList.add('expanded');
             toggle.textContent = '+';
         }
+        content.inert = !content.classList.contains('expanded');
+        document.querySelector('[aria-controls="siteInfoContent"]').setAttribute('aria-expanded', String(!content.inert));
     }
 }
 
@@ -478,6 +480,8 @@ function toggleFAQSection() {
             toggle.classList.add('expanded');
             toggle.textContent = '+';
         }
+        container.inert = !container.classList.contains('expanded');
+        document.querySelector('[aria-controls="faqQuestionsContainer"]').setAttribute('aria-expanded', String(!container.inert));
     }
 }
 
@@ -698,9 +702,11 @@ window.addEventListener('DOMContentLoaded', function() {
             if (catSec) catSec.style.display = 'none';
             if (trendSec) trendSec.style.display = 'none';
             // Activate favorites pill
-            document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
             var favPill = document.querySelector('.filter-pill[data-filter="favorites"]');
-            if (favPill) favPill.classList.add('active');
+            document.querySelectorAll('.filter-pill').forEach(function(p) {
+                p.classList.toggle('active', p === favPill);
+                p.setAttribute('aria-pressed', String(p === favPill));
+            });
             activeCategoryFilter = 'favorites';
             return;
         }
@@ -825,8 +831,10 @@ function filterByCat(btn, category) {
     activeCategoryFilter = category;
 
     // Update pill styles
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.filter-pill').forEach(p => {
+        p.classList.toggle('active', p === btn);
+        p.setAttribute('aria-pressed', String(p === btn));
+    });
 
     // Update category browse card active states
     document.querySelectorAll('.cat-browse-card').forEach(c => {
@@ -913,7 +921,11 @@ function browseCat(category) {
     pills.forEach(p => {
         if (p.getAttribute('onclick')?.includes("'" + category + "'")) targetPill = p;
     });
-    if (targetPill) filterByCat(targetPill, category);
+    if (targetPill) {
+        filterByCat(targetPill, category);
+        // The browse card is hidden by the filter; retain a visible focus target.
+        targetPill.focus({ preventScroll: true });
+    }
     // Scroll to the tools grid
     const grid = document.getElementById('toolsGrid');
     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1262,6 +1274,8 @@ function toggleFilterCustomize() {
 
     content.classList.toggle('expanded');
     toggle.classList.toggle('expanded');
+    content.inert = !content.classList.contains('expanded');
+    document.querySelector('[aria-controls="filterContent"]').setAttribute('aria-expanded', String(!content.inert));
 }
 
 // ============================================

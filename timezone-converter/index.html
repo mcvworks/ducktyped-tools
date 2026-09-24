@@ -26,10 +26,10 @@
             <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Convert any date and time between time zones instantly. Compare multiple time zones side by side, or see the current time across the world.</p><div class="example-box"><strong>Example uses:</strong><p>Scheduling meetings across time zones, converting UTC timestamps to local time, planning international travel, or coordinating deployment windows.</p></div></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Timezone Converter</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Select a date/time and convert between any two time zones.</p>
-            <div class="input-group"><label>Date &amp; Time:</label><input type="datetime-local" id="tzInput" style="width:100%;"></div>
+            <div class="input-group"><label for="tzInput">Date &amp; Time:</label><input type="datetime-local" id="tzInput" style="width:100%;"></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="input-group"><label>From:</label><select id="tzFrom" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
-                <div class="input-group"><label>To:</label><select id="tzTo" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
+                <div class="input-group"><label for="tzFrom">From:</label><select id="tzFrom" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
+                <div class="input-group"><label for="tzTo">To:</label><select id="tzTo" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;"></select></div>
             </div>
             <button onclick="convertTimezone()">Convert</button>
             <div id="tzResult"></div>

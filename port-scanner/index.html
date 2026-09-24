@@ -49,7 +49,7 @@
             <a href="/learn/port-scanner/" class="learn-more-link">Learn about port scanning and network services</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="portScanner"><h2>Port Scanner</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check if specific ports are open or closed on any server.</p>
-            <div class="input-group"><label>Host (Domain or IP):</label><input type="text" id="portScanHost" placeholder="example.com or 192.168.1.1" aria-label="Host for port scan" onkeypress="if(event.key==='Enter') scanSelectedPorts()"></div>
+            <div class="input-group"><label for="portScanHost">Host (Domain or IP):</label><input type="text" id="portScanHost" placeholder="example.com or 192.168.1.1" aria-label="Host for port scan" onkeypress="if(event.key==='Enter') scanSelectedPorts()"></div>
             <div style="margin: 15px 0;"><label style="display: block; margin-bottom: 8px; font-weight: 600;">Select Ports to Scan:</label>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 15px;">
                 <label class="port-label"><input type="checkbox" class="port-checkbox" value="80" data-name="HTTP" checked><span>80 - HTTP</span></label>

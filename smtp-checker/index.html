@@ -53,7 +53,7 @@
                 <button class="try-example-btn" onclick="document.getElementById('smtpHost').value='gmail.com';checkSMTP()">Try: gmail.com</button>
                 <button class="try-example-btn" onclick="document.getElementById('smtpHost').value='outlook.com';checkSMTP()">Try: outlook.com</button>
             </div>
-            <div class="input-group"><label>Mail Server (MX Record or Domain):</label><input type="text" id="smtpHost" placeholder="mail.example.com or example.com" aria-label="Mail Server (MX Record or Domain):" onkeypress="if(event.key==='Enter') checkSMTP()">
+            <div class="input-group"><label for="smtpHost">Mail Server (MX Record or Domain):</label><input type="text" id="smtpHost" placeholder="mail.example.com or example.com" aria-label="Mail Server (MX Record or Domain):" onkeypress="if(event.key==='Enter') checkSMTP()">
                 <span class="tool-input-hint">Enter a domain (e.g. gmail.com) or specific MX host (e.g. alt1.gmail-smtp-in.l.google.com)</span>
             </div>
             <button onclick="checkSMTP()">Check SMTP Server</button>

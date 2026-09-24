@@ -27,12 +27,12 @@
             <a href="/learn/base32-encoder/" class="learn-more-link">Learn about Base32 encoding and where it is used</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Base32 Encoder / Decoder</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Enter plain text to encode, or Base32 text to decode.</p>
-            <div class="input-group"><label>Plain Text:</label><textarea id="plainInput" rows="4" placeholder="Hello, World!" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div class="input-group"><label for="plainInput">Plain Text:</label><textarea id="plainInput" rows="4" placeholder="Hello, World!" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
             <div style="display:flex;gap:10px;margin-bottom:15px;">
                 <button onclick="encodeB32()">Encode &rarr;</button>
                 <button onclick="decodeB32()">&larr; Decode</button>
             </div>
-            <div class="input-group"><label>Base32 Encoded:</label><textarea id="b32Input" rows="4" placeholder="JBSWY3DPEBLW64TMMQ======" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
+            <div class="input-group"><label for="b32Input">Base32 Encoded:</label><textarea id="b32Input" rows="4" placeholder="JBSWY3DPEBLW64TMMQ======" style="width:100%;padding:10px;background:var(--input-background);color:var(--text-primary);border:1px solid var(--border-color);border-radius:6px;resize:vertical;"></textarea></div>
             <button onclick="navigator.clipboard.writeText(document.getElementById('b32Input').value)" style="margin-top:8px;">Copy Base32</button>
             <div id="b32Error"></div>
         </div></div>

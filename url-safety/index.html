@@ -49,7 +49,7 @@
             <a href="/learn/url-safety/" class="learn-more-link">Learn about URL safety and phishing detection</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="urlSafety"><h2>URL Safety Checker</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Check if a URL is safe before clicking. Detects phishing, malware, suspicious patterns, and verifies SSL certificates.</p>
-            <div class="input-group"><label>URL to Check:</label><input type="url" id="urlToCheck" placeholder="https://example.com" aria-label="URL to Check:" onkeypress="if(event.key==='Enter') checkURLSafety()"></div>
+            <div class="input-group"><label for="urlToCheck">URL to Check:</label><input type="url" id="urlToCheck" placeholder="https://example.com" aria-label="URL to Check:" onkeypress="if(event.key==='Enter') checkURLSafety()"></div>
             <button onclick="checkURLSafety()">🔒 Check URL Safety</button>
             <div id="urlSafetyResults"></div></div></div>
         <!-- related-links:start -->

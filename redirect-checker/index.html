@@ -49,7 +49,7 @@
             <a href="/learn/redirect-checker/" class="learn-more-link">Learn about HTTP redirects and redirect chains</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="urlRedirect"><h2>URL Redirect Checker</h2>
             <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Follow URL redirects and see the complete redirect chain. Identify all 301, 302, and other HTTP redirects. Essential for SEO and debugging.</p>
-            <div class="input-group"><label>URL to Trace:</label><input type="url" id="urlToTrace" placeholder="https://example.com" aria-label="URL to Trace:" onkeypress="if(event.key==='Enter') checkRedirects()"></div>
+            <div class="input-group"><label for="urlToTrace">URL to Trace:</label><input type="url" id="urlToTrace" placeholder="https://example.com" aria-label="URL to Trace:" onkeypress="if(event.key==='Enter') checkRedirects()"></div>
             <button onclick="checkRedirects()">🔄 Trace Redirects</button>
             <div id="urlRedirectResults"></div></div></div>
         <!-- related-links:start -->
