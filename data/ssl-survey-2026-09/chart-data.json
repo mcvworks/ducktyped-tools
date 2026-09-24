@@ -1,0 +1,47 @@
+{
+  "scanDate": "2026-09-18",
+  "domainsChecked": 1000,
+  "certificatesObserved": 712,
+  "charts": [
+    {
+      "title": "Observed TLS certificate lifetimes",
+      "alt": "Observed TLS certificate lifetimes. 47 days or less: 8 of 712 (1.1%); 48\u2013100 days: 289 of 712 (40.6%); 101\u2013200 days: 248 of 712 (34.8%); 201\u2013398 days: 165 of 712 (23.2%); Over 398 days: 2 of 712 (0.3%). One vantage point on 18 Sep 2026. No certificate observed for 288 domains; not an internet-wide estimate.",
+      "labels": [
+        "47 days or less",
+        "48\u2013100 days",
+        "101\u2013200 days",
+        "201\u2013398 days",
+        "Over 398 days"
+      ],
+      "counts": [
+        8,
+        289,
+        248,
+        165,
+        2
+      ]
+    },
+    {
+      "title": "Who issued the certificates we observed?",
+      "alt": "Who issued the certificates we observed. DigiCert: 158 of 712 (22.2%); Google Trust Services: 134 of 712 (18.8%); Let's Encrypt: 121 of 712 (17.0%); Amazon Trust Services: 97 of 712 (13.6%); GlobalSign: 78 of 712 (11.0%); Sectigo: 52 of 712 (7.3%); All other issuers: 72 of 712 (10.1%). One vantage point on 18 Sep 2026. No certificate observed for 288 domains; not an internet-wide estimate.",
+      "labels": [
+        "DigiCert",
+        "Google Trust Services",
+        "Let's Encrypt",
+        "Amazon Trust Services",
+        "GlobalSign",
+        "Sectigo",
+        "All other issuers"
+      ],
+      "counts": [
+        158,
+        134,
+        121,
+        97,
+        78,
+        52,
+        72
+      ]
+    }
+  ]
+}

@@ -2569,7 +2569,7 @@
     "type": "error",
     "title": "SSL Certificate Expired",
     "url": "/errors/ssl/ssl-certificate-expired",
-    "description": "The site's SSL certificate has passed its validity end date.",
+    "description": "Diagnose an expired SSL certificate, check the hostname and clock, and find the right renewal steps. Includes OpenSSL output and current validity limits.",
     "keywords": [
       "ssl expired",
       "certificate expired",
@@ -3699,14 +3699,19 @@
     "type": "error",
     "title": "Docker Daemon Not Running",
     "url": "/errors/devops/docker-daemon-not-running",
-    "description": "Cannot connect to the Docker daemon",
+    "description": "Fix Cannot connect to the Docker daemon on Linux, macOS, and Windows. Check Docker contexts, Desktop and WSL, socket permissions, rootless mode, and logs.",
     "keywords": [
       "docker daemon not running",
       "cannot connect to docker daemon",
       "docker not starting",
       "dockerd not running",
       "docker service failed",
-      "docker socket error"
+      "docker socket error",
+      "docker context",
+      "docker desktop",
+      "docker socket permission denied",
+      "rootless docker",
+      "WSL integration"
     ]
   },
   {
@@ -4033,14 +4038,20 @@
     "type": "error",
     "title": "Database Connection Timeout",
     "url": "/errors/database/database-connection-timeout",
-    "description": "Database connection attempt timed out",
+    "description": "Diagnose PostgreSQL and MySQL connection timeouts with DNS, TCP, TLS, login, and connection-pool checks. Includes commands and how to interpret the results.",
     "keywords": [
       "database connection timeout",
       "db timeout error",
       "connection timed out database",
       "database unreachable",
       "database firewall",
-      "database security group"
+      "database security group",
+      "postgresql timeout",
+      "mysql connection timeout",
+      "ETIMEDOUT",
+      "connection pool timeout",
+      "pg_isready",
+      "sslmode verify-full"
     ],
     "category": "network"
   },
@@ -5539,5 +5550,18 @@
       "tracking"
     ],
     "category": "security"
+  },
+  {
+    "type": "learn",
+    "url": "/learn/ssl-certificate-expired/",
+    "title": "Renew an Expired SSL Certificate",
+    "description": "Renew, deploy, and verify an expired TLS certificate. Diagnose ACME failures, reload the right server, and check CDN, origin, and automatic renewal.",
+    "keywords": [
+      "ssl certificate expired",
+      "certbot renew",
+      "ACME renewal failed",
+      "certificate deployment",
+      "HSTS"
+    ]
   }
 ]

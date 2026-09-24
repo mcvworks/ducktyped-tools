@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="864pt" height="453.6pt" viewBox="0 0 864 453.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Who issued the certificates we observed?</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Who issued the certificates we observed?</dc:title>
+    <dc:date>2026-09-18</dc:date>
+    <dc:description>Who issued the certificates we observed. DigiCert: 158 of 712 (22.2%); Google Trust Services: 134 of 712 (18.8%); Let's Encrypt: 121 of 712 (17.0%); Amazon Trust Services: 97 of 712 (13.6%); GlobalSign: 78 of 712 (11.0%); Sectigo: 52 of 712 (7.3%); All other issuers: 72 of 712 (10.1%). One vantage point on 18 Sep 2026. No certificate observed for 288 domains; not an internet-wide estimate.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>duckTyped / Matplotlib</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 453.6
+L 864 453.6
+L 864 0
+L 0 0
+z
+" style="fill: #0f1114"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 211.68 353.808
+L 777.6 353.808
+L 777.6 122.472
+L 211.68 122.472
+z
+" style="fill: #0f1114"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 211.68 353.808
+L 211.68 122.472
+" clip-path="url(#p8ee2b0fefd)" style="fill: none; stroke: #28313d; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #abb7c8" x="211.68" y="370.405656" transform="rotate(-0 211.68 370.405656)">0%</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 400.585316 353.808
+L 400.585316 122.472
+" clip-path="url(#p8ee2b0fefd)" style="fill: none; stroke: #28313d; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #abb7c8" x="400.585316" y="370.405656" transform="rotate(-0 400.585316 370.405656)">10%</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 589.490633 353.808
+L 589.490633 122.472
+" clip-path="url(#p8ee2b0fefd)" style="fill: none; stroke: #28313d; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #abb7c8" x="589.490633" y="370.405656" transform="rotate(-0 589.490633 370.405656)">20%</text>
+     </g>
+    </g>
+    <g id="text_4">
+     <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #abb7c8" x="494.64" y="389.406437" transform="rotate(-0 494.64 389.406437)">Share of 712 observed certificates</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="146.228671" transform="rotate(-0 197.68 146.228671)">DigiCert</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_6">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="178.385468" transform="rotate(-0 197.68 178.385468)">Google Trust Services</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_7">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="210.541796" transform="rotate(-0 197.68 210.541796)">Let's Encrypt</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="242.699062" transform="rotate(-0 197.68 242.699062)">Amazon Trust Services</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11"/>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="274.85586" transform="rotate(-0 197.68 274.85586)">GlobalSign</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12"/>
+     <g id="text_10">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="307.012657" transform="rotate(-0 197.68 307.012657)">Sectigo</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_13"/>
+     <g id="text_11">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e9eef5" x="197.68" y="339.169454" transform="rotate(-0 197.68 339.169454)">All other issuers</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 211.68 132.987273
+L 630.88 132.987273
+L 630.88 150.351943
+L 211.68 150.351943
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 211.68 165.14407
+L 567.204051 165.14407
+L 567.204051 182.508741
+L 211.68 182.508741
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 211.68 197.300867
+L 532.712911 197.300867
+L 532.712911 214.665538
+L 211.68 214.665538
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 211.68 229.457665
+L 469.036962 229.457665
+L 469.036962 246.822335
+L 211.68 246.822335
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 211.68 261.614462
+L 418.626835 261.614462
+L 418.626835 278.979133
+L 211.68 278.979133
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 211.68 293.771259
+L 349.644557 293.771259
+L 349.644557 311.13593
+L 211.68 311.13593
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 211.68 325.928057
+L 402.707848 325.928057
+L 402.707848 343.292727
+L 211.68 343.292727
+z
+" clip-path="url(#p8ee2b0fefd)" style="fill: #48e0c7"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="641.36" y="144.52703" transform="rotate(-0 641.36 144.52703)">22.2%  (158)</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="577.684051" y="176.683827" transform="rotate(-0 577.684051 176.683827)">18.8%  (134)</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="543.192911" y="208.840625" transform="rotate(-0 543.192911 208.840625)">17.0%  (121)</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="479.516962" y="240.997422" transform="rotate(-0 479.516962 240.997422)">13.6%  (97)</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="429.106835" y="273.154219" transform="rotate(-0 429.106835 273.154219)">11.0%  (78)</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="360.124557" y="305.311017" transform="rotate(-0 360.124557 305.311017)">7.3%  (52)</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="413.187848" y="337.467814" transform="rotate(-0 413.187848 337.467814)">10.1%  (72)</text>
+   </g>
+  </g>
+  <g id="text_19">
+   <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #48e0c7" x="43.2" y="34.02" transform="rotate(-0 43.2 34.02)">duckTyped  /  TLS FIELD NOTES</text>
+  </g>
+  <g id="text_20">
+   <text style="font-weight: 700; font-size: 24px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="43.2" y="68.04" transform="rotate(-0 43.2 68.04)">Who issued the certificates we observed?</text>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #abb7c8" x="43.2" y="95.256" transform="rotate(-0 43.2 95.256)">Issuer share in this sample  ·  1,000 ranked domains checked  ·  712 certificates observed</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e9eef5" x="43.2" y="415.044" transform="rotate(-0 43.2 415.044)">Source: ducktyped.xyz/learn/ssl-certificate-survey-2026/  ·  Tranco list V3YPN</text>
+  </g>
+  <g id="text_23">
+   <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #abb7c8" x="43.2" y="430.92" transform="rotate(-0 43.2 430.92)">One vantage point on 18 Sep 2026. No certificate observed for 288 domains; not an internet-wide estimate.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p8ee2b0fefd">
+   <rect x="211.68" y="122.472" width="565.92" height="231.336"/>
+  </clipPath>
+ </defs>
+</svg>

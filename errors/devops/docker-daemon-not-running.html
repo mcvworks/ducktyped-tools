@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Docker daemon stop after a reboot?","acceptedAnswer":{"@type":"Answer","text":"Docker is not always enabled to start at boot by default. Run 'sudo systemctl enable docker' on Linux to ensure it starts automatically. On macOS/Windows, enable 'Start Docker Desktop when you log in' in Docker Desktop settings."}},{"@type":"Question","name":"Can I run Docker without the daemon?","acceptedAnswer":{"@type":"Answer","text":"Standard Docker requires the daemon. However, Podman is a daemonless alternative that can run containers without a background service. For Docker, the daemon is required for all operations."}},{"@type":"Question","name":"Is this error related to Docker Compose too?","acceptedAnswer":{"@type":"Answer","text":"Yes. Docker Compose relies on the Docker daemon. If the daemon is not running, both docker and docker-compose commands will fail with the same error."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Docker work in one terminal but fail in another?","acceptedAnswer":{"@type":"Answer","text":"The terminals can use different users, contexts, environment variables, or WSL distributions. Compare the selected endpoint and permissions in the failing environment before restarting an engine."}},{"@type":"Question","name":"Does docker --version prove that the daemon is running?","acceptedAnswer":{"@type":"Answer","text":"No. It reports the installed client version. Use docker version to request server information, or docker ps to test an engine operation."}},{"@type":"Question","name":"Should I use chmod 666 on docker.sock?","acceptedAnswer":{"@type":"Answer","text":"No. Making the Docker socket accessible to every local user can grant control of the host. Use an administrator-approved access policy or a correctly configured rootless engine."}},{"@type":"Question","name":"Is a Docker Hub outage the same as a daemon connection error?","acceptedAnswer":{"@type":"Answer","text":"No. A registry outage can affect pulling or pushing images after the client connects to the engine. It does not explain failure to open a local Unix socket. If the engine responds but image pulls fail, check the registry status and network separately."}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Troubleshooting","item":"https://ducktyped.xyz/errors/"},{"@type":"ListItem","position":2,"name":"DevOps","item":"https://ducktyped.xyz/errors/#devops"},{"@type":"ListItem","position":3,"name":"Docker Daemon Not Running — Causes & Fixes"}]}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to Fix Docker Daemon Not Running","step":[{"@type":"HowToStep","position":1,"name":"Start the Docker service on Linux","text":"Use systemctl to start the Docker daemon and enable it to start on boot automatically."},{"@type":"HowToStep","position":2,"name":"Launch Docker Desktop","text":"On macOS or Windows, open Docker Desktop from the Applications folder or Start menu. Wait for the whale icon in the system tray to indicate the daemon is ready."},{"@type":"HowToStep","position":3,"name":"Add your user to the docker group","text":"On Linux, add your user to the docker group so you can run Docker commands without sudo. You need to log out and back in for the change to take effect."},{"@type":"HowToStep","position":4,"name":"Check Docker daemon status and logs","text":"Inspect the daemon status and logs to identify why it failed to start. Common issues include port conflicts, storage driver problems, or configuration errors."}]}</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docker Daemon Not Running — 7 Fixes for Linux, Mac &amp; Windows — duckTyped</title>
-    <meta name="description" content="Seeing 'Cannot connect to the Docker daemon at unix:///var/run/docker.sock'? 7 fixes: start the service, repair socket permissions, restart Docker Desktop, and more.">
+    <title>Cannot Connect to the Docker Daemon: Diagnose and Fix — duckTyped</title>
+    <meta name="description" content="Fix Cannot connect to the Docker daemon on Linux, macOS, and Windows. Check Docker contexts, Desktop and WSL, socket permissions, rootless mode, and logs.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="Docker daemon not running, Cannot connect to the Docker daemon, Is the docker daemon running?, docker.sock: connect: permission denied, Error: Cannot connect to the Docker daemon">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Docker Daemon Not Running — 7 Fixes for Linux, Mac &amp; Windows">
-    <meta property="og:description" content="Seeing 'Cannot connect to the Docker daemon at unix:///var/run/docker.sock'? 7 fixes: start the service, repair socket permissions, restart Docker Desktop, and more.">
+    <meta property="og:title" content="Cannot Connect to the Docker Daemon: Diagnose and Fix">
+    <meta property="og:description" content="Fix Cannot connect to the Docker daemon on Linux, macOS, and Windows. Check Docker contexts, Desktop and WSL, socket permissions, rootless mode, and logs.">
     <meta property="og:url" content="https://ducktyped.xyz/errors/devops/docker-daemon-not-running">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
@@ -57,72 +57,93 @@
 
         <article class="learn-article">
             <h1>Docker Daemon Not Running</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
-            <p class="standalone-intro">Cannot connect to the Docker daemon</p>
+            <p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p>
+            <p class="standalone-intro">The Docker client cannot reach its selected engine. Identify the endpoint first, then check the service, Docker Desktop, permissions, or remote connection that owns it.</p>
             <div class="error-aliases">
                 <p class="error-aliases-label"><strong>You might see this error as:</strong></p>
                 <ul class="error-aliases-list"><li><code>Docker daemon not running</code></li><li><code>Cannot connect to the Docker daemon</code></li><li><code>Is the docker daemon running?</code></li><li><code>docker.sock: connect: permission denied</code></li><li><code>Error: Cannot connect to the Docker daemon</code></li></ul>
             </div>
-
             <h2>What Does This Error Mean?</h2>
-            <p>This error occurs when the Docker CLI cannot communicate with the Docker daemon (dockerd). The daemon is the background service that manages containers, images, networks, and volumes. Without a running daemon, no Docker commands will work.</p>
-
+            <p>The Docker CLI and the Docker Engine are separate. A working <code>docker --version</code> only proves the client is installed. Commands that need the engine, such as <code>docker ps</code>, fail when the selected daemon is stopped, unreachable, or inaccessible to your user. A remote engine can fail even while Docker runs locally.</p>
             <h2>Common Causes</h2>
             <ul>
-                <li><strong>Docker service is not started</strong> — The Docker daemon service has not been started after a system reboot or was manually stopped. On Linux, systemd manages the service; on macOS and Windows, Docker Desktop must be running.</li>
-                <li><strong>Docker Desktop is not running</strong> — On macOS and Windows, Docker Desktop must be launched before using Docker CLI commands. The daemon runs inside Docker Desktop's managed VM.</li>
-                <li><strong>Permission denied on Docker socket</strong> — The current user does not have permission to access /var/run/docker.sock. This typically happens when the user is not in the 'docker' group on Linux.</li>
-                <li><strong>Docker socket file is missing or corrupted</strong> — The Unix socket file at /var/run/docker.sock may have been accidentally deleted or the daemon crashed without cleaning up properly.</li>
+            <li><strong>Wrong endpoint</strong> — A context, DOCKER_HOST, DOCKER_CONTEXT, or command-line flag selects a different engine than the one you started.</li>
+            <li><strong>Stopped engine</strong> — The system service, rootless user service, or Docker Desktop engine is not running.</li>
+            <li><strong>Socket access denied</strong> — The daemon may be healthy, but the current user cannot open its Unix socket.</li>
+            <li><strong>Desktop, WSL, or remote-host mismatch</strong> — The terminal is in a different environment from the engine, or its integration, SSH connection, or TLS settings need attention.</li>
             </ul>
+            <h2>How to Diagnose and Fix It</h2>
+            <h3>1. Identify the engine your terminal is using</h3>
+            <p>Run these read-only checks in the same terminal or job that fails. The active context has an asterisk in the list. Inspect its endpoint and compare it with the address in the error. Environment variables and explicit flags can override the saved selection. Do not publish context output containing internal hostnames or credentials.</p>
+            <pre><code>docker version
+docker context ls
+docker context show
+docker context inspect</code></pre>
+            <h3>2. Interpret the failure before changing settings</h3>
+            <p>A <strong>Client</strong> section followed by a daemon error means the CLI starts but the server check failed. <strong>Permission denied</strong> points to socket access; a missing socket suggests a stopped engine or wrong path; an SSH or TLS error points to a remote connection. If <code>docker version</code> returns both Client and Server sections, engine connectivity works: diagnose the later build, image-pull, or container error separately.</p>
+            <h3>3. Start the appropriate Linux service</h3>
+            <p>For a conventional Docker Engine installation managed by systemd, inspect the system service, then start it only if it is stopped. For an existing <strong>rootless</strong> installation, use the user service instead. Docker Desktop for Linux is a separate engine; use Desktop and its context. A host without systemd needs its own service manager.</p>
+            <pre><code># System Docker Engine:
+systemctl is-active docker
+# If this is the intended engine and it is stopped:
+sudo systemctl start docker
 
-            <h2>How to Fix It</h2>
+# Existing rootless Docker installation instead:
+systemctl --user is-active docker
+# If its user service is stopped:
+systemctl --user start docker</code></pre>
+            <h3>4. Check Docker Desktop and WSL integration</h3>
+            <p>On macOS or Windows, open Docker Desktop and wait until its engine is running. Retry from the terminal you actually use. For Linux containers in WSL, confirm that Desktop uses its WSL 2 backend and enables integration for that distribution under Settings → Resources → WSL Integration. A separately installed engine inside WSL can create a second, conflicting setup. Restarting Desktop interrupts workloads; reserve that step for an engine that remains unresponsive.</p>
+            <h3>5. Correct an unintended context or environment override</h3>
+            <p>Choose a context shown by <code>docker context ls</code>; context names vary by installation. The example below inspects the default context, then tests it for one command without changing your saved selection. In a POSIX shell, <code>printenv DOCKER_HOST DOCKER_CONTEXT</code> shows overrides. In PowerShell, inspect <code>$env:DOCKER_HOST</code> and <code>$env:DOCKER_CONTEXT</code>. Remove an override only when it is unintended; a remote deployment may depend on it.</p>
+            <pre><code>docker context inspect default
+# Only if default points to the engine you intend to use:
+docker --context default version</code></pre>
+            <h3>6. Handle socket permissions deliberately</h3>
+            <p>For a conventional Linux engine using <code>/var/run/docker.sock</code>, inspect the socket owner and your groups. An administrator can grant trusted users access through the configured Docker group. That group grants root-level control of the host; do not make the socket world-writable. Rootless Docker uses a user-owned socket and does not require joining the system Docker group. Sign out and back in after an approved group change.</p>
+            <pre><code># For the conventional system socket only:
+ls -l /var/run/docker.sock
+id -nG</code></pre>
+            <h3>7. Read the relevant logs and verify the repair</h3>
+            <p>On a systemd host, use the log for the engine you selected. Look for the first startup failure, such as conflicting daemon settings or exhausted storage, before changing configuration. For a remote context, inspect the remote host and its SSH/TLS access. After the repair, both the version check and container listing below should succeed. The listing is read-only and may legitimately be empty.</p>
+            <pre><code># System engine logs:
+sudo journalctl -u docker.service --no-pager -n 50
+# Rootless engine logs instead:
+journalctl --user -u docker.service --no-pager -n 50
 
-            <h3>1. Start the Docker service on Linux</h3>
-            <p>Use systemctl to start the Docker daemon and enable it to start on boot automatically.</p>
-            <pre><code>sudo systemctl start docker
-sudo systemctl enable docker</code></pre>
-            <h3>2. Launch Docker Desktop</h3>
-            <p>On macOS or Windows, open Docker Desktop from the Applications folder or Start menu. Wait for the whale icon in the system tray to indicate the daemon is ready.</p>
-            <h3>3. Add your user to the docker group</h3>
-            <p>On Linux, add your user to the docker group so you can run Docker commands without sudo. You need to log out and back in for the change to take effect.</p>
-            <pre><code>sudo usermod -aG docker $USER
-newgrp docker</code></pre>
-            <h3>4. Check Docker daemon status and logs</h3>
-            <p>Inspect the daemon status and logs to identify why it failed to start. Common issues include port conflicts, storage driver problems, or configuration errors.</p>
-            <pre><code>sudo systemctl status docker
-sudo journalctl -u docker.service --no-pager -n 50</code></pre>
-
+# Verify in the original failing terminal:
+docker version
+docker ps</code></pre>
             <h2>Frequently Asked Questions</h2>
-
-            <h3>Why does Docker daemon stop after a reboot?</h3>
-            <p>Docker is not always enabled to start at boot by default. Run 'sudo systemctl enable docker' on Linux to ensure it starts automatically. On macOS/Windows, enable 'Start Docker Desktop when you log in' in Docker Desktop settings.</p>
-            <h3>Can I run Docker without the daemon?</h3>
-            <p>Standard Docker requires the daemon. However, Podman is a daemonless alternative that can run containers without a background service. For Docker, the daemon is required for all operations.</p>
-            <h3>Is this error related to Docker Compose too?</h3>
-            <p>Yes. Docker Compose relies on the Docker daemon. If the daemon is not running, both docker and docker-compose commands will fail with the same error.</p>
-
-            <h2>Related Errors</h2>
+            <h3>Why does Docker work in one terminal but fail in another?</h3>
+            <p>The terminals can use different users, contexts, environment variables, or WSL distributions. Compare the selected endpoint and permissions in the failing environment before restarting an engine.</p>
+            <h3>Does docker --version prove that the daemon is running?</h3>
+            <p>No. It reports the installed client version. Use docker version to request server information, or docker ps to test an engine operation.</p>
+            <h3>Should I use chmod 666 on docker.sock?</h3>
+            <p>No. Making the Docker socket accessible to every local user can grant control of the host. Use an administrator-approved access policy or a correctly configured rootless engine.</p>
+            <h3>Is a Docker Hub outage the same as a daemon connection error?</h3>
+            <p>No. A registry outage can affect pulling or pushing images after the client connects to the engine. It does not explain failure to open a local Unix socket. If the engine responds but image pulls fail, check the registry status and network separately.</p>
+            <h2>Related Errors and Guides</h2>
             <ul>
-                <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — Port is already in use by another container or process</li>
-                <li><a href="/errors/devops/docker-no-space-left">Docker No Space Left</a> — No disk space left for Docker operations</li>
-                <li><a href="/errors/devops/permission-denied-publickey">Permission Denied (publickey)</a> — SSH authentication failure</li>
+            <li><a href="/errors/devops/docker-port-already-allocated">Docker Port Already Allocated</a> — A container cannot bind its requested port</li>
+            <li><a href="/errors/devops/docker-no-space-left">Docker No Space Left</a> — Storage failures after reaching the engine</li>
+            <li><a href="/errors/devops/permission-denied-publickey">Permission Denied (publickey)</a> — SSH authentication errors with a remote host</li>
+            <li><a href="/learn/docker-compose-validator/">Check a Compose file after restoring engine access</a></li>
+            <li><a href="https://monitor.ducktyped.xyz/status/dockerhub">Docker Hub status for registry failures</a></li>
+            </ul>
+            <h2>Sources and Review</h2>
+            <p>Reviewed against the official documentation below. Commands use example hostnames and paths; choose the branch that matches your installation.</p>
+            <ul>
+            <li><a href="https://docs.docker.com/engine/daemon/troubleshoot/">Docker daemon troubleshooting</a></li>
+            <li><a href="https://docs.docker.com/engine/manage-resources/contexts/">Docker contexts</a></li>
+            <li><a href="https://docs.docker.com/engine/security/rootless/">Rootless Docker</a></li>
+            <li><a href="https://docs.docker.com/engine/install/linux-postinstall/">Linux socket access</a></li>
+            <li><a href="https://docs.docker.com/desktop/features/wsl/">Docker Desktop and WSL</a></li>
             </ul>
         </article>
 
-        <div class="recommended-tools">
-            <div class="recommended-tools-heading">Recommended Tools</div>
-            <div class="recommended-tools-grid">
-        <a href="/port-scanner/" class="recommended-tool-card">
-                    <span class="recommended-tool-name">Port Scanner</span>
-                    <span class="recommended-tool-desc">Check if a port is open</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="learn-cta">
-            <a href="/port-scanner/" class="cta-btn-primary">Try Port Scanner</a>
-            <a href="/errors/" class="learn-more-link">Browse all errors</a>
-        </div>
+        <div class="recommended-tools"><div class="recommended-tools-heading">Related Tools</div><div class="recommended-tools-grid"><a href="/docker-compose-validator/" class="recommended-tool-card"><span class="recommended-tool-name">Docker Compose Validator</span><span class="recommended-tool-desc">Inspect Compose configuration after the engine responds</span></a></div></div>
+        <div class="learn-cta"><a href="/errors/" class="learn-more-link">Browse all errors</a></div>
     </div>
 
     <footer class="standalone-page-footer">

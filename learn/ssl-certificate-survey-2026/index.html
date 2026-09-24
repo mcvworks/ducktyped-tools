@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificates on the Top 1,000 Websites — 2026 Survey","description":"We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","datePublished":"2026-09-18","dateModified":"2026-09-18","author":{"@type":"Organization","name":"duckTyped"},"publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SSL Certificates on the Top 1,000 Websites — 2026 Survey","description":"We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","datePublished":"2026-09-18","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped"},"publisher":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"TLS certificates of the Tranco top 1,000 websites, 2026-09-18","description":"Leaf TLS certificate details (issuer, validity dates, lifetime, key type, negotiated protocol, chain validity) observed for the Tranco top 1,000 domains on 2026-09-18.","url":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/","creator":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"datePublished":"2026-09-18","temporalCoverage":"2026-09-18","isAccessibleForFree":true,"distribution":[{"@type":"DataDownload","encodingFormat":"text/csv","contentUrl":"https://ducktyped.xyz/data/ssl-survey-2026-09.csv"}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"SSL Certificate Survey 2026","item":"https://ducktyped.xyz/learn/ssl-certificate-survey-2026/"}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the maximum SSL certificate validity in 2026?","acceptedAnswer":{"@type":"Answer","text":"For publicly trusted certificates issued on or after March 15, 2026, the maximum is 200 days. It falls to 100 days on March 15, 2027 and to 47 days on March 15, 2029, under CA/Browser Forum ballot SC-081v3. Certificates issued before each date keep their original lifetime until they expire."}},{"@type":"Question","name":"Which certificate authority is most common on top websites?","acceptedAnswer":{"@type":"Answer","text":"In this September 2026 scan of the Tranco top 1,000, DigiCert issued 22.2% of the 712 certificates observed, followed by Google Trust Services (18.8%) and Let's Encrypt (17.0%)."}},{"@type":"Question","name":"How many top websites support TLS 1.3?","acceptedAnswer":{"@type":"Answer","text":"82.2% of the 712 sites that presented a certificate negotiated TLS 1.3 with a client offering it. The remaining 17.8% negotiated TLS 1.2. The scan did not offer TLS 1.0 or 1.1, so it cannot say how many servers still accept them."}},{"@type":"Question","name":"Can I reuse this data?","acceptedAnswer":{"@type":"Answer","text":"Yes. The full per-domain dataset is a free CSV download, and you are welcome to cite or reuse the figures with a link back to this page."}}]}</script>
@@ -16,7 +16,12 @@
     <meta property="og:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
     <meta property="og:url" content="https://ducktyped.xyz/learn/ssl-certificate-survey-2026/">
     <meta property="og:site_name" content="duckTyped">
-    <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
+    <meta property="og:image" content="https://ducktyped.xyz/data/ssl-survey-2026-09/certificate-lifetimes.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Observed TLS certificate lifetimes: 76.5% of 712 certificates had lifetimes of 200 days or less. September 18, 2026 sample.">
+    <meta name="twitter:image" content="https://ducktyped.xyz/data/ssl-survey-2026-09/certificate-lifetimes.png">
+    <meta name="twitter:image:alt" content="TLS certificate lifetimes in the September 18, 2026 sample of 712 observed certificates.">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SSL Certificates on the Top 1,000 Websites — 2026 Survey">
     <meta name="twitter:description" content="We scanned the top 1,000 websites' TLS certificates in September 2026: 76.5% already fit the new 200-day limit. Issuer share, key types, raw CSV.">
@@ -87,15 +92,15 @@
 
         <article class="learn-article">
             <h1>SSL Certificates on the Top 1,000 Websites: 2026 Survey</h1>
-            <p class="page-last-updated">Data collected: <time datetime="2026-09-18">September 18, 2026</time></p>
-            <p class="standalone-intro">On September 18, 2026 we connected to the 1,000 most popular domains on the internet and recorded the TLS certificate each one presented. Six months after the industry cut the maximum certificate lifetime to 200 days, 76.5% of the certificates on top sites already fit under the new limit, and the median lifetime of a newly issued certificate has dropped from 395 days to 91.</p>
+            <p class="page-last-updated">Data collected: <time datetime="2026-09-18">September 18, 2026</time>. Report and share charts reviewed September 24, 2026.</p>
+            <p class="standalone-intro">On September 18, 2026 we checked 1,000 domains from Tranco list V3YPN and observed 712 TLS certificates. Of those certificates, 76.5% had lifetimes of 200 days or less. Within this single-date sample, the median lifetime was 395 days for certificates issued before March 15, 2026 and 91 days for those issued on or after that date.</p>
 
             <p>The full per-domain dataset is a <a href="/data/ssl-survey-2026-09.csv" download>free CSV download</a>. To check any single domain yourself, use the <a href="/ssl-checker/">SSL Certificate Checker</a>.</p>
 
             <h2>Key Findings</h2>
             <div class="dv-tiles">
                 <div class="dv-tile"><div class="dv-tile-label">Sites presenting a certificate</div><div class="dv-tile-value">712</div><div class="dv-tile-detail">of 1,000 domains scanned</div></div>
-                <div class="dv-tile"><div class="dv-tile-label">Median lifetime, issued after the cap</div><div class="dv-tile-value">91 days</div><div class="dv-tile-detail">was 395 days before March 15, 2026</div></div>
+                <div class="dv-tile"><div class="dv-tile-label">Median lifetime, newer issuance cohort</div><div class="dv-tile-value">91 days</div><div class="dv-tile-detail">older issuance cohort in this sample: 395 days</div></div>
                 <div class="dv-tile"><div class="dv-tile-label">Valid certificate chain</div><div class="dv-tile-value">95.9%</div><div class="dv-tile-detail">29 sites failed validation</div></div>
                 <div class="dv-tile"><div class="dv-tile-label">Negotiated TLS 1.3</div><div class="dv-tile-value">82.2%</div><div class="dv-tile-detail">the rest negotiated TLS 1.2</div></div>
                 <div class="dv-tile"><div class="dv-tile-label">Within 30 days of expiry</div><div class="dv-tile-value">48</div><div class="dv-tile-detail">11 of them within 7 days</div></div>
@@ -103,7 +108,7 @@
             </div>
 
             <h2>The 200-Day Limit Is Already Visible</h2>
-            <p>In April 2025 the CA/Browser Forum passed ballot SC-081v3, which shortens the maximum lifetime of publicly trusted TLS certificates in three steps. The first step took effect on March 15, 2026.</p>
+            <p>In April 2025 the CA/Browser Forum passed <a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/">ballot SC-081v3</a>, which shortens the maximum lifetime of publicly trusted TLS certificates in three steps. The first step took effect on March 15, 2026.</p>
             <div class="comparison-table-wrap">
                 <table class="comparison-table">
                     <thead><tr><th>Issued on or after</th><th>Maximum lifetime</th><th>Practical renewal cadence</th></tr></thead>
@@ -115,7 +120,7 @@
                     </tbody>
                 </table>
             </div>
-            <p>The data shows the rule biting exactly where you would expect. Of the 167 certificates with a lifetime over 200 days, 166 were issued before the cap and are simply running out their original term. The single exception, <code>sberbank.ru</code>, is signed by a national certificate authority that browsers do not trust — and the rule only binds publicly trusted CAs.</p>
+            <p>Of the 167 certificates with a lifetime over 200 days, 166 were issued before the cap and are simply running out their original term. The single exception, <code>sberbank.ru</code>, was not trusted by the scanner’s root store; this observation alone is not a finding of a public-CA rule violation.</p>
 
             <figure class="dv-figure">
                 <p class="dv-title">Certificate lifetime on the top 1,000 sites</p>
@@ -166,13 +171,13 @@
                 <p class="dv-source">Source: duckTyped scan of the Tranco top 1,000 (list V3YPN), 2026-09-18.</p>
             </figure>
 
-            <p>Certificates issued since the cap fall into two clean clusters: <strong>289</strong> at roughly 90 days (the automated-issuance default used by Let's Encrypt and Google Trust Services) and <strong>248</strong> at just under 200 days, where the commercial CAs now issue right up to the ceiling. The one-year certificate is gone from new issuance.</p>
+            <p>Certificates issued since the cap fall into two clean clusters: <strong>289</strong> at roughly 90 days (the automated-issuance default used by Let's Encrypt and Google Trust Services) and <strong>248</strong> at just under 200 days, where the commercial CAs now issue right up to the ceiling. These counts describe this sample, not all new certificate issuance.</p>
 
             <h3>Some operators are already at the 2029 limit</h3>
-            <p>8 sites present certificates of 47 days or less — three years before they have to: <code>nflximg.com</code>, <code>fastly.net</code>, <code>kaspersky-labs.com</code>, <code>arxiv.org</code>, <code>time.com</code>, <code>aliyuncs.com</code>, <code>digicert.com</code>, <code>dnsmadeeasy.com</code>. Two patterns stand out. <code>digicert.com</code> runs a 47-day certificate on its own site, and several Fastly-hosted properties use 30-day certificates from Certainly, the certificate authority Fastly operates. Nobody renews a 30-day certificate by hand; these are fully automated pipelines.</p>
+            <p>8 sites present certificates of 47 days or less — three years before they have to: <code>nflximg.com</code>, <code>fastly.net</code>, <code>kaspersky-labs.com</code>, <code>arxiv.org</code>, <code>time.com</code>, <code>aliyuncs.com</code>, <code>digicert.com</code>, <code>dnsmadeeasy.com</code>. Two patterns stand out. <code>digicert.com</code> runs a 47-day certificate on its own site, and several Fastly-hosted properties use 30-day certificates from Certainly, the certificate authority Fastly operates. Short lifetimes make reliable automation especially useful, but this scan does not establish how each operator renews certificates.</p>
 
             <h2>Who Issues the Web's Certificates</h2>
-            <p>Six issuers account for 89.9% of the certificates on top sites. The split is more even than the long-tail web, where free automated issuance dominates: large operators still buy from commercial CAs, or run their own.</p>
+            <p>Six issuers account for 89.9% of the certificates on top sites. This issuer distribution describes the observed sample; it is not an estimate of global certificate-authority market share.</p>
 
             <figure class="dv-figure">
                 <p class="dv-title">Certificate issuer share</p>
@@ -213,19 +218,19 @@
 
             <h2>Cutting It Close: Expiry Margins</h2>
             <p>Among sites with a valid chain, the median certificate had 77 days left. But 48 were within 30 days of expiry and 11 within a week — including Meta's main properties (<code>facebook.com</code>, <code>instagram.com</code>, <code>whatsapp.com</code>), which all shared a 91-day certificate with 7 days remaining.</p>
-            <p>That is not negligence. It is what automated rotation looks like: when renewal is a scheduled job, there is no reason to renew early. It is also exactly the margin that ends in an outage when renewal is a calendar reminder instead. If your renewals involve a human, a single-digit margin means a missed email away from <a href="/errors/ssl/ssl-certificate-expired">an expired certificate error</a>.</p>
+            <p>A short remaining lifetime does not by itself indicate a renewal failure. This scan cannot establish the operator’s renewal schedule or whether a later renewal succeeded. Monitor both automation failures and the certificate served to clients to catch <a href="/errors/ssl/ssl-certificate-expired">expiry problems</a>.</p>
 
             <h2>What Fails Validation</h2>
-            <p>29 of 712 sites (4.1%) presented a certificate that a standard client would reject:</p>
+            <p>29 of 712 sites (4.1%) presented a certificate that failed the scanner’s hostname or trust-chain validation:</p>
             <ul>
-                <li><strong>23 hostname mismatches.</strong> Almost all are infrastructure domains rather than websites — <code>googlevideo.com</code>, <code>windows.net</code>, <code>edgekey.net</code>, <code>trbcdn.net</code> — where the bare domain answers on port 443 with a certificate for a different name. Nobody browses to them, so nobody notices. See <a href="/errors/ssl/ssl-certificate-invalid">SSL certificate invalid</a>.</li>
-                <li><strong>3 expired certificates</strong>, all long abandoned: the most recent expired 2,138 days before the scan. 2 of them carry lifetimes of 426 days, issued under rules that predate even the 398-day limit.</li>
-                <li><strong>3 untrusted or incomplete chains</strong>, including state-operated CAs absent from browser trust stores. See <a href="/errors/ssl/certificate-chain-invalid">certificate chain invalid</a> and <a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a>.</li>
+                <li><strong>23 hostname mismatches.</strong> Almost all are infrastructure domains rather than websites — <code>googlevideo.com</code>, <code>windows.net</code>, <code>edgekey.net</code>, <code>trbcdn.net</code> — where the bare domain answers on port 443 with a certificate for a different name. See <a href="/errors/ssl/ssl-certificate-invalid">SSL certificate invalid</a>.</li>
+                <li><strong>3 expired certificates</strong>, all expired more than a year before the scan: the most recent expired 2,138 days before the scan. 2 of them carry lifetimes of 426 days, issued under rules that predate even the 398-day limit.</li>
+                <li><strong>3 untrusted or incomplete chains</strong>, as judged against the scanner’s bundled root store. See <a href="/errors/ssl/certificate-chain-invalid">certificate chain invalid</a> and <a href="/errors/ssl/net-err-cert-authority-invalid">NET::ERR_CERT_AUTHORITY_INVALID</a>.</li>
             </ul>
 
             <h2>Protocol Versions and Key Types</h2>
             <p><strong>82.2%</strong> of sites negotiated TLS 1.3 when offered it; the remaining 17.8% negotiated TLS 1.2. The scanner did not offer TLS 1.0 or 1.1, so a server limited to those would appear among the 7 handshake failures rather than here. For how the two differ, see <a href="/learn/ssl-tls-handshake/">How SSL/TLS Handshakes Work</a>.</p>
-            <p>Key types are changing more slowly than protocols. RSA-2048 is still the most common leaf key at 61.9%, with ECDSA P-256 at 35.1%.</p>
+            <p>Within this sample, RSA-2048 is still the most common leaf key at 61.9%, with ECDSA P-256 at 35.1%.</p>
             <details class="dv-table" open>
         <summary>View this data as a table</summary>
         <div class="comparison-table-wrap"><table class="comparison-table">
@@ -236,18 +241,27 @@
 
             <h2>What This Means for Your Certificates</h2>
             <ol>
-                <li><strong>Automate renewal now, not in 2029.</strong> The 100-day limit arrives in March 2027. If any certificate you own is renewed by a person, that process has about one more cycle left in it. ACME clients (certbot, acme.sh, Caddy, your CDN's managed certificates) remove the problem entirely.</li>
+                <li><strong>Automate renewal now, not in 2029.</strong> The 100-day limit arrives in March 2027. Use an ACME client or managed certificate service where appropriate, and test renewal and deployment. Automation still needs monitoring; the next issuance cap does not shorten a certificate already issued.</li>
                 <li><strong>Monitor expiry independently of renewal.</strong> Automation fails silently — a changed DNS record or an expired API token stops renewals without telling anyone. Check what your server is actually presenting with the <a href="/ssl-checker/">SSL Certificate Checker</a>.</li>
                 <li><strong>Audit the names nobody visits.</strong> Most broken certificates in this scan were on hostnames that are not websites. Apex domains, legacy subdomains and redirect hosts are where expired certificates hide.</li>
                 <li><strong>Reissuing? Check the request first.</strong> Shorter lifetimes mean more CSRs. Verify the names and key size with the <a href="/csr-decoder/">CSR Decoder</a> before submitting.</li>
             </ol>
 
+            <h2>Download Charts and Cite the Survey</h2>
+            <p>Use these charts in an article, presentation, or post with a link to this survey. Keep the scan date, denominator, and limitations with the chart: these are observations from one sample, not global market-share estimates.</p>
+            <ul>
+                <li>Certificate lifetimes: <a href="/data/ssl-survey-2026-09/certificate-lifetimes.png" download>PNG (1200 × 630)</a> · <a href="/data/ssl-survey-2026-09/certificate-lifetimes.svg" download>SVG</a></li>
+                <li>Certificate issuers: <a href="/data/ssl-survey-2026-09/certificate-issuers.png" download>PNG (1200 × 630)</a> · <a href="/data/ssl-survey-2026-09/certificate-issuers.svg" download>SVG</a></li>
+            </ul>
+            <p><strong>Suggested citation:</strong> duckTyped, “SSL Certificates on the Top 1,000 Websites — 2026 Survey.” Scan conducted September 18, 2026; Tranco list V3YPN; 712 certificates observed from 1,000 domains checked. <a href="/data/ssl-survey-2026-09.csv" download>Download the source CSV</a>.</p>
+
             <h2>Methodology and Limitations</h2>
             <ul>
                 <li><strong>Domain list:</strong> the first 1,000 entries of the <a href="https://tranco-list.eu/list/V3YPN" rel="noopener" target="_blank">Tranco list V3YPN</a>, a research-oriented ranking that aggregates several popularity sources.</li>
-                <li><strong>Measurement:</strong> one ordinary TLS handshake per host on port 443 with SNI, the same thing a browser does on a first visit. No HTTP request was sent. The bare domain was tried first, then <code>www.</code>; 53 sites answered only on <code>www</code>.</li>
+                <li><strong>Measurement:</strong> one ordinary TLS handshake per host on port 443 with SNI, the initial certificate exchange used by an HTTPS client; browser trust and connection behavior can differ. No HTTP request was sent. The bare domain was tried first, then <code>www.</code>; 53 sites answered only on <code>www</code>.</li>
                 <li><strong>Coverage:</strong> 288 domains presented no certificate — 174 had no address record, 76 refused the connection, 31 timed out and 7 failed the handshake. A popularity ranking counts DNS and CDN infrastructure names (<code>gstatic.com</code>, <code>akamai.net</code>) that were never websites. All percentages use the 712 sites that presented a certificate as the denominator.</li>
                 <li><strong>Validation:</strong> chain validity is judged against the Mozilla root store bundled with Node.js 20, including hostname matching. Only the leaf certificate was analysed. Lifetime is <code>notAfter − notBefore</code>.</li>
+                <li><strong>Cohort comparison:</strong> older and newer issuance groups were observed on the same scan date. Older short-lived certificates may already have been replaced, so this is not a longitudinal before-and-after measurement.</li>
                 <li><strong>Limitations:</strong> one vantage point, one moment, IPv4 first. Large sites serve different certificates by region and by CDN edge, so another scanner may see a different certificate for the same domain. "Negotiated TLS 1.3" means the server chose it when offered; this scan did not test which older versions a server would still accept.</li>
             </ul>
             <p>You are welcome to cite or reuse these figures with a link to this page. Download the <a href="/data/ssl-survey-2026-09.csv" download>per-domain CSV</a> (1,000 rows).</p>
