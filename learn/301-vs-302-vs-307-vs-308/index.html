@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Redirect Status Codes — 301 vs 302 vs 307 vs 308","description":"Comparison of HTTP redirect status codes: 301 (permanent), 302 (temporary), 307 (temporary preserve method), 308 (permanent preserve method). Decision flowchart and common mistakes.","datePublished":"2026-07-02","dateModified":"2026-07-02","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"301 vs 302 vs 307 vs 308: Choose and Test a Redirect","description":"Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.","datePublished":"2026-07-02","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"Redirect Status Codes Comparison"}]}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I use 301 or 302 for a permanent redirect?","acceptedAnswer":{"@type":"Answer","text":"Use 301 (Moved Permanently) for permanent redirects. This tells browsers and search engines that the URL has permanently moved and to update their bookmarks. Use 302 (Found) only for temporary redirects expected to revert. Mistakenly using 302 for permanent moves prevents SEO equity transfer and causes users' bookmarks to stay on the old URL."}},{"@type":"Question","name":"What happens to POST requests on a 301/302 redirect?","acceptedAnswer":{"@type":"Answer","text":"Both 301 and 302 traditionally downgrade POST requests to GET. Browsers drop the body and redirect using GET (historical behavior). If you need to preserve the HTTP method, use 307 (Temporary Redirect) or 308 (Permanent Redirect), which mandate that the method and body remain unchanged."}},{"@type":"Question","name":"What is the difference between 307 and 308?","acceptedAnswer":{"@type":"Answer","text":"307 (Temporary Redirect) and 308 (Permanent Redirect) are identical except for permanence. Both require the browser to preserve the HTTP method and body. Use 307 for temporary redirects that may revert, and 308 for permanent ones. Both are preferred over 301/302 for APIs, form handlers, and anywhere the request method matters."}},{"@type":"Question","name":"Can I cause an infinite redirect loop?","acceptedAnswer":{"@type":"Answer","text":"Yes. If A redirects to B, and B redirects back to A, browsers will follow the loop until they hit a limit (usually 5-10 hops) and show an error. Use the <a href=\"/redirect-checker/\">Redirect Checker</a> to trace redirect chains before deploying. Common mistakes: (1) old URL redirects to new, but new accidentally redirects back to old; (2) misconfigured reverse proxy loops requests."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I use 301 or 308 for a permanent move?","acceptedAnswer":{"@type":"Answer","text":"Both describe a permanent move. Use 308 when an automatically followed redirect must preserve the request method and body. A 301 remains suitable for ordinary page moves, but a client may change POST to GET."}},{"@type":"Question","name":"Does 307 mean a response cannot be cached?","acceptedAnswer":{"@type":"Answer","text":"No. A 307 is temporary and preserves the request method, but explicit cache directives can allow caching. Set the intended Cache-Control policy separately from the redirect status."}},{"@type":"Question","name":"Do temporary redirects lose all SEO value?","acceptedAnswer":{"@type":"Answer","text":"No. Google describes permanent redirects as strong canonical signals and temporary redirects as weak signals. That is not a promise of a fixed ranking gain or loss; use the status that matches the move."}},{"@type":"Question","name":"Which redirect should follow a successful form submission?","acceptedAnswer":{"@type":"Answer","text":"A 303 See Other commonly sends the browser to a result page with GET after a POST has been processed. Use 307 or 308 when the destination should receive the original method and body instead."}}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>301 vs 302 vs 307 vs 308 — HTTP Redirect Status Codes — duckTyped</title>
-    <meta name="description" content="HTTP redirect comparison: 301 (permanent), 302 (temporary), 307 (preserve method), 308 (permanent preserve). Decision flowchart, SEO, and common mistakes.">
+    <title>301 vs 302 vs 307 vs 308: Choose and Test a Redirect — duckTyped</title>
+    <meta name="description" content="Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="301 redirect, 302 redirect, 307 redirect, 308 redirect, HTTP status codes, redirect comparison, permanent redirect, temporary redirect, method preservation">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="301 vs 302 vs 307 vs 308 — HTTP Redirect Comparison — duckTyped">
-    <meta property="og:description" content="Learn the differences between redirect status codes and when to use each one.">
+    <meta property="og:title" content="301 vs 302 vs 307 vs 308: Choose and Test a Redirect — duckTyped">
+    <meta property="og:description" content="Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.">
     <meta property="og:url" content="https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="301 vs 302 vs 307 vs 308 — duckTyped">
-    <meta name="twitter:description" content="HTTP redirect status code comparison and decision guide.">
+    <meta name="twitter:title" content="301 vs 302 vs 307 vs 308: Choose and Test a Redirect — duckTyped">
+    <meta name="twitter:description" content="Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.">
     <link rel="canonical" href="https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/learn/301-vs-302-vs-307-vs-308/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -58,125 +62,58 @@
         </div>
 
         <article class="learn-article">
-            <h1>Redirect Status Codes — 301 vs 302 vs 307 vs 308</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-07-02">July 2, 2026</time></p>
-            <p class="standalone-intro">Not all redirects are the same. Each status code tells browsers and search engines something different about the permanence and method preservation. Choose the right one to avoid SEO penalties and broken form submissions.</p>
-
-            <p>To trace redirect chains before deploying, use the <a href="/redirect-checker/">Redirect Checker</a>. For individual status code descriptions, see <a href="/learn/http-status-codes/">HTTP Status Codes</a>.</p>
-
-            <h2>Redirect Comparison Matrix</h2>
-            <div class="comparison-table-wrap">
-                <table class="comparison-table">
-                    <thead><tr><th>Code</th><th>Name</th><th>Permanent?</th><th>Method Preserved?</th><th>Cacheable?</th><th>SEO Equity?</th><th>Best Use</th></tr></thead>
-                    <tbody>
-                        <tr><td><strong>301</strong></td><td>Moved Permanently</td><td>✓ Yes</td><td>✗ No (→ GET)</td><td>✓ Yes (aggressive)</td><td>✓ Full transfer</td><td>Site migrations, permanent URL changes</td></tr>
-                        <tr><td><strong>302</strong></td><td>Found</td><td>✗ No (temporary)</td><td>✗ No (→ GET)</td><td>✗ No (conditional)</td><td>✗ None (temporary)</td><td>Temporary redirects, A/B tests, maintenance</td></tr>
-                        <tr><td><strong>307</strong></td><td>Temporary Redirect</td><td>✗ No (temporary)</td><td>✓ Yes (preserve)</td><td>✗ No</td><td>✗ None (temporary)</td><td>Temporary POST/PUT redirects, API rerouting</td></tr>
-                        <tr><td><strong>308</strong></td><td>Permanent Redirect</td><td>✓ Yes</td><td>✓ Yes (preserve)</td><td>✓ Yes (aggressive)</td><td>✓ Full transfer</td><td>Permanent method-preserving redirects (preferred modern standard)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h2>Decision Flowchart</h2>
-
-            <p><strong>Start:</strong> Is this redirect permanent or temporary?</p>
-
-            <ul>
-                <li><strong>Permanent?</strong>
-                    <ul>
-                        <li>Does the HTTP method (GET, POST, PUT, DELETE) matter?
-                            <ul>
-                                <li><strong>Yes (API, form, mutation):</strong> Use <strong>308</strong> (Permanent Redirect)</li>
-                                <li><strong>No (GET request, browsing):</strong> Use <strong>301</strong> (Moved Permanently)</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li><strong>Temporary?</strong>
-                    <ul>
-                        <li>Does the HTTP method matter?
-                            <ul>
-                                <li><strong>Yes (POST, PUT, mutation):</strong> Use <strong>307</strong> (Temporary Redirect)</li>
-                                <li><strong>No (GET request, browsing):</strong> Use <strong>302</strong> (Found)</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <h2>Why Method Preservation Matters</h2>
-
-            <p>By HTTP spec, 301 and 302 traditionally downgrade POST requests to GET. This breaks form submissions and API mutations.</p>
-
-            <p><strong>Example (301 POST problem):</strong></p>
-            <ol>
-                <li>Client POSTs data to <code>example.com/api/users</code> (create user)</li>
-                <li>Server responds with <code>301 Location: /users/v2</code> (endpoint migrated)</li>
-                <li>Browser follows with <strong>GET</strong> to <code>example.com/api/users/v2</code> (body dropped!)</li>
-                <li>Server can't create user because data is gone — request fails</li>
-            </ol>
-
-            <p><strong>Solution:</strong> Use 307 (temporary) or 308 (permanent) to guarantee method and body preservation.</p>
-
-            <h2>Common Mistakes</h2>
-
-            <h3>1. Using 302 for Permanent Moves</h3>
-            <p>If you're moving your site and redirect with 302, search engines won't transfer SEO equity to the new URL. Users' bookmarks will still point to the old domain. <strong>Use 301 or 308 instead.</strong></p>
-
-            <h3>2. Forgetting POST Requests Downgrade on 301/302</h3>
-            <p>If you have an API endpoint or form handler on the old URL and redirect with 301 or 302, POST requests will silently become GET requests. The form data is lost, and mutations fail. <strong>Use 308 for permanent, 307 for temporary.</strong></p>
-
-            <h3>3. Redirect Loops</h3>
-            <p>If A redirects to B and B redirects back to A, the browser hits redirect-loop limits and shows an error. Check your redirects carefully:</p>
-            <ul>
-                <li>Old URL should redirect to new, but new URL must NOT redirect back</li>
-                <li>Reverse proxies can create loops if misconfigured (catch-all redirects, middleware order)</li>
-                <li>Use the <a href="/redirect-checker/">Redirect Checker</a> to trace chains</li>
-            </ul>
-
-            <h3>4. Redirecting to the Same Host/Port by Accident</h3>
-            <p>Misconfigured redirects can point to themselves. Check your Location header points somewhere different.</p>
-
-            <h2>When to Use Each Code</h2>
-
-            <h3>301 — Moved Permanently (Classic Permanent Redirect)</h3>
-            <p>Use for permanent URL changes where the HTTP method doesn't matter (mostly GET requests). Examples: site migrations, renaming a page, deprecating an endpoint.</p>
-            <p><strong>Note:</strong> Newer systems should prefer 308 because it handles POST better.</p>
-
-            <h3>302 — Found (Classic Temporary Redirect)</h3>
-            <p>Use for temporary redirects expected to revert. Examples: maintenance redirects, A/B testing, feature flags, temporary URL aliases.</p>
-            <p><strong>Caveat:</strong> Modern browsers may cache aggressively. For guaranteed non-caching, consider 307.</p>
-
-            <h3>307 — Temporary Redirect (Modern Temporary, Method-Preserving)</h3>
-            <p>Guarantees the method and body survive the redirect. Use for temporary API reroutes, temporary form handlers, or any mutation that's expected to revert.</p>
-
-            <h3>308 — Permanent Redirect (Modern Standard)</h3>
-            <p>The modern best practice for all permanent redirects. Unlike 301, it preserves POST/PUT/DELETE. Use this by default for permanent moves unless you have compatibility concerns with very old clients.</p>
-
-            <h2>Caching Behavior</h2>
-
-            <p>301 and 308 are cacheable by default — browsers and proxies remember the redirect. This is good for performance but means:</p>
-            <ul>
-                <li>Once cached, a user won't check the old URL again</li>
-                <li>Hard-refresh (Ctrl+Shift+R) bypasses the cache</li>
-                <li>CDNs and proxies also cache these redirects — plan accordingly</li>
-            </ul>
-
-            <p>302 and 307 are NOT cached (unless cache headers say otherwise) — each request checks the server, which is safer for temporary situations.</p>
-
-            <h2>Troubleshooting Redirects</h2>
-
-            <p>Use the <a href="/redirect-checker/">Redirect Checker tool</a> to:</p>
-            <ul>
-                <li>Trace the full redirect chain</li>
-                <li>See the final destination</li>
-                <li>Spot redirect loops before they cause problems</li>
-                <li>Verify status codes at each hop</li>
-            </ul>
-
-            <p>Or use curl to trace manually:</p>
-            <p><code>curl -iL example.com/old-page</code> (follow redirects, show headers)</p>
-        </article>
+<h1>301 vs 302 vs 307 vs 308: Choose and Test a Redirect</h1>
+<p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p>
+<p class="standalone-intro">Choose a redirect by whether the move is permanent and what should happen to the next request. Configure caching separately, then test the actual client behavior.</p>
+<h2>Choose a Code for the Job</h2>
+<div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Code</th><th>Use and request behavior</th></tr></thead><tbody>
+<tr><td><a href="/errors/http/301-moved-permanently">301</a></td><td>Permanent page move. A client may turn POST into GET when following it.</td></tr>
+<tr><td><a href="/errors/http/302-found">302</a></td><td>Temporary page move. A client may turn POST into GET when following it.</td></tr>
+<tr><td>303</td><td>Retrieve another resource after processing a request; commonly POST → GET for a result page.</td></tr>
+<tr><td><a href="/errors/http/307-temporary-redirect">307</a></td><td>Temporary move that preserves the method and body when automatically followed.</td></tr>
+<tr><td><a href="/errors/http/308-permanent-redirect">308</a></td><td>Permanent move that preserves the method and body when automatically followed.</td></tr>
+</tbody></table></div>
+<p>These distinctions come from <a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-15.4">HTTP Semantics</a>. A client may decline to follow a redirect; preserving a method does not guarantee that every client can replay an uploaded stream.</p>
+<h2>Three Practical Decisions</h2>
+<ol>
+<li><strong>Moving an article to its lasting URL?</strong> Use a permanent redirect, commonly 301 for a page reached with GET. Point directly to the relevant replacement.</li>
+<li><strong>Moving an API endpoint that receives a body?</strong> Choose 307 for a temporary move or 308 for a permanent one. Confirm that the destination accepts the same operation and that clients can resend it.</li>
+<li><strong>Showing a receipt after a form was processed?</strong> Use 303 to send the client to a separate result page. Replaying the original POST at a receipt endpoint is usually the wrong behavior.</li>
+</ol>
+<p>A redirect does not make an operation idempotent. For payments, uploads, and other changes, follow the application’s retry and duplicate-request rules. Test with an inert request on a controlled endpoint.</p>
+<h2>Caching Is a Separate Choice</h2>
+<p>301 and 308 are eligible for heuristic caching when the applicable rules permit it. 302 and 307 can be cached when explicit freshness information permits it. A temporary code is not a cache bypass. See <a href="https://www.rfc-editor.org/rfc/rfc9111.html">HTTP Caching</a>.</p>
+<p>For a temporary response you do not want stored, send an appropriate response policy such as:</p>
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Location: /temporary-endpoint
+Cache-Control: no-store</code></pre>
+<p><code>no-cache</code> permits storage but requires validation before reuse; it is not a synonym for <code>no-store</code>. Changing a response header cannot instantly remove an older redirect already held by a browser or CDN. Inspect the browser network panel and the CDN’s cache controls when testing a rollback.</p>
+<h2>What Google Uses the Redirect For</h2>
+<p>Google documents 301 and 308 as strong signals that the destination should be canonical, and 302 and 307 as weak signals. It does not describe temporary redirects as having “zero SEO equity.” Choose a status that describes the real move, keep internal links and sitemap entries consistent, and check that the replacement page is relevant and reachable. Read <a href="https://developers.google.com/search/docs/crawling-indexing/301-redirects">Google’s redirect guidance</a>.</p>
+<h2>Verify the First Response and the Destination</h2>
+<p>Use the <a href="/redirect-checker/">Redirect Checker</a> for public HTTP GET chains. For local verification, the following POSIX-shell commands show headers while discarding the response body. On Windows use <code>curl.exe</code> and replace <code>/dev/null</code> with <code>NUL</code>.</p>
+<pre><code>curl --silent --show-error --dump-header - --output /dev/null --connect-timeout 5 --max-time 20 'https://example.com/old?ref=test'</code></pre>
+<p>Look for the status, <code>Location</code>, and <code>Cache-Control</code>. This command does not follow the redirect. Then follow a bounded chain:</p>
+<pre><code>curl --silent --show-error --location --max-redirs 10 --proto-redir '=http,https' --dump-header - --output /dev/null --connect-timeout 5 --max-time 20 --write-out '\nFinal: %{url_effective}\nHTTP: %{http_code}\nRedirects: %{num_redirects}\n' 'https://example.com/old?ref=test'</code></pre>
+<p>Each response gets a header block. The final summary identifies the URL and HTTP status actually reached. curl does not treat HTTP 404 or 500 as a command failure by default; read that status. GET and HEAD can follow different server routes, so a HEAD-only test is not sufficient.</p>
+<h2>Verify POST Behavior in a Test Environment</h2>
+<p>Use only a test endpoint you control that records the received method and body without making a real change. Replace this example staging address:</p>
+<pre><code>curl --silent --show-error --location --max-redirs 5 --proto-redir '=https' --connect-timeout 5 --max-time 20 --data 'probe=example' --dump-header - 'https://staging.example.com/redirect-test'</code></pre>
+<p>With curl’s normal redirect behavior, a POST followed through 301, 302, or 303 becomes GET; 307 and 308 retain POST and its data. Confirm in the receiving server’s test log. Avoid adding <code>-X POST</code> to this check: it overrides normal method selection and can mask the behavior you intended to test. These details are documented in the <a href="https://curl.se/docs/manpage.html#-L">curl manual</a>.</p>
+<p>For repeated URLs, unexpected host changes, or a trace that stops early, continue with <a href="/learn/redirect-checker/">the redirect-chain troubleshooting guide</a>. Keep credentials out of public tracing tools and shared output.</p>
+<h2>Frequently Asked Questions</h2>
+<h3>Should I use 301 or 308 for a permanent move?</h3>
+<p>Both describe a permanent move. Use 308 when an automatically followed redirect must preserve the request method and body. A 301 remains suitable for ordinary page moves, but a client may change POST to GET.</p>
+<h3>Does 307 mean a response cannot be cached?</h3>
+<p>No. A 307 is temporary and preserves the request method, but explicit cache directives can allow caching. Set the intended Cache-Control policy separately from the redirect status.</p>
+<h3>Do temporary redirects lose all SEO value?</h3>
+<p>No. Google describes permanent redirects as strong canonical signals and temporary redirects as weak signals. That is not a promise of a fixed ranking gain or loss; use the status that matches the move.</p>
+<h3>Which redirect should follow a successful form submission?</h3>
+<p>A 303 See Other commonly sends the browser to a result page with GET after a POST has been processed. Use 307 or 308 when the destination should receive the original method and body instead.</p>
+<!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/learn/301-vs-302-vs-307-vs-308/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
     </div>
 
     <footer class="standalone-page-footer">

@@ -17,6 +17,9 @@ public agent API or MCP service advertised by this site.
 ## Troubleshooting
 
 - [Website Not Loading? A Step-by-Step Diagnostic Guide](https://ducktyped.xyz/learn/website-not-loading/index.md): Find where a website request fails. Compare local and public DNS, check TLS with curl, interpret HTTP responses, and collect useful evidence for support.
+- [WHOIS and RDAP Lookup: Read Domain Registration Results](https://ducktyped.xyz/learn/whois-lookup/index.md): Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.
+- [301 vs 302 vs 307 vs 308: Choose and Test a Redirect](https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/index.md): Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.
+- [Redirect Chains: Find Loops and Check the Final Response](https://ducktyped.xyz/learn/redirect-checker/index.md): Interpret redirect chains, spot loops and incomplete traces, check the final HTTP status, and understand why a browser can take a different path.
 - [SSL Certificate Expired: Diagnose the Warning](https://ducktyped.xyz/errors/ssl/ssl-certificate-expired.md): Diagnose an expired SSL certificate, check the hostname and clock, and find the right renewal steps. Includes OpenSSL output and current validity limits.
 - [Renew an Expired SSL Certificate and Verify the Fix](https://ducktyped.xyz/learn/ssl-certificate-expired/index.md): Renew, deploy, and verify an expired TLS certificate. Diagnose ACME failures, reload the right server, and check CDN, origin, and automatic renewal.
 - [Docker Daemon Not Running](https://ducktyped.xyz/errors/devops/docker-daemon-not-running.md): Fix Cannot connect to the Docker daemon on Linux, macOS, and Windows. Check Docker contexts, Desktop and WSL, socket permissions, rootless mode, and logs.

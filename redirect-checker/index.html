@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"URL Redirect Checker","url":"https://ducktyped.xyz/redirect-checker/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Trace the full redirect chain for any URL. See every 301/302 hop, status codes, and the final destination. Free redirect tracer.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a redirect checker?","acceptedAnswer":{"@type":"Answer","text":"A redirect checker follows the complete redirect chain of a URL, showing each hop (301, 302, 307, 308, meta refresh) until reaching the final destination. It helps diagnose redirect loops, incorrect redirects, and SEO issues."}},{"@type":"Question","name":"What is the difference between a 301 and 302 redirect?","acceptedAnswer":{"@type":"Answer","text":"A 301 redirect is permanent — search engines transfer link equity to the new URL. A 302 redirect is temporary — search engines keep the original URL indexed. Use 301 for permanent moves and 302 for temporary ones."}},{"@type":"Question","name":"How many redirects are too many?","acceptedAnswer":{"@type":"Answer","text":"Keep redirect chains to 1-2 hops maximum. Google follows up to 10 redirects but recommends minimizing them. Each redirect adds latency and can dilute link equity."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"URL Redirect Checker","url":"https://ducktyped.xyz/redirect-checker/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Trace public HTTP redirects, inspect each recorded status, and check whether the destination responds successfully or the trace stops before completion.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does this redirect checker follow?","acceptedAnswer":{"@type":"Answer","text":"The checker sends server-side GET requests and follows HTTP 301, 302, 303, 307, and 308 responses with a Location header. It records up to 15 responses and does not execute JavaScript or HTML meta refresh."}},{"@type":"Question","name":"Does a final URL mean the page works?","acceptedAnswer":{"@type":"Answer","text":"Check the last HTTP status. A destination can return 404 or 5xx, or show a login page with status 200. A trace that stops at another redirect has no confirmed final destination."}},{"@type":"Question","name":"Can I test POST redirects or my signed-in session?","acceptedAnswer":{"@type":"Answer","text":"This tool uses public GET requests and does not reproduce your browser session or POST body. Use your browser network panel or a controlled client test for those cases."}},{"@type":"Question","name":"What is the difference between 301 and 302?","acceptedAnswer":{"@type":"Answer","text":"301 describes a permanent move; 302 describes a temporary one. Either can change a followed POST to GET. Use the redirect comparison guide for method preservation, caching, and search behavior."}}]}</script>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Redirect Checker — Trace Redirect Chains — duckTyped</title>
-    <meta name="description" content="Trace the full redirect chain for any URL. See every 301/302 hop, status codes, and the final destination. Free redirect tracer.">
+    <title>URL Redirect Checker — Trace HTTP Redirects — duckTyped</title>
+    <meta name="description" content="Trace public HTTP redirects, inspect each recorded status, and check whether the destination responds successfully or the trace stops before completion.">
     <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
-    <meta property="og:type" content="website"><meta property="og:title" content="URL Redirect Checker — Trace Redirect Chains — duckTyped">
-    <meta property="og:description" content="Trace the full redirect chain for any URL. See every 301/302 hop, status codes, and the final destination. Free redirect tracer.">
+    <meta property="og:type" content="website"><meta property="og:title" content="URL Redirect Checker — Trace HTTP Redirects — duckTyped">
+    <meta property="og:description" content="Trace public HTTP redirects, inspect each recorded status, and check whether the destination responds successfully or the trace stops before completion.">
     <meta property="og:url" content="https://ducktyped.xyz/redirect-checker/"><meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/og-images/redirect-checker.svg">
-    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="URL Redirect Checker — Trace Redirect Chains — duckTyped">
-    <meta name="twitter:description" content="Trace the full redirect chain for any URL. See every 301/302 hop, status codes, and the final destination. Free redirect tracer.">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="URL Redirect Checker — Trace HTTP Redirects — duckTyped">
+    <meta name="twitter:description" content="Trace public HTTP redirects, inspect each recorded status, and check whether the destination responds successfully or the trace stops before completion.">
     <link rel="canonical" href="https://ducktyped.xyz/redirect-checker/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -45,13 +45,25 @@
     </script>
     <div class="container">
         <div class="standalone-hero"><h1>URL Redirect Checker</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Follow any URL through its complete redirect chain. See each hop, HTTP status code, and the final destination. Invaluable for debugging SEO redirects, checking affiliate links, or verifying shortened URLs.</p><div class="example-box"><strong>Example uses:</strong><p>Verifying 301 redirects after a site migration, checking where a shortened URL actually leads, debugging redirect loops, or auditing affiliate link chains.</p></div>
+            <p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p><p class="standalone-intro">Trace a public URL’s HTTP redirects and inspect the last recorded response. Spot repeated URLs, broken destinations, and traces that stop early.</p><div class="example-box"><strong>Example uses:</strong><p>Check a page migration, compare HTTP and HTTPS paths, or investigate a redirect loop.</p></div>
             <a href="/learn/redirect-checker/" class="learn-more-link">Learn about HTTP redirects and redirect chains</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="urlRedirect"><h2>URL Redirect Checker</h2>
-            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Follow URL redirects and see the complete redirect chain. Identify all 301, 302, and other HTTP redirects. Essential for SEO and debugging.</p>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Trace public HTTP redirects and read the status at each recorded step.</p>
             <div class="input-group"><label for="urlToTrace">URL to Trace:</label><input type="url" id="urlToTrace" placeholder="https://example.com" aria-label="URL to Trace:" onkeypress="if(event.key==='Enter') checkRedirects()"></div>
             <button onclick="checkRedirects()">🔄 Trace Redirects</button>
-            <div id="urlRedirectResults"></div></div></div>
+            <div id="urlRedirectResults" role="status" aria-live="polite"></div></div></div>
+<p class="related-guides">Uses public GET requests, up to 15 responses. JavaScript, meta refresh, and signed-in browser behavior are not followed. Results may be cached. <a href="/learn/301-vs-302-vs-307-vs-308/">Choose and test a redirect code</a>.</p>
+<section class="learn-article" aria-label="Questions about these results">
+<h2>Frequently Asked Questions</h2>
+<h3>What does this redirect checker follow?</h3>
+<p>The checker sends server-side GET requests and follows HTTP 301, 302, 303, 307, and 308 responses with a Location header. It records up to 15 responses and does not execute JavaScript or HTML meta refresh.</p>
+<h3>Does a final URL mean the page works?</h3>
+<p>Check the last HTTP status. A destination can return 404 or 5xx, or show a login page with status 200. A trace that stops at another redirect has no confirmed final destination.</p>
+<h3>Can I test POST redirects or my signed-in session?</h3>
+<p>This tool uses public GET requests and does not reproduce your browser session or POST body. Use your browser network panel or a controlled client test for those cases.</p>
+<h3>What is the difference between 301 and 302?</h3>
+<p>301 describes a permanent move; 302 describes a temporary one. Either can change a followed POST to GET. Use the redirect comparison guide for method preservation, caching, and search behavior.</p>
+</section>
         <!-- related-links:start -->
         <div class="recommended-tools">
             <div class="recommended-tools-heading">Related Tools</div>
@@ -78,7 +90,7 @@
     <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span></footer>
     <script defer src="/utility/core.js"></script>
     <script defer src="/utility/tools-helpers.js"></script>
-    <script defer src="/utility/tools-url.js"></script>
+    <script defer src="/utility/tools-url.js?v=20260924-results"></script>
     <script defer src="/utility/standalone-init.js"></script>
 </body>
 </html>

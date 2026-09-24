@@ -616,7 +616,7 @@
                 <a href="/whois-lookup/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
                 <a href="/learn/whois-lookup/" class="learn-more-link" title="Learn about WHOIS lookups">Learn</a>
                 <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
-                    Lookup domain registration information, IP address details, ISP, location, and network information. Leave blank to automatically check your own IP. Free WHOIS lookup tool for domain research.
+                    Look up legacy WHOIS registration fields or IPv4 network details. Results may be cached. For current domain data, use <a href="https://lookup.icann.org/en">ICANN RDAP Lookup</a>. Leave blank to detect your public IP.
                 </p>
                 <div class="input-group">
                     <label for="whoisInput">Domain or IP Address:</label>
@@ -1106,7 +1106,7 @@
                 <a href="/redirect-checker/" class="fullscreen-link" title="Open in full page">⛶ Open full page</a>
                 <a href="/learn/redirect-checker/" class="learn-more-link" title="Learn about redirects">Learn</a>
                 <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">
-                    Follow URL redirects and see the complete redirect chain. Identify all 301, 302, and other HTTP redirects. Essential for SEO and debugging.
+                    Trace public HTTP GET redirects and inspect each recorded status. Up to 15 responses; browser-only redirects and signed-in sessions are not followed. Results may be cached.
                 </p>
                 <div class="input-group">
                     <label for="urlToTrace">URL to Trace:</label>
@@ -1888,10 +1888,10 @@
     <script defer src="tools-helpers.js"></script>
     <!-- Tool modules (order doesn't matter, all depend on core + helpers) -->
     <script defer src="tools-password.js"></script>
-    <script defer src="tools-network.js"></script>
+    <script defer src="tools-network.js?v=20260924-results"></script>
     <script defer src="tools-email.js"></script>
     <script defer src="tools-qr.js"></script>
-    <script defer src="tools-url.js"></script>
+    <script defer src="tools-url.js?v=20260924-results"></script>
     <script defer src="tools-dev.js"></script>
     <script defer src="tools-device.js"></script>
     <!-- UI (depends on everything above) - must load last -->

@@ -9,6 +9,21 @@
   X-Content-Type-Options: nosniff
   Link: <https://ducktyped.xyz/learn/website-not-loading/>; rel="canonical", <https://ducktyped.xyz/llms.txt>; rel="describedby"
 
+/learn/whois-lookup/index.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Content-Type-Options: nosniff
+  Link: <https://ducktyped.xyz/learn/whois-lookup/>; rel="canonical", <https://ducktyped.xyz/llms.txt>; rel="describedby"
+
+/learn/301-vs-302-vs-307-vs-308/index.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Content-Type-Options: nosniff
+  Link: <https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/>; rel="canonical", <https://ducktyped.xyz/llms.txt>; rel="describedby"
+
+/learn/redirect-checker/index.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Content-Type-Options: nosniff
+  Link: <https://ducktyped.xyz/learn/redirect-checker/>; rel="canonical", <https://ducktyped.xyz/llms.txt>; rel="describedby"
+
 /errors/ssl/ssl-certificate-expired.md
   Content-Type: text/markdown; charset=utf-8
   X-Content-Type-Options: nosniff

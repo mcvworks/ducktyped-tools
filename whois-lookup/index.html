@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"WHOIS & IP Lookup","url":"https://ducktyped.xyz/whois-lookup/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Look up domain registration details or IP address information. Find registrar, creation date, nameservers, ISP, and geolocation data. Free WHOIS tool.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a WHOIS lookup?","acceptedAnswer":{"@type":"Answer","text":"WHOIS is a protocol for querying databases that store registration information about domain names and IP addresses, including the registrant, registrar, creation date, expiration date, and nameservers."}},{"@type":"Question","name":"How do I check who owns a domain?","acceptedAnswer":{"@type":"Answer","text":"Enter the domain name in the WHOIS Lookup tool above. The tool queries WHOIS servers and displays registration details including registrar, creation and expiration dates, and nameserver information."}},{"@type":"Question","name":"Why is WHOIS information hidden?","acceptedAnswer":{"@type":"Answer","text":"Many domain registrars offer WHOIS privacy protection (also called domain privacy) that replaces the registrant's personal information with proxy contact details to protect against spam and identity theft."}},{"@type":"Question","name":"Is this WHOIS lookup free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free with no registration required. Results are fetched in real-time from public WHOIS servers."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"WHOIS & IP Lookup","url":"https://ducktyped.xyz/whois-lookup/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Look up available domain registration fields or IPv4 network details. Understand missing results and verify current domain data with ICANN RDAP.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does this WHOIS tool return?","acceptedAnswer":{"@type":"Answer","text":"For domains, the tool summarizes legacy WHOIS registration fields when available. Use ICANN Lookup for current RDAP information, especially when a result is empty or incomplete. IPv4 input returns network and approximate location information."}},{"@type":"Question","name":"Does an empty result mean the domain is available?","acceptedAnswer":{"@type":"Answer","text":"No. Missing fields or a failed lookup do not prove that a domain can be registered. Confirm availability with the registry or a registrar."}},{"@type":"Question","name":"Are results live and uncached?","acceptedAnswer":{"@type":"Answer","text":"Results may be cached. Verify renewal dates and transfer or hold statuses with the authoritative registration service and your registrar account before acting."}},{"@type":"Question","name":"Can an IP lookup identify a person?","acceptedAnswer":{"@type":"Answer","text":"No. An ISP, organization, or approximate IP location does not establish a person’s identity or precise physical location."}}]}</script>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHOIS & IP Lookup — Domain Registration Info — duckTyped</title>
-    <meta name="description" content="Look up domain registration details or IP address information. Find registrar, creation date, nameservers, ISP, and geolocation data. Free WHOIS tool.">
+    <title>WHOIS &amp; IP Lookup — Domain Registration Info — duckTyped</title>
+    <meta name="description" content="Look up available domain registration fields or IPv4 network details. Understand missing results and verify current domain data with ICANN RDAP.">
     <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
-    <meta property="og:type" content="website"><meta property="og:title" content="WHOIS & IP Lookup — Domain Registration Info — duckTyped">
-    <meta property="og:description" content="Look up domain registration details or IP address information. Find registrar, creation date, nameservers, ISP, and geolocation data. Free WHOIS tool.">
+    <meta property="og:type" content="website"><meta property="og:title" content="WHOIS &amp; IP Lookup — Domain Registration Info — duckTyped">
+    <meta property="og:description" content="Look up available domain registration fields or IPv4 network details. Understand missing results and verify current domain data with ICANN RDAP.">
     <meta property="og:url" content="https://ducktyped.xyz/whois-lookup/"><meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/og-images/whois-lookup.svg">
-    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="WHOIS & IP Lookup — Domain Registration Info — duckTyped">
-    <meta name="twitter:description" content="Look up domain registration details or IP address information. Find registrar, creation date, nameservers, ISP, and geolocation data. Free WHOIS tool.">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="WHOIS &amp; IP Lookup — Domain Registration Info — duckTyped">
+    <meta name="twitter:description" content="Look up available domain registration fields or IPv4 network details. Understand missing results and verify current domain data with ICANN RDAP.">
     <link rel="canonical" href="https://ducktyped.xyz/whois-lookup/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
@@ -45,13 +45,25 @@
     </script>
     <div class="container">
         <div class="standalone-hero"><h1>WHOIS / IP Lookup</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-03-10">March 10, 2026</time></p><p class="standalone-intro">Look up the registration details behind any domain name or get geolocation and ISP info for any IP address. Useful for investigating domains, checking availability history, or identifying unknown IP addresses.</p><div class="example-box"><strong>Example uses:</strong><p>Checking who owns a domain, verifying domain expiration dates, investigating suspicious IPs in server logs, or researching a competitor's hosting provider.</p></div>
+            <p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p><p class="standalone-intro">Look up available registration fields for a domain, or network and approximate location details for an IPv4 address.</p><div class="example-box"><strong>Example uses:</strong><p>Find a registrar, review published nameservers and dates, or identify the network behind an IPv4 address.</p></div>
             <a href="/learn/whois-lookup/" class="learn-more-link">Learn about WHOIS and domain registration</a></div>
         <div class="standalone-tool-wrap"><div class="tool-card standalone-card" id="whoisChecker"><h2>WHOIS / IP Lookup</h2>
-            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Lookup domain registration information, IP address details, ISP, location, and network information. Leave blank to check your own IP.</p>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Look up a registered domain or IPv4 address. Leave blank to detect your public IP.</p>
             <div class="input-group"><label for="whoisInput">Domain or IP Address:</label><input type="text" id="whoisInput" placeholder="example.com, 8.8.8.8, or leave blank for your IP" aria-label="Domain or IP Address:" onkeypress="if(event.key==='Enter') lookupWhois()"></div>
             <button onclick="lookupWhois()">Lookup Information</button>
-            <div id="whoisResults"></div></div></div>
+            <div id="whoisResults" role="status" aria-live="polite"></div></div></div>
+<p class="related-guides">For current domain registration data, use <a href="https://lookup.icann.org/en">ICANN’s RDAP lookup</a>. This tool summarizes legacy WHOIS; missing fields do not prove availability. Results may be cached.</p>
+<section class="learn-article" aria-label="Questions about these results">
+<h2>Frequently Asked Questions</h2>
+<h3>What does this WHOIS tool return?</h3>
+<p>For domains, the tool summarizes legacy WHOIS registration fields when available. Use ICANN Lookup for current RDAP information, especially when a result is empty or incomplete. IPv4 input returns network and approximate location information.</p>
+<h3>Does an empty result mean the domain is available?</h3>
+<p>No. Missing fields or a failed lookup do not prove that a domain can be registered. Confirm availability with the registry or a registrar.</p>
+<h3>Are results live and uncached?</h3>
+<p>Results may be cached. Verify renewal dates and transfer or hold statuses with the authoritative registration service and your registrar account before acting.</p>
+<h3>Can an IP lookup identify a person?</h3>
+<p>No. An ISP, organization, or approximate IP location does not establish a person’s identity or precise physical location.</p>
+</section>
         <!-- related-links:start -->
         <div class="recommended-tools">
             <div class="recommended-tools-heading">Related Tools</div>
@@ -78,7 +90,7 @@
     <footer class="standalone-page-footer"><span>© <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span></footer>
     <script defer src="/utility/core.js"></script>
     <script defer src="/utility/tools-helpers.js"></script>
-    <script defer src="/utility/tools-network.js"></script>
+    <script defer src="/utility/tools-network.js?v=20260924-results"></script>
     <script defer src="/utility/standalone-init.js"></script>
 </body>
 </html>

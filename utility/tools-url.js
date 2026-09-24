@@ -108,18 +108,31 @@ async function checkRedirects() {
         getPayload: (url) => ({ url }),
         render: (data, url) => {
             let html = resultHeading('Redirect Chain');
-            const chain = data.chain || [];
-            if (data.hops > 0) {
-                let rows = '';
-                chain.forEach((step, index) => {
-                    rows += resultRow('🔗', `Step ${index + 1}: ${step.statusCode || 'N/A'}`, escapeHtml(step.url));
-                });
-                html += resultWrap(rows);
-                html += resultSummary(`<strong>Summary:</strong> ${data.hops} redirect(s) detected<br>Final destination: <span class="text-success">${escapeHtml(data.finalUrl || chain[chain.length - 1].url)}</span>`, 'success');
-            } else {
-                html += '<div class="success">✅ No redirects - URL loads directly</div>';
-                html += resultSummary(`Direct URL: <span class="text-success">${escapeHtml(data.finalUrl || url)}</span>`, 'success');
+            const chain = Array.isArray(data.chain) ? data.chain : [];
+            if (!chain.length) {
+                return html + resultNote('No HTTP responses were recorded. A destination was not confirmed. <a href="/learn/redirect-checker/">How to investigate an incomplete trace</a>.', 'warning');
             }
+            let rows = '';
+            chain.forEach((step, index) => {
+                rows += resultRow('🔗', `Step ${index + 1}: HTTP ${step.statusCode || 'N/A'}`, escapeHtml(step.url));
+            });
+            html += resultWrap(rows);
+            const last = chain[chain.length - 1];
+            const status = Number(last.statusCode);
+            const visited = escapeHtml(last.url || url);
+            const count = chain.length - 1;
+            const followed = `<strong>Followed redirects:</strong> ${count}<br>`;
+            if (status >= 200 && status < 300) {
+                html += resultSummary(`${followed}<strong>Final response:</strong> HTTP ${status}<br>Final URL: ${visited}`, 'success');
+            } else if (status >= 400 && status < 600) {
+                html += resultSummary(`${followed}<strong>Destination returned HTTP ${status}.</strong><br>Last requested URL: ${visited}<br>The trace reached an HTTP error response.`, 'error');
+            } else {
+                html += resultSummary(`${followed}<strong>Final destination not confirmed.</strong><br>Last requested URL: ${visited}<br>The last recorded response is HTTP ${escapeHtml(last.statusCode || 'unknown')}. The trace may have reached its limit or a response it could not follow.`, 'warning');
+            }
+            if (new Set(chain.map(step => step.url)).size < chain.length) {
+                html += resultNote('A URL appears more than once. Inspect the sequence for conflicting redirect rules or a loop.', 'warning');
+            }
+            html += resultNote('This checks HTTP GET responses, not page content or browser-only navigation. Results may be cached. <a href="/learn/redirect-checker/">Interpret the trace</a> · <a href="/learn/301-vs-302-vs-307-vs-308/">Choose a redirect code</a>.');
             return html;
         }
     });

@@ -277,12 +277,20 @@ async function lookupWhois() {
                 rows += resultRow('📋', 'Status', data.status.map(s => escapeHtml(s)).join('<br>'));
             }
 
-            let html = resultHeading('WHOIS Information for ' + escapeHtml(input)) + resultWrap(rows);
-            html += resultNote('For more details: <a href="https://who.is/whois/' + encodeURIComponent(input) + '" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color);">View full WHOIS</a>');
+            let html = resultHeading('WHOIS Information for ' + input);
+            if (rows) {
+                html += resultWrap(rows);
+            } else {
+                html += resultNote('No registration fields were returned by the legacy WHOIS lookup. This does not establish whether the domain is registered or available.', 'warning');
+            }
+            html += resultNote('Verify current domain data with <a href="https://lookup.icann.org/en" target="_blank" rel="noopener noreferrer">ICANN RDAP Lookup</a>. Results here may be cached. <a href="/learn/whois-lookup/">Understand dates, statuses, and missing fields</a>.');
             resultsDiv.innerHTML = html;
         }
     } catch (error) {
-        resultsDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+        resultsDiv.innerHTML = `<div class="error">Error: ${escapeHtml(error.message)}</div>`;
+        if (!isIP) {
+            resultsDiv.innerHTML += resultNote('A failed WHOIS lookup does not prove domain availability. Try <a href="https://lookup.icann.org/en" target="_blank" rel="noopener noreferrer">ICANN RDAP Lookup</a> for current domain registration data.');
+        }
     }
 }
 

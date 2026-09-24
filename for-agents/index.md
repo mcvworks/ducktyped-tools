@@ -14,6 +14,8 @@ Find technical guides, inspect the evidence behind our research, and link back t
 | Understand an expired certificate | [Expiry diagnosis](<https://ducktyped.xyz/errors/ssl/ssl-certificate-expired>) and [renewal guide](<https://ducktyped.xyz/learn/ssl-certificate-expired/>)<br>Check the served certificate, repair renewal/deployment, and verify from the client. |
 | Fix Docker engine access | [Docker daemon guide](<https://ducktyped.xyz/errors/devops/docker-daemon-not-running>)<br>Identify the selected engine before changing services, contexts, or permissions. |
 | Investigate a database timeout | [Database timeout guide](<https://ducktyped.xyz/errors/database/database-connection-timeout>)<br>Distinguish connection setup, TLS/login, pool acquisition, and query execution. |
+| Interpret domain registration | [WHOIS and RDAP guide](<https://ducktyped.xyz/learn/whois-lookup/>)<br>Understand registrar, dates, locks, missing fields, and lookup limits. |
+| Choose or debug a redirect | [Status-code comparison](<https://ducktyped.xyz/learn/301-vs-302-vs-307-vs-308/>) and [chain troubleshooting](<https://ducktyped.xyz/learn/redirect-checker/>)<br>Check request methods, caching, and the last recorded response. |
 | Cite certificate research | [September 2026 SSL survey](<https://ducktyped.xyz/learn/ssl-certificate-survey-2026/>)<br>A dated sample, downloadable CSV, field definitions, and reproducible counts. |
 
 ## Choose a Format

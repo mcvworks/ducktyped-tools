@@ -52,9 +52,9 @@
   },
   {
     "type": "tool",
-    "title": "WHOIS Lookup",
+    "title": "WHOIS & IP Lookup — Domain Registration Info",
     "url": "/whois-lookup/",
-    "description": "Look up domain registration details, registrar, expiry date, and ownership information.",
+    "description": "Look up available domain registration fields or IPv4 network details. Understand missing results and verify current domain data with ICANN RDAP.",
     "keywords": [
       "whois",
       "domain registration",
@@ -62,7 +62,10 @@
       "domain info",
       "domain owner",
       "domain expiry",
-      "whois lookup"
+      "whois lookup",
+      "rdap",
+      "clientTransferProhibited",
+      "clientHold"
     ],
     "category": "lookup",
     "aliases": [
@@ -562,9 +565,9 @@
   },
   {
     "type": "tool",
-    "title": "Redirect Checker",
+    "title": "URL Redirect Checker — Trace HTTP Redirects",
     "url": "/redirect-checker/",
-    "description": "Trace the full redirect chain for any URL, showing each hop and status code.",
+    "description": "Trace public HTTP redirects, inspect each recorded status, and check whether the destination responds successfully or the trace stops before completion.",
     "keywords": [
       "redirect",
       "301 redirect",
@@ -1230,16 +1233,18 @@
   },
   {
     "type": "learn",
-    "title": "What is WHOIS?",
+    "title": "WHOIS and RDAP Lookup: Read Domain Registration Results",
     "url": "/learn/whois-lookup/",
-    "description": "Learn how WHOIS works, what data it exposes, and how domain registration records are managed.",
+    "description": "Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.",
     "keywords": [
       "whois",
       "domain registration",
       "icann",
       "registrar",
       "rdap",
-      "whois tutorial"
+      "whois tutorial",
+      "clientTransferProhibited",
+      "clientHold"
     ],
     "category": "lookup"
   },
@@ -1590,9 +1595,9 @@
   },
   {
     "type": "learn",
-    "title": "HTTP Redirects and Redirect Chains",
+    "title": "Redirect Chains: Find Loops and Check the Final Response",
     "url": "/learn/redirect-checker/",
-    "description": "Learn how 301, 302, 307, and 308 redirects work and how redirect chains affect SEO.",
+    "description": "Interpret redirect chains, spot loops and incomplete traces, check the final HTTP status, and understand why a browser can take a different path.",
     "keywords": [
       "redirect",
       "301",
@@ -4259,9 +4264,9 @@
   },
   {
     "type": "learn",
-    "title": "HTTP Redirect Codes — 301 vs 302 vs 307 vs 308",
+    "title": "301 vs 302 vs 307 vs 308: Choose and Test a Redirect",
     "url": "/learn/301-vs-302-vs-307-vs-308/",
-    "description": "Comparison of HTTP redirect status codes: 301 (permanent), 302 (temporary), 307 (preserve method), 308 (permanent preserve). Decision flowchart and common mistakes.",
+    "description": "Choose permanent or temporary redirects, preserve POST when needed, understand caching and Google canonical signals, and verify behavior with curl.",
     "keywords": [
       "301 redirect",
       "302 redirect",
@@ -4273,7 +4278,10 @@
       "temporary redirect",
       "method preservation",
       "SEO redirect",
-      "redirect loop"
+      "redirect loop",
+      "303",
+      "post redirect get",
+      "cache-control"
     ],
     "category": "reference"
   },

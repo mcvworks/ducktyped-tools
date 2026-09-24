@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"WHOIS Lookup Explained","description":"Learn how WHOIS works, what domain registration data is available, the difference between WHOIS and RDAP, GDPR privacy implications, and how to use duckTyped's WHOIS lookup tool.","datePublished":"2026-02-18","dateModified":"2026-02-18","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/whois-lookup/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"WHOIS and RDAP Lookup: Read Domain Registration Results","description":"Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.","datePublished":"2026-02-18","dateModified":"2026-09-24","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"},"publisher":{"@type":"Organization","name":"duckTyped","logo":{"@type":"ImageObject","url":"https://ducktyped.xyz/dtlogo_lg.svg"}},"mainEntityOfPage":"https://ducktyped.xyz/learn/whois-lookup/"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Learn","item":"https://ducktyped.xyz/learn/"},{"@type":"ListItem","position":2,"name":"WHOIS Lookup"}]}</script>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is WHOIS?","acceptedAnswer":{"@type":"Answer","text":"WHOIS is a query-and-response protocol used to look up information about registered domain names, IP address blocks, and autonomous systems. It returns data about a domain's registration including who registered it, when it was created, when it expires, and which nameservers it uses."}},{"@type":"Question","name":"What data does a WHOIS lookup return?","acceptedAnswer":{"@type":"Answer","text":"A WHOIS response typically includes the registrar name, registrant and contact information (often redacted for privacy), creation date, expiration date, last updated date, nameservers, and EPP domain status codes like clientTransferProhibited."}},{"@type":"Question","name":"What is the difference between WHOIS and RDAP?","acceptedAnswer":{"@type":"Answer","text":"RDAP (Registration Data Access Protocol) is the modern successor to WHOIS. Unlike WHOIS which returns unstructured plain text, RDAP returns structured JSON, uses RESTful HTTPS endpoints, supports authentication and access control, and handles internationalized domain names natively."}},{"@type":"Question","name":"How has GDPR affected WHOIS data?","acceptedAnswer":{"@type":"Answer","text":"Since GDPR took effect in May 2018, most WHOIS lookups for gTLDs return redacted contact information, with personal fields replaced by labels like REDACTED FOR PRIVACY. Legitimate parties such as law enforcement can still request full data through registrar-specific processes."}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is WHOIS still used in 2026?","acceptedAnswer":{"@type":"Answer","text":"Some services still offer WHOIS, but RDAP became the definitive source for generic top-level domain registration data on January 28, 2025. Country-code registries have their own lookup services and policies."}},{"@type":"Question","name":"Does an empty lookup mean a domain is available?","acceptedAnswer":{"@type":"Answer","text":"No. A missing record can reflect an unsupported service, a failed query, redaction, or parsing limits. DNS NXDOMAIN also does not prove registration availability. Check with the registry or a registrar."}},{"@type":"Question","name":"Does clientTransferProhibited stop a website working?","acceptedAnswer":{"@type":"Answer","text":"That status blocks registrar transfers; it does not itself suspend DNS. If the website is unavailable, check for hold statuses and investigate DNS, TLS, and HTTP separately."}},{"@type":"Question","name":"Can I find the person who owns a domain?","acceptedAnswer":{"@type":"Answer","text":"Public records may identify the registrar and published contacts, but personal details can be withheld or replaced by a privacy service. An organization name or IP location does not establish the identity of the website operator."}}]}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHOIS Lookup Explained — Domain Registration Data — duckTyped</title>
-    <meta name="description" content="Learn how WHOIS works, what domain registration data is available, the difference between WHOIS and RDAP, GDPR privacy implications, and how to use duckTyped's WHOIS lookup tool.">
+    <title>WHOIS and RDAP Lookup: Read Domain Registration Results — duckTyped</title>
+    <meta name="description" content="Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.">
     <meta name="author" content="duckTyped">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="WHOIS Lookup Explained — Domain Registration Data — duckTyped">
-    <meta property="og:description" content="Learn how WHOIS works, what domain registration data is available, the difference between WHOIS and RDAP, and GDPR privacy implications.">
+    <meta property="og:title" content="WHOIS and RDAP Lookup: Read Domain Registration Results — duckTyped">
+    <meta property="og:description" content="Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.">
     <meta property="og:url" content="https://ducktyped.xyz/learn/whois-lookup/">
     <meta property="og:site_name" content="duckTyped">
     <meta property="og:image" content="https://ducktyped.xyz/dtlogo_lg.svg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="WHOIS Lookup Explained — Domain Registration Data — duckTyped">
-    <meta name="twitter:description" content="Learn how WHOIS works, what domain registration data is available, and how to investigate domain ownership.">
+    <meta name="twitter:title" content="WHOIS and RDAP Lookup: Read Domain Registration Results — duckTyped">
+    <meta name="twitter:description" content="Understand WHOIS and RDAP results: registrar, expiration, privacy, domain locks, and missing records. Find the right next check for your domain.">
     <link rel="canonical" href="https://ducktyped.xyz/learn/whois-lookup/">
     <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts/fonts.css">
     <link rel="preload" href="/utility/styles.css" as="style">
     <link rel="stylesheet" href="/utility/styles.css">
+<!-- agent-docs:head -->
+    <link rel="alternate" type="text/markdown" href="/learn/whois-lookup/index.md">
+    <link rel="describedby" href="/llms.txt" type="text/plain">
+<!-- /agent-docs:head -->
 </head>
 <body>    <nav class="unified-nav">
         <div class="unified-nav-inner">
@@ -57,101 +61,69 @@
         </div>
 
         <article class="learn-article">
-            <h1>WHOIS Lookup Explained</h1>
-            <p class="page-last-updated">Last updated: <time datetime="2026-03-08">March 8, 2026</time></p>
-            <p class="standalone-intro">Understand how the WHOIS protocol works, what domain registration data is available, how privacy regulations have changed the landscape, and how to use duckTyped's WHOIS lookup tool to investigate domain ownership and registration details.</p>
-
-            <h2>What Is WHOIS?</h2>
-            <p><strong>WHOIS</strong> is a query-and-response protocol used to look up information about registered domain names, IP address blocks, and autonomous systems. When you perform a WHOIS lookup on a domain like <code>example.com</code>, the protocol returns a structured set of data about that domain's registration -- who registered it, when it was created, when it expires, and which nameservers it uses.</p>
-            <p>Think of WHOIS as a public registry for the internet. Just as property records let you find out who owns a piece of land, WHOIS records let you find out who is responsible for a domain name or IP address block. This transparency has been a foundational principle of internet governance since the early days of the network.</p>
-
-            <h2>History of the WHOIS Protocol</h2>
-            <p>The WHOIS protocol dates back to the early 1980s, making it one of the oldest protocols still in active use on the internet. It was originally specified in <strong>RFC 812</strong> (1982) by Ken Harrenstien and Vic White at the Network Information Center (NIC) at Stanford Research Institute. At that time, the internet was a small research network, and WHOIS served as a simple directory of network users and hosts.</p>
-            <p>As the internet grew, WHOIS evolved to track domain name registrations. When the domain name system was formalized in 1985, WHOIS became the standard mechanism for querying registration data. The protocol operates on <strong>TCP port 43</strong> -- a client sends a text query, and the server responds with a plain-text answer. This simplicity has been both a strength and a limitation, as the unstructured text format makes automated parsing unreliable across different registrars.</p>
-            <p>Over the decades, WHOIS data became distributed across hundreds of registrars and registries, each with slightly different formatting. ICANN (the Internet Corporation for Assigned Names and Numbers) has worked to standardize the output, but inconsistencies remain. This fragmentation was one of the motivations behind the development of RDAP, a modern replacement protocol.</p>
-
-            <h2>WHOIS Data Fields</h2>
-            <p>A typical WHOIS response contains several categories of information about a domain registration. Understanding these fields is essential for interpreting lookup results.</p>
-
-            <h3>Registrar Information</h3>
-            <p>The <strong>registrar</strong> is the company through which the domain was registered (e.g., GoDaddy, Namecheap, Cloudflare Registrar, Google Domains). WHOIS records include the registrar's name, IANA ID, abuse contact email, and referral URL. This information helps you identify who manages the domain's registration and where to report abuse.</p>
-
-            <h3>Registrant, Admin, and Tech Contacts</h3>
-            <p>WHOIS records traditionally include three contact types: the <strong>registrant</strong> (the domain owner), the <strong>administrative contact</strong> (responsible for administrative decisions), and the <strong>technical contact</strong> (responsible for technical operations). Each contact entry may include a name, organization, street address, city, country, phone number, and email address. However, as discussed below, privacy regulations have significantly reduced the visibility of this data.</p>
-
-            <h3>Important Dates</h3>
-            <p>Every WHOIS record includes critical dates:</p>
-            <ul>
-                <li><strong>Creation Date</strong> -- when the domain was first registered.</li>
-                <li><strong>Updated Date</strong> -- when the registration record was last modified (e.g., after a DNS change or registrar transfer).</li>
-                <li><strong>Expiration Date</strong> -- when the domain registration expires. If not renewed before this date, the domain may become available for others to register.</li>
-            </ul>
-            <p>These dates are particularly useful for assessing domain age (older domains are generally more trustworthy), monitoring renewal deadlines, and investigating potentially suspicious newly registered domains.</p>
-
-            <h3>Nameservers</h3>
-            <p>The WHOIS record lists the <strong>authoritative nameservers</strong> for the domain. These are the DNS servers that hold the domain's DNS records (A, MX, TXT, etc.). For example, a domain using Cloudflare might show nameservers like <code>ada.ns.cloudflare.com</code> and <code>bob.ns.cloudflare.com</code>. This information is useful for confirming that DNS delegation is configured correctly.</p>
-
-            <h3>Domain Status Codes</h3>
-            <p>WHOIS records include <strong>EPP status codes</strong> that indicate the current state of the domain. Common codes include:</p>
-            <ul>
-                <li><code>clientTransferProhibited</code> -- the registrar has locked the domain to prevent unauthorized transfers.</li>
-                <li><code>serverDeleteProhibited</code> -- the registry has locked the domain to prevent deletion.</li>
-                <li><code>redemptionPeriod</code> -- the domain has expired and is in a grace period before being released.</li>
-                <li><code>pendingDelete</code> -- the domain is scheduled for deletion and will soon be available for registration.</li>
-            </ul>
-
-            <h2>RDAP vs WHOIS</h2>
-            <p>The <strong>Registration Data Access Protocol (RDAP)</strong> is the modern successor to WHOIS, defined in a series of RFCs published in 2015 (RFC 7480--7485). RDAP addresses many of WHOIS's long-standing limitations:</p>
-            <ul>
-                <li><strong>Structured data</strong> -- RDAP returns responses in JSON format, making automated parsing reliable and consistent across providers. WHOIS returns unstructured plain text that varies by registrar.</li>
-                <li><strong>Standardized queries</strong> -- RDAP uses RESTful HTTP/HTTPS endpoints with well-defined URL patterns, while WHOIS relies on a simple TCP text protocol with no standardized query format.</li>
-                <li><strong>Access control</strong> -- RDAP supports authentication and differentiated access levels, allowing registrars to show more data to authorized users (such as law enforcement) while restricting public access. WHOIS has no built-in access control.</li>
-                <li><strong>Internationalization</strong> -- RDAP natively supports Unicode and internationalized domain names (IDNs), whereas WHOIS has limited support for non-ASCII characters.</li>
-                <li><strong>Secure transport</strong> -- RDAP runs over HTTPS by default, encrypting queries and responses. WHOIS transmits data in plain text over TCP.</li>
-            </ul>
-            <p>ICANN has mandated that all gTLD registries and registrars support RDAP. While WHOIS remains widely used, RDAP is increasingly becoming the primary lookup mechanism for domain registration data.</p>
-
-            <h2>Privacy and GDPR Redaction</h2>
-            <p>The introduction of the <strong>General Data Protection Regulation (GDPR)</strong> in May 2018 fundamentally changed the WHOIS landscape. Because WHOIS records traditionally contained personal information -- names, addresses, phone numbers, and email addresses of domain registrants -- European privacy law required that this data be protected.</p>
-            <p>In response, ICANN adopted a <strong>Temporary Specification for gTLD Registration Data</strong> that allowed registrars to redact personal information from public WHOIS output. Today, most WHOIS lookups for gTLDs return redacted contact information, with fields replaced by labels like <code>REDACTED FOR PRIVACY</code> or generic registrar proxy addresses.</p>
-            <p>Some registrants had already used <strong>WHOIS privacy services</strong> (also called domain privacy or proxy registration) before GDPR. These services replace the registrant's personal information with the privacy provider's details in the public WHOIS record. Post-GDPR, this level of redaction has become the default for most registrars, even without an explicit privacy service.</p>
-            <p>Legitimate parties such as law enforcement, intellectual property holders, and cybersecurity researchers can still request access to full registration data through registrar-specific processes, but casual public lookups now return limited information for most domains.</p>
-
-            <h2>Common Use Cases</h2>
-            <p>Despite privacy redaction, WHOIS lookups remain valuable for many practical purposes.</p>
-
-            <h3>Checking Domain Availability</h3>
-            <p>Before registering a new domain, a WHOIS lookup confirms whether the domain is already taken. If the query returns no results or an <code>NXDOMAIN</code>-equivalent status, the domain may be available for registration. This is often the first step in the domain purchasing process.</p>
-
-            <h3>Investigating Domain Ownership</h3>
-            <p>Security professionals, journalists, and researchers use WHOIS data to investigate who is behind a particular domain. Even with GDPR redaction, useful information remains -- the registrar name, creation date, and nameservers can reveal patterns. For example, a phishing domain registered yesterday through a budget registrar raises different flags than a 15-year-old domain registered through a reputable provider.</p>
-
-            <h3>Expiry Monitoring</h3>
-            <p>Organizations monitor the expiration dates of their own domains and critical third-party domains to prevent accidental lapses. An expired domain can be registered by a malicious actor who then impersonates the original owner -- a technique known as <strong>domain hijacking</strong>. Automated WHOIS monitoring tools alert administrators before expiration dates arrive.</p>
-
-            <h3>Brand Protection</h3>
-            <p>Companies use WHOIS lookups to identify domains that infringe on their trademarks -- for example, typosquatting domains like <code>gooogle.com</code> or <code>amaz0n.com</code>. The registration data, particularly the registrar and creation date, helps legal teams build cases for domain dispute resolution through ICANN's Uniform Domain-Name Dispute-Resolution Policy (UDRP).</p>
-
-            <h3>Security Analysis</h3>
-            <p>When investigating suspicious emails, links, or network traffic, WHOIS data helps analysts determine whether a domain is legitimate. Newly registered domains, domains with privacy-protected registration, and domains using certain budget registrars are common indicators of malicious activity -- though none of these factors alone is conclusive.</p>
-
-            <h2>How to Use the WHOIS Lookup Tool</h2>
-            <p>The duckTyped WHOIS Lookup tool makes it easy to query domain registration data:</p>
-            <ol>
-                <li><strong>Enter a domain name</strong> in the input field (e.g., <code>example.com</code>). You do not need to include <code>http://</code> or <code>www</code>.</li>
-                <li><strong>Click "Lookup"</strong> to submit the query.</li>
-                <li><strong>Review the results</strong>, which display registrar information, registration dates, nameservers, domain status codes, and any available contact information.</li>
-            </ol>
-            <p>The tool queries WHOIS servers directly to provide current registration data. Keep in mind that results for gTLD domains (.com, .net, .org, etc.) will typically show redacted contact information due to GDPR compliance, while some ccTLD registries (country-code top-level domains) may have different disclosure policies.</p>
-
-            <h2>Related Tools</h2>
-            <p>These duckTyped tools complement the WHOIS Lookup for comprehensive domain investigation:</p>
-            <ul>
-                <li><a href="/dns-lookup/">DNS Record Checker</a> -- inspect A, AAAA, MX, TXT, CNAME, NS, and other DNS records for any domain.</li>
-                <li><a href="/ssl-checker/">SSL Certificate Checker</a> -- verify certificate chain validity, expiration dates, and TLS configuration.</li>
-            </ul>
-            <p class="related-guides">📖 <strong>Further reading:</strong> <a href="/learn/dns-lookup/">DNS Records guide</a>, <a href="/learn/ssl-checker/">SSL Certificates guide</a></p>
-        </article>
+<h1>WHOIS and RDAP Lookup: Read Domain Registration Results</h1>
+<p class="page-last-updated">Last reviewed: <time datetime="2026-09-24">September 24, 2026</time></p>
+<p class="standalone-intro">Find the registrar, understand renewal dates and domain statuses, and know when a missing result needs another lookup. Registration data is one part of an investigation; it does not establish website ownership, availability, or trust on its own.</p>
+<h2>Start with RDAP for Current Registration Data</h2>
+<p>For generic top-level domains such as .com, .org, and .xyz, use <a href="https://lookup.icann.org/en">ICANN Lookup</a> to check the current RDAP record. ICANN made RDAP the definitive source for gTLD registration information on January 28, 2025. Legacy WHOIS services may still respond, but coverage varies. For a country-code domain, check the relevant registry’s own service.</p>
+<p>RDAP returns structured JSON over HTTPS. Traditional WHOIS returns text over port 43, with field names that differ between providers. Neither format guarantees that personal contact details will be public. See <a href="https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en">ICANN’s transition notice</a>.</p>
+<h2>Choose the Lookup That Answers Your Question</h2>
+<div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Question</th><th>Useful next check</th></tr></thead><tbody>
+<tr><td>Which company manages my registration?</td><td>Find the registrar in RDAP, then use its account or support service. The registrar can differ from the DNS and hosting companies.</td></tr>
+<tr><td>When do I need to renew?</td><td>Compare the published expiration event with your registrar account, renewal settings, and receipts. A public date is not proof that your payment succeeded.</td></tr>
+<tr><td>Why does the website not load?</td><td>Look for hold statuses, then follow the <a href="/learn/website-not-loading/">DNS, TLS, and HTTP diagnostic guide</a>.</td></tr>
+<tr><td>Can I register this name?</td><td>Confirm availability with the registry or a registrar. A failed WHOIS query or missing DNS record is insufficient.</td></tr>
+<tr><td>Who hosts the website?</td><td>Inspect <a href="/dns-lookup/">DNS records</a> and the resulting IP network. A CDN or shared address may hide the origin host.</td></tr>
+</tbody></table></div>
+<h2>Read the Fields without Overinterpreting Them</h2>
+<ul>
+<li><strong>Registrar:</strong> the registration provider, not necessarily the registrant, reseller, DNS operator, or web host.</li>
+<li><strong>Registration / creation:</strong> a recorded registration event. It does not prove continuous operation or ownership since that date.</li>
+<li><strong>Expiration:</strong> a registration lifecycle date. It is separate from TLS certificate expiry and from a promised public release date.</li>
+<li><strong>Last changed / updated:</strong> a change to the registration object. It does not identify exactly which field changed or when the website content changed.</li>
+<li><strong>Nameservers:</strong> published delegation information. Use DNS queries to check the records currently returned to your resolver.</li>
+<li><strong>Contacts:</strong> only what the service publishes. Redacted or proxy contacts are not evidence of wrongdoing.</li>
+</ul>
+<h2>Common Domain Statuses and What to Do</h2>
+<p>WHOIS often uses camelCase EPP names; RDAP can show spaced versions such as <code>client transfer prohibited</code>. These are selected examples; read every status returned. <a href="https://www.icann.org/resources/pages/epp-status-codes-list-2014-06-18-en">ICANN explains the lifecycle codes</a>, and <a href="https://www.iana.org/assignments/rdap-json-values/">IANA lists RDAP values</a>.</p>
+<h3><code>clientTransferProhibited</code></h3>
+<p>A registrar transfer lock. Usually no action is needed unless you intend to transfer the name; ask your registrar about unlocking.</p>
+<h3><code>clientHold</code> / <code>serverHold</code></h3>
+<p>DNS activation is withheld by the registrar or registry. Contact the registrar to establish the cause and restoration requirements.</p>
+<h3><code>redemptionPeriod</code></h3>
+<p>The registration is in a restoration period after a deletion request. Contact the registrar promptly if you want to recover it; changing DNS will not restore it.</p>
+<h3><code>pendingDelete</code></h3>
+<p>Read alongside other statuses. When it appears without redemption or restoration status, deletion is pending; ask the registrar what options remain.</p>
+<h2>Example: A Lock Is Not an Outage Diagnosis</h2>
+<p>This fictional summary illustrates how to read a result:</p>
+<pre><code>Domain: example.test
+Registrar: Example Registrar
+Registration: 2024-04-10
+Expiration: 2027-04-10
+Status: clientTransferProhibited
+Nameserver: ns1.dns-provider.test</code></pre>
+<p>You can infer that the record describes a locked registration with a listed nameserver and expiration date. You cannot infer that the website works, that it is safe, that its TLS certificate is valid, or that its owner has paid the next renewal. For an outage, continue with DNS and a request to the affected URL.</p>
+<h2>Using DuckTyped’s WHOIS / IP Lookup</h2>
+<ol>
+<li>Enter the registered domain, such as <code>example.com</code>, in the <a href="/whois-lookup/">lookup tool</a>. A web path or application subdomain may not be a separate registration.</li>
+<li>The domain tool currently summarizes legacy WHOIS output. Missing fields can reflect provider formatting or an unavailable legacy service. Use the ICANN RDAP link to verify a current gTLD record.</li>
+<li>Results may be cached. For renewal, transfer, or outage decisions, confirm current data with the authoritative service and your registrar account.</li>
+<li>An IPv4 address selects the IP information lookup instead. ISP and approximate location describe a network, not the identity or precise location of a person.</li>
+</ol>
+<p>Keep the queried name, source, lookup time, returned status, and exact error when asking for help. Avoid assuming that an older domain is trustworthy or that a newer domain is malicious. See the <a href="/privacy/">data-handling and caching details</a>.</p>
+<h2>Frequently Asked Questions</h2>
+<h3>Is WHOIS still used in 2026?</h3>
+<p>Some services still offer WHOIS, but RDAP became the definitive source for generic top-level domain registration data on January 28, 2025. Country-code registries have their own lookup services and policies.</p>
+<h3>Does an empty lookup mean a domain is available?</h3>
+<p>No. A missing record can reflect an unsupported service, a failed query, redaction, or parsing limits. DNS NXDOMAIN also does not prove registration availability. Check with the registry or a registrar.</p>
+<h3>Does clientTransferProhibited stop a website working?</h3>
+<p>That status blocks registrar transfers; it does not itself suspend DNS. If the website is unavailable, check for hold statuses and investigate DNS, TLS, and HTTP separately.</p>
+<h3>Can I find the person who owns a domain?</h3>
+<p>Public records may identify the registrar and published contacts, but personal details can be withheld or replaced by a privacy service. An organization name or IP location does not establish the identity of the website operator.</p>
+<!-- agent-docs:link -->
+            <p class="related-guides" data-agent-docs="link"><a href="/learn/whois-lookup/index.md">Read as Markdown</a> · <a href="/for-agents/">Resources for AI assistants</a></p>
+<!-- /agent-docs:link -->
+</article>
 
         <div class="learn-cta">
             <a href="/whois-lookup/" class="cta-btn-primary">Try WHOIS Lookup</a>
