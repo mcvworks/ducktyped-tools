@@ -67,7 +67,7 @@ if (typeof initializeEncryptedNotes === 'undefined') { window.initializeEncrypte
 (function() {
     function loadSearch() {
         var s = document.createElement('script');
-        s.src = '/utility/site-search.js';
+        s.src = '/utility/site-search.js?v=20260924b';
         s.defer = true;
         document.head.appendChild(s);
     }

@@ -7,6 +7,33 @@
 (function () {
     'use strict';
 
+    // Some pages (including the homepage) do not load core.js.
+    if (typeof window.dtBeacon !== 'function') {
+        window.dtBeacon = function (type, slug, data) {
+            try {
+                var payload = JSON.stringify({ type: type, slug: slug || '', data: data || '' });
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon('/api/beacon', new Blob([payload], { type: 'application/json' }));
+                }
+            } catch (e) { /* Counting must never interrupt navigation. */ }
+        };
+    }
+
+    // Count intent to support the site, not payments or individual visitors.
+    // Send only a fixed placement name: no page URL, query, or tool input.
+    function recordDonationClick(event) {
+        if (event.type === 'auxclick' && event.button !== 1) return;
+        var link = event.target.closest && event.target.closest('a[href]');
+        if (!link) return;
+        var url;
+        try { url = new URL(link.href); } catch (e) { return; }
+        if (url.origin !== 'https://ko-fi.com' || url.pathname.replace(/\/$/, '') !== '/ducktyped') return;
+        var placement = link.closest('.donation-prompt') ? 'prompt' : link.closest('footer') ? 'footer' : 'page';
+        window.dtBeacon('donation_click', placement);
+    }
+    document.addEventListener('click', recordDonationClick);
+    document.addEventListener('auxclick', recordDonationClick);
+
     var INDEX_URL = '/site-search.json';
     var MAX_RESULTS = 12;
     var MAX_PER_GROUP = 4;
@@ -53,9 +80,10 @@
         if (searchIndex) return Promise.resolve(searchIndex);
         if (fetchPromise) return fetchPromise;
         fetchPromise = fetch(INDEX_URL)
-            .then(function (r) { return r.json(); })
+            .then(function (r) { if (!r.ok) throw new Error('Search unavailable'); return r.json(); })
+            .then(function (data) { if (!Array.isArray(data)) throw new Error('Invalid search index'); return data; })
             .then(function (data) { searchIndex = data; return data; })
-            .catch(function () { searchIndex = []; return []; });
+            .catch(function () { fetchPromise = null; return null; });
         return fetchPromise;
     }
 
@@ -274,6 +302,9 @@
     }
 
     function hideDropdown() {
+        clearTimeout(debounceTimer);
+        clearTimeout(missTimer);
+        searchRevision++;
         var dropdown = document.getElementById('navSearchDropdown');
         var input = document.getElementById('navSearchInput');
         if (dropdown) { dropdown.hidden = true; dropdown.innerHTML = ''; }
@@ -302,6 +333,7 @@
     // ── Event wiring ──────────────────────────────────────────────────────────
 
     var debounceTimer = null;
+    var searchRevision = 0;
 
     function attachEvents(wrap) {
         var input = document.getElementById('navSearchInput');
@@ -327,10 +359,19 @@
         // Debounced search on input
         input.addEventListener('input', function () {
             clearTimeout(debounceTimer);
+            clearTimeout(missTimer);
+            var revision = ++searchRevision;
             var val = input.value.trim();
             if (!val) { hideDropdown(); return; }
             debounceTimer = setTimeout(function () {
-                loadIndex().then(function () {
+                loadIndex().then(function (index) {
+                    if (revision !== searchRevision || input.value.trim() !== val) return;
+                    if (!index) {
+                        dropdown.innerHTML = '<div class="nav-search-empty">Search is temporarily unavailable. Please try again.</div>';
+                        dropdown.hidden = false;
+                        input.setAttribute('aria-expanded', 'true');
+                        return;
+                    }
                     var results = search(val);
                     renderDropdown(results, val);
                 });
