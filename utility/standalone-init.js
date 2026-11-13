@@ -139,6 +139,7 @@ if (typeof initializeEncryptedNotes === 'undefined') { window.initializeEncrypte
         'cron-parser': ['dev'],
         'uuid-generator': ['dev'],
         'character-counter': ['dev'],
+        'chmod-calculator': ['dev'],
         'line-tools': ['dev'],
         'env-file-parser': ['dev'],
         'docker-compose-validator': ['dev'],
@@ -573,6 +574,12 @@ if (typeof initializeEncryptedNotes === 'undefined') { window.initializeEncrypte
             actionParam: null,
             actions: { count: 'updateStats' },
             defaultAction: 'count'
+        },
+        'chmod-calculator': {
+            inputs: [{ id: 'modeInput', param: 'mode' }],
+            actionParam: null,
+            actions: { apply: 'applyChmodMode' },
+            defaultAction: 'apply'
         },
         'timezone-converter': {
             inputs: [
@@ -1168,10 +1175,11 @@ if (typeof initializeEncryptedNotes === 'undefined') { window.initializeEncrypte
         },
         {
             id: 'devops',
-            keywords: ['docker', 'kubernetes', 'npm', 'yarn', 'pip', 'git-', 'python-module', 'java-class', 'permission-denied-publickey'],
+            keywords: ['docker', 'kubernetes', 'npm', 'yarn', 'pip', 'git-', 'python-module', 'java-class', 'permission-denied-publickey', 'chmod'],
             tools: [
                 { href: '/docker-compose-validator/', title: 'Docker Compose Validator' },
-                { href: '/env-file-parser/', title: 'Env File Parser' }
+                { href: '/env-file-parser/', title: 'Env File Parser' },
+                { href: '/chmod-calculator/', title: 'Chmod Calculator' }
             ],
             guides: [],
             errors: [
