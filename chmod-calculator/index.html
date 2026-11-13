@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Chmod Calculator","url":"https://ducktyped.xyz/chmod-calculator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Calculate Unix file permissions. Tick read, write and execute boxes or type an octal number like 755 and get rwx letters and the chmod command.","browserRequirements":"Requires JavaScript","author":{"@type":"Organization","name":"duckTyped","url":"https://ducktyped.xyz"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does chmod 755 mean?","acceptedAnswer":{"@type":"Answer","text":"755 means the owner can read, write and execute (7), while the group and others can read and execute (5). In letters that is rwxr-xr-x."}},{"@type":"Question","name":"How do octal permissions work?","acceptedAnswer":{"@type":"Answer","text":"Each digit is the sum of read (4), write (2) and execute (1) for the owner, group and others in that order."}},{"@type":"Question","name":"Is this chmod calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free with no registration. All calculation happens in your browser."}}]}</script>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chmod Calculator — Unix File Permissions (755, 644, rwx) — duckTyped</title>
+    <meta name="description" content="Calculate Unix file permissions. Tick read, write and execute boxes or type an octal number like 755 and get rwx letters and the chmod command.">
+    <meta name="author" content="duckTyped"><meta name="robots" content="index, follow">
+    <meta property="og:type" content="website"><meta property="og:title" content="Chmod Calculator — duckTyped">
+    <meta property="og:description" content="Calculate Unix file permissions. Tick read, write and execute boxes or type an octal number like 755 and get rwx letters and the chmod command.">
+    <meta property="og:url" content="https://ducktyped.xyz/chmod-calculator/"><meta property="og:site_name" content="duckTyped">
+    <meta property="og:image" content="https://ducktyped.xyz/og-images/chmod-calculator.svg">
+    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Chmod Calculator — duckTyped">
+    <meta name="twitter:description" content="Calculate Unix file permissions and chmod commands.">
+    <link rel="canonical" href="https://ducktyped.xyz/chmod-calculator/">
+    <link rel="icon" type="image/svg+xml" href="/dtlogo_lg.svg">    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+    <link rel="preload" href="/utility/styles.css" as="style">
+    <link rel="stylesheet" href="/utility/styles.css">
+</head>
+<body>    <nav class="unified-nav">
+        <div class="unified-nav-inner">
+            <a href="/" class="unified-nav-brand"><img src="/dtlogo_lg.svg" alt="duckTyped" id="siteLogo"><span class="unified-nav-brand-text">duckTyped</span></a>
+            <div class="unified-mobile-overlay" id="mobileOverlay"></div>
+            <ul class="unified-nav-links" id="navLinks">
+                <li><a href="/utility/" class="active">Utility</a></li>
+                <li><a href="/learn/">Learn</a></li>
+                <li><a href="/errors/">Troubleshoot</a></li>
+                <li><a href="https://monitor.ducktyped.xyz/">Monitor</a></li>
+            </ul>
+            <button onclick="toggleTheme()" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme"><svg class="theme-dot-svg" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><circle class="theme-dot" cx="12" cy="12" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button>
+            <button class="unified-nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <script>(function(){var t=document.getElementById('navToggle'),l=document.getElementById('navLinks'),o=document.getElementById('mobileOverlay');t.addEventListener('click',function(){l.classList.toggle('open');o.classList.toggle('open')});o.addEventListener('click',function(){l.classList.remove('open');o.classList.remove('open')});var s=localStorage.getItem('selectedTheme');if(s==='light'){var b=document.getElementById('themeToggleBtn');if(b)b.classList.add('is-light')}})();</script>
+    <div class="container">
+        <div class="standalone-hero"><h1>Chmod Calculator</h1>
+            <p class="page-last-updated">Last updated: <time datetime="2026-11-13">November 13, 2026</time></p><p class="standalone-intro">Work out Unix file permissions without memorising the numbers. Tick the read, write and execute boxes, or type an octal mode like 755, and see the rwx letters and the chmod command instantly.</p><div class="example-box"><strong>Example uses:</strong><p>Making a script executable (755), locking down an SSH key (600), or checking what a mode like 644 really allows.</p></div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h2>Chmod Calculator</h2>
+            <p class="tool-description" style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5;">Tick the permissions or type a 3-digit number. Everything updates together.</p>
+            <table style="border-collapse: collapse; margin-bottom: 15px;"><thead><tr><th></th><th style="padding:8px;">Read</th><th style="padding:8px;">Write</th><th style="padding:8px;">Execute</th></tr></thead><tbody>
+<tr><td style="padding:8px 12px 8px 0;">Owner</td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="0" data-bit="4" aria-label="Owner Read" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="0" data-bit="2" aria-label="Owner Write" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="0" data-bit="1" aria-label="Owner Execute" onchange="boxesChanged()" style="width:22px;height:22px;"></td></tr>
+<tr><td style="padding:8px 12px 8px 0;">Group</td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="1" data-bit="4" aria-label="Group Read" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="1" data-bit="2" aria-label="Group Write" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="1" data-bit="1" aria-label="Group Execute" onchange="boxesChanged()" style="width:22px;height:22px;"></td></tr>
+<tr><td style="padding:8px 12px 8px 0;">Others</td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="2" data-bit="4" aria-label="Others Read" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="2" data-bit="2" aria-label="Others Write" onchange="boxesChanged()" style="width:22px;height:22px;"></td><td style="text-align:center;padding:8px;"><input type="checkbox" class="permBox" data-row="2" data-bit="1" aria-label="Others Execute" onchange="boxesChanged()" style="width:22px;height:22px;"></td></tr>
+</tbody></table>
+            <label for="modeInput" style="display:block; font-size:0.9em; color: var(--text-secondary); margin-bottom:6px;">Number form (3 digits, 0-7)</label>
+            <input type="text" id="modeInput" maxlength="3" inputmode="numeric" autocomplete="off" oninput="applyChmodMode()" style="width: 100%; max-width: 160px; padding: 12px; background: var(--input-background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 8px; font-size: 1.1em; font-family: monospace;">
+            <div id="modeError" role="alert" style="color: #e5484d; font-size: 0.9em; min-height: 1.3em; margin-top: 6px;"></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 10px;">
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.6em; font-weight: 700; color: var(--primary-color); font-family: monospace; word-break: break-all;" id="outNumber">644</div><div style="font-size: 0.85em; color: var(--text-secondary);">Number</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.6em; font-weight: 700; color: var(--primary-color); font-family: monospace; word-break: break-all;" id="outLetters">rw-r--r--</div><div style="font-size: 0.85em; color: var(--text-secondary);">Letters</div></div>
+                <div class="stat-card" style="padding: 15px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 8px; text-align: center;"><div style="font-size: 1.6em; font-weight: 700; color: var(--primary-color); font-family: monospace; word-break: break-all;" id="outCommand">chmod 644 filename</div><div style="font-size: 0.85em; color: var(--text-secondary);">Command</div></div>
+            </div>
+        </div></div>
+        <div class="standalone-tool-wrap"><div class="tool-card standalone-card"><h3 style="margin-bottom: 12px;">Related Tools</h3><div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <a href="/cron-parser/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Cron Expression Parser</a>
+            <a href="/env-file-parser/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Env File Parser</a>
+            <a href="/docker-compose-validator/" style="padding: 8px 16px; background: var(--input-background); border: 1px solid var(--border-color); border-radius: 6px; text-decoration: none; color: var(--primary-color); font-size: 0.9em;">Docker Compose Validator</a>
+        </div></div></div>
+        <!-- related-links:start -->
+        <div class="recommended-tools">
+            <div class="recommended-tools-heading">Related Tools</div>
+            <div class="recommended-tools-grid">
+                <a href="/subnet-calculator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Subnet Calculator</span>
+                    <span class="recommended-tool-desc">Calculate network ranges, masks and host counts from CIDR notation</span>
+                </a>
+                <a href="/hash-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">Hash Generator</span>
+                    <span class="recommended-tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input</span>
+                </a>
+                <a href="/uuid-generator/" class="recommended-tool-card">
+                    <span class="recommended-tool-name">UUID Generator</span>
+                    <span class="recommended-tool-desc">Generate random UUIDs (v4) in bulk</span>
+                </a>
+            </div>
+        </div>
+                <!-- related-links:end -->
+
+        <div class="standalone-footer-cta"><p>This is one of <strong>55+ free tools</strong> on duckTyped. No accounts, no cookies, no noise.</p><a href="/utility/" class="cta-btn-primary">Explore All Tools</a></div>
+    </div>
+    <footer class="standalone-page-footer"><span>&copy; <span class="footer-year"></span> <a href="/">duckTyped</a>. All rights reserved. · <a href="/privacy/">Privacy</a> · <a href="https://ko-fi.com/ducktyped" rel="noopener" target="_blank">Pay an API bill ♥</a></span></footer>
+    <script defer src="/utility/core.js"></script>
+    <script defer src="/utility/standalone-init.js"></script>
+    <script>
+    function applyChmodMode() {
+        var inp = document.getElementById('modeInput'), err = document.getElementById('modeError');
+        var v = inp.value.trim();
+        if (!/^[0-7]{3}$/.test(v)) {
+            err.textContent = v === '' ? 'Enter a 3-digit number, e.g. 755.' : 'Use exactly 3 digits, each from 0 to 7.';
+            return;
+        }
+        err.textContent = '';
+        var boxes = document.querySelectorAll('.permBox');
+        for (var i = 0; i < boxes.length; i++) {
+            var d = +v.charAt(+boxes[i].getAttribute('data-row'));
+            boxes[i].checked = (d & +boxes[i].getAttribute('data-bit')) !== 0;
+        }
+        showResults(v);
+    }
+    function boxesChanged() {
+        var d = [0, 0, 0], boxes = document.querySelectorAll('.permBox');
+        for (var i = 0; i < boxes.length; i++) {
+            if (boxes[i].checked) d[+boxes[i].getAttribute('data-row')] += +boxes[i].getAttribute('data-bit');
+        }
+        var v = d.join('');
+        document.getElementById('modeInput').value = v;
+        document.getElementById('modeError').textContent = '';
+        showResults(v);
+    }
+    function showResults(v) {
+        var s = '';
+        for (var i = 0; i < 3; i++) {
+            var n = +v.charAt(i);
+            s += (n & 4 ? 'r' : '-') + (n & 2 ? 'w' : '-') + (n & 1 ? 'x' : '-');
+        }
+        document.getElementById('outNumber').textContent = v;
+        document.getElementById('outLetters').textContent = s;
+        document.getElementById('outCommand').textContent = 'chmod ' + v + ' filename';
+    }
+    document.getElementById('modeInput').value = '644';
+    applyChmodMode();
+    </script>
+</body>
+</html>

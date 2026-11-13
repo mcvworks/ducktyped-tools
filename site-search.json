@@ -857,6 +857,24 @@
   },
   {
     "type": "tool",
+    "title": "Chmod Calculator",
+    "url": "/chmod-calculator/",
+    "description": "Calculate Unix file permissions: convert between checkboxes, octal numbers like 755 and rwx letters.",
+    "keywords": [
+      "chmod calculator",
+      "file permissions",
+      "unix permissions",
+      "octal permissions"
+    ],
+    "category": "dev",
+    "aliases": [
+      "chmod",
+      "permission calculator",
+      "rwx"
+    ]
+  },
+  {
+    "type": "tool",
     "title": "Cron Expression Parser",
     "url": "/cron-parser/",
     "description": "Parse, build, and understand cron expressions with human-readable descriptions.",
